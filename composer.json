@@ -14,6 +14,15 @@
   "scripts": {
     "post-install-cmd": [
       "cd htdocs && composer install"
+    ],
+    "post-update-cmd": [
+      "cd htdocs && composer update"
+    ],
+    "post-root-package-install": [
+      "@php cd htdocs && -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "post-create-project-cmd": [
+      "@php cd htdocs && artisan key:generate --ansi"
     ]
   }
 }
