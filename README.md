@@ -1,6 +1,6 @@
 # laraCMS
 
-laraCMS is a highly customizable Content Management System based on the [Laravel](https://laravel.com/) framework.
+A highly customizable Content Management System based on the [Laravel](https://laravel.com/) framework.
 
 ---
 
