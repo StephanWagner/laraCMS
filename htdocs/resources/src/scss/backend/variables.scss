@@ -1,0 +1,47 @@
+// Text
+$primaryFontFamily: 'Source Sans Pro', Arial, sans-serif;
+$monospaceFontFamily: 'Source Sans Code', monospace;
+$defaultFontSize: 16px;
+$defaultLineHeight: 1.6;
+
+// Colors
+$grayLight: #ddd;
+$grayLighter: #eee;
+$grayLightest: #fafafa;
+$grayIconColor: #ccc;
+
+$primaryColor: #2e96e5;
+$pageBackgroundColor: $grayLighter;
+$offBlack: #171b1f;
+
+$errorColor: #f33;
+$errorTextColor: #e33;
+$errorColorDark: #d00;
+$successColor: #5d2;
+$warningColor: #ffcc00;
+
+// Text colors
+$defaultTextColor: $offBlack;
+$grayTextColor: #888;
+$grayTextColorLight: #aaa;
+
+// Common
+$defaultTransitionSpeed: 250ms;
+
+// Form
+$placeholderColor: #aaa;
+$textfieldBorderColor: #ccc;
+$textfieldBorderColorHover: #aaa;
+$textfieldBorderColorActive: $primaryColor;
+$buttonBackgroundColor: $offBlack;
+$buttonBoxShadowColorHover: #aaa;
+$buttonHeight: 42px;
+$buttonHeightLarge: 46px;
+$textfieldHeight: $buttonHeight;
+$textfieldHeightLarge: $buttonHeightLarge;
+$textfieldHeightSmall: 36px;
+
+// Dimensions
+$headerHeight: 46px;
+$paginationButtonSize: $textfieldHeightSmall;
+$panelWidth: 180px;
