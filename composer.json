@@ -1,8 +1,19 @@
 {
-    "name": "stephanwagner/laracms",
-    "type": "project",
-    "description": "A highly customizable Content Management System based on the Laravel framework.",
-    "keywords": ["laravel", "laracms", "cms", "admin", "framework"],
-    "license": "MIT",
-    "minimum-stability": "dev"
+  "name": "stephanwagner/laracms",
+  "type": "project",
+  "description": "A highly customizable Content Management System based on the Laravel framework.",
+  "keywords": [
+    "laravel",
+    "laracms",
+    "cms",
+    "admin",
+    "framework"
+  ],
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "scripts": {
+    "post-install-cmd": [
+      "cd htdocs && composer install"
+    ]
+  }
 }
