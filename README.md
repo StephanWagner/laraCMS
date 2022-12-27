@@ -10,55 +10,38 @@ Stephan Wagner, [stephanwagner.me](https://stephanwagner.me), [mail@stephanwagne
 
 ---
 
-## Install and Setup
+## Install and setup
 
-1. Install via composer
+1. Install with [composer](https://getcomposer.org)
 
     ```bash
     composer create-project stephanwagner/laracms my-app
     ```
 
-2. Navigate to the `htdocs` folder
+2. Update database connection in file `htdocs/.env`
 
-    ```bash
-    cd htdocs
+    ```txt
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=laracms
+    DB_USERNAME=root
+    DB_PASSWORD=
     ```
 
-2. Copy the file `.env.example` to `.env` and adjust database settings
-
-    ```bash
-    cp .env.example .env
-    ```
-
-3. Generate new app key
-
-    ```bash
-    php artisan key:generate
-    ```
-
-4. Migrate database
+3. Migrate database
 
     ```bash
     php artisan migrate
     ```
 
-5. laraCMS is now ready to rock and roll!
+4. laraCMS is now ready to rock and roll!
 
     ```bash
     php artisan serve
     ```
 
     You can login using the `/admin` path: http://127.0.0.1:8000/admin
-
----
-
-## Development
-
-Run following command within the `htdocs` folder to start the development server:
-
-```bash
-php artisan serve
-```
 
 ---
 
