@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="login__button-container">
-                    <button type="submit" class="button -block login__button">laraCMS installieren</button>
+                    <button type="submit" class="button -block login__button">Installieren</button>
                 </div>
 
             </div>

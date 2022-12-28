@@ -12,6 +12,7 @@ function initPasswordFields() {
             wrapper.toggleClass('-show-password');
             const passwordIsShown = wrapper.hasClass('-show-password');
             input.attr('type', passwordIsShown ? 'text' : 'password');
+            input.trigger('focus');
           }
         }
       });
