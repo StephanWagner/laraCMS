@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta name="author" content="Stephan Wagner, mail@stephanwagner.me">
-    <link rel="icon" type="image/png" href="/backend/img/favicon-admin.png">
-    <link rel="apple-touch-icon" type="image/png" href="/backend/img/favicon-admin-app.png">
+    <link rel="icon" type="image/png" href="/backend/img/favicon.png">
+    <link rel="apple-touch-icon" type="image/png" href="/backend/img/favicon-app.png">
     <link rel="manifest" href="/backend/manifest-admin.json">
     <link rel="stylesheet" href="{{ assetSrc('/backend/css/main.min.css') }}">
     <script src="{{ assetSrc('/backend/js/main.min.js') }}"></script>
