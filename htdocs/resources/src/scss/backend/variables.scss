@@ -6,7 +6,7 @@ $defaultLineHeight: 1.5;
 
 // Colors
 $primaryColor: #247af2;
-$primaryColorDark: darken(#247af2, 8);
+$primaryColorDark: darken(#247af2, 10);
 $primaryColorLight: lighten(#247af2, 35);
 $pageBackgroundColor: #f2f2f2;
 
@@ -30,14 +30,16 @@ $placeholderColor: #999;
 $autofillBackgroundColor: #e0edff;
 
 // Form: Textfields
+$textfieldHeight: 52px;
 $textfieldFontSize: 18px;
 $textfieldFontWeight: 400;
 $textfieldBorderWidth: 2px;
 $textfieldBorderColor: #d2d2d2;
-$textfieldBorderColorHover: #b2b2b2;
+$textfieldBorderColorHover: #aaa;
 $textfieldBorderColorActive: $primaryColor;
+$textfieldIconColor: #c6c6c6;
+$textfieldIconColorHover: #999;
 $textfieldBoxShadowColor: $primaryColorLight;
-$textfieldHeight: 52px;
 $textfieldPaddingHorizontal: 16px;
 $textfieldBorderRadius: $globalBorderRadius;
 

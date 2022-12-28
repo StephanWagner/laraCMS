@@ -1,4 +1,68 @@
-// Textfields
+// Containers
+
+.textfield__container {
+  position: relative;
+  border-radius: $textfieldBorderRadius;
+
+  &.-has-icon {
+    input {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}
+
+// Textfield icons
+
+.textfield__icon-container {
+  cursor: pointer;
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  right: 2px;
+  width: calc($textfieldHeight - $textfieldBorderWidth - $textfieldBorderWidth);
+  height: calc(
+    $textfieldHeight - $textfieldBorderWidth - $textfieldBorderWidth
+  );
+}
+
+.textfield__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+
+  > path {
+    fill: $textfieldIconColor;
+    transition: transition('fill');
+
+    .textfield__icon-container:hover & {
+      fill: $textfieldIconColorHover;
+    }
+  }
+}
+
+// Password icon
+
+.view-password__icon-path {
+  &.-hide {
+    opacity: 0;
+
+    .textfield__container.-show-password & {
+      opacity: 1;
+    }
+  }
+
+  &.-show {
+    .textfield__container.-show-password & {
+      opacity: 0;
+    }
+  }
+}
+
+// Input
 
 .textfield,
 .textarea {
@@ -33,12 +97,13 @@
   //       font-family: $monospaceFontFamily;
   //     }
 
-  &:hover {
+  &:hover,
+  .textfield__container.-trigger-hover:hover & {
     border-color: $textfieldBorderColorHover;
   }
 
   &:focus {
-    border-color: $textfieldBorderColorActive;
+    border-color: $textfieldBorderColorActive !important;
     box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
   }
 
@@ -62,6 +127,10 @@
   //         border-color: $errorColor;
   //       }
   //     }
+
+  .textfield__container.-password & {
+    padding-right: calc(24px + 16px + 8px);
+  }
 }
 
 // Labels

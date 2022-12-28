@@ -43,7 +43,7 @@
           }
 
           &::before {
-            opacity: 0.28;
+            opacity: 0.25;
             background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSIyNCIgdmlld2JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0xMiAxNC45NXEtLjIgMC0uMzc1LS4wNjMtLjE3NS0uMDYyLS4zMjUtLjIxMkw2LjY3NSAxMC4wNXEtLjI3NS0uMjc1LS4yNjItLjY4OC4wMTItLjQxMi4yODctLjY4Ny4yNzUtLjI3NS43LS4yNzUuNDI1IDAgLjcuMjc1bDMuOSAzLjkgMy45MjUtMy45MjVxLjI3NS0uMjc1LjY4OC0uMjYzLjQxMi4wMTMuNjg3LjI4OC4yNzUuMjc1LjI3NS43IDAgLjQyNS0uMjc1LjdsLTQuNiA0LjZxLS4xNS4xNS0uMzI1LjIxMi0uMTc1LjA2My0uMzc1LjA2M1oiLz4KPC9zdmc+Cg==');
           }
 
@@ -98,7 +98,7 @@
 
         .select2-selection__arrow {
           &::before {
-            opacity: 0.38;
+            opacity: 0.45;
           }
         }
       }
