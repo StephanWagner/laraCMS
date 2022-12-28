@@ -1,4 +1,17 @@
+# assets
+/public/css/*
+!/public/css/.gitkeep
+/public/js/*
+!/public/js/.gitkeep
+/public/backend/css/*
+!/public/backend/css/.gitkeep
+/public/backend/js/*
+!/public/backend/js/.gitkeep
+
+# node
 /node_modules
+
+# larvel
 /public/build
 /public/hot
 /public/storage
