@@ -8,9 +8,10 @@ use App\Http\Controllers\Controller;
 
 class FrontendController extends Controller
 {
-
     public function __construct()
     {
+        parent::__construct();
+
         // View::share('readableTime', function ($datetime) {
         // 	return $this->getReadableTime($datetime);
         // });

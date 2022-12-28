@@ -7,8 +7,11 @@ use App\Http\Controllers\Backend\BackendDashboardController;
 // Dashboard
 Route::get('/admin', [BackendDashboardController::class, 'dashboard'])->middleware('auth');
 
+// Install
+Route::get('/admin/install', [BackendController::class, 'install'])->name('install');
+
 // Login
-Route::get('/admin/login', [BackendController::class, 'login'])->name('login');
+Route::get('/admin/login', [BackendController::class, 'login']);
 Route::post('/admin/login', [BackendController::class, 'loginRequest']);
 
 // Logout
