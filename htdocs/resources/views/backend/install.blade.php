@@ -19,7 +19,7 @@
                     Language
                 </div>
 
-                <select class="select-field -select2" data-select-field data-has-search>
+                <select class="select-field -select2" data-select-field>
                     <option value="en">English</option>
                     <option value="es">Español</option>
                     <option value="fr">Français</option>

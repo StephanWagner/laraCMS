@@ -9,7 +9,7 @@
   font-size: $textfieldFontSize;
   font-weight: $textfieldFontWeight;
   background: #fff;
-  transition: transition('border-color');
+  transition: transition('border-color', 'box-shadow');
   box-shadow: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -39,7 +39,7 @@
 
   &:focus {
     border-color: $textfieldBorderColorActive;
-    box-shadow: 0 0 0 3px rgba($textfieldBorderColorActive, 0.2);
+    box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
   }
 
   //     &[readonly] {

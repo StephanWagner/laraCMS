@@ -3,11 +3,13 @@
 .select2 {
   &.select2-container {
     .select2-selection {
+      position: relative;
       font-size: $textfieldFontSize;
       font-weight: $textfieldFontWeight;
       background: #fff;
       border: $textfieldBorderWidth solid $textfieldBorderColor;
-      border-radius: $globalBorderRadius;
+      border-radius: $textfieldBorderRadius;
+      transition: transition('border-color');
 
       &--single {
         height: $textfieldHeight;
@@ -16,8 +18,200 @@
           color: $defaultTextColor;
           line-height: calc($textfieldHeight - $textfieldBorderWidth * 2);
           padding-left: $textfieldPaddingHorizontal;
-          padding-right: calc($textfieldHeight - $textfieldBorderWidth * 2);
+          padding-right: calc(24px + 16px + 8px);
         }
+
+        .select2-selection__arrow {
+          width: 24px;
+          height: 24px;
+          position: absolute;
+          top: 50%;
+          right: calc(2px + 8px);
+          transform: translate(0, -50%);
+          transition: transition('transform');
+
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            transition: transition('opacity');
+            background: no-repeat center center / 24px;
+          }
+
+          &::before {
+            opacity: 0.28;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSIyNCIgdmlld2JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0xMiAxNC45NXEtLjIgMC0uMzc1LS4wNjMtLjE3NS0uMDYyLS4zMjUtLjIxMkw2LjY3NSAxMC4wNXEtLjI3NS0uMjc1LS4yNjItLjY4OC4wMTItLjQxMi4yODctLjY4Ny4yNzUtLjI3NS43LS4yNzUuNDI1IDAgLjcuMjc1bDMuOSAzLjkgMy45MjUtMy45MjVxLjI3NS0uMjc1LjY4OC0uMjYzLjQxMi4wMTMuNjg3LjI4OC4yNzUuMjc1LjI3NS43IDAgLjQyNS0uMjc1LjdsLTQuNiA0LjZxLS4xNS4xNS0uMzI1LjIxMi0uMTc1LjA2My0uMzc1LjA2M1oiLz4KPC9zdmc+Cg==');
+          }
+
+          &::after {
+            opacity: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHdpZHRoPSIyNCIgdmlld2JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiMyNDdhZjIiIGQ9Ik0xMiAxNC45NXEtLjIgMC0uMzc1LS4wNjMtLjE3NS0uMDYyLS4zMjUtLjIxMkw2LjY3NSAxMC4wNXEtLjI3NS0uMjc1LS4yNjItLjY4OC4wMTItLjQxMi4yODctLjY4Ny4yNzUtLjI3NS43LS4yNzUuNDI1IDAgLjcuMjc1bDMuOSAzLjkgMy45MjUtMy45MjVxLjI3NS0uMjc1LjY4OC0uMjYzLjQxMi4wMTMuNjg3LjI4OC4yNzUuMjc1LjI3NS43IDAgLjQyNS0uMjc1LjdsLTQuNiA0LjZxLS4xNS4xNS0uMzI1LjIxMi0uMTc1LjA2My0uMzc1LjA2M1oiLz4KPC9zdmc+Cg==');
+          }
+
+          > b {
+            display: none;
+          }
+        }
+      }
+    }
+
+    &--open {
+      .select2-selection {
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: $textfieldBorderColor;
+        }
+
+        &--single {
+          .select2-selection__arrow {
+            transform: translate(0, -50%) rotate(-180deg);
+
+            &::after {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      &.select2-container--above {
+        .select2-selection {
+          &::after {
+            top: auto;
+            bottom: 100%;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .select2-selection {
+        border-color: $textfieldBorderColorHover;
+
+        .select2-selection__arrow {
+          &::before {
+            opacity: 0.38;
+          }
+        }
+      }
+    }
+
+    &--focus,
+    &--focus:hover,
+    &--open,
+    &--open:hover {
+      .select2-selection {
+        border-color: $textfieldBorderColorActive;
+        box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
+      }
+    }
+  }
+}
+
+.select2-dropdown {
+  border: 0;
+  border-radius: 0;
+
+  .select2-results__option {
+    background: #fff;
+    padding: 6px $textfieldPaddingHorizontal;
+
+    &--selected {
+      background-color: #e6e6e6;
+    }
+
+    &--selectable {
+      &.select2-results__option--highlighted {
+        background-color: $textfieldBorderColorActive;
+      }
+    }
+
+    &.select2-results__message {
+      color: $grayTextColorLight;
+      font-style: italic;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: $textfieldBoxShadowColor;
+    border-radius: 0 0 calc($textfieldBorderRadius + 2px)
+      calc($textfieldBorderRadius + 2px);
+  }
+
+  &--above {
+    &::after {
+      bottom: 0;
+      top: -3px;
+      border-radius: calc($textfieldBorderRadius + 2px)
+        calc($textfieldBorderRadius + 2px) 0 0;
+    }
+  }
+}
+
+.select2-search,
+.select2-results {
+  position: relative;
+  z-index: 2;
+}
+
+.select2-search {
+  border: $textfieldBorderWidth solid $textfieldBorderColorActive;
+  border-top: 0;
+  border-bottom: 0;
+  background: #fff;
+
+  .select2-dropdown--above & {
+    border-top: $textfieldBorderWidth solid $textfieldBorderColorActive;
+    border-radius: $textfieldBorderRadius $textfieldBorderRadius 0 0;
+  }
+}
+
+.select2-results {
+  border: $textfieldBorderWidth solid $textfieldBorderColorActive;
+  border-top: 0;
+  border-radius: 0 0 $textfieldBorderRadius $textfieldBorderRadius;
+  background: $textfieldBorderColorActive;
+  overflow: hidden;
+
+  .select2-dropdown--above & {
+    border-bottom: 0;
+    border-radius: 0;
+  }
+}
+
+.select2-container {
+  .select2-search--dropdown {
+    position: relative;
+    padding: 12px $textfieldPaddingHorizontal;
+
+    .select2-search__field {
+      padding: 0 0 2px;
+      border: 0;
+      border-bottom: 2px solid $textfieldBorderColor;
+      transition: transition('border-color');
+      font-size: 16px;
+      font-weight: 400;
+
+      &:hover {
+        border-color: $textfieldBorderColorHover;
+      }
+
+      &:focus {
+        border-color: #000;
       }
     }
   }
