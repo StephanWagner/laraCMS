@@ -1,47 +1,57 @@
 // Text
-$primaryFontFamily: 'Source Sans Pro', Arial, sans-serif;
-$monospaceFontFamily: 'Source Sans Code', monospace;
+$primaryFontFamily: 'Nunito Sans', sans-serif;
+$monospaceFontFamily: 'Source Code Pro', monospace;
 $defaultFontSize: 16px;
-$defaultLineHeight: 1.6;
+$defaultLineHeight: 1.5;
 
 // Colors
-$grayLight: #ddd;
-$grayLighter: #eee;
-$grayLightest: #fafafa;
-$grayIconColor: #ccc;
+$primaryColor: #247af2;
+$primaryColorDark: darken(#247af2, 8);
+$pageBackgroundColor: #f2f2f2;
 
-$primaryColor: #2e96e5;
-$pageBackgroundColor: $grayLighter;
-$offBlack: #171b1f;
+// Colors: Text
+$defaultTextColor: #222;
+$grayTextColor: #888;
+$grayTextColorLight: #aaa;
 
+// Colors: Status
 $errorColor: #f33;
 $errorTextColor: #e33;
 $errorColorDark: #d00;
 $successColor: #5d2;
-$warningColor: #ffcc00;
+$warningColor: #fc0;
 
-// Text colors
-$defaultTextColor: $offBlack;
-$grayTextColor: #888;
-$grayTextColorLight: #aaa;
-
-// Common
-$defaultTransitionSpeed: 250ms;
+// Global
+$globalBorderRadius: 10px;
 
 // Form
-$placeholderColor: #aaa;
-$textfieldBorderColor: #ccc;
-$textfieldBorderColorHover: #aaa;
+$placeholderColor: #999;
+$autofillBackgroundColor: #e0edff;
+
+// Form: Textfields
+$textfieldFontSize: 18px;
+$textfieldFontWeight: 400;
+$textfieldBorderWidth: 2px;
+$textfieldBorderColor: #d2d2d2;
+$textfieldBorderColorHover: #bbb;
 $textfieldBorderColorActive: $primaryColor;
-$buttonBackgroundColor: $offBlack;
-$buttonBoxShadowColorHover: #aaa;
-$buttonHeight: 42px;
-$buttonHeightLarge: 46px;
-$textfieldHeight: $buttonHeight;
-$textfieldHeightLarge: $buttonHeightLarge;
-$textfieldHeightSmall: 36px;
+$textfieldHeight: 52px;
+$textfieldPaddingHorizontal: 16px;
+$textfieldBorderRadius: $globalBorderRadius;
+
+// Form: Buttons
+$buttonFontSize: 20px;
+$buttonLineHeight: 28px;
+$buttonFontWeight: 400;
+$buttonBackgroundColor: $primaryColor;
+$buttonBackgroundColorHover: $primaryColorDark;
+$buttonPaddingVertical: calc(($textfieldHeight - $buttonLineHeight) / 2);
+$buttonPaddingHorizontal: 32px;
+$buttonBorderRadius: $globalBorderRadius;
+
+// Transitions
+$defaultTransitionSpeed: 250ms;
 
 // Dimensions
-$headerHeight: 46px;
-$paginationButtonSize: $textfieldHeightSmall;
+// $headerHeight: 46px;
 $panelWidth: 180px;

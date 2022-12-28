@@ -1,0 +1,65 @@
+// Textfields
+
+.textfield,
+.textarea {
+  border: $textfieldBorderWidth solid $textfieldBorderColor;
+  border-radius: $textfieldBorderRadius;
+  padding: 0 $textfieldPaddingHorizontal;
+  height: $textfieldHeight;
+  font-size: $textfieldFontSize;
+  font-weight: $textfieldFontWeight;
+  background: #fff;
+  transition: transition('border-color');
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &.-block {
+    display: block;
+    width: 100%;
+  }
+
+  //     &--small {
+  //       padding: 0 8px;
+  //       height: $textfieldHeightSmall;
+  //     }
+
+  //     &--large {
+  //       height: $textfieldHeightLarge;
+  //     }
+
+  //     &--monospace {
+  //       font-family: $monospaceFontFamily;
+  //     }
+
+  &:hover {
+    border-color: $textfieldBorderColorHover;
+  }
+
+  &:focus {
+    border-color: $textfieldBorderColorActive;
+    box-shadow: 0 0 0 3px rgba($textfieldBorderColorActive, 0.2);
+  }
+
+  //     &[readonly] {
+  //       cursor: default;
+  //       color: $grayTextColor;
+  //       border-color: $textfieldBorderColor !important;
+  //     }
+
+  //     &[disabled] {
+  //       color: #ccc;
+  //       border-color: $textfieldBorderColor;
+  //     }
+
+  //     &.error {
+  //       border-color: $errorColor;
+  //     }
+
+  //     &[data-form-value] {
+  //       .input__wrapper[data-error] & {
+  //         border-color: $errorColor;
+  //       }
+  //     }
+}

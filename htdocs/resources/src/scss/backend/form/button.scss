@@ -1,0 +1,173 @@
+// Buttons
+
+.button {
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  color: #fff;
+  background: $buttonBackgroundColor;
+  text-align: center;
+  font-size: $buttonFontSize;
+  line-height: $buttonLineHeight;
+  font-weight: $buttonFontWeight;
+  padding: $buttonPaddingVertical $buttonPaddingHorizontal;
+  border-radius: $buttonBorderRadius;
+  transition: transition('background-color');
+
+  &:hover {
+    color: #fff;
+    background: $buttonBackgroundColorHover;
+  }
+
+  &:active {
+    color: #fff;
+    background: $buttonBackgroundColorHover;
+    box-shadow: inset 0 8px 8px rgba(#000, 0.1);
+  }
+
+  //     &--light {
+  //       background: #ddd;
+  //       color: $defaultTextColor;
+
+  //       &:hover {
+  //         color: #fff;
+  //         background-color: $primaryColor;
+  //       }
+  //     }
+
+  //     &--light-textfield {
+  //       background: $textfieldBorderColor;
+  //       color: $defaultTextColor;
+
+  //       &:hover {
+  //         color: #fff;
+  //         background-color: $primaryColor;
+  //       }
+  //     }
+
+  &.-block {
+    display: block;
+    width: 100%;
+  }
+
+  //     &--icon {
+  //       display: flex;
+  //       align-items: center;
+  //       padding-left: 16px;
+
+  //       > svg {
+  //         margin: 0 8px 0 0;
+
+  //         > path,
+  //         > polygon {
+  //           fill: #fff;
+  //           transition: fill $defaultTransitionSpeed;
+  //         }
+  //       }
+
+  //       &:hover {
+  //         > svg {
+  //           > path,
+  //           > polygon {
+  //             fill: #fff;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     &--light {
+  //       &.button--icon {
+  //         > svg {
+  //           > path,
+  //           > polygon {
+  //             fill: #000;
+  //           }
+  //         }
+
+  //         &:hover {
+  //           > svg {
+  //             > path,
+  //             > polygon {
+  //               fill: #fff;
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     &--small {
+  //       height: 36px;
+  //       line-height: 36px;
+  //       font-size: 16px;
+  //     }
+
+  //     &--large {
+  //       height: $buttonHeightLarge;
+  //       line-height: $buttonHeightLarge;
+  //     }
+
+  //     &--icon-single {
+  //       justify-content: center;
+  //       padding: 0;
+  //       width: $buttonHeight;
+
+  //       > svg {
+  //         margin: 0;
+  //       }
+
+  //       &.button--large {
+  //         width: $buttonHeightLarge;
+  //       }
+  //     }
+
+  //     &[disabled] {
+  //       cursor: default !important;
+  //       box-shadow: none !important;
+  //     }
+
+  //     &:not(.button--loading-status)[disabled] {
+  //       color: #ccc !important;
+  //       background: #ddd !important;
+
+  //       svg {
+  //         > path,
+  //         > polygon {
+  //           fill: #ddd !important;
+  //         }
+  //       }
+  //     }
+
+  //     &--disabled-dark:not(.button--loading-status)[disabled] {
+  //       background: #bbb !important;
+  //     }
+
+  //     &--loading-status {
+  //       color: #fff;
+  //     }
+}
+
+//   .loading-bar,
+//   .button[disabled].loading-bar {
+//     background-image: linear-gradient(
+//       -45deg,
+//       rgba(255, 255, 255, 0.4) 25%,
+//       rgba(255, 255, 255, 0) 25%,
+//       rgba(255, 255, 255, 0) 50%,
+//       rgba(255, 255, 255, 0.4) 50%,
+//       rgba(255, 255, 255, 0.4) 75%,
+//       rgba(255, 255, 255, 0) 75%,
+//       rgba(255, 255, 255, 0)
+//     ) !important;
+//     background-size: 32px 32px !important;
+//     background-repeat: repeat !important;
+//     transition: background-position 60000s linear !important;
+//     background-position: 4000000px !important;
+//   }
+
+//   .button__uploading-text {
+//     font-size: 14px;
+
+//     > span {
+//       font-family: $monospaceFontFamily;
+//     }
+//   }

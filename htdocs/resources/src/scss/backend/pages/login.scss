@@ -1,0 +1,43 @@
+.login__wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 0;
+}
+
+.login__container {
+  width: 380px;
+  max-width: calc(100% - 32px);
+}
+
+.login__error {
+  color: $errorColor;
+  text-align: center;
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+
+.login__textfield {
+  margin: 0 0 10px;
+}
+
+.login__link-container {
+  text-align: center;
+  margin: 32px 0 0;
+}
+
+.login__logo-container {
+  margin: 0 0 48px;
+}
+
+.login__logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  margin: auto;
+}
+
+.login__error {
+  display: none;
+}
