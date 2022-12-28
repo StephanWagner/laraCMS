@@ -10,43 +10,43 @@ const vinylSourceStream = require('vinyl-source-stream');
 const browserify = require('browserify');
 const babelify = require('babelify');
 
-// src paths
-var cssSrcPath = './resources/src/scss';
-var jsSrcPath = './resources/src/js';
-
-// dist paths
-var cssDistPath = './public/css';
-var jsDistPath = './public/js';
+// Paths
+var srcPath = './resources/src';
+var distPath = './public';
 
 // CSS
 var styles = [
+  // Frontend
   {
     name: 'main',
-    src: [cssSrcPath + '/frontend/main.scss'],
-    srcWatch: [cssSrcPath + '/frontend/**/*.scss'],
-    dest: cssDistPath
+    src: [srcPath + '/scss/frontend/main.scss'],
+    srcWatch: [srcPath + '/scss/frontend/**/*.scss'],
+    dest: distPath + '/css'
   },
+  // Backend
   {
-    name: 'admin',
-    src: [cssSrcPath + '/backend/admin.scss'],
-    srcWatch: [cssSrcPath + '/backend/**/*.scss'],
-    dest: cssDistPath
+    name: 'main',
+    src: [srcPath + '/scss/backend/main.scss'],
+    srcWatch: [srcPath + '/scss/backend/**/*.scss'],
+    dest: distPath + '/backend/css'
   }
 ];
 
 // JavaScript
 var scripts = [
+  // Frontend
   {
     name: 'main',
-    src: [jsSrcPath + '/frontend/main.js'],
-    srcWatch: [jsSrcPath + '/frontend/**/*.js'],
-    dest: jsDistPath
+    src: [srcPath + '/js/frontend/main.js'],
+    srcWatch: [srcPath + '/js/frontend/**/*.js'],
+    dest: distPath + '/js'
   },
+  // Backend
   {
-    name: 'admin',
-    src: [jsSrcPath + '/backend/admin.js'],
-    srcWatch: [jsSrcPath + '/backend/**/*.js'],
-    dest: jsDistPath
+    name: 'main',
+    src: [srcPath + '/js/backend/main.js'],
+    srcWatch: [srcPath + '/js/backend/**/*.js'],
+    dest: distPath + '/backend/js'
   }
 ];
 

@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta name="author" content="Stephan Wagner, mail@stephanwagner.me">
-    <link rel="icon" type="image/png" href="/img/favicon-admin.png">
-    <link rel="apple-touch-icon" type="image/png" href="/img/favicon-admin.png">
-    <link rel="manifest" href="/manifest-admin.json">
-    <link rel="stylesheet" href="{{ assetSrc('/css/admin.min.css') }}">
-    <script src="{{ assetSrc('/js/admin.min.js') }}"></script>
+    <link rel="icon" type="image/png" href="/backend/img/favicon-admin.png">
+    <link rel="apple-touch-icon" type="image/png" href="/backend/img/favicon-admin-app.png">
+    <link rel="manifest" href="/backend/manifest-admin.json">
+    <link rel="stylesheet" href="{{ assetSrc('/backend/css/main.min.css') }}">
+    <script src="{{ assetSrc('/backend/js/main.min.js') }}"></script>
 </head>
 
 <body>

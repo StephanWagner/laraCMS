@@ -4,7 +4,7 @@
 
 // Third party
 // @import '../../../node_modules/jbox/dist/jBox.all';
-// @import '../../../node_modules/select2/dist/css/select2';
+@import '../../../../node_modules/select2/dist/css/select2';
 // @import '../../../node_modules/jodit/build/jodit';
 // @import '../../../node_modules/daterangepicker/daterangepicker';
 // @import '../../../node_modules/colorjoe/css/colorjoe';
@@ -28,6 +28,7 @@
 @import 'form/form';
 @import 'form/button';
 @import 'form/textfield';
+@import 'form/select';
 // @import 'form-input';
 // @import 'form-file';
 // @import 'form-multiple-select';

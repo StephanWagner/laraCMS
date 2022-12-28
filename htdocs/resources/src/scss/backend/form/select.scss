@@ -1,0 +1,24 @@
+// Select 2
+
+.select2 {
+  &.select2-container {
+    .select2-selection {
+      font-size: $textfieldFontSize;
+      font-weight: $textfieldFontWeight;
+      background: #fff;
+      border: $textfieldBorderWidth solid $textfieldBorderColor;
+      border-radius: $globalBorderRadius;
+
+      &--single {
+        height: $textfieldHeight;
+
+        .select2-selection__rendered {
+          color: $defaultTextColor;
+          line-height: calc($textfieldHeight - $textfieldBorderWidth * 2);
+          padding-left: $textfieldPaddingHorizontal;
+          padding-right: calc($textfieldHeight - $textfieldBorderWidth * 2);
+        }
+      }
+    }
+  }
+}
