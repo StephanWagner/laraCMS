@@ -13,49 +13,13 @@ class BackendController extends Controller
     {
         parent::__construct();
 
-        // View::share('readableTime', function ($datetime) {
-        // 	return $this->getReadableTime($datetime);
-        // });
-
-        BackendLanguageProvider::resetBackendLanguage();
-
-
-        // if (!session('language')) {
-
-        //     if (Auth::check()) {
-        //         $languageId = Auth::get('language');
-        //     } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        //         $languageStr = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-        //         if (!empty($languageStr)) {
-        //             $languageId = substr($languageStr, 0, 2);
-        //         } else {
-        //             $languageId = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-        //         }
-        //     }
-
-        //     $languages = config('backend.languages');
-        //     if (!empty($languageId) && !empty($languages[$languageId]['id'])) {
-        //         $language = $languages[$languageId]['id'];
-        //     }
-
-        //     if (empty($language)) {
-        //         $language = config('backend.fallback_locale');
-        //     }
-
-        //     session('language', $language);
-
-        //     // TODO delete session when logging out
-        // }
-
-        $language = BackendLanguageProvider::getBackendLanguage();
-
-        echo '|';
-        print_r($language);
-        echo '|';
+        // Initialize language
+        BackendLanguageProvider::getBackendLanguage();
     }
 
-    // Login
+    /**
+     * Show login page
+     */
 
     function login()
     {
@@ -66,11 +30,13 @@ class BackendController extends Controller
         return view('backend/login');
     }
 
-    // Login via request
+    /**
+     * Login via request
+     */
 
     function loginRequest(Request $request)
     {
-        // Mock data
+        // Mock user password
         // $user = User::find(1);
         // $user->password = Hash::make('test123');
         // $user->save();
@@ -92,7 +58,9 @@ class BackendController extends Controller
         }
     }
 
-    // Logout
+    /**
+     * Logout
+     */
 
     function logout()
     {

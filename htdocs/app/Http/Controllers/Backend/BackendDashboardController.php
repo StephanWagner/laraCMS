@@ -13,6 +13,10 @@ class BackendDashboardController extends BackendController
         parent::__construct();
     }
 
+    /**
+     * Show dashboard page
+     */
+
     function show()
     {
 

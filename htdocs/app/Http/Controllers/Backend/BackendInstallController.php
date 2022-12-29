@@ -14,7 +14,9 @@ class BackendInstallController extends BackendController
         parent::__construct();
     }
 
-    // Show install page
+    /**
+     * Show install page
+     */
 
     function show()
     {

@@ -22,9 +22,29 @@ function initPasswordFields() {
   });
 }
 
+// Init textfield form submit
+
+function initTextfieldSubmit() {
+  $('[data-submit-on-enter]').on('keypress', function (ev) {
+    if (ev.key == 'Enter') {
+      ev.preventDefault();
+
+      var targetButton = $($(this).attr('data-submit-on-enter'));
+      if (!targetButton.length) {
+        targetButton = $(this).parents('form').find('button[type="submit"]');
+      }
+
+      $(targetButton).trigger('click');
+    }
+  });
+}
+
 // Domready
 
 $(function () {
   // Init password fields
   initPasswordFields();
+
+  // Init textfield form submit
+  initTextfieldSubmit();
 });

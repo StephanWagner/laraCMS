@@ -60,8 +60,7 @@ class BackendLanguageProvider extends ServiceProvider
             $languageId = config('backend.fallback_locale');
         }
 
-        App::setLocale($languageId);
-        session('backendLanguage', $languageId);
+        self::setBackendLanguage($languageId);
 
         return $languageId;
     }
