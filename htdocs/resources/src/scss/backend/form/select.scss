@@ -1,5 +1,10 @@
 // Select 2
 
+[data-select-field]:not(.-init) {
+  visibility: hidden;
+  height: $textfieldHeight;
+}
+
 .select2 {
   &.select2-container {
     .select2-selection {

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class BackendLanguageProvider extends ServiceProvider
 {
@@ -22,7 +23,7 @@ class BackendLanguageProvider extends ServiceProvider
         $languages = config('backend.languages');
         if (!empty($languages[$languageId])) {
             App::setLocale($languageId);
-            session('backendLanguage', $languageId);
+            Session::put('backendLanguage', $languageId);
             return true;
         }
 
@@ -35,8 +36,8 @@ class BackendLanguageProvider extends ServiceProvider
 
     static function getBackendLanguage()
     {
-        if (session('backendLanguage')) {
-            return session('backendLanguage');
+        if (Session::get('backendLanguage')) {
+            return Session::get('backendLanguage');
         }
 
         if (Auth::check()) {
@@ -71,6 +72,6 @@ class BackendLanguageProvider extends ServiceProvider
 
     static function resetBackendLanguage()
     {
-        session()->forget('backendLanguage');
+        Session::forget('backendLanguage');
     }
 }
