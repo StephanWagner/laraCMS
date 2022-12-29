@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Backend\BackendController;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\BackendLanguageProvider;
-// use App\Http\Middleware\ItemLink;
-// use Illuminate\Support\Facades\Auth;
 
 class BackendInstallController extends BackendController
 {

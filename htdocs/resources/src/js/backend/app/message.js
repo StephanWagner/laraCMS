@@ -1,7 +1,8 @@
-import $ from 'jquery';
 import jBox from 'jBox';
 
-// Show messages
+/**
+ * Show messages
+ */
 
 function message(color, txt) {
   new jBox('Notice', {

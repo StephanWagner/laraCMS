@@ -17,7 +17,11 @@
                     {{ __('backend/page-install.textfield-language-label') }}
                 </div>
 
-                <select class="select-field -select2" data-select-field data-select-language>
+                <select
+                    class="select-field -block -select2"
+                    data-select-field
+                    data-select-language
+                >
                     @foreach ($languages as $language)
                         <option value="{{ $language['id'] }}"{!! app()->getLocale() == $language['id'] ? ' selected="selected"' : ''!!}>{{ $language['name'] }}</option>
                     @endforeach

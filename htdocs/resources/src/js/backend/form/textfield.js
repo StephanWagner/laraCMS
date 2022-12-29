@@ -1,28 +1,30 @@
 import $ from 'jquery';
 
-// Init password fields
+/**
+ * Init password fields
+ */
 
 function initPasswordFields() {
   $('[data-show-password-trigger]:not(.-init)').each(function (index, item) {
-    if (!$(item).data('show-password-initialized')) {
-      $(item).on('click', function (ev) {
-        const wrapper = $(item).parents('[data-show-password-container]');
-        if (wrapper.length) {
-          const input = wrapper.find('[data-show-password-input]');
-          if (input.length) {
-            wrapper.toggleClass('-show-password');
-            const passwordIsShown = wrapper.hasClass('-show-password');
-            input.attr('type', passwordIsShown ? 'text' : 'password');
-            input.trigger('focus');
-          }
+    $(item).on('click', function (ev) {
+      const wrapper = $(item).parents('[data-show-password-container]');
+      if (wrapper.length) {
+        const input = wrapper.find('[data-show-password-input]');
+        if (input.length) {
+          wrapper.toggleClass('-show-password');
+          const passwordIsShown = wrapper.hasClass('-show-password');
+          input.attr('type', passwordIsShown ? 'text' : 'password');
+          input.trigger('focus');
         }
-      });
-      $(item).addClass('-init');
-    }
+      }
+    });
+    $(item).addClass('-init');
   });
 }
 
-// Init textfield form submit
+/**
+ * Init textfield form submit
+ */
 
 function initTextfieldSubmit() {
   $('[data-submit-on-enter]').on('keypress', function (ev) {
@@ -39,7 +41,9 @@ function initTextfieldSubmit() {
   });
 }
 
-// Domready
+/**
+ * Domready
+ */
 
 $(function () {
   // Init password fields
