@@ -4,7 +4,7 @@
   display: inline-block;
   cursor: pointer;
   border: 0;
-  color: $buttonFontColor;
+  color: $buttonTextColor;
   background: $buttonBackgroundColor;
   text-align: center;
   font-size: $buttonFontSize;
@@ -15,13 +15,13 @@
   transition: transition('color', 'background-color', 'box-shadow');
 
   &:hover {
-    color: $buttonFontColor;
+    color: $buttonTextColor;
     background: $buttonBackgroundColorHover;
   }
 
   &:focus,
   &:active {
-    color: $buttonFontColor;
+    color: $buttonTextColor;
     background: $buttonBackgroundColorHover;
   }
 
@@ -131,7 +131,7 @@
 
   &[disabled] {
     cursor: default !important;
-    color: $buttonFontColorDisabled !important;
+    color: $buttonTextColorDisabled !important;
     background: $buttonBackgroundColorDisabled !important;
     box-shadow: none !important;
   }
