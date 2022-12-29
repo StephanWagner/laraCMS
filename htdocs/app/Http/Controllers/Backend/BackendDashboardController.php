@@ -8,12 +8,16 @@ use App\Http\Controllers\Backend\BackendController;
 
 class BackendDashboardController extends BackendController
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	function show()
-	{
+    function show()
+    {
 
-		return view('backend/dashboard', [
+        return view('backend/dashboard', [
             // TODO
-		]);
-	}
+        ]);
+    }
 }

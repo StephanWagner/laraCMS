@@ -25,9 +25,5 @@ class Controller extends BaseController
 
             // TODO set cache
         }
-
-        // View::share('readableTime', function ($datetime) {
-        // 	return $this->getReadableTime($datetime);
-        // });
     }
 }

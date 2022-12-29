@@ -4,7 +4,7 @@
 
 function assetSrc($file = null)
 {
-    // Return unix time when in debug mode
+    // Return md5 of unix time when in debug mode
     if (config('app.debug') || !$file) {
         return str_replace('.min', '', $file) . '?' . md5(time());
     }

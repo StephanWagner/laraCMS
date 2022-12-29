@@ -6,10 +6,15 @@ use App\Http\Controllers\Frontend\FrontendController;
 
 class HomeController extends FrontendController
 {
-	function show()
-	{
-		return view('frontend/home', [
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    function show()
+    {
+        return view('frontend/home', [
             // TODO
-		]);
-	}
+        ]);
+    }
 }

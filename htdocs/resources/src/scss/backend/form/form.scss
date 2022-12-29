@@ -11,3 +11,13 @@
 :-ms-input-placeholder {
   color: $placeholderColor;
 }
+
+// Remove mozilla dotted lines
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+button:focus {
+  outline: none !important;
+}

@@ -1,8 +1,9 @@
 import $ from 'jquery';
 
 // Init password fields
+
 function initPasswordFields() {
-  $('[data-show-password-trigger]').each(function (index, item) {
+  $('[data-show-password-trigger]:not(.-init)').each(function (index, item) {
     if (!$(item).data('show-password-initialized')) {
       $(item).on('click', function (ev) {
         const wrapper = $(item).parents('[data-show-password-container]');
@@ -16,13 +17,13 @@ function initPasswordFields() {
           }
         }
       });
-      $(item).data('show-password-initialized', true);
+      $(item).addClass('-init');
     }
   });
 }
-window.initPasswordFields = initPasswordFields;
 
 // Domready
+
 $(function () {
   // Init password fields
   initPasswordFields();

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Providers\BackendLanguageProvider;
 
 class BackendController extends Controller
 {
@@ -16,20 +16,43 @@ class BackendController extends Controller
         // View::share('readableTime', function ($datetime) {
         // 	return $this->getReadableTime($datetime);
         // });
-    }
 
-    // Install
+        BackendLanguageProvider::resetBackendLanguage();
 
-    function install()
-    {
-        $isInstalled = \App\Models\Settings::where('name', 'is-installed')->count() > 0;
 
-        if (Cache::get('is-installed') || $isInstalled) {
-            Cache::put('is-installed', true);
-            return redirect('/admin');
-        }
+        // if (!session('language')) {
 
-        return view('backend/install');
+        //     if (Auth::check()) {
+        //         $languageId = Auth::get('language');
+        //     } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        //         $languageStr = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+        //         if (!empty($languageStr)) {
+        //             $languageId = substr($languageStr, 0, 2);
+        //         } else {
+        //             $languageId = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        //         }
+        //     }
+
+        //     $languages = config('backend.languages');
+        //     if (!empty($languageId) && !empty($languages[$languageId]['id'])) {
+        //         $language = $languages[$languageId]['id'];
+        //     }
+
+        //     if (empty($language)) {
+        //         $language = config('backend.fallback_locale');
+        //     }
+
+        //     session('language', $language);
+
+        //     // TODO delete session when logging out
+        // }
+
+        $language = BackendLanguageProvider::getBackendLanguage();
+
+        echo '|';
+        print_r($language);
+        echo '|';
     }
 
     // Login

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role', 16)->after('id')->default('editor');
+            $table->string('language', 2)->after('password')->default('en');
             $table->tinyInteger('active')->after('remember_token')->default(1);
             $table->dateTime('deleted_at', 0)->nullable();
         });

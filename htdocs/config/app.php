@@ -195,6 +195,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // Custom backend providers
+        App\Providers\BackendLanguageProvider::class,
+
     ],
 
     /*
