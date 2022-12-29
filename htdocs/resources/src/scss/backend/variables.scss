@@ -5,9 +5,9 @@ $defaultFontSize: 16px;
 $defaultLineHeight: 1.5;
 
 // Colors
-$primaryColor: #247af2;
-$primaryColorDark: darken(#247af2, 10);
-$primaryColorLight: lighten(#247af2, 35);
+$primaryColor: #0088ff;
+$primaryColorDark: darken($primaryColor, 5);
+$primaryColorLight: lighten($primaryColor, 35);
 $pageBackgroundColor: #f2f2f2;
 
 // Colors: Text
@@ -27,17 +27,19 @@ $globalBorderRadius: 10px;
 
 // Form
 $placeholderColor: #999;
-$autofillBackgroundColor: #e0edff;
 
 // Form: Textfields
 $textfieldHeight: 52px;
+$textfieldBackgroundColor: #fff;
+$textfieldTextColor: $defaultTextColor;
+$textfieldTextColorDisabled: #ccc;
 $textfieldFontSize: 18px;
 $textfieldFontWeight: 400;
 $textfieldBorderWidth: 2px;
 $textfieldBorderColor: #d2d2d2;
 $textfieldBorderColorHover: #aaa;
 $textfieldBorderColorActive: $primaryColor;
-$textfieldIconColor: #c6c6c6;
+$textfieldIconColor: #c2c2c2;
 $textfieldIconColorHover: #999;
 $textfieldBoxShadowColor: $primaryColorLight;
 $textfieldPaddingHorizontal: 16px;
@@ -47,8 +49,11 @@ $textfieldBorderRadius: $globalBorderRadius;
 $buttonFontSize: 20px;
 $buttonLineHeight: 28px;
 $buttonFontWeight: 400;
+$buttonFontColor: #fff;
+$buttonFontColorDisabled: #bbb;
 $buttonBackgroundColor: $primaryColor;
 $buttonBackgroundColorHover: $primaryColorDark;
+$buttonBackgroundColorDisabled: #ddd;
 $buttonBoxShadowColor: $primaryColorLight;
 $buttonPaddingVertical: calc(($textfieldHeight - $buttonLineHeight) / 2);
 $buttonPaddingHorizontal: 32px;

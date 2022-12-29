@@ -4,7 +4,7 @@
   display: inline-block;
   cursor: pointer;
   border: 0;
-  color: #fff;
+  color: $buttonFontColor;
   background: $buttonBackgroundColor;
   text-align: center;
   font-size: $buttonFontSize;
@@ -12,16 +12,16 @@
   font-weight: $buttonFontWeight;
   padding: $buttonPaddingVertical $buttonPaddingHorizontal;
   border-radius: $buttonBorderRadius;
-  transition: transition('background-color', 'box-shadow');
+  transition: transition('color', 'background-color', 'box-shadow');
 
   &:hover {
-    color: #fff;
+    color: $buttonFontColor;
     background: $buttonBackgroundColorHover;
   }
 
   &:focus,
   &:active {
-    color: #fff;
+    color: $buttonFontColor;
     background: $buttonBackgroundColorHover;
   }
 
@@ -129,22 +129,22 @@
   //       }
   //     }
 
-  //     &[disabled] {
-  //       cursor: default !important;
-  //       box-shadow: none !important;
-  //     }
+  &[disabled] {
+    cursor: default !important;
+    color: $buttonFontColorDisabled !important;
+    background: $buttonBackgroundColorDisabled !important;
+    box-shadow: none !important;
+  }
 
-  //     &:not(.button--loading-status)[disabled] {
-  //       color: #ccc !important;
-  //       background: #ddd !important;
+//   &:not(.loading-bar)[disabled] {
 
-  //       svg {
-  //         > path,
-  //         > polygon {
-  //           fill: #ddd !important;
-  //         }
-  //       }
-  //     }
+//     // svg {
+//     //   > path,
+//     //   > polygon {
+//     //     fill: #ddd !important;
+//     //   }
+//     // }
+//   }
 
   //     &--disabled-dark:not(.button--loading-status)[disabled] {
   //       background: #bbb !important;
@@ -155,23 +155,23 @@
   //     }
 }
 
-//   .loading-bar,
-//   .button[disabled].loading-bar {
-//     background-image: linear-gradient(
-//       -45deg,
-//       rgba(255, 255, 255, 0.4) 25%,
-//       rgba(255, 255, 255, 0) 25%,
-//       rgba(255, 255, 255, 0) 50%,
-//       rgba(255, 255, 255, 0.4) 50%,
-//       rgba(255, 255, 255, 0.4) 75%,
-//       rgba(255, 255, 255, 0) 75%,
-//       rgba(255, 255, 255, 0)
-//     ) !important;
-//     background-size: 32px 32px !important;
-//     background-repeat: repeat !important;
-//     transition: background-position 60000s linear !important;
-//     background-position: 4000000px !important;
-//   }
+.loading-bar,
+.button[disabled].loading-bar {
+  background-image: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    rgba(255, 255, 255, 0) 25%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(255, 255, 255, 0)
+  ) !important;
+  background-size: 40px 40px !important;
+  background-repeat: repeat !important;
+  transition: background-position 1200s linear !important;
+  background-position: 60000px !important;
+}
 
 //   .button__uploading-text {
 //     font-size: 14px;

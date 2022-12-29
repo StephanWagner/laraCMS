@@ -8,6 +8,9 @@ function initPasswordFields() {
   $('[data-show-password-trigger]:not(.-init)').each(function (index, item) {
     $(item).on('click', function (ev) {
       const wrapper = $(item).parents('[data-show-password-container]');
+      if (wrapper.hasClass('-disabled')) {
+        return false;
+      }
       if (wrapper.length) {
         const input = wrapper.find('[data-show-password-input]');
         if (input.length) {

@@ -2,14 +2,29 @@
 
 ::-webkit-input-placeholder {
   color: $placeholderColor;
+  transition: transition('color');
+}
+
+[disabled]::-webkit-input-placeholder {
+  color: $textfieldTextColorDisabled;
 }
 
 ::-moz-placeholder {
   color: $placeholderColor;
+  transition: transition('color');
+}
+
+[disabled]::-moz-placeholder {
+  color: $textfieldTextColorDisabled;
 }
 
 :-ms-input-placeholder {
   color: $placeholderColor;
+  transition: transition('color');
+}
+
+[disabled]:-ms-input-placeholder {
+  color: $textfieldTextColorDisabled;
 }
 
 // Remove mozilla dotted lines

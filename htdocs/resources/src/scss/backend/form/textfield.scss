@@ -6,10 +6,11 @@
   border-radius: $textfieldBorderRadius;
   padding: 0 $textfieldPaddingHorizontal;
   height: $textfieldHeight;
+  color: $textfieldTextColor;
   font-size: $textfieldFontSize;
   font-weight: $textfieldFontWeight;
-  background: #fff;
-  transition: transition('border-color', 'box-shadow');
+  background: $textfieldBackgroundColor;
+  transition: transition('color', 'border-color', 'box-shadow');
   box-shadow: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -43,16 +44,17 @@
     box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
   }
 
-  //     &[readonly] {
-  //       cursor: default;
-  //       color: $grayTextColor;
-  //       border-color: $textfieldBorderColor !important;
-  //     }
+  &[readonly] {
+    cursor: default;
+    color: $grayTextColor !important;
+    border-color: $textfieldBorderColor !important;
+  }
 
-  //     &[disabled] {
-  //       color: #ccc;
-  //       border-color: $textfieldBorderColor;
-  //     }
+  &[disabled] {
+    cursor: default;
+    color: $textfieldTextColorDisabled !important;
+    border-color: $textfieldBorderColor !important;
+  }
 
   //     &.error {
   //       border-color: $errorColor;
@@ -94,12 +96,20 @@
   cursor: pointer;
   position: absolute;
   z-index: 2;
-  top: 2px;
-  right: 2px;
+  top: $textfieldBorderWidth;
+  right: $textfieldBorderWidth;
   width: calc($textfieldHeight - $textfieldBorderWidth - $textfieldBorderWidth);
   height: calc(
     $textfieldHeight - $textfieldBorderWidth - $textfieldBorderWidth
   );
+
+  .textfield__container.-disabled & {
+    cursor: default;
+  }
+
+  .textfield__container:not(.-disabled) & {
+    cursor: pointer;
+  }
 }
 
 .textfield__icon {
@@ -114,11 +124,11 @@
     fill: $textfieldIconColor;
     transition: transition('fill');
 
-    .textfield__icon-container:hover & {
+    .textfield__container:not(.-disabled) .textfield__icon-container:hover & {
       fill: $textfieldIconColorHover;
     }
 
-    .textfield__icon-container:active & {
+    .textfield__container:not(.-disabled) .textfield__icon-container:active & {
       fill: #000;
     }
   }

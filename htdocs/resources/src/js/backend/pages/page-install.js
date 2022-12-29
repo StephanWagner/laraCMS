@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { ajaxError } from '../app/message';
+import { disableForm } from '../form/form';
 
 /**
  * Domready
@@ -10,8 +11,15 @@ $(function () {
     const languageId = $(this).val();
     window.location.href = '/admin/install?lang=' + languageId;
   });
-});
 
+  $('.install_submit-button').on('click', function (ev) {
+    ev.preventDefault();
+
+    disableForm('form[data-install-form]', true);
+
+    return false;
+  });
+});
 
 // Send install request
 

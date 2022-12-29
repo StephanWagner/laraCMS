@@ -9,7 +9,7 @@
             </svg>
         </div>
 
-        <form>
+        <form data-install-form>
 
             <div class="logged-out__form">
 
@@ -17,21 +17,23 @@
                     {{ __('backend/page-install.textfield-language-label') }}
                 </div>
 
-                <select
-                    class="select-field -block -select2"
-                    data-select-field
-                    data-select-language
-                >
-                    @foreach ($languages as $language)
-                        <option value="{{ $language['id'] }}"{!! app()->getLocale() == $language['id'] ? ' selected="selected"' : ''!!}>{{ $language['name'] }}</option>
-                    @endforeach
-                </select>
+                <div class="input__container select__container">
+                    <select
+                        class="select-field -block -select2"
+                        data-select-field
+                        data-select-language
+                    >
+                        @foreach ($languages as $language)
+                            <option value="{{ $language['id'] }}"{!! app()->getLocale() == $language['id'] ? ' selected="selected"' : ''!!}>{{ $language['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="textfield__label">
                     {{ __('backend/page-install.textfield-site-title-label') }}
                 </div>
 
-                <div class="textfield__container">
+                <div class="input__container textfield__container">
                     <input
                         class="textfield -block"
                         type="text"
@@ -45,7 +47,7 @@
                     {{ __('backend/page-install.textfields-admin-user-label') }}
                 </div>
 
-                <div class="textfield__container">
+                <div class="input__container textfield__container">
                     <input
                         class="textfield -block"
                         type="text"
@@ -56,7 +58,7 @@
                     >
                 </div>
 
-                <div class="textfield__container -has-icon -password -trigger-hover" data-show-password-container>
+                <div class="input__container textfield__container -has-icon -password -trigger-hover" data-show-password-container>
                     <input
                         class="textfield -block"
                         type="password"
@@ -75,7 +77,7 @@
                 </div>
 
                 <div class="button__container">
-                    <button type="submit" class="button -block">
+                    <button type="submit" class="install_submit-button button -block">
                         {{ __('backend/page-install.submit-button-text') }}
                     </button>
                 </div>
