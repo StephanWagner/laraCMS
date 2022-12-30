@@ -16,14 +16,12 @@ $grayTextColor: #888;
 $grayTextColorLight: #aaa;
 
 // Colors: Status
-$errorColor: #f33;
-$errorTextColor: #e33;
-$errorColorDark: #d00;
-$successColor: #5d2;
+$errorColor: #f03;
+$successColor: #5d0;
 $warningColor: #fc0;
 
 // Global
-$globalBorderRadius: 10px;
+$defaultBorderRadius: 10px;
 
 // Form
 $placeholderColor: #aaa;
@@ -43,7 +41,7 @@ $textfieldIconColor: #c2c2c2;
 $textfieldIconColorHover: #999;
 $textfieldBoxShadowColor: $primaryColorLight;
 $textfieldPaddingHorizontal: 16px;
-$textfieldBorderRadius: $globalBorderRadius;
+$textfieldBorderRadius: $defaultBorderRadius;
 
 // Form: Buttons
 $buttonFontSize: 20px;
@@ -57,7 +55,7 @@ $buttonBackgroundColorDisabled: #ddd;
 $buttonBoxShadowColor: $primaryColorLight;
 $buttonPaddingVertical: calc(($textfieldHeight - $buttonLineHeight) / 2);
 $buttonPaddingHorizontal: 32px;
-$buttonBorderRadius: $globalBorderRadius;
+$buttonBorderRadius: $defaultBorderRadius;
 
 // Transitions
 $defaultTransitionSpeed: 250ms;

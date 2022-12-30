@@ -14,9 +14,15 @@ function message(color, txt) {
       x: 'right',
       y: 'bottom'
     },
-    adjustDistance: {
-      bottom: 8,
-      right: 8
+    position: {
+      x: 12,
+      y: 12
+    },
+    responsivePositions: {
+      600: {
+        x: 8,
+        y: 8
+      }
     },
     content: txt,
     stack: false,

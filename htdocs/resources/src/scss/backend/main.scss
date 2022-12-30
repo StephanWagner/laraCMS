@@ -3,7 +3,7 @@
 @import 'common/reset';
 
 // Third party
-// @import '../../../node_modules/jbox/dist/jBox.all';
+@import '../../../../node_modules/jbox/dist/jBox.all';
 @import '../../../../node_modules/select2/dist/css/select2';
 // @import '../../../node_modules/jodit/build/jodit';
 // @import '../../../node_modules/daterangepicker/daterangepicker';
@@ -24,6 +24,14 @@
 @import 'common/common';
 @import 'common/animate';
 // @import 'documents';
+
+// Adjustments
+// @import 'tooltip';
+// @import 'modal';
+@import 'adjust/jbox-notice';
+// @import 'select';
+// @import 'jodit';
+// @import 'datepicker';
 
 // Form
 @import 'form/form';
@@ -69,11 +77,3 @@
 // @import 'media-library-file-references';
 // @import 'media-library-file-infos';
 // @import 'media-library-file-upload';
-
-// // Adjustments
-// @import 'tooltip';
-// @import 'modal';
-// @import 'notice';
-// @import 'select';
-// @import 'jodit';
-// @import 'datepicker';

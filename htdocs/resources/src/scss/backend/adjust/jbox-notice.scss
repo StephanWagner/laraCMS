@@ -1,0 +1,24 @@
+.jBox-Notice {
+  font-size: 18px;
+  font-weight: 600;
+
+  &.jBox-Notice-green .jBox-container {
+    background: $successColor;
+    color: #fff;
+  }
+
+  &.jBox-Notice-red .jBox-container {
+    background: $errorColor;
+    color: #fff;
+  }
+
+  .jBox-container {
+    border-radius: $defaultBorderRadius;
+    box-shadow: none;
+  }
+
+  .jBox-content {
+    border-radius: 0;
+    padding: 16px 32px;
+  }
+}
