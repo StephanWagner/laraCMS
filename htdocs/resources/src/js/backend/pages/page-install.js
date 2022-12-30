@@ -1,7 +1,12 @@
 import $ from 'jquery';
-import { ajaxError } from '../app/message';
+import { error, ajaxError } from '../app/message';
 import { animateEl } from '../app/animate';
-import { getFormValues, disableForm, enableForm } from '../form/form';
+import {
+  getFormValues,
+  disableForm,
+  enableForm,
+  removeButtonLoading
+} from '../form/form';
 
 /**
  * Domready
@@ -46,30 +51,39 @@ function sendInstallForm() {
     },
     success: function (response) {
       isInstallFormSending = false;
-      removeButtonLoading(formButtonSelector)
+      removeButtonLoading(formButtonSelector);
 
+      // Success
+      if (response && response.success) {
 
-    //   if (response && response.success) {
-    //     if (!response.success) {
-    //       error();
-    //       return;
-    //     }
+        // TODO Go to login page
 
-    //     $.each(response.chats, function (index, item) {
-    //       var messageHTML = getChatMessageHTML(item);
-    //       messageHTML.appendTo($('.chat__messages'));
-    //     });
+        //     if (!response.success) {
+        //       error();
+        //       return;
+        //     }
+        //     $.each(response.chats, function (index, item) {
+        //       var messageHTML = getChatMessageHTML(item);
+        //       messageHTML.appendTo($('.chat__messages'));
+        //     });
+        //     if (!response.hasMore) {
+        //       $('[data-chat-load-more]').remove();
+        //       $('<div class="chat__message-all-loaded"/>')
+        //         .html('Alle Nachrichten geladen')
+        //         .appendTo($('.chat__wrapper'));
+        //     }
 
-    //     if (!response.hasMore) {
-    //       $('[data-chat-load-more]').remove();
-    //       $('<div class="chat__message-all-loaded"/>')
-    //         .html('Alle Nachrichten geladen')
-    //         .appendTo($('.chat__wrapper'));
-    //     }
-    //     return;
-    //   }
-    //   animateEl($('[data-chat-load-more]'), 'shake');
-    //   error();
+        return;
+      }
+
+      // Errors
+      if (response && response.success) {
+
+        // Show errors
+      }
+      enableForm(formSelector, formButtonSelector);
+      animateEl($(formButtonSelector), 'shake');
+      error();
     },
     error: function () {
       enableForm(formSelector, formButtonSelector);

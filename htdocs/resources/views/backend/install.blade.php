@@ -17,7 +17,12 @@
                     {{ __('backend/page-install.textfield-language-label') }}
                 </div>
 
-                <div class="input__container select__container" data-form-value="select">
+                <div
+                    class="input__container select__container"
+                    data-form-value
+                    data-form-value-name="language"
+                    data-form-value-type="select"
+                >
                     <select
                         class="select-field -block -select2"
                         data-select-field
@@ -33,7 +38,12 @@
                     {{ __('backend/page-install.textfield-site-title-label') }}
                 </div>
 
-                <div class="input__container textfield__container" data-form-value="textfield">
+                <div
+                    class="input__container textfield__container"
+                    data-form-value
+                    data-form-value-name="site-title"
+                    data-form-value-type="textfield"
+                >
                     <input
                         class="textfield -block"
                         type="text"
@@ -47,7 +57,11 @@
                     {{ __('backend/page-install.textfields-admin-user-label') }}
                 </div>
 
-                <div class="input__container textfield__container" data-form-value="textfield">
+                <div class="input__container textfield__container"
+                    data-form-value
+                    data-form-value-name="email"
+                    data-form-value-type="textfield"
+                >
                     <input
                         class="textfield -block"
                         type="text"
@@ -58,7 +72,13 @@
                     >
                 </div>
 
-                <div class="input__container textfield__container -has-icon -password -trigger-hover" data-show-password-container data-form-value="password">
+                <div
+                    class="input__container textfield__container -has-icon -password -trigger-hover"
+                    data-show-password-container
+                    data-form-value
+                    data-form-value-name="password"
+                    data-form-value-type="password"
+                >
                     <input
                         class="textfield -block"
                         type="password"

@@ -40,7 +40,11 @@ class BackendInstallController extends BackendController
 
     function installRequest(Request $request)
     {
-        sleep(3);
+        sleep(1);
+
+        // TODO check for errors
+
+        // TODO add user and options and send success
 
         return response()->json([
             'success' => false

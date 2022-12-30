@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import './values/values';
-import './select';
-import './textfield';
+import './input-select';
+import './input-textfield';
+import { valueGetters } from './values/values';
 
 /**
  * Get form values
@@ -13,9 +13,13 @@ function getFormValues(formSelector) {
   let values = [];
 
   $.each(valueContainers, function (index, item) {
-
-    console.log(item);
-
+    const itemEl = $(item);
+    const name = itemEl.attr('data-form-value-name');
+    const type = itemEl.attr('data-form-value-type');
+    values.push({
+      name: name,
+      value: valueGetters[type](itemEl)
+    });
   });
 
   return values;
