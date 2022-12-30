@@ -1,6 +1,25 @@
 import $ from 'jquery';
+import './values/values';
 import './select';
 import './textfield';
+
+/**
+ * Get form values
+ */
+
+function getFormValues(formSelector) {
+  const valueContainers = $(formSelector).find('[data-form-value]');
+
+  let values = [];
+
+  $.each(valueContainers, function (index, item) {
+
+    console.log(item);
+
+  });
+
+  return values;
+}
 
 /**
  * Disable or enable forms
@@ -36,4 +55,26 @@ function getFormButton(selector, buttonSelector) {
     : $(buttonSelector);
 }
 
-export { disableForm, enableForm };
+/**
+ * Add or remove loading bars from button
+ */
+
+function addButtonLoading(buttonSelector) {
+  $(buttonSelector).addClass('loading-bar');
+}
+
+function removeButtonLoading(buttonSelector) {
+  $(buttonSelector).removeClass('loading-bar');
+}
+
+/**
+ * Export
+ */
+
+export {
+  getFormValues,
+  disableForm,
+  enableForm,
+  removeButtonLoading,
+  addButtonLoading
+};

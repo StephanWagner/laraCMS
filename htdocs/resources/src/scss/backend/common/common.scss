@@ -1,0 +1,31 @@
+// Block scrolling
+
+.block-scroll {
+  overflow: hidden;
+}
+
+// Truncate text
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Disable selecting text
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// Grayscale images
+
+.grayscale {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transform: translateZ(0);
+}

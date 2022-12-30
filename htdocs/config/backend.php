@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Facade;
-
 return [
     /**
      * Available languages
@@ -50,4 +48,12 @@ return [
      */
 
     'fallback_locale' => 'de',
+
+    /**
+     * Translations for JavaScript
+     */
+
+    'translations_js' => [
+        'app.default-error-message'
+    ]
 ];

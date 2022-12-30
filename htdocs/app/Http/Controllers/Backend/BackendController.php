@@ -15,6 +15,9 @@ class BackendController extends Controller
 
         // Initialize backend language
         BackendLanguageProvider::initBackendLanguage();
+
+        // Expose translations to use with JavaScript
+        BackendLanguageProvider::exposeTranslationsToJavaScript(config('backend.translations_js'));
     }
 
     /**

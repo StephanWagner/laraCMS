@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class BackendLanguageProvider extends ServiceProvider
 {
@@ -20,12 +21,7 @@ class BackendLanguageProvider extends ServiceProvider
 
     static function initBackendLanguage()
     {
-        if (Session::get('backendLanguage')) {
-            $languageId = Session::get('backendLanguage');
-        } else {
-            $languageId = self::getBackendLanguage();
-        }
-
+        $languageId = self::getBackendLanguage();
         self::setBackendLanguage($languageId);
         return $languageId;
     }
@@ -51,10 +47,19 @@ class BackendLanguageProvider extends ServiceProvider
 
     static function getBackendLanguage()
     {
+        $languages = config('backend.languages');
+
+        // Get language from request
+        if (request()->get('lang') && !empty($languages[request()->get('lang')])) {
+            return request()->get('lang');
+        }
+
+        // Get language from session
         if (Session::get('backendLanguage')) {
             return Session::get('backendLanguage');
         }
 
+        // Get language from user or browser
         if (Auth::check()) {
             $languageId = Auth::get('language');
         } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -67,11 +72,12 @@ class BackendLanguageProvider extends ServiceProvider
             }
         }
 
-        $languages = config('backend.languages');
+        // Check language
         if (!empty($language) && !empty($languages[$language])) {
             $languageId = $language;
         }
 
+        // Fallback
         if (empty($languageId)) {
             $languageId = config('backend.fallback_locale');
         }
@@ -86,5 +92,24 @@ class BackendLanguageProvider extends ServiceProvider
     static function resetBackendLanguage()
     {
         Session::forget('backendLanguage');
+    }
+
+    /**
+     * Expose translations to use with JavaScript
+     */
+
+    static function exposeTranslationsToJavaScript($translationIds = [])
+    {
+        $translations = View::shared('i18n');
+
+        if (empty($translations)) {
+            $translations = [];
+        }
+
+        foreach ($translationIds as $translationId) {
+            $translations[$translationId] = __('backend/' . $translationId);
+        }
+
+        View::share('i18n', $translations);
     }
 }

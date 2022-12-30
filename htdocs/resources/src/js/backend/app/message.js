@@ -29,11 +29,11 @@ function message(color, txt) {
 }
 
 function error(txt) {
-  message('red', txt || __(ErrorDefaultMessage));
+  message('red', txt || i18n['app.default-error-message']);
 }
 
 function ajaxError() {
-  error(app.networkError);
+  error();
 }
 
 function success(txt) {

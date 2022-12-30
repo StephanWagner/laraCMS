@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Backend\BackendController;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\BackendLanguageProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class BackendInstallController extends BackendController
 {
@@ -27,13 +29,21 @@ class BackendInstallController extends BackendController
             return redirect('/admin');
         }
 
-        // Change language
-        if (request()->get('lang')) {
-            BackendLanguageProvider::setBackendLanguage(request()->get('lang'));
-        }
-
         return view('backend/install', [
             'languages' => config('backend.languages')
+        ]);
+    }
+
+    /**
+     * Install request
+     */
+
+    function installRequest(Request $request)
+    {
+        sleep(3);
+
+        return response()->json([
+            'success' => false
         ]);
     }
 }

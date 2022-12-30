@@ -1,72 +1,81 @@
 import $ from 'jquery';
 import { ajaxError } from '../app/message';
-import { disableForm } from '../form/form';
+import { animateEl } from '../app/animate';
+import { getFormValues, disableForm, enableForm } from '../form/form';
 
 /**
  * Domready
  */
 
 $(function () {
+  // Change language
   $('.logged-out__form [data-select-language]').on('change', function () {
     const languageId = $(this).val();
     window.location.href = '/admin/install?lang=' + languageId;
   });
 
+  // Add send form request event
   $('.install_submit-button').on('click', function (ev) {
     ev.preventDefault();
-
-    disableForm('form[data-install-form]', true);
-
+    sendInstallForm();
     return false;
   });
 });
 
-// Send install request
+/**
+ * Send install request
+ */
 
-// var app = {};
+const formSelector = 'form[data-install-form]';
+const formButtonSelector = 'button[data-install-form-button]';
+let isInstallFormSending = false;
 
-// $.ajax({
-//     url: '/admin/chat/load',
-//     method: 'post',
-//     data: {
-//       // lastId: lastId
-//     },
-//     headers: {
-//       'X-CSRF-TOKEN': $('#csrf-token').val()
-//     },
-//     beforeSend: function () {
-//       app.loadingMoreChatMessages = true;
-//       $('[data-chat-load-more]').attr('disabled', 'disabled');
-//     },
-//     success: function (response) {
-//       app.loadingMoreChatMessages = false;
-//       $('[data-chat-load-more]').removeAttr('disabled');
-//       if (response && response.success) {
-//         if (!response.success) {
-//           error();
-//           return;
-//         }
+function sendInstallForm() {
+  $.ajax({
+    url: '/admin/installRequest',
+    method: 'post',
+    data: {
+      values: getFormValues(formSelector)
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('#csrf-token').val()
+    },
+    beforeSend: function () {
+      isInstallFormSending = true;
+      disableForm(formSelector, formButtonSelector);
+    },
+    success: function (response) {
+      isInstallFormSending = false;
+      removeButtonLoading(formButtonSelector)
 
-//         $.each(response.chats, function (index, item) {
-//           var messageHTML = getChatMessageHTML(item);
-//           messageHTML.appendTo($('.chat__messages'));
-//         });
 
-//         if (!response.hasMore) {
-//           $('[data-chat-load-more]').remove();
-//           $('<div class="chat__message-all-loaded"/>')
-//             .html('Alle Nachrichten geladen')
-//             .appendTo($('.chat__wrapper'));
-//         }
-//         return;
-//       }
-//       animateEl($('[data-chat-load-more]'), 'shake');
-//       error();
-//     },
-//     error: function () {
-//       $('[data-chat-load-more]').removeAttr('disabled');
-//       animateEl($('[data-chat-load-more]'), 'shake');
-//       app.loadingMoreChatMessages = false;
-//       ajaxError();
-//     }
-//   });
+    //   if (response && response.success) {
+    //     if (!response.success) {
+    //       error();
+    //       return;
+    //     }
+
+    //     $.each(response.chats, function (index, item) {
+    //       var messageHTML = getChatMessageHTML(item);
+    //       messageHTML.appendTo($('.chat__messages'));
+    //     });
+
+    //     if (!response.hasMore) {
+    //       $('[data-chat-load-more]').remove();
+    //       $('<div class="chat__message-all-loaded"/>')
+    //         .html('Alle Nachrichten geladen')
+    //         .appendTo($('.chat__wrapper'));
+    //     }
+    //     return;
+    //   }
+    //   animateEl($('[data-chat-load-more]'), 'shake');
+    //   error();
+    },
+    error: function () {
+      enableForm(formSelector, formButtonSelector);
+      animateEl($(formButtonSelector), 'shake');
+      isInstallFormSending = false;
+      ajaxError();
+    }
+  });
+}
