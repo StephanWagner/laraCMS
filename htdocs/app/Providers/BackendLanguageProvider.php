@@ -18,6 +18,22 @@ class BackendLanguageProvider extends ServiceProvider
      * Set backend language
      */
 
+    static function initBackendLanguage()
+    {
+        if (Session::get('backendLanguage')) {
+            $languageId = Session::get('backendLanguage');
+        } else {
+            $languageId = self::getBackendLanguage();
+        }
+
+        self::setBackendLanguage($languageId);
+        return $languageId;
+    }
+
+    /**
+     * Set backend language
+     */
+
     static function setBackendLanguage($languageId)
     {
         $languages = config('backend.languages');
@@ -26,7 +42,6 @@ class BackendLanguageProvider extends ServiceProvider
             Session::put('backendLanguage', $languageId);
             return true;
         }
-
         return false;
     }
 
@@ -60,8 +75,6 @@ class BackendLanguageProvider extends ServiceProvider
         if (empty($languageId)) {
             $languageId = config('backend.fallback_locale');
         }
-
-        self::setBackendLanguage($languageId);
 
         return $languageId;
     }

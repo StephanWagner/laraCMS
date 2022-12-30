@@ -13,8 +13,8 @@ class BackendController extends Controller
     {
         parent::__construct();
 
-        // Initialize language
-        BackendLanguageProvider::getBackendLanguage();
+        // Initialize backend language
+        BackendLanguageProvider::initBackendLanguage();
     }
 
     /**

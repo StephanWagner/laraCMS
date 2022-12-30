@@ -52,7 +52,7 @@
                         class="textfield -block"
                         type="text"
                         name="email"
-                        placeholder="E-Mail Adresse"
+                        placeholder="{{ __('backend/page-install.textfields-admin-user-email-placeholder') }}"
                         autocomplete="email"
                         data-submit-on-enter
                     >
