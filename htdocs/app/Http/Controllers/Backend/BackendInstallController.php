@@ -6,6 +6,8 @@ use App\Http\Controllers\Backend\BackendController;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\FormValidationProvider;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Settings;
 
 class BackendInstallController extends BackendController
 {
@@ -52,7 +54,7 @@ class BackendInstallController extends BackendController
                     'name' => 'language',
                     'type' => 'select',
                     'label' => __('backend/page-install.textfield-language-label'),
-                    'decription' => null,
+                    'description' => null,
                     'required' => true,
                     'html' => true,
                     'multiple' => false,
@@ -68,10 +70,28 @@ class BackendInstallController extends BackendController
                     'type' => 'textfield',
                     'inputType' => 'text',
                     'label' => __('backend/page-install.textfield-site-title-label'),
-                    'decription' => null,
+                    'description' => __('backend/page-install.textfield-site-title-description'),
                     'required' => true,
+                    'validate' => ['max:100'],
+                    'maxlength' => '100',
+                    'spellcheck' => false,
                     'placeholder' => __('backend/page-install.textfield-site-title-placeholder'),
                     'autocomplete' => false,
+                    'submitOnEnter' => true
+                ],
+                // Admin user: Name
+                [
+                    'name' => 'name',
+                    'type' => 'textfield',
+                    'inputType' => 'text',
+                    'label' => __('backend/page-install.textfields-admin-user-label'),
+                    'description' => __('backend/page-install.textfields-admin-user-description'),
+                    'required' => true,
+                    'validate' => ['max:50'],
+                    'maxlength' => '50',
+                    'spellcheck' => false,
+                    'placeholder' => __('backend/page-install.textfields-admin-user-name-placeholder'),
+                    'autocomplete' => 'name',
                     'submitOnEnter' => true
                 ],
                 // Admin user: Email address
@@ -79,10 +99,12 @@ class BackendInstallController extends BackendController
                     'name' => 'email',
                     'type' => 'textfield',
                     'inputType' => 'text',
-                    'label' => __('backend/page-install.textfields-admin-user-label'),
-                    'decription' => null,
+                    'label' => null,
+                    'description' => null,
                     'required' => true,
-                    'validate' => ['email'],
+                    'validate' => ['email', 'unique:users', 'max:255'],
+                    'maxlength' => '255',
+                    'spellcheck' => false,
                     'placeholder' => __('backend/page-install.textfields-admin-user-email-placeholder'),
                     'autocomplete' => 'email',
                     'submitOnEnter' => true
@@ -92,9 +114,10 @@ class BackendInstallController extends BackendController
                     'name' => 'password',
                     'type' => 'password',
                     'label' => null,
-                    'decription' => null,
+                    'description' => null,
                     'required' => true,
-                    'validate' => ['min:8', 'max:32'],
+                    'validate' => ['min:6', 'max:64'],
+                    'maxlength' => '64',
                     'placeholder' => __('backend/page-install.textfields-admin-user-password-placeholder'),
                     'autocomplete' => 'current-password',
                     'submitOnEnter' => true,
@@ -128,14 +151,23 @@ class BackendInstallController extends BackendController
      * Install request
      */
 
-    public function installRequest()
+    public function installRequest(Request $request)
     {
-        sleep(1);
-
         // Validate
         FormValidationProvider::validateForm($this->formData()['inputs']);
 
-        // TODO add user and options and send success
+        // Add user
+        $user = User::create($request->all());
+        $user->role = 'admin';
+        $user->active = 1;
+        $user->save();
+
+        // Mark laraCMS as installed
+        Settings::create([
+            'name' => 'is-installed',
+            'value' => 1
+        ]);
+        Cache::put('is-installed', true);
 
         return response()->json([
             'success' => false

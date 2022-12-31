@@ -39,13 +39,6 @@ button:focus {
 
 // Input
 
-.input__label {
-  font-weight: 600;
-  font-size: 16px;
-  padding: 0 8px;
-  margin: 0 0 4px;
-}
-
 .input__wrapper {
   margin: 8px 0 0;
 
@@ -71,6 +64,78 @@ button:focus {
     z-index: 1;
   }
 }
+
+// Input label
+
+.input__label-container {
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0 8px;
+  margin: 0 0 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input__label-text {
+  flex: 1;
+  line-height: 24px;
+}
+
+// Input description
+
+.input__description {
+  position: relative;
+  flex-shrink: 0;
+  margin: 0 -2px 0 24px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.input__description-icon {
+  display: block;
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+  width: 18px;
+  height: 18px;
+
+  > path {
+    transition: transition('fill');
+    fill: $textfieldIconColor;
+
+    .input__description:hover & {
+      fill: $textfieldIconColorHover;
+    }
+
+    .input__description.-active & {
+      fill: #000;
+    }
+  }
+}
+
+// Input description tooltip
+
+.input__description-content {
+  display: none;
+}
+
+.jBox-wrapper.tooltip__input-description {
+  .jBox-content {
+    font-size: 14px;
+    padding: 12px 16px;
+
+    p {
+      margin: 0 0 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Submit button
 
 .form__submit-button-container {
   margin: 24px 0 0;

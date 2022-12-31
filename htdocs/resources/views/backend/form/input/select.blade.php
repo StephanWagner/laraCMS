@@ -4,11 +4,8 @@
     data-form-value-name="{{ $input['name'] }}"
     data-form-value-type="select"
 >
-    @if (!empty($input['label']))
-        <div class="input__label">
-            {{ $input['label'] }}
-        </div>
-    @endif
+
+    @include('backend/form/input/partials/input-label')
 
     <div class="input__container select__container">
         <select

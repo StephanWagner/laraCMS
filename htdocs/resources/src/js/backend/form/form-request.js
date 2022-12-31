@@ -8,6 +8,7 @@ import {
   removeButtonLoading
 } from '../form/form';
 import { inputError } from './inputs/inputs';
+import { app } from '../app/app';
 
 /**
  * Domready
@@ -26,8 +27,6 @@ $(function () {
  * Send request
  */
 
-let isFormSending = false;
-
 function sendForm(formEl) {
   // Form data
   formEl = $(formEl);
@@ -36,7 +35,7 @@ function sendForm(formEl) {
   const formButtonSelector = '[data-form-submit-button]';
 
   // Abort if request is already in progress
-  if (isFormSending) {
+  if (app.isFormSending) {
     return false;
   }
 
@@ -59,11 +58,11 @@ function sendForm(formEl) {
       'X-CSRF-TOKEN': $('#csrf-token').val()
     },
     beforeSend: function () {
-      isFormSending = true;
+      app.isFormSending = true;
       disableForm(formSelector, formButtonSelector);
     },
     success: function (response) {
-      isFormSending = false;
+      app.isFormSending = false;
 
       if (!keepDisabled) {
         enableForm(formSelector, formButtonSelector);
@@ -88,7 +87,7 @@ function sendForm(formEl) {
     error: function (xhr) {
       enableForm(formSelector, formButtonSelector);
       animateEl($(formButtonSelector), 'shake');
-      isFormSending = false;
+      app.isFormSending = false;
 
       // Form errors
       try {

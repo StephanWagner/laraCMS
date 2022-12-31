@@ -1,6 +1,8 @@
 import $ from 'jquery';
-import { initSelectFields } from './input-select.js';
-import { initPasswordFields, initTextfieldSubmit } from './input-textfield.js';
+import jBox from 'jbox';
+import { initSelectFields } from './input-select';
+import { initPasswordFields, initTextfieldSubmit } from './input-textfield';
+import { app } from '../../app/app';
 
 /**
  * Init form inputs
@@ -11,6 +13,7 @@ function initFormInputs() {
   initTextfieldSubmit();
   initPasswordFields();
   initErrorEvents();
+  initInputDescription();
 }
 
 /**
@@ -42,12 +45,60 @@ function initErrorEvents() {
 }
 
 /**
+ * Init input description
+ */
+
+function initInputDescription() {
+  if (!app.tooltipInputDescription) {
+    app.tooltipInputDescription = new jBox('Tooltip', {
+        theme: 'to',
+      addClass: 'tooltip__input-description',
+      attach: '[data-input-description-trigger]',
+      adjustTracker: true,
+      maxWidth: 380 + 8 + 8,
+      position: {
+        x: 'center',
+        y: 'bottom'
+      },
+      offset: {
+        x: (24 - 18) / 2,
+        y: -2
+      },
+      pointer: 'right:8',
+      animation: 'move',
+      zIndex: 9000,
+      createOnInit: false,
+      trigger: 'click',
+      closeOnClick: 'body',
+      closeOnEsc: true,
+      onOpen: function () {
+        $('[data-input-description-trigger]').removeClass('-active');
+        this.source.addClass('-active');
+        const inputName = this.source.attr('data-input-description-trigger');
+        const content = $(
+          '[data-input-description-content="' + inputName + '"]'
+        ).html();
+        this.setContent(content);
+      },
+      onClose: function () {
+        $('[data-input-description-trigger]').removeClass('-active');
+      }
+    });
+  } else {
+    app.tooltipInputDescription.attach();
+  }
+}
+
+/**
  * Domready
  */
 
 $(function () {
   // Init password fields
   initErrorEvents();
+
+  // Init input description
+  initInputDescription();
 });
 
 /**

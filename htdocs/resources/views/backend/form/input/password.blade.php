@@ -4,11 +4,8 @@
     data-form-value-name="{{ $input['name'] }}"
     data-form-value-type="password"
 >
-    @if (!empty($input['label']))
-        <div class="input__label">
-            {{ $input['label'] }}
-        </div>
-    @endif
+
+    @include('backend/form/input/partials/input-label')
 
     <div
         class="input__container textfield__container -password -trigger-hover{{ !empty($input['showPasswordButton']) ? ' -has-icon' : '' }}"
@@ -23,6 +20,12 @@
             name="{{ $input['name'] }}"
             placeholder="{{ $input['placeholder'] ?? '' }}"
             autocomplete="{{ $input['autocomplete'] ?? 'false' }}"
+            spellcheck="false"
+
+            @if (!empty($input['maxlength']))
+                maxlength="{{ $input['maxlength'] }}"
+            @endif
+
             data-error-element
             data-error-trigger
 
