@@ -14,82 +14,82 @@ import {
 
 $(function () {
   // Change language
-  $('.logged-out__form [data-select-language]').on('change', function () {
+  $('form[data-form="install"] select[name="language"]').on('change', function () {
     const languageId = $(this).val();
     window.location.href = '/admin/install?lang=' + languageId;
   });
 
   // Add send form request event
-  $('.install_submit-button').on('click', function (ev) {
-    ev.preventDefault();
-    sendInstallForm();
-    return false;
-  });
+//   $('.install_submit-button').on('click', function (ev) {
+//     ev.preventDefault();
+//     sendInstallForm();
+//     return false;
+//   });
 });
 
-/**
- * Send install request
- */
+// /**
+//  * Send install request
+//  */
 
-const formSelector = 'form[data-install-form]';
-const formButtonSelector = 'button[data-install-form-button]';
-let isInstallFormSending = false;
+// const formSelector = 'form[data-install-form]';
+// const formButtonSelector = 'button[data-install-form-button]';
+// let isInstallFormSending = false;
 
-function sendInstallForm() {
-  $.ajax({
-    url: '/admin/installRequest',
-    method: 'post',
-    data: {
-      values: getFormValues(formSelector)
-    },
-    headers: {
-      'X-CSRF-TOKEN': $('#csrf-token').val()
-    },
-    beforeSend: function () {
-      isInstallFormSending = true;
-      disableForm(formSelector, formButtonSelector);
-    },
-    success: function (response) {
-      isInstallFormSending = false;
-      removeButtonLoading(formButtonSelector);
+// function sendInstallForm() {
+//   $.ajax({
+//     url: '/admin/installRequest',
+//     method: 'post',
+//     data: {
+//       values: getFormValues(formSelector)
+//     },
+//     headers: {
+//       'X-CSRF-TOKEN': $('#csrf-token').val()
+//     },
+//     beforeSend: function () {
+//       isInstallFormSending = true;
+//       disableForm(formSelector, formButtonSelector);
+//     },
+//     success: function (response) {
+//       isInstallFormSending = false;
+//       removeButtonLoading(formButtonSelector);
 
-      // Success
-      if (response && response.success) {
+//       // Success
+//       if (response && response.success) {
 
-        // TODO Go to login page
+//         // TODO Go to login page
 
-        //     if (!response.success) {
-        //       error();
-        //       return;
-        //     }
-        //     $.each(response.chats, function (index, item) {
-        //       var messageHTML = getChatMessageHTML(item);
-        //       messageHTML.appendTo($('.chat__messages'));
-        //     });
-        //     if (!response.hasMore) {
-        //       $('[data-chat-load-more]').remove();
-        //       $('<div class="chat__message-all-loaded"/>')
-        //         .html('Alle Nachrichten geladen')
-        //         .appendTo($('.chat__wrapper'));
-        //     }
+//         //     if (!response.success) {
+//         //       error();
+//         //       return;
+//         //     }
+//         //     $.each(response.chats, function (index, item) {
+//         //       var messageHTML = getChatMessageHTML(item);
+//         //       messageHTML.appendTo($('.chat__messages'));
+//         //     });
+//         //     if (!response.hasMore) {
+//         //       $('[data-chat-load-more]').remove();
+//         //       $('<div class="chat__message-all-loaded"/>')
+//         //         .html('Alle Nachrichten geladen')
+//         //         .appendTo($('.chat__wrapper'));
+//         //     }
 
-        return;
-      }
+//         return;
+//       }
 
-      // Errors
-      if (response && response.success) {
+//       // Errors
+//       if (response && response.success) {
 
-        // Show errors
-      }
-      enableForm(formSelector, formButtonSelector);
-      animateEl($(formButtonSelector), 'shake');
-      error();
-    },
-    error: function () {
-      enableForm(formSelector, formButtonSelector);
-      animateEl($(formButtonSelector), 'shake');
-      isInstallFormSending = false;
-      ajaxError();
-    }
-  });
-}
+//         // Show errors
+//       }
+//       enableForm(formSelector, formButtonSelector);
+//       animateEl($(formButtonSelector), 'shake');
+//       error();
+//     },
+//     error: function () {
+//       enableForm(formSelector, formButtonSelector);
+//       animateEl($(formButtonSelector), 'shake');
+//       isInstallFormSending = false;
+//       ajaxError();
+//     }
+//   });
+// }

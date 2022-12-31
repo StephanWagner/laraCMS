@@ -1,6 +1,6 @@
-import { valueGetter as valueGetterTextfield } from './values-textfield';
-import { valueGetter as valueGetterPassword } from './values-password';
-import { valueGetter as valueGetterSelect } from './values-select';
+import { valueGetter as valueGetterTextfield } from './value-textfield';
+import { valueGetter as valueGetterPassword } from './value-password';
+import { valueGetter as valueGetterSelect } from './value-select';
 
 const valueGetters = {
     'textfield': valueGetterTextfield,

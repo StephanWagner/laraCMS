@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import './input-select';
-import './input-textfield';
+import './inputs/inputs';
 import { valueGetters } from './values/values';
+import './form-request';
 
 /**
  * Get form values

@@ -12,7 +12,7 @@ select2($);
  */
 
 function initSelectFields() {
-  $('[data-select-field]:not(.-init)').each(function (index, item) {
+  $('[data-select-field][data-html]:not(.-init)').each(function (index, item) {
     // prettier-ignore
     const minimumResultsForSearch = $(this)[0].hasAttribute('data-select-field-search-min-results') ? parseInt($(this).attr('data-select-field-search-min-results')) : -1;
     const searchPlaceholder = $(this).attr(

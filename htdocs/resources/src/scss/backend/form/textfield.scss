@@ -81,13 +81,6 @@
   &:last-child {
     margin-bottom: 0;
   }
-
-  &.-has-icon {
-    input {
-      position: relative;
-      z-index: 1;
-    }
-  }
 }
 
 // Textfield icons
@@ -149,18 +142,5 @@
     .textfield__container.-show-password & {
       opacity: 0;
     }
-  }
-}
-
-// Labels
-
-.textfield__label {
-  font-weight: 600;
-  font-size: 16px;
-  padding: 0 8px;
-  margin: 16px 0 4px;
-
-  &:first-child {
-    margin-top: 0;
   }
 }

@@ -6,6 +6,7 @@ return [
 
     // Textfield site title
     'textfield-site-title-label' => 'Seitentitel',
+    'textfield-site-title-placeholder' => 'Mein neues Projekt',
 
     // Textfields admin user
     'textfields-admin-user-label' => 'Admin Benutzer',
