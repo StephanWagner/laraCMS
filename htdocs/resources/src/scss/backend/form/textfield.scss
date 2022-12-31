@@ -55,6 +55,7 @@
     cursor: default;
     color: $textfieldTextColorDisabled !important;
     border-color: $textfieldBorderColor !important;
+    box-shadow: none !important;
   }
 
   &.-error {

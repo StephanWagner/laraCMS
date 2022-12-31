@@ -35,10 +35,11 @@
   }
 
   &[disabled] {
-    cursor: default;
+    cursor: default !important;
     color: #ccc !important;
     border-color: $textfieldBorderColor !important;
-    opacity: 1;
+    box-shadow: none !important;
+    opacity: 1 !important;
   }
 }
 

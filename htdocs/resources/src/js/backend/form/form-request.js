@@ -29,16 +29,22 @@ $(function () {
 let isFormSending = false;
 
 function sendForm(formEl) {
-  // Abort if request is already in progress
-  if (isFormSending) {
-    return false;
-  }
-
   // Form data
   formEl = $(formEl);
   const formName = $(formEl).attr('data-form');
   const formSelector = 'form[data-form="' + formName + '"]';
   const formButtonSelector = '[data-form-submit-button]';
+
+  // Abort if request is already in progress
+  if (isFormSending) {
+    return false;
+  }
+
+  // Abort if there are still errors
+  if (formEl.find('[data-form-value][data-error]').length) {
+    animateEl($(formButtonSelector), 'shake');
+    return false;
+  }
 
   // Options
   const formUrl = formEl.attr('data-request-url');
@@ -89,13 +95,12 @@ function sendForm(formEl) {
         const response = JSON.parse(xhr.responseText);
 
         if (response && response.errors) {
-          console.log(response.errors);
-
+          // Show errors
           $.each(response.errors, function (inputName, error) {
-
-            console.log(formEl.find('[data-form-value-name="' + inputName + '"]'));
-
-            inputError(formEl.find('[data-form-value-name="' + inputName + '"]'), error);
+            inputError(
+              formEl.find('[data-form-value-name="' + inputName + '"]'),
+              error
+            );
           });
 
           // Validation error message
