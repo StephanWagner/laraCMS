@@ -75,3 +75,13 @@ button:focus {
 .form__submit-button-container {
   margin: 24px 0 0;
 }
+
+// Input errors
+
+.input__error {
+  color: $errorColor;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 8px;
+  margin: 8px 0 16px;
+}

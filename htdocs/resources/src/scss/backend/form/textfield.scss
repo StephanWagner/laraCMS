@@ -21,6 +21,7 @@
     width: 100%;
   }
 
+  // TODO
   //     &--small {
   //       padding: 0 8px;
   //       height: $textfieldHeightSmall;
@@ -41,7 +42,7 @@
 
   &:focus {
     border-color: $textfieldBorderColorActive !important;
-    box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
+    box-shadow: 0 0 0 3px $textfieldBoxShadowColor !important;
   }
 
   &[readonly] {
@@ -56,15 +57,17 @@
     border-color: $textfieldBorderColor !important;
   }
 
-  //     &.error {
-  //       border-color: $errorColor;
-  //     }
+  &.-error {
+    border-color: $errorColor;
+    box-shadow: 0 0 0 3px $errorColorLight;
+  }
 
-  //     &[data-form-value] {
-  //       .input__wrapper[data-error] & {
-  //         border-color: $errorColor;
-  //       }
-  //     }
+  &[data-error-element] {
+    .input__wrapper[data-error] & {
+      border-color: $errorColor;
+      box-shadow: 0 0 0 3px $errorColorLight;
+    }
+  }
 
   .textfield__container.-password & {
     padding-right: calc(24px + 16px + 8px);
@@ -76,11 +79,6 @@
 .textfield__container {
   position: relative;
   border-radius: $textfieldBorderRadius;
-  margin: 0 0 12px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 
 // Textfield icons

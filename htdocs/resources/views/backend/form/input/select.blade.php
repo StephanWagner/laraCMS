@@ -15,6 +15,8 @@
             class="select-field -block"
             data-select-field
             name="{{ $input['name'] }}"
+            data-error-element
+            data-error-trigger
 
             @if (!empty($input['html']))
                 data-html

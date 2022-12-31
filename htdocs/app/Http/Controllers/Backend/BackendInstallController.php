@@ -78,7 +78,7 @@ class BackendInstallController extends BackendController
                 [
                     'name' => 'email',
                     'type' => 'textfield',
-                    'inputType' => 'email',
+                    'inputType' => 'text',
                     'label' => __('backend/page-install.textfields-admin-user-label'),
                     'decription' => null,
                     'required' => true,

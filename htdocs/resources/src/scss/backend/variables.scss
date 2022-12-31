@@ -17,6 +17,7 @@ $grayTextColorLight: #aaa;
 
 // Colors: Status
 $errorColor: #f03;
+$errorColorLight: lighten($errorColor, 42);
 $successColor: #5d0;
 $warningColor: #fc0;
 

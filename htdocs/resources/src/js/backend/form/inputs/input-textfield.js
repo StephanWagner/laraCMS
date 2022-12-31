@@ -5,7 +5,9 @@ import $ from 'jquery';
  */
 
 function initPasswordFields() {
-  $('[data-show-password-trigger]:not(.-init)').each(function (index, item) {
+  $(
+    '[data-show-password-trigger]:not([data-show-password-trigger-added])'
+  ).each(function (index, item) {
     $(item).on('click', function (ev) {
       const wrapper = $(item).parents('[data-show-password-container]');
       if (wrapper.hasClass('-disabled')) {
@@ -21,7 +23,7 @@ function initPasswordFields() {
         }
       }
     });
-    $(item).addClass('-init');
+    $(item).attr('data-show-password-trigger-added', '');
   });
 }
 
@@ -30,17 +32,22 @@ function initPasswordFields() {
  */
 
 function initTextfieldSubmit() {
-  $('[data-submit-on-enter]').on('keypress', function (ev) {
-    if (ev.key == 'Enter') {
-      ev.preventDefault();
+  $('[data-submit-on-enter]:not([data-submit-on-enter-added])').each(function (
+    index,
+    item
+  ) {
+    $(item).on('keypress', function (ev) {
+      if (ev.key == 'Enter') {
+        ev.preventDefault();
 
-      var targetButton = $($(this).attr('data-submit-on-enter'));
-      if (!targetButton.length) {
-        targetButton = $(this).parents('form').find('button[type="submit"]');
+        var targetButton = $($(this).attr('data-submit-on-enter'));
+        if (!targetButton.length) {
+          targetButton = $(this).parents('form').find('button[type="submit"]');
+        }
+        $(targetButton).trigger('click');
       }
-
-      $(targetButton).trigger('click');
-    }
+    });
+    $(item).attr('data-submit-on-enter-added', '');
   });
 }
 
@@ -55,3 +62,9 @@ $(function () {
   // Init textfield form submit
   initTextfieldSubmit();
 });
+
+/**
+ * Export
+ */
+
+export { initPasswordFields, initTextfieldSubmit };

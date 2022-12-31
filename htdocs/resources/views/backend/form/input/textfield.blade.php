@@ -17,6 +17,8 @@
             name="{{ $input['name'] }}"
             placeholder="{{ $input['placeholder'] ?? '' }}"
             autocomplete="{{ $input['autocomplete'] ?? 'false' }}"
+            data-error-element
+            data-error-trigger
 
             @if (!empty($input['submitOnEnter']))
                 data-submit-on-enter

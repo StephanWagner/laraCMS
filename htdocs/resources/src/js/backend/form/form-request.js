@@ -7,6 +7,7 @@ import {
   enableForm,
   removeButtonLoading
 } from '../form/form';
+import { inputError } from './inputs/inputs';
 
 /**
  * Domready
@@ -90,7 +91,12 @@ function sendForm(formEl) {
         if (response && response.errors) {
           console.log(response.errors);
 
-          // TODO show error at inputs
+          $.each(response.errors, function (inputName, error) {
+
+            console.log(formEl.find('[data-form-value-name="' + inputName + '"]'));
+
+            inputError(formEl.find('[data-form-value-name="' + inputName + '"]'), error);
+          });
 
           // Validation error message
           error(i18n['form.default-validation-error']);
