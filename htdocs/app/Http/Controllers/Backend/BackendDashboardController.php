@@ -17,9 +17,8 @@ class BackendDashboardController extends BackendController
      * Show dashboard page
      */
 
-    function show()
+    public function show()
     {
-
         return view('backend/dashboard', [
             // TODO
         ]);

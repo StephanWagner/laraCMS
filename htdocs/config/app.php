@@ -197,6 +197,7 @@ return [
 
         // Custom backend providers
         App\Providers\BackendLanguageProvider::class,
+        App\Providers\FormValidationProvider::class,
 
     ],
 

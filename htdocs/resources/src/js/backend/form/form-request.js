@@ -47,9 +47,7 @@ function sendForm(formEl) {
   $.ajax({
     url: formUrl,
     method: 'post',
-    data: {
-      values: getFormValues(formSelector)
-    },
+    data: getFormValues(formSelector),
     headers: {
       'X-CSRF-TOKEN': $('#csrf-token').val()
     },
@@ -76,23 +74,35 @@ function sendForm(formEl) {
       }
 
       // Error
-      if (response && response.errors) {
-        // TODO Show errors
-
-        // Error callback
-        if (formEl.data('errorCallback')) {
-          formEl.data('errorCallback')(response);
-        }
-      }
-
       enableForm(formSelector, formButtonSelector);
       animateEl($(formButtonSelector), 'shake');
       error();
     },
-    error: function () {
+    error: function (xhr) {
       enableForm(formSelector, formButtonSelector);
       animateEl($(formButtonSelector), 'shake');
       isFormSending = false;
+
+      // Form errors
+      try {
+        const response = JSON.parse(xhr.responseText);
+
+        if (response && response.errors) {
+          console.log(response.errors);
+
+          // TODO show error at inputs
+
+          // Validation error message
+          error(i18n['form.default-validation-error']);
+
+          // Error callback
+          if (formEl.data('errorCallback')) {
+            formEl.data('errorCallback')(response);
+          }
+          return;
+        }
+      } catch (e) {}
+
       ajaxError();
     }
   });

@@ -10,16 +10,12 @@ import './form-request';
 function getFormValues(formSelector) {
   const valueContainers = $(formSelector).find('[data-form-value]');
 
-  let values = [];
-
+  let values = {};
   $.each(valueContainers, function (index, item) {
     const itemEl = $(item);
     const name = itemEl.attr('data-form-value-name');
     const type = itemEl.attr('data-form-value-type');
-    values.push({
-      name: name,
-      value: valueGetters[type](itemEl)
-    });
+    values[name] = valueGetters[type](itemEl);
   });
 
   return values;

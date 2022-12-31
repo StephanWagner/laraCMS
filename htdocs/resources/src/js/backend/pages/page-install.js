@@ -12,6 +12,7 @@ $(function () {
     window.location.href = '/admin/install?lang=' + languageId;
   });
 
+  // Success callback
   const formEl = $('[data-form="install"]');
   formEl.data('successCallback', function () {
     window.location.href = '/admin';

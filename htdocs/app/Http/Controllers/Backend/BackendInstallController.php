@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Backend\BackendController;
 use Illuminate\Support\Facades\Cache;
+use App\Providers\FormValidationProvider;
 use Illuminate\Http\Request;
 
 class BackendInstallController extends BackendController
@@ -104,13 +105,11 @@ class BackendInstallController extends BackendController
         return $form;
     }
 
-
-
     /**
      * Show install page
      */
 
-    function show()
+    public function show()
     {
         // Abort if laraCMS is already installed
         $isInstalled = \App\Models\Settings::where('name', 'is-installed')->count() > 0;
@@ -129,16 +128,17 @@ class BackendInstallController extends BackendController
      * Install request
      */
 
-    function installRequest(Request $request)
+    public function installRequest()
     {
         sleep(1);
 
-        // TODO check for errors
+        // Validate
+        FormValidationProvider::validateForm($this->formData()['inputs']);
 
         // TODO add user and options and send success
 
         return response()->json([
-            'success' => true
+            'success' => false
         ]);
     }
 }

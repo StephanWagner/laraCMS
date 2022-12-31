@@ -24,7 +24,7 @@ class BackendController extends Controller
      * Show login page
      */
 
-    function login()
+    public function login()
     {
         if (Auth::check()) {
             return redirect('/admin');
@@ -37,7 +37,7 @@ class BackendController extends Controller
      * Login via request
      */
 
-    function loginRequest(Request $request)
+    public function loginRequest(Request $request)
     {
         // Mock user password
         // $user = User::find(1);
@@ -65,7 +65,7 @@ class BackendController extends Controller
      * Logout
      */
 
-    function logout()
+    public function logout()
     {
         Auth::logout();
         return redirect('/admin');
