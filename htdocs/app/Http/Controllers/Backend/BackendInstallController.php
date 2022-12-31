@@ -43,7 +43,6 @@ class BackendInstallController extends BackendController
             'requestUrl' => '/admin/installRequest',
             'submitButtonText' => __('backend/page-install.submit-button-text'),
             'keepDisabledOnSuccess' => true,
-            'successMessage' => null,
 
             // Input elements
             'inputs' => [
@@ -139,7 +138,7 @@ class BackendInstallController extends BackendController
         // TODO add user and options and send success
 
         return response()->json([
-            'success' => false
+            'success' => true
         ]);
     }
 }

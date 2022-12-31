@@ -10,7 +10,7 @@ Route::get('/admin', [BackendDashboardController::class, 'dashboard'])->middlewa
 
 // Install
 Route::get('/admin/install', [BackendInstallController::class, 'show'])->name('install');
-Route::post('/admin/installRequest', [BackendInstallController::class, 'installRequest']);
+Route::post('/admin/installRequest', [BackendInstallController::class, 'installRequest'])->name('installRequest');
 
 // Login
 Route::get('/admin/login', [BackendController::class, 'login']);

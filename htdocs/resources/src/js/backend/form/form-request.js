@@ -25,16 +25,27 @@ $(function () {
  * Send request
  */
 
+let isFormSending = false;
+
 function sendForm(formEl) {
+  // Abort if request is already in progress
+  if (isFormSending) {
+    return false;
+  }
+
+  // Form data
+  formEl = $(formEl);
   const formName = $(formEl).attr('data-form');
   const formSelector = 'form[data-form="' + formName + '"]';
   const formButtonSelector = '[data-form-submit-button]';
-  let isFormSending = false;
 
-  const keepDisabledOnSuccess = $(formSelector)[0].hasAttribute('data-keep-disabled-on-success');
+  // Options
+  const formUrl = formEl.attr('data-request-url');
+  const keepDisabled = formEl.is('[data-keep-disabled-on-success]');
 
+  // Send request
   $.ajax({
-    url: '/admin/installRequest',
+    url: formUrl,
     method: 'post',
     data: {
       values: getFormValues(formSelector)
@@ -49,7 +60,7 @@ function sendForm(formEl) {
     success: function (response) {
       isFormSending = false;
 
-      if (!keepDisabledOnSuccess) {
+      if (!keepDisabled) {
         enableForm(formSelector, formButtonSelector);
       } else {
         removeButtonLoading(formButtonSelector);
@@ -57,14 +68,21 @@ function sendForm(formEl) {
 
       // Success
       if (response && response.success) {
-        // TODO Callback
-
+        // Success callback
+        if (formEl.data('successCallback')) {
+          formEl.data('successCallback')(response);
+        }
         return;
       }
 
-      // Errors
+      // Error
       if (response && response.errors) {
-        // Show errors
+        // TODO Show errors
+
+        // Error callback
+        if (formEl.data('errorCallback')) {
+          formEl.data('errorCallback')(response);
+        }
       }
 
       enableForm(formSelector, formButtonSelector);
