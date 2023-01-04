@@ -46,4 +46,8 @@ function success(txt) {
   message('green', txt);
 }
 
+/**
+ * Export
+ */
+
 export { error, ajaxError, success };

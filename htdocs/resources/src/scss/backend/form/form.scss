@@ -120,21 +120,6 @@ button:focus {
   display: none;
 }
 
-.jBox-wrapper.tooltip__input-description {
-  .jBox-content {
-    font-size: 14px;
-    padding: 12px 16px;
-
-    p {
-      margin: 0 0 12px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-}
-
 // Submit button
 
 .form__submit-button-container {

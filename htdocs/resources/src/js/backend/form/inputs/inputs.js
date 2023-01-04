@@ -51,20 +51,20 @@ function initErrorEvents() {
 function initInputDescription() {
   if (!app.tooltipInputDescription) {
     app.tooltipInputDescription = new jBox('Tooltip', {
-        theme: 'to',
-      addClass: 'tooltip__input-description',
+      theme: 'TooltipBorder',
+      addClass: 'tooltip__small tooltip__input-description',
       attach: '[data-input-description-trigger]',
       adjustTracker: true,
-      maxWidth: 380 + 8 + 8,
+      maxWidth: 380 + 8 + 8 - 2 -2,
       position: {
         x: 'center',
         y: 'bottom'
       },
       offset: {
-        x: (24 - 18) / 2,
+        x: (24 - 18) / 2 - 2,
         y: -2
       },
-      pointer: 'right:8',
+      pointer: 'right:12',
       animation: 'move',
       zIndex: 9000,
       createOnInit: false,

@@ -8,7 +8,7 @@ import './animate';
 let app = {};
 
 /**
- * Global app var
+ * Export
  */
 
 export { app };
