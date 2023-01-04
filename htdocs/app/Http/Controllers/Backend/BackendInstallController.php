@@ -51,6 +51,8 @@ class BackendInstallController extends BackendController
             'inputs' => [
                 // Language
                 [
+                    // TODO test multiple
+
                     'name' => 'language',
                     'type' => 'select',
                     'label' => __('backend/page-install.textfield-language-label'),
@@ -103,6 +105,7 @@ class BackendInstallController extends BackendController
                     'description' => null,
                     'required' => true,
                     'validate' => ['email', 'unique:users', 'max:255'],
+                    'validateText' => ['unique' => __('backend/form.email-is-registered')],
                     'maxlength' => '255',
                     'spellcheck' => false,
                     'placeholder' => __('backend/page-install.textfields-admin-user-email-placeholder'),

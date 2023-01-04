@@ -18,6 +18,7 @@ class FormValidationProvider extends ServiceProvider
     static function validateForm($inputs)
     {
         $validate = [];
+        $validateTexts = [];
 
         foreach ($inputs as $input) {
             $validateInput = [];
@@ -30,11 +31,15 @@ class FormValidationProvider extends ServiceProvider
                 $validateInput = array_merge($validateInput, $input['validate']);
             }
 
+            if (!empty($input['validateText'])) {
+                $validateTexts = array_merge($validateTexts, $input['validateText']);
+            }
+
             if (!empty($validateInput)) {
                 $validate[$input['name']] = $validateInput;
             }
         }
 
-        request()->validate($validate);
+        request()->validate($validate, $validateTexts);
     }
 }
