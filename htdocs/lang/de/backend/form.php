@@ -8,5 +8,5 @@ return [
     'default-validation-error' => 'Formularvalidierung fehlgeschlagen',
 
     // Input field
-    'email-is-registered' => 'Diese E-Mail Adresse ist bereits registriert'
+    'email-is-registered' => 'Diese E-Mail Adresse ist bereits registriert.'
 ];
