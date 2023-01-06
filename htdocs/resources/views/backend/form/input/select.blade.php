@@ -37,8 +37,10 @@ $hasSearch = !isset($input['search']) || !empty($input['search']);
                 data-select-field-search-placeholder="{{ $input['searchPlaceholder'] ?? __('backend/form.select-html-search-placeholder') }}"
             @endif
         >
-            @foreach ($input['options'] as $option)
-                <option value="{{ $option['value'] }}"{!! $option['selected'] ? ' selected="selected"' : '' !!}>{{ $option['text'] }}</option>
+            @foreach ($input['options'] as $key => $option)
+                @if (!empty($option['value']))
+                    <option value="{{ $option['value'] }}"{!! !empty($option['selected']) ? ' selected="selected"' : '' !!}>{{ $option['text'] }}</option>
+                @endif
             @endforeach
         </select>
     </div>
