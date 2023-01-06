@@ -31,7 +31,6 @@ class BackendInstallController extends BackendController
                 'selected' => $language['id'] == app()->getLocale()
             ];
         }
-        $languageOptions = array_merge($languageOptions, $languageOptions, $languageOptions, $languageOptions, $languageOptions, $languageOptions);
 
         return $languageOptions;
     }
