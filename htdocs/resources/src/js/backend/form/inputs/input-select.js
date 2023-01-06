@@ -24,9 +24,11 @@ function initSelectFields() {
       console.log(hasSearch, minimumResultsForSearch, searchPlaceholder);
 
       const selectField = $(item).select2({
+        hasSearch: hasSearch,
         minimumResultsForSearch: hasSearch ? minimumResultsForSearch : -1,
         width: '100%',
-        closeOnSelect: true
+        closeOnSelect: true,
+        allowClear: false
       });
 
       // Add search placeholder

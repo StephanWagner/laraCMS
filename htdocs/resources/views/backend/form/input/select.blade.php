@@ -1,3 +1,7 @@
+<?php
+$hasSearch = !isset($input['search']) || !empty($input['search']);
+?>
+
 <div
     class="input__wrapper{{ !empty($input['label']) ? ' -has-label' : '' }}"
     data-form-value
@@ -27,9 +31,9 @@
                 data-rows={{ $input['rows'] }}
             @endif
 
-            @if (!empty($input['search']))
+            @if ($hasSearch)
                 data-search
-                data-minimun-options-for-search="{{ $input['minimumOptionsForSearch'] ?? 10 }}"
+                data-minimun-options-for-search="{{ !$hasSearch ? -1 : ($input['minimumOptionsForSearch'] ?? 10) }}"
                 data-select-field-search-placeholder="{{ $input['searchPlaceholder'] ?? __('backend/form.select-html-search-placeholder') }}"
             @endif
         >

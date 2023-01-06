@@ -31,6 +31,7 @@ class BackendInstallController extends BackendController
                 'selected' => $language['id'] == app()->getLocale()
             ];
         }
+        $languageOptions = array_merge($languageOptions, $languageOptions, $languageOptions, $languageOptions, $languageOptions, $languageOptions);
 
         return $languageOptions;
     }
@@ -59,12 +60,12 @@ class BackendInstallController extends BackendController
                     'html' => true,
                     'multiple' => false,
                     'rows' => null,
-                    'search' => false,
+                    'search' => null,
                     'minimumOptionsForSearch' => null,
                     'searchPlaceholder' => null,
 
                     // TODO 'placeholder' (no multiple) => 'TODO',
-                    // TODO 'clear' => '',
+
                     'options' => $this->languageOptions()
                 ],
                 // Site title
