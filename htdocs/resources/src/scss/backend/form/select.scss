@@ -34,6 +34,38 @@
     box-shadow: 0 0 0 3px $textfieldBoxShadowColor;
   }
 
+  &[multiple] {
+    height: auto;
+    padding: 0;
+
+    > option {
+      padding: 6px $textfieldPaddingHorizontal;
+      height: 36px;
+
+      &:active {
+        background: red;
+      }
+
+      &:checked {
+        background: $selectSelectedBackgroundColor;
+      }
+    }
+
+    &:focus {
+      > option:checked {
+        background: purple;
+      }
+    }
+
+    $i: 1;
+    @while $i <= 10 {
+      &[data-rows='#{$i}'] {
+        height: calc($i * 36px + 4px);
+      }
+      $i: $i + 1;
+    }
+  }
+
   &[disabled] {
     cursor: default !important;
     color: #ccc !important;
@@ -63,7 +95,7 @@
 
 // Select 2
 
-[data-select-field]:not(.-init) {
+[data-select-field][data-html]:not(.-init) {
   visibility: hidden;
 }
 
@@ -200,7 +232,7 @@
     padding: 6px $textfieldPaddingHorizontal;
 
     &--selected {
-      background-color: #e6e6e6;
+      background-color: $selectSelectedBackgroundColor;
     }
 
     &--selectable {
@@ -289,5 +321,75 @@
         border-color: #000;
       }
     }
+  }
+}
+
+// Multiple selected items
+
+.select2.select2-container .select2-selection--multiple {
+  padding-right: 6px;
+  padding-bottom: 6px;
+  min-height: 52px;
+
+  .select2-selection__rendered {
+    padding: 0;
+    margin: 0;
+  }
+
+  .select2-selection__choice {
+    border: 0;
+    background: $selectMultipleSelectedBackgroundColor;
+    margin-top: 6px;
+    margin-left: 6px;
+    border-radius: 6px;
+    height: 36px;
+    overflow: hidden;
+  }
+
+  .select2-selection__choice {
+    line-height: 36px;
+    padding-left: 28px;
+  }
+
+  .select2-selection__choice__display {
+    padding: 0 12px 0 0;
+    font-size: 16px;
+  }
+
+  .select2-selection__choice__remove {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 28px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    color: #aaa;
+    transition: transition('color');
+
+    &:hover {
+      color: #888;
+    }
+  }
+
+  .select2-search {
+    border: 0;
+    display: inline-block;
+  }
+}
+
+.select2.select2-container .select2-search--inline {
+  .select2-search__field {
+    margin-top: 6px;
+    margin-left: 6px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0;
+    font-size: 16px;
+    font-family: inherit;
   }
 }

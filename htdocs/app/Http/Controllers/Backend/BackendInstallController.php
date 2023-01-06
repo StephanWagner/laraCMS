@@ -51,8 +51,6 @@ class BackendInstallController extends BackendController
             'inputs' => [
                 // Language
                 [
-                    // TODO test multiple
-
                     'name' => 'language',
                     'type' => 'select',
                     'label' => __('backend/page-install.textfield-language-label'),
@@ -60,9 +58,12 @@ class BackendInstallController extends BackendController
                     'required' => true,
                     'html' => true,
                     'multiple' => false,
-                    'hasSearch' => false,
-                    'minimumOptionsForSearch' => 5,
-                    // TODO 'placeholder' => 'TODO',
+                    'rows' => null,
+                    'search' => false,
+                    'minimumOptionsForSearch' => null,
+                    'searchPlaceholder' => null,
+
+                    // TODO 'placeholder' (no multiple) => 'TODO',
                     // TODO 'clear' => '',
                     'options' => $this->languageOptions()
                 ],

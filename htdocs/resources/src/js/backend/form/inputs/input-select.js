@@ -12,16 +12,19 @@ select2($);
  */
 
 function initSelectFields() {
-  $('[data-select-field][data-html]:not(data-html-select-field)').each(
+  $('[data-select-field][data-html]:not(data-html-select-field-init)').each(
     function (index, item) {
+      const hasSearch = $(this)[0].hasAttribute('data-search');
       // prettier-ignore
-      const minimumResultsForSearch = $(this)[0].hasAttribute('data-select-field-search-min-results') ? parseInt($(this).attr('data-select-field-search-min-results')) : -1;
+      const minimumResultsForSearch = $(this)[0].hasAttribute('data-minimun-options-for-search') ? (parseInt($(this).attr('data-minimun-options-for-search')) || -1) : 10;
       const searchPlaceholder = $(this).attr(
         'data-select-field-search-placeholder'
       );
 
+      console.log(hasSearch, minimumResultsForSearch, searchPlaceholder);
+
       const selectField = $(item).select2({
-        minimumResultsForSearch: minimumResultsForSearch,
+        minimumResultsForSearch: hasSearch ? minimumResultsForSearch : -1,
         width: '100%',
         closeOnSelect: true
       });
@@ -38,7 +41,7 @@ function initSelectFields() {
 
       // Init
       $(item).trigger('change');
-      $(item).attr('data-html-select-field', '');
+      $(item).attr('data-html-select-field-init', '');
     }
   );
 }
