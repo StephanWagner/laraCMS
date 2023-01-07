@@ -8,6 +8,7 @@ use App\Providers\FormValidationProvider;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Settings;
+use Illuminate\Support\Facades\Hash;
 
 class BackendInstallController extends BackendController
 {
@@ -162,6 +163,7 @@ class BackendInstallController extends BackendController
 
         // Add user
         $user = User::create($request->all());
+        $user->password = Hash::make($request->get('password'));
         $user->role = 'admin';
         $user->active = 1;
         $user->save();

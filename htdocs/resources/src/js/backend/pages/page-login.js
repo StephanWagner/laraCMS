@@ -9,6 +9,12 @@ import { error } from '../app/message';
 $(function () {
   // Success callback
   const formEl = $('[data-form="login"]');
+  formEl.data('sucessCallback', function (response) {
+
+    window.location.href = '/admin';
+
+  });
+
   formEl.data('errorCallback', function (response) {
 
     if (response.error) {
@@ -19,7 +25,5 @@ $(function () {
     } else {
       error();
     }
-
-    // window.location.href = '/admin';
   });
 });
