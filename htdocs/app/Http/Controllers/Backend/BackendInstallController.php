@@ -43,7 +43,7 @@ class BackendInstallController extends BackendController
     {
         $form = [
             'name' => 'install',
-            'requestUrl' => '/admin/installRequest',
+            'requestUrl' => '/admin/install',
             'submitButtonText' => __('backend/page-install.submit-button-text'),
             'keepDisabledOnSuccess' => true,
 
@@ -173,8 +173,9 @@ class BackendInstallController extends BackendController
         ]);
         Cache::put('is-installed', true);
 
+        // Response success
         return response()->json([
-            'success' => false
+            'success' => true
         ]);
     }
 }

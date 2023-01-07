@@ -16,16 +16,14 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        // Check is laraCMS is installed
+        // Check if laraCMS is installed
         $allowedRouteNames = ['install', 'installRequest'];
         if (!Cache::get('is-installed') && !in_array(Route::currentRouteName(), $allowedRouteNames)) {
-            $this->isInstalled = \App\Models\Settings::where('name', 'is-installed')->count() > 0;
+            $isInstalled = \App\Models\Settings::where('name', 'is-installed')->count() > 0;
 
-            if (!$this->isInstalled) {
+            if (!$isInstalled) {
                 return Redirect::to('/admin/install')->send();
             }
-
-            // TODO set cache
         }
     }
 }

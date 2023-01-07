@@ -15,6 +15,6 @@ $(function () {
   // Success callback
   const formEl = $('[data-form="install"]');
   formEl.data('successCallback', function () {
-    window.location.href = '/admin';
+    window.location.href = '/admin/login';
   });
 });

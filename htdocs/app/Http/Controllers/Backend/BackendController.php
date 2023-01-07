@@ -30,7 +30,50 @@ class BackendController extends Controller
             return redirect('/admin');
         }
 
-        return view('backend/login');
+        $form = [
+            'name' => 'login',
+            'requestUrl' => '/admin/login',
+            'submitButtonText' => __('backend/auth.login-submit-button-text'),
+            'keepDisabledOnSuccess' => true,
+
+            // Input elements
+            'inputs' => [
+                // Admin user: Email address
+                [
+                    'name' => 'email',
+                    'type' => 'textfield',
+                    'inputType' => 'text',
+                    'label' => null,
+                    'description' => null,
+                    'required' => false,
+                    'validate' => null,
+                    'validateText' => null,
+                    'maxlength' => '255',
+                    'spellcheck' => false,
+                    'placeholder' => __('backend/auth.login-email-placeholder'),
+                    'autocomplete' => 'email',
+                    'submitOnEnter' => true
+                ],
+                // Admin user: Password
+                [
+                    'name' => 'password',
+                    'type' => 'password',
+                    'label' => null,
+                    'description' => null,
+                    'required' => true,
+                    'validate' => ['min:6', 'max:64'],
+                    'maxlength' => '64',
+                    'placeholder' => __('backend/auth.login-password-placeholder'),
+                    'autocomplete' => 'current-password',
+                    'submitOnEnter' => true,
+                    'showPasswordButton' => true
+                ],
+            ]
+        ];
+
+        return view('backend/login', [
+            'form' =>  $form
+        ]);
     }
 
     /**
@@ -44,19 +87,19 @@ class BackendController extends Controller
         // $user->password = Hash::make('test123');
         // $user->save();
 
-        $user_data = [
+        $userData = [
             'email' => $request->get('email'),
             'password' => $request->get('password'),
             'active' => 1
         ];
 
-        if (Auth::attempt($user_data, true)) {
+        if (Auth::attempt($userData, true)) {
             return response()->json([
                 'success' => true
             ]);
         } else {
             return response()->json([
-                'error' => 'Ungültiges Passwort oder E-Mail'
+                'error' => __('backend/auth.wrong-password-or-email')
             ]);
         }
     }

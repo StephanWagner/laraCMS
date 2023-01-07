@@ -3,6 +3,10 @@
   animation-fill-mode: both;
 }
 
+.animated-tada {
+  animation: tada 1s;
+}
+
 @keyframes tada {
   0% {
     transform: scale(1);
@@ -31,8 +35,8 @@
   }
 }
 
-.animated-tada {
-  animation: tada 1s;
+.animated-tadaSmall {
+  animation: tadaSmall 1s;
 }
 
 @keyframes tadaSmall {
@@ -63,8 +67,8 @@
   }
 }
 
-.animated-tadaSmall {
-  animation: tadaSmall 1s;
+.animated-flash {
+  animation: flash 0.5s;
 }
 
 @keyframes flash {
@@ -80,8 +84,8 @@
   }
 }
 
-.animated-flash {
-  animation: flash 0.5s;
+.animated-shake {
+  animation: shake 0.4s;
 }
 
 @keyframes shake {
@@ -101,24 +105,6 @@
   }
 }
 
-.animated-shake {
-  animation: shake 0.4s;
-}
-
-@keyframes pulseUp {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 .animated-pulseUpSmall {
   animation: pulseUpSmall 400ms;
 }
@@ -129,7 +115,25 @@
   }
 
   50% {
-    transform: scale(1.02);
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated-pulseUpMedium {
+  animation: pulseUpMedium 350ms;
+}
+
+@keyframes pulseUpMedium {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
   }
 
   100% {
@@ -139,6 +143,24 @@
 
 .animated-pulseUp {
   animation: pulseUp 250ms;
+}
+
+@keyframes pulseUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated-pulseDown {
+  animation: pulseDown 250ms;
 }
 
 @keyframes pulseDown {
@@ -155,8 +177,8 @@
   }
 }
 
-.animated-pulseDown {
-  animation: pulseDown 250ms;
+.animated-popIn {
+  animation: popIn 250ms;
 }
 
 @keyframes popIn {
@@ -173,8 +195,8 @@
   }
 }
 
-.animated-popIn {
-  animation: popIn 250ms;
+.animated-popOut {
+  animation: popOut 250ms;
 }
 
 @keyframes popOut {
@@ -191,8 +213,8 @@
   }
 }
 
-.animated-popOut {
-  animation: popOut 250ms;
+.animated-fadeIn {
+  animation: fadeIn 0.2s;
 }
 
 @keyframes fadeIn {
@@ -205,8 +227,8 @@
   }
 }
 
-.animated-fadeIn {
-  animation: fadeIn 0.2s;
+.animated-fadeOut {
+  animation: fadeOut 0.2s;
 }
 
 @keyframes fadeOut {
@@ -217,8 +239,4 @@
   100% {
     opacity: 0;
   }
-}
-
-.animated-fadeOut {
-  animation: fadeOut 0.2s;
 }

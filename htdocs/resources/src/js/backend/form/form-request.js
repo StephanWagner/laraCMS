@@ -82,7 +82,11 @@ function sendForm(formEl) {
       // Error
       enableForm(formSelector, formButtonSelector);
       animateEl($(formButtonSelector), 'shake');
-      error();
+      if (formEl.data('errorCallback')) {
+        formEl.data('errorCallback')(response);
+      } else {
+        error();
+      }
     },
     error: function (xhr) {
       enableForm(formSelector, formButtonSelector);
@@ -104,11 +108,6 @@ function sendForm(formEl) {
 
           // Validation error message
           error(i18n['form.default-validation-error']);
-
-          // Error callback
-          if (formEl.data('errorCallback')) {
-            formEl.data('errorCallback')(response);
-          }
           return;
         }
       } catch (e) {}
