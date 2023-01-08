@@ -9,14 +9,12 @@ import { error } from '../app/message';
 $(function () {
   // Success callback
   const formEl = $('[data-form="login"]');
-  formEl.data('sucessCallback', function (response) {
-
+  formEl.data('successCallback', function () {
     window.location.href = '/admin';
-
   });
 
+  // Error callback
   formEl.data('errorCallback', function (response) {
-
     if (response.error) {
       var errorEl = $('.logged-out__error');
       errorEl.html(response.error);

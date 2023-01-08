@@ -6,7 +6,7 @@ use App\Http\Controllers\Backend\BackendInstallController;
 use App\Http\Controllers\Backend\BackendDashboardController;
 
 // Dashboard
-Route::get('/admin', [BackendDashboardController::class, 'dashboard'])->middleware('auth');
+Route::get('/admin', [BackendDashboardController::class, 'show'])->middleware('auth');
 
 // Install
 Route::get('/admin/install', [BackendInstallController::class, 'show'])->name('install');

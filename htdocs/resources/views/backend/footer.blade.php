@@ -1,6 +1,9 @@
-</div>
-</div>
-</div>
+@if (Auth::check())
+    </div>
+    </div>
+    </div>
+@endif
+
 </div>
 
 @if (!empty($i18n))

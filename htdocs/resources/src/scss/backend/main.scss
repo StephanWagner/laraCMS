@@ -50,12 +50,10 @@
 
 // App
 @import 'app/app';
-// @import 'login';
-// @import 'header';
+@import 'app/header';
 // @import 'panel';
 // @import 'content';
 // @import 'content-header';
-// @import 'dashboard';
 // @import 'chat';
 // @import 'intern';
 // @import 'list-item';
@@ -71,6 +69,7 @@
 
 // Pages
 @import 'pages/logged-out';
+@import 'pages/dashboard';
 
 // // Media library
 // @import 'media-library';

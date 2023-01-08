@@ -31,7 +31,7 @@
                 <div class="content__wrapper">
                     <header class="header__wrapper">
                         <div class="header__container">
-                            <div class="header__name">{{ Auth::user()->title }}</div>
+                            <div class="header__name">{{ Auth::user()->name }}</div>
                             <div class="header__menu-container">
 
                                 <div class="header__menu-button noselect" onClick="toggleUserNav()">
@@ -42,10 +42,8 @@
                                         </svg>
                                     </div>
                                     <div class="header__menu-icon header__menu-icon--close">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
-                                            viewBox="0 0 24 24">
-                                            <path
-                                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px" viewBox="0 0 24 24">
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
                                         </svg>
                                     </div>
                                 </div>
@@ -55,7 +53,7 @@
                                         <li
                                             class="user-menu__item{{ request()->is('user') ? ' user-menu__item--active' : '' }}">
                                             <a class="user-menu__link" href="{{ url('/admin/users/edit/' . Auth::user()->id) }}">
-                                                <div class="user-menu__label">Account</div>
+                                                <div class="user-menu__label">Profil</div>
                                                 <div class="user-menu__icon icon-account">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
                                                         viewBox="0 0 24 24">
@@ -66,7 +64,7 @@
                                             </a>
                                         </li>
 
-                                        @if (Auth::user()->isAdmin())
+                                        {{-- @if (Auth::user()->isAdmin())
                                             <li
                                                 class="user-menu__item{{ request()->is('users') ? ' user-menu__item--active' : '' }}">
                                                 <a class="user-menu__link" href="{{ url('/admin/users') }}">
@@ -83,7 +81,7 @@
                                                     </div>
                                                 </a>
                                             </li>
-                                        @endif
+                                        @endif --}}
 
                                         <li class="user-menu__item">
                                             <a class="user-menu__link" href="{{ url('/admin/logout') }}">
