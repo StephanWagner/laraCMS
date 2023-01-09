@@ -1,0 +1,54 @@
+.header__wrapper {
+  background: $adminPanelBackgroundColor;
+  color: $admiPanelColor;
+}
+
+.header__container {
+  display: flex;
+  height: $headerHeight;
+  align-items: center;
+}
+
+.header__profile-name {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  margin: 0 12px 0 auto;
+}
+
+.header__profile-link {
+  color: $admiPanelColor;
+  text-decoration: none;
+
+  &:hover {
+    color: $admiPanelColor;
+    text-decoration: underline;
+  }
+}
+
+.header__logout-button {
+  position: relative;
+  width: $headerHeight;
+  height: $headerHeight;
+
+  > svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    > path,
+    > polygon {
+      fill: $admiPanelIconColor;
+    }
+  }
+}
+
+.panel__wrapper {
+  width: 260px;
+}

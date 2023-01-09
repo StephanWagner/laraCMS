@@ -1,0 +1,6 @@
+.panel__wrapper {
+  min-height: calc(100vh - $headerHeight);
+  width: $panelWidth;
+  background: $adminMainBackgroundColor;
+  color: #fff;
+}
