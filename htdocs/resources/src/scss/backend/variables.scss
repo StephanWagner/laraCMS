@@ -24,14 +24,17 @@ $warningColor: #fc0;
 
 // Colors: Theme
 $adminPanelBackgroundColor: $offBlack;
-$adminPanelColor: $offBlack;
+$adminPanelColor: #fff;
 $adminPanelIconColor: #fff;
+$adminPanelLabelColor: #5b5f63;
+$adminPanelLinkColor: #fff;
+$adminPanelLinkColorHover: #25282c;
 
 // Global
 $defaultBorderRadius: 10px;
 
 // Form
-$placeholderColor: #aaa;
+$placeholderColor: rgb(110, 67, 67);
 
 // Form: Textfields
 $textfieldHeight: 52px;

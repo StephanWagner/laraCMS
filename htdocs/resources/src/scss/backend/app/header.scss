@@ -1,6 +1,6 @@
 .header__wrapper {
   background: $adminPanelBackgroundColor;
-  color: $admiPanelColor;
+  color: $adminPanelColor;
 }
 
 .header__container {
@@ -19,11 +19,11 @@
 }
 
 .header__profile-link {
-  color: $admiPanelColor;
+  color: $adminPanelColor;
   text-decoration: none;
 
   &:hover {
-    color: $admiPanelColor;
+    color: $adminPanelColor;
     text-decoration: underline;
   }
 }
@@ -44,11 +44,7 @@
 
     > path,
     > polygon {
-      fill: $admiPanelIconColor;
+      fill: $adminPanelIconColor;
     }
   }
-}
-
-.panel__wrapper {
-  width: 260px;
 }

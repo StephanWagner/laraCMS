@@ -1,6 +1,63 @@
 .panel__wrapper {
   min-height: calc(100vh - $headerHeight);
   width: $panelWidth;
-  background: $adminMainBackgroundColor;
-  color: #fff;
+  background: $adminPanelBackgroundColor;
+  color: $adminPanelColor;
+  padding: 0 0 32px;
+}
+
+.panel__label {
+  padding: 0 16px;
+  margin: 24px 0 4px;
+  color: $adminPanelLabelColor;
+  font-weight: 600;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.panel__link {
+  padding: 8px 16px;
+  display: flex;
+  color: $adminPanelLinkColor;
+  text-decoration: none;
+  transition: transition('background-color');
+  font-size: 16px;
+  line-height: 24px;
+  word-break: break-word;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    color: $adminPanelLinkColor;
+    text-decoration: none;
+    background: $adminPanelLinkColorHover;
+  }
+}
+
+.panel__link-icon {
+  position: relative;
+  flex-shrink: 0;
+  margin: 0 8px 0 0;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    > path {
+      fill: #fff;
+    }
+  }
+}
+
+.panel__link-text {
+    flex: 1;
 }

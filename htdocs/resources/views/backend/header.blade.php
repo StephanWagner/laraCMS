@@ -109,46 +109,109 @@
                             Inhalt
                         </div>
 
-                        <div class="panel__label">
-                            <a href="/" class="panel__link">Beiträge</a>
-                        </div>
-
-                        <div class="panel__label">
-                            <a href="/" class="panel__link">Seiten</a>
+                        <div class="panel__link-container">
+                            <a href="/" class="panel__link">
+                                <div class="panel__link-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                    </svg>
+                                </div>
+                                <div class="panel__link-text">
+                                    Beiträge
+                                </div>
+                            </a>
                         </div>
 
                         <div class="panel__link-container">
-                            <a href="/" class="panel__link">Media</a>
+                            <a href="/" class="panel__link">
+                                <div class="panel__link-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                    </svg>
+                                </div>
+                                <div class="panel__link-text">
+                                    Seiten
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="panel__link-container">
+                            <a href="/" class="panel__link">
+                                <div class="panel__link-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                        viewBox="0 0 24 24">
+                                        <path
+                                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                    </svg>
+                                </div>
+                                <div class="panel__link-text">
+                                    Media
+                                </div>
+                            </a>
                         </div>
 
                         @if (Auth::user()->role == 'admin')
-
                             <div class="panel__label">
                                 Admin
                             </div>
 
-                            <div class="panel__label">
-                                <a href="/" class="panel__link">Einstellungen</a>
+                            <div class="panel__link-container">
+                                <a href="/" class="panel__link">
+                                    <div class="panel__link-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                        </svg>
+                                    </div>
+                                    <div class="panel__link-text">
+                                        Einstellungen
+                                    </div>
+                                </a>
                             </div>
 
-                            <div class="panel__label">
-                                <a href="/" class="panel__link">Benutzer</a>
+                            <div class="panel__link-container">
+                                <a href="/" class="panel__link">
+                                    <div class="panel__link-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                        </svg>
+                                    </div>
+                                    <div class="panel__link-text">
+                                        Benutzer
+                                    </div>
+                                </a>
                             </div>
 
                             <div class="panel__label">
                                 Developer
                             </div>
 
-                            <div class="panel__label">
-                                <a href="/" class="panel__link">Blocks</a>
+                            <div class="panel__link-container">
+                                <a href="/" class="panel__link">
+                                    <div class="panel__link-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" width="24px"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                        </svg>
+                                    </div>
+                                    <div class="panel__link-text">
+                                        Blocks
+                                    </div>
+                                </a>
                             </div>
-
                         @endif
 
                     </div>
                 </div>
                 <div class="content__wrapper">
-
 
                     <div class="content__container">
         @endif
