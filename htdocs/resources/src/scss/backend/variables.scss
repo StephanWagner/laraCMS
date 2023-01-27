@@ -6,7 +6,7 @@ $defaultLineHeight: 1.5;
 
 // Colors
 $primaryColor: #0088ff;
-$primaryColorDark: darken($primaryColor, 5);
+$primaryColorDark: #0077ff;
 $primaryColorLight: lighten($primaryColor, 38);
 $pageBackgroundColor: #f2f2f2;
 $offBlack: #171b1f;
@@ -14,6 +14,7 @@ $offBlack: #171b1f;
 // Colors: Text
 $defaultTextColor: $offBlack;
 $grayTextColor: #888;
+$grayTextColorDark: #666;
 $grayTextColorLight: #aaa;
 
 // Colors: Status

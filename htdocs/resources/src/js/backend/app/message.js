@@ -35,7 +35,7 @@ function message(color, txt) {
 }
 
 function error(txt) {
-  message('red', txt || i18n['app.default-error-message']);
+  message('red', txt || i18n['app.error-message-default']);
 }
 
 function ajaxError() {

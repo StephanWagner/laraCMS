@@ -54,7 +54,7 @@ return [
      */
 
     'translations_js' => [
-        'app.default-error-message',
+        'app.error-message-default',
         'form.default-validation-error'
     ]
 ];

@@ -60,3 +60,28 @@ a,
     padding: 0 16px 24px;
   }
 }
+
+// Error
+
+.page-error__wrapper {
+  text-align: center;
+  padding: 64px 0 0;
+}
+
+.page-error__description {
+  color: $grayTextColorDark;
+  font-size: 18px;
+}
+
+.page-error__try-again-link {
+  display: inline-block;
+  margin: 16px 0 0;
+  font-size: 18px;
+  color: $primaryColor;
+  cursor: pointer;
+  transition: transition('color');
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
