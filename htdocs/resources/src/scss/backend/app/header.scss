@@ -15,16 +15,21 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: right;
-  margin: 0 12px 0 auto;
+  margin: 0 0 0 auto;
 }
 
 .header__profile-link {
   color: $adminPanelColor;
   text-decoration: none;
+  display: block;
+  padding: 0 16px;
+  line-height: $headerHeight;
+  transition: transition('background-color');
 
   &:hover {
     color: $adminPanelColor;
-    text-decoration: underline;
+    text-decoration: none;
+    background-color: $adminPanelLinkColorHover;
   }
 }
 
@@ -32,6 +37,11 @@
   position: relative;
   width: $headerHeight;
   height: $headerHeight;
+  transition: transition('background-color');
+
+  &:hover {
+    background: $adminPanelLinkColorHover;
+  }
 
   > svg {
     display: block;
