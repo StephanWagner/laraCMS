@@ -2,11 +2,13 @@
 
 return [
     // Labels
+    'label-cms' => 'CMS',
     'label-content' => 'Content',
     'label-admin' => 'Admin',
     'label-developer' => 'Developer',
 
     // Links
+    'link-dashboard' => 'Dashboard',
     'link-pages' => 'Pages',
     'link-media' => 'Media',
     'link-settings' => 'Settings',
