@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ explode('_', app()->getLocale())[0] }}">
 <head>
+    <title>{{ config('cms.name') }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#528bff">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('cms.name') }}</title>
-
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="/admin-assets/img/favicon.png">
+    <link rel="apple-touch-icon" type="image/png" href="/admin-assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/admin-assets/site.webmanifest">
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
-    <script type="module" src="{{ $assetHelper::versioned('admin-assets/js/app.js') }}"></script>
 </head>
 
 <body class="admin">
@@ -29,5 +31,6 @@
         </div>
     </main>
 
+    <script type="module" src="{{ $assetHelper::versioned('admin-assets/js/app.js') }}"></script>
 </body>
 </html>

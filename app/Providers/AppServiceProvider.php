@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
         View::addNamespace('admin', resource_path('admin/views'));
         View::addNamespace('theme', resource_path('themes/' . config('cms.theme.active') . '/views'));
 
+        // Current active theme
+        View::share('theme', config('cms.theme.active'));
+
         // Helpers
         View::share('assetHelper', AssetHelper::class);
     }
