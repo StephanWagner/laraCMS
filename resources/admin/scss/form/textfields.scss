@@ -1,0 +1,118 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Reset
+
+input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  line-height: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input,
+textarea,
+button {
+  margin: 0;
+  display: block;
+  outline: none;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: inherit;
+}
+
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
+}
+
+// Placeholders
+
+::-webkit-input-placeholder {
+  color: $textfield-placeholder-color;
+}
+
+::-moz-placeholder {
+  color: $textfield-placeholder-color;
+}
+
+:-ms-input-placeholder {
+  color: $textfield-placeholder-color;
+}
+
+[disabled]::-webkit-input-placeholder {
+  color: $textfield-color-disabled;
+}
+
+[disabled]::-moz-placeholder {
+  color: $textfield-color-disabled;
+}
+
+[disabled]:-ms-input-placeholder {
+  color: $textfield-color-disabled;
+}
+
+// Textfields
+
+.textfield__container {
+  margin: 0 0 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+input.textfield,
+textarea.textfield {
+  position: relative;
+  color: $textfield-color;
+  background-color: $textfield-background-color;
+  border: 1px solid $textfield-border-color;
+  padding: 0 16px;
+  height: $textfield-height;
+  font-size: $default-font-size;
+  font-weight: normal;
+  border-radius: $textfield-border-radius;
+  resize: none;
+  box-shadow: none;
+  transition: transition("border-color", "background-color", "color");
+
+  &:hover {
+    border-color: $textfield-border-color-hover;
+  }
+
+  &:focus {
+    border-color: $textfield-border-color-focus;
+  }
+
+  &.-block {
+    display: block;
+    width: 100%;
+  }
+
+  &.-h {
+    display: none !important;
+  }
+
+  &.-error {
+    border-color: $textfield-border-color-error;
+  }
+
+  &[disabled] {
+    color: $textfield-color-disabled !important;
+    border-color: $textfield-border-color-disabled !important;
+  }
+}
+
+// Textareas
+
+textarea.textfield {
+  height: auto;
+  padding: 8px 16px;
+  line-height: inherit;
+}

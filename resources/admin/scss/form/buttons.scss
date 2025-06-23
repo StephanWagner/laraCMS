@@ -1,0 +1,79 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Buttons
+
+.button__container {
+  margin: 24px 0 0;
+
+  &.-center {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.button {
+  position: relative;
+  display: inline-block;
+  border: 0;
+  text-align: center;
+  font-size: $default-font-size;
+  line-height: $default-line-height;
+  font-weight: 600;
+  color: $button-color;
+  background-color: $button-background-color;
+  background-image: $button-background-gradient;
+  padding: 10px 24px;
+  border-radius: $medium-border-radius;
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: transition('color', 'background-color', 'border-color', 'box-shadow');
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px rgba(#fff, 0.5);
+  }
+
+  &.-block {
+    display: block;
+    width: 100%;
+  }
+
+  &.-danger {
+    background: $error-color;
+  }
+
+  &[disabled] {
+    color: $button-color-disabled !important;
+    background: $button-background-color-disabled !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: default !important;
+
+    &:not(.-loading) {
+      color: $button-color-disabled !important;
+      background: $button-background-color-disabled !important;
+
+      &::before {
+        opacity: 0 !important;
+      }
+    }
+  }
+}
+
+.-loading,
+.button[disabled].-loading {
+  background-image: linear-gradient(-45deg,
+      rgba(255, 255, 255, 0.3) 25%,
+      rgba(255, 255, 255, 0) 25%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.3) 75%,
+      rgba(255, 255, 255, 0) 75%,
+      rgba(255, 255, 255, 0)) !important;
+  background-size: 48px 48px !important;
+  background-repeat: repeat !important;
+  transition: background-position 6000s linear !important;
+  background-position: 200000px !important;
+}

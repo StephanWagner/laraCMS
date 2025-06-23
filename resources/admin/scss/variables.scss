@@ -1,28 +1,64 @@
 // Colors
-$primaryColor: #528bff;
-$secondaryColor: #52c4ff;
+$primary-color: #528bff;
+$secondary-color: #52c4ff;
 
-$backgroundColor: #080b0f;
-$backgroundColorHighlighted: #121821;
-$backgroundColorHighlighted2: #232a35;
+$primary-gradient: linear-gradient(to top right, #528bff, #52c4ff);
 
-$defaultTextColor: #d6e0f5;
-$secondaryTextColor: #8895a8;
-$lightTextColor: #fff;
+$color-surface-1: #080b0f;
+$color-surface-2: #121821;
+$color-surface-3: #232a35;
+$color-surface-4: #4a5667;
+$color-surface-5: #5f6b7a;
+$color-surface-6: #8895a8;
+
+$default-text-color: #d6e0f5;
+$secondary-text-color: $color-surface-6;
+$tertiary-text-color: $color-surface-5;
+$light-text-color: #fff;
+
+$error-color: #f00;
+$error-text-color: $error-color;
+$success-color: #0e0;
+$success-text-color: #0b0;
 
 // Text
-$defaultFontFamily: 'Nunito Sans', sans-serif;
-$defaultFontSize: 15px;
-$defaultLineHeight: 1.6;
-$smallFontSize: 13px;
-$smallLineHeight: 1.4;
+$default-font-family: 'Nunito Sans', sans-serif;
+$default-font-size: 15px;
+$default-line-height: 1.6;
+$small-font-size: 13px;
+$small-line-height: 1.4;
 
 // Dimensions
-$headerHeight: 64px;
-$panelWidth: 200px;
+$header-height: 64px;
+$panel-width: 200px;
 
 // Border radius
-$defaultBorderRadius: 16px;
+$default-border-radius: 16px;
+$medium-border-radius: 12px;
+$small-border-radius: 8px;
 
 // Transitions
-$defaultTransitionSpeed: 280ms;
+$default-transition-speed: 280ms;
+
+// Textfields
+$textfield-height: 44px;
+
+$textfield-color: $default-text-color;
+$textfield-color-disabled: $tertiary-text-color;
+$textfield-placeholder-color: $tertiary-text-color;
+
+$textfield-background-color: $color-surface-2;
+
+$textfield-border-color: $color-surface-3;
+$textfield-border-radius: $medium-border-radius;
+$textfield-border-color-hover: $color-surface-4;
+$textfield-border-color-focus: $primary-color;
+$textfield-border-color-error: $error-color;
+$textfield-border-color-disabled: $color-surface-3;
+
+// Buttons
+$button-color: #fff;
+$button-color-disabled: red;
+$button-background-color: $primary-color;
+$button-background-gradient: $primary-gradient;
+$button-background-color-disabled: red;

@@ -8,11 +8,11 @@
   @each $name in $values {
     @if ($transition !="") {
       $transition: $transition,
-        string.unquote($name) $defaultTransitionSpeed;
+        string.unquote($name) $default-transition-speed;
     }
 
     @else {
-      $transition: string.unquote($name) $defaultTransitionSpeed;
+      $transition: string.unquote($name) $default-transition-speed;
     }
   }
 

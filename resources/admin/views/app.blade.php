@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#528bff">
+    <meta name="color-scheme" content="dark">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" href="/admin-assets/img/favicon.png">
@@ -13,15 +14,19 @@
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
 </head>
 
-<body>
+<body class="{{ Auth::check() ? '-logged-in' : ''}}">
 
     <div class="admin__scaffold">
 
-        @include('admin::panel')
+        @if (Auth::check())
+            @include('admin::panel')
+        @endif
 
         <div class="content__wrapper">
 
-            @include('admin::header')
+            @if (Auth::check())
+                @include('admin::header')
+            @endif
 
             <main class="content__container">
                 @yield('content')

@@ -10,6 +10,15 @@
 }
 
 .content__container {
-  height: calc(100vh - $headerHeight);
-  overflow: auto;
+  body.-logged-in & {
+    height: calc(100vh - $header-height);
+    overflow: auto;
+  }
+
+  body:not(.-logged-in) & {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

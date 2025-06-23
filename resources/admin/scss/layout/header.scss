@@ -2,11 +2,11 @@
 @use "../mixins" as *;
 
 .header__wrapper {
-  background-color: $backgroundColorHighlighted;
+  background-color: $color-surface-2;
 }
 
 .header__container {
-  height: $headerHeight;
+  height: $header-height;
   display: flex;
 }
 
@@ -17,8 +17,8 @@
 .header__user-menu {
   position: relative;
   flex-shrink: 0;
-  height: $headerHeight;
-  width: $headerHeight;
+  height: $header-height;
+  width: $header-height;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -27,14 +27,14 @@
   > svg {
     width: 36px;
     height: 36px;
-    fill: $secondaryTextColor;
+    fill: $secondary-text-color;
     transition: transition('fill');
   }
 
   &.-active,
   &:hover {
     >svg {
-      fill: $lightTextColor;
+      fill: $light-text-color;
     }
   }
 }

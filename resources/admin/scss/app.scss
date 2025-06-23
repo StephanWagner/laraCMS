@@ -1,9 +1,26 @@
 @use "variables" as *;
 @use "mixins" as *;
 
+:root {
+  color-scheme: dark;
+}
+
 body {
-  font-family: $defaultFontFamily;
-  font-size: $defaultFontSize;
-  line-height: $defaultLineHeight;
-  background-color: $backgroundColor;
+  font-family: $default-font-family;
+  font-size: $default-font-size;
+  line-height: $default-line-height;
+  background-color: $color-surface-1;
+  color: $default-text-color;
+}
+
+a,
+.link {
+  text-decoration: none;
+  color: $secondary-text-color;
+  transition: transition('color');
+
+  &:hover {
+    text-decoration: none;
+    color: $light-text-color;
+  }
 }

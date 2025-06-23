@@ -2,22 +2,22 @@
 @use "../mixins" as *;
 
 .panel__wrapper {
-  background: $backgroundColorHighlighted;
-  width: $panelWidth;
+  background: $color-surface-2;
+  width: $panel-width;
   flex-shrink: 0;
-  padding: $headerHeight 0 0;
+  padding: $header-height 0 0;
 }
 
 .panel__container {
-  height: calc(100vh - $headerHeight);
+  height: calc(100vh - $header-height);
   overflow: auto;
 }
 
 .panel__label {
-  font-size: $smallFontSize;
-  line-height: $smallLineHeight;
+  font-size: $small-font-size;
+  line-height: $small-line-height;
   font-weight: 600;
-  color: $secondaryTextColor;
+  color: $secondary-text-color;
   padding: 0 12px 0 calc(8px + 24px + 6px);
   margin: 0 0 4px;
 }
@@ -33,7 +33,7 @@
 .panel__link {
   position: relative;
   display: flex;
-  color: $defaultTextColor;
+  color: $default-text-color;
   text-decoration: none;
   padding: 3px 12px 3px 8px;
   transition: transition('color');
@@ -46,7 +46,7 @@
     left: 0;
     max-height: 28px;
     border-radius: 0 4px 4px 0;
-    background: $primaryColor;
+    background: $primary-color;
     transition: transition('width', 'opacity');
     width: 0;
     opacity: 0;
@@ -55,7 +55,7 @@
   &.-active,
   &:hover {
     text-decoration: none;
-    color: $lightTextColor;
+    color: $light-text-color;
 
     &::before {
       width: 4px;
@@ -73,7 +73,7 @@
     height: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid $backgroundColor;
+    border-right: 8px solid $color-surface-1;
   }
 }
 
@@ -91,11 +91,11 @@
   > svg {
     width: 24px;
     height: 24px;
-    fill: $defaultTextColor;
+    fill: $default-text-color;
     transition: transiton('fill');
 
     .panel__link:hover & {
-      fill: $lightTextColor;
+      fill: $light-text-color;
     }
   }
 }
