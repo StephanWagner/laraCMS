@@ -38,13 +38,13 @@
   padding: 3px 12px 3px 8px;
   transition: transition('color');
 
-  &::after {
+  &::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 1px;
+    bottom: 1px;
     left: 0;
-    max-height: 30px;
+    max-height: 28px;
     border-radius: 0 4px 4px 0;
     background: $primaryColor;
     transition: transition('width', 'opacity');
@@ -52,14 +52,28 @@
     opacity: 0;
   }
 
+  &.-active,
   &:hover {
     text-decoration: none;
     color: $lightTextColor;
 
-    &::after {
+    &::before {
       width: 4px;
       opacity: 1;
     }
+  }
+
+  &.-active::after {
+    content: '';
+    position: absolute;
+    right: -0.5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid $backgroundColor;
   }
 }
 

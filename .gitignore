@@ -1,7 +1,9 @@
 # laracms
 /public/admin-assets/js/*.js
+/public/admin-assets/js/*.map
 /public/admin-assets/css/*.css
 /public/themes/**/js/*.js
+/public/themes/js/*.map
 /public/themes/**/css/*.css
 
 # laravel

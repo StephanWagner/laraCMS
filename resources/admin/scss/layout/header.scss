@@ -7,4 +7,32 @@
 
 .header__container {
   height: $headerHeight;
+  display: flex;
+}
+
+.header__content {
+  flex: 1;
+}
+
+.header__user-menu {
+  flex-shrink: 0;
+  height: $headerHeight;
+  width: $headerHeight;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >svg {
+    width: 36px;
+    height: 36px;
+    fill: $secondaryTextColor;
+    transition: transition('fill');
+  }
+
+  &:hover {
+    >svg {
+      fill: $lightTextColor;
+    }
+  }
 }
