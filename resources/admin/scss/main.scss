@@ -4,6 +4,7 @@
 // Lib
 @use "lib/reset";
 @use "lib/font-nunito-sans";
+@use "lib/common";
 
 // App
 @use "app";
@@ -19,6 +20,7 @@
 
 // Layout
 @use "layout/scaffold";
+@use "layout/error";
 @use "layout/auth";
 @use "layout/header";
 @use "layout/panel";

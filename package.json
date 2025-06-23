@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite build --watch --mode development",
-    "build": "vite build --mode production"
+    "build": "vite build --mode development && vite build --mode production"
   },
   "devDependencies": {
     "axios": "^1.8.2",

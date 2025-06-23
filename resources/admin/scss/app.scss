@@ -18,6 +18,7 @@ a,
   text-decoration: none;
   color: $secondary-text-color;
   transition: transition('color');
+  cursor: pointer;
 
   &:hover {
     text-decoration: none;

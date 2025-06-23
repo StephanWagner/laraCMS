@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import path from 'path';
 
 export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
@@ -9,8 +8,8 @@ export default defineConfig(({ mode }) => {
       outDir: 'public',
       emptyOutDir: false,
       manifest: false,
-      minify: !isDev, // 👈 Minify only in production
-      sourcemap: isDev, // 👈 Sourcemaps only in dev
+      minify: !isDev,
+      sourcemap: isDev,
       rollupOptions: {
         input: {
           'admin-assets/js/app': 'resources/admin/js/app.js',
@@ -19,8 +18,8 @@ export default defineConfig(({ mode }) => {
           'themes/laracms/css/main': 'resources/themes/laracms/scss/main.scss',
         },
         output: {
-          entryFileNames: '[name].js',
-          assetFileNames: '[name].css',
+          entryFileNames: isDev ? '[name].js' : '[name].min.js',
+          assetFileNames: isDev ? '[name].css' : '[name].min.css',
           chunkFileNames: 'chunks/[name].js',
         },
       },
