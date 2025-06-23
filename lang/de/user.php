@@ -1,7 +1,7 @@
 <?php
 return [
-    // Account page
-    'accountPage' => [
+    // Account
+    'account' => [
         'pageTitle' => 'Konto',
         'navTitle' => 'Konto',
 

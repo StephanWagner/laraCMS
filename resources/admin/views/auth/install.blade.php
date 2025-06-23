@@ -51,7 +51,7 @@
                         data-install-form-input="email"
                         type="text"
                         placeholder="{{ __('auth.install.form.placeholderEmail') }}"
-                        autocomplete="new-email"
+                        autocomplete="email"
                         spellcheck="false"
                     >
                 </div>
