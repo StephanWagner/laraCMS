@@ -1,35 +1,29 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
+import path from 'path';
 
-const themes = ['laracms'];
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development';
 
-const input = {
-  'admin-assets/js/app': 'resources/admin/js/app.js',
-  'admin-assets/css/main': 'resources/admin/scss/main.scss',
-};
-
-themes.forEach((theme) => {
-  input[`themes/${theme}/js/app`] = `resources/themes/${theme}/js/app.js`;
-  input[`themes/${theme}/css/main`] = `resources/themes/${theme}/scss/main.scss`;
-});
-
-export default defineConfig({
-  plugins: [
-    laravel({
-      input,
-      buildDirectory: '.',
-      refresh: false,
-    }),
-  ],
-  build: {
-    manifest: false,
-    emptyOutDir: false,
-    rollupOptions: {
-      output: {
-        entryFileNames: '[name].js',
-        assetFileNames: '[name].css',
-        chunkFileNames: 'chunks/[name].js',
+  return {
+    build: {
+      outDir: 'public',
+      emptyOutDir: false,
+      manifest: false,
+      minify: !isDev, // 👈 Minify only in production
+      sourcemap: isDev, // 👈 Sourcemaps only in dev
+      rollupOptions: {
+        input: {
+          'admin-assets/js/app': 'resources/admin/js/app.js',
+          'admin-assets/css/main': 'resources/admin/scss/main.scss',
+          'themes/laracms/js/app': 'resources/themes/laracms/js/app.js',
+          'themes/laracms/css/main': 'resources/themes/laracms/scss/main.scss',
+        },
+        output: {
+          entryFileNames: '[name].js',
+          assetFileNames: '[name].css',
+          chunkFileNames: 'chunks/[name].js',
+        },
       },
     },
-  },
+  };
 });

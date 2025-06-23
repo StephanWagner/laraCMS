@@ -1,0 +1,10 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.header__wrapper {
+  background-color: $backgroundColorHighlighted;
+}
+
+.header__container {
+  height: $headerHeight;
+}

@@ -2,8 +2,23 @@
 $primaryColor: #528bff;
 $secondaryColor: #52c4ff;
 
-$backgroundColor: #121821;
+$backgroundColor: #080b0f;
+$backgroundColorHighlighted: #121821;
+
+$defaultTextColor: #d6e0f5;
+$secondaryTextColor: #8895a8;
+$lightTextColor: #fff;
+
+// Text
+$defaultFontFamily: 'Nunito Sans', sans-serif;
+$defaultFontSize: 15px;
+$defaultLineHeight: 1.6;
+$smallFontSize: 13px;
+$smallLineHeight: 1.4;
 
 // Dimensions
-
 $headerHeight: 64px;
+$panelWidth: 200px;
+
+// Transitions
+$defaultTransitionSpeed: 280ms;

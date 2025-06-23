@@ -1,3 +1,5 @@
 <header class="header__wrapper">
-    HEADER
+    <div class="header__container">
+        HEADER
+    </div>
 </header>

@@ -5,10 +5,11 @@
   display: flex;
 }
 
-.admin__container {
+.content__wrapper {
   flex: 1;
 }
 
-.admin__main {
-  min-height: calc(100vw - $headerHeight);
+.content__container {
+  height: calc(100vh - $headerHeight);
+  overflow: auto;
 }

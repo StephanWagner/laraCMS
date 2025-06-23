@@ -1,0 +1,87 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.panel__wrapper {
+  background: $backgroundColorHighlighted;
+  width: $panelWidth;
+  flex-shrink: 0;
+  padding: $headerHeight 0 0;
+}
+
+.panel__container {
+  height: calc(100vh - $headerHeight);
+  overflow: auto;
+}
+
+.panel__label {
+  font-size: $smallFontSize;
+  line-height: $smallLineHeight;
+  font-weight: 600;
+  color: $secondaryTextColor;
+  padding: 0 12px 0 calc(8px + 24px + 6px);
+  margin: 0 0 4px;
+}
+
+.panel__nav {
+  margin: 0 0 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel__link {
+  position: relative;
+  display: flex;
+  color: $defaultTextColor;
+  text-decoration: none;
+  padding: 3px 12px 3px 8px;
+  transition: transition('color');
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    max-height: 30px;
+    border-radius: 0 4px 4px 0;
+    background: $primaryColor;
+    transition: transition('width', 'opacity');
+    width: 0;
+    opacity: 0;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: $lightTextColor;
+
+    &::after {
+      width: 4px;
+      opacity: 1;
+    }
+  }
+}
+
+.panel__link-text {
+  word-break: break-word;
+}
+
+.panel__icon {
+  flex-shrink: 0;
+  line-height: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0 6px 0 0;
+
+  > svg {
+    width: 24px;
+    height: 24px;
+    fill: $defaultTextColor;
+    transition: transiton('fill');
+
+    .panel__link:hover & {
+      fill: $lightTextColor;
+    }
+  }
+}

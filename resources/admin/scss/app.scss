@@ -2,5 +2,8 @@
 @use "mixins" as *;
 
 body {
-  background-color: #121821;
+  font-family: $defaultFontFamily;
+  font-size: $defaultFontSize;
+  line-height: $defaultLineHeight;
+  background-color: $backgroundColor;
 }

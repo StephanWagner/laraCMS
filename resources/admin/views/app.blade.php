@@ -10,11 +10,7 @@
     <link rel="icon" type="image/png" href="/admin-assets/img/favicon.png">
     <link rel="apple-touch-icon" type="image/png" href="/admin-assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/admin-assets/site.webmanifest">
-@if (app()->environment('local'))
-    @vite('admin/css/main')
-@else
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
-@endif
 </head>
 
 <body>
@@ -23,12 +19,12 @@
 
         @include('admin::panel')
 
-        <div class="admin__container">
+        <div class="content__wrapper">
 
             @include('admin::header')
 
-            <main class="admin__main">
-                @yield('main')
+            <main class="content__container">
+                @yield('content')
             </main>
 
         </div>

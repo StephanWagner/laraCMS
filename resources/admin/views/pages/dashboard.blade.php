@@ -1,5 +1,5 @@
 @extends('admin::app')
 
-@section('main')
-    <h1>Admin Dashboard</h1>
+@section('content')
+    <div>Admin Dashboard</div>
 @endsection

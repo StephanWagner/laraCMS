@@ -1,0 +1,20 @@
+@use "variables" as *;
+@use "sass:string";
+
+// Mixins
+@function transition($values...) {
+  $transition: "";
+
+  @each $name in $values {
+    @if ($transition !="") {
+      $transition: $transition,
+        string.unquote($name) $defaultTransitionSpeed;
+    }
+
+    @else {
+      $transition: string.unquote($name) $defaultTransitionSpeed;
+    }
+  }
+
+  @return $transition;
+}
