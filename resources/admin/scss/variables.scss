@@ -24,10 +24,10 @@ $warning-background-color: #fff9f0;
 $warning-text-color: #663614;
 $error-color: #ef4444;
 $error-background-color: #fef2f2;
-$error-text-color: #ef4444;
+$error-text-color: $error-color;
 $success-color: #29cc6d;
 $success-background-color: #f0fcf5;
-$success-text-color: #146636;
+$success-text-color: $success-color;
 
 // Text
 $default-font-family: 'Nunito Sans', sans-serif;

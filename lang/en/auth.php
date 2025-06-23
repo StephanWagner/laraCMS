@@ -43,52 +43,48 @@ return [
         'navTitle' => 'Logout',
     ],
 
-
-
-
+    // Delete
     // TODO
+    // 'delete' => [
+    //     'pageTitle' => 'Delete Account',
+    //     'form' => [
+    //         'title' => 'Delete Account',
+    //         'subtitle' => 'We’re sad to see you leave us!',
+    //         'description' => 'Type in your password,<br>then click on "Delete account".',
+    //         'placeholderPassword' => 'Password',
+    //         'submitButtonText' => 'Delete account',
+    //         'linkKeepAccount' => 'Keep account!',
+    //         'linkForgotPassword' => 'Forgot password?',
+    //         'errorWrongPassword' => 'Incorrect password.',
+    //     ],
+    //     'confirmModal' => [
+    //         'title' => 'Are you sure?',
+    //         'description' => 'This action cannot be undone!',
+    //         'cancelButton' => 'Cancel',
+    //         'submitButton' => 'Delete account',
+    //     ],
+    //     'flashMessageTitle' => 'Your account has been successfully deleted.',
+    //     'flashMessageDescription' => 'We’re sorry to see you go. If you ever change your mind, we’re always here.',
+    // ],
 
-    'delete' => [
-        'pageTitle' => 'Delete Account',
-        'form' => [
-            'title' => 'Delete Account',
-            'subtitle' => 'We’re sad to see you leave us!',
-            'description' => 'Type in your password,<br>then click on "Delete account".',
-            'placeholderPassword' => 'Password',
-            'submitButtonText' => 'Delete account',
-            'linkKeepAccount' => 'Keep account!',
-            'linkForgotPassword' => 'Forgot password?',
-            'errorWrongPassword' => 'Incorrect password.',
-        ],
-        'confirmModal' => [
-            'title' => 'Are you sure?',
-            'description' => 'This action cannot be undone!',
-            'cancelButton' => 'Cancel',
-            'submitButton' => 'Delete account',
-        ],
-        'flashMessageTitle' => 'Your account has been successfully deleted.',
-        'flashMessageDescription' => 'We’re sorry to see you go. If you ever change your mind, we’re always here.',
-    ],
-
+    // Reset password
     'resetPassword' => [
         'pageTitle' => 'Reset Password',
-        'metaDescription' => 'Forgot your GeoHoppers password? Don’t worry! Reset it quickly and regain access to publish and manage your social media posts.',
         'form' => [
             'title' => 'Reset<br>Password',
             'description' => 'We will send you a link to <br>reset your password.',
             'placeholderEmail' => 'Your email address',
             'submitButtonText' => 'Send link',
             'errorEmailText' => 'This email address is not registered with us.',
-            'successText' => 'We’ve sent you a link <br>to set a new password.',
+            'successText' => 'We’ve sent you a link to set a new password.',
             'backToSignIn' => 'Sign in',
         ],
     ],
 
+    // New password
     'newPassword' => [
         'pageTitle' => 'Create new password',
-        'metaDescription' => 'Set a new password for your GeoHoppers account. Secure your profile and continue managing posts across social media effortlessly.',
-        'flashMessageErrorResetLinkExpiredTitle' => 'This link is expired.',
-        'flashMessageErrorResetLinkExpiredDescription' => 'You can request a new link on the <a href=":route">reset password page</a>.',
+        'flashMessageErrorResetLinkExpired' => '<b>This link is expired.</b><br>You can request a new link here.',
         'form' => [
             'title' => 'Create new password',
             'description' => 'Combine letters, numbers and special characters to create a strong password.',
@@ -106,9 +102,9 @@ return [
         ],
     ],
 
-    'verifyEmail' => [
-        'flashMessageErrorTitle' => 'We couldn’t verify your email address.',
-        'flashMessageErrorDescription' => 'The link may have expired, or the email was not recognized.',
-        'flashMessageSuccessTitle' => 'Thank you! You’ve successfully verified your email address.',
-    ],
+    // 'verifyEmail' => [
+    //     'flashMessageErrorTitle' => 'We couldn’t verify your email address.',
+    //     'flashMessageErrorDescription' => 'The link may have expired, or the email was not recognized.',
+    //     'flashMessageSuccessTitle' => 'Thank you! You’ve successfully verified your email address.',
+    // ],
 ];

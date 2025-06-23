@@ -9,7 +9,6 @@ use App\Helpers\RouteHelper;
 use App\Helpers\MailHelper;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Vendor\IP2Location\IP2Location;
 use App\Models\User;
 use Sqids\Sqids;
 
@@ -22,9 +21,7 @@ class AuthController extends Controller
     {
         // Prevent reinstallation
         if (User::count() > 0 || file_exists(storage_path('installed.lock'))) {
-            abort(403, 'CMS is already installed.');
-
-            // TODO error pages
+            abort(403);
         }
 
         view()->share('pageTitle', __('auth.install.pageTitle'));
@@ -37,8 +34,6 @@ class AuthController extends Controller
      */
     public function installRequest()
     {
-        sleep(1);
-
         $name = StringHelper::removeSpaces(request()->get('name'));
         $email = StringHelper::removeSpaces(request()->get('email'));
         $password = request()->get('password');
@@ -114,8 +109,6 @@ class AuthController extends Controller
      */
     public function loginRequest()
     {
-        sleep(1);
-
         $email = request()->get('email');
         $password = request()->get('password');
         $csrf = request()->get('csrf');
@@ -165,104 +158,95 @@ class AuthController extends Controller
     /**
      * Delete account page
      */
+    // TODO
+    // public function delete()
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect('/'); // TODO
+    //     }
 
-     // TODO
-    public function delete()
-    {
-        if (!Auth::check()) {
-            return redirect('/'); // TODO
-        }
+    //     // TODO view()->share('pageTitle', __('auth.delete.pageTitle'));
 
-        // TODO view()->share('pageTitle', __('auth.delete.pageTitle'));
-
-        return view('pages.delete');
-    }
+    //     return view('pages.delete');
+    // }
 
     /**
      * Delete account request
      */
+    // TODO
+    // public function deleteRequest()
+    // {
+    //     // Abort if not logged in
+    //     if (!Auth::check()) {
+    //         return response()->json([
+    //             'error' => true,
+    //         ]);
+    //     }
 
-     // TODO
-    public function deleteRequest()
-    {
-        // Abort if not logged in
-        if (!Auth::check()) {
-            return response()->json([
-                'error' => true,
-            ]);
-        }
+    //     $password = request()->get('password');
 
-        $password = request()->get('password');
+    //     // Abort if password is wrong
+    //     if (!Hash::check($password, Auth::user()->password)) {
+    //         return response()->json([
+    //             'error' => 1,
+    //             'errorText' => __('auth.delete.form.errorWrongPassword')
+    //         ]);
+    //     }
 
-        // Abort if password is wrong
-        if (!Hash::check($password, Auth::user()->password)) {
-            return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.delete.form.errorWrongPassword')
-            ]);
-        }
+    //     // Delete account
+    //     $accountDeleted = $this->deleteAccount(Auth::id());
 
-        // Delete account
-        $accountDeleted = $this->deleteAccount(Auth::id());
+    //     // Abort if not logged in
+    //     if (!$accountDeleted) {
+    //         return response()->json([
+    //             'error' => 1,
+    //         ]);
+    //     }
 
-        // Abort if not logged in
-        if (!$accountDeleted) {
-            return response()->json([
-                'error' => 1,
-            ]);
-        }
-
-        // Return success
-        return response()->json([
-            'success' => 1,
-        ]);
-    }
+    //     // Return success
+    //     return response()->json([
+    //         'success' => 1,
+    //     ]);
+    // }
 
     /**
      * Delete account
      */
+    // TODO
+    // private function deleteAccount($userId)
+    // {
+    //     $user = User::where('id', $userId)->first();
 
-     // TODO
-    private function deleteAccount($userId)
-    {
-        $user = User::where('id', $userId)->first();
+    //     if (!$user) {
+    //         return false;
+    //     }
 
-        if (!$user) {
-            return false;
-        }
+    //     // Delete the user
+    //     $user->delete();
 
-        // Delete the user
-        $user->delete();
+    //     // Show flash message
+    //     session()->flash('message', [
+    //         'color' => 'notice',
+    //         'title' => __('auth.delete.flashMessageTitle'),
+    //         'description' => __('auth.delete.flashMessageDescription'),
+    //     ]);
 
-        // Show flash message
-        session()->flash('message', [
-            'color' => 'notice',
-            'title' => __('auth.delete.flashMessageTitle'),
-            'description' => __('auth.delete.flashMessageDescription'),
-        ]);
-
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * View for reset password page
      */
-
-     // TODO
     public function resetPassword()
     {
-        // view()->share('pageTitle', __('auth.resetPassword.pageTitle'));
-        // view()->share('metaDescription', __('auth.resetPassword.metaDescription'));
-        // view()->share('authPage', true);
+        view()->share('pageTitle', __('auth.resetPassword.pageTitle'));
 
-        return view('pages.reset-password');
+        return view('admin::auth.reset-password');
     }
 
     /**
      * Reset password request
      */
-
-     // TODO
     public function resetPasswordRequest()
     {
         $email = request()->get('email');
@@ -271,8 +255,8 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('app.errors.default')
+                'error' => true,
+                'message' => __('app.errors.default')
             ]);
         }
 
@@ -283,8 +267,8 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.resetPassword.form.errorEmailText')
+                'error' => true,
+                'message' => __('auth.resetPassword.form.errorEmailText')
             ]);
         }
 
@@ -294,78 +278,85 @@ class AuthController extends Controller
         $user->save();
 
         // Send mail
-        // TODO MailHelper::resetPassword($user);
+        MailHelper::resetPassword($user);
 
         return response()->json([
-            'success' => 1,
-            'successText' => __('auth.resetPassword.form.successText')
+            'success' => true,
+            'message' => __('auth.resetPassword.form.successText')
         ]);
     }
 
     /**
      * View for setting new password page
      */
-    // TODO
     public function newPassword($userId, $resetPasswordHash)
     {
-        $sqids = new Sqids(config('app.sqids_salt'));
+        $csrf = request()->get('csrf');
 
-        $userId = $sqids->decode($userId);
-        $userId = empty($userId) ? null : $userId[0];
+        // CSRF block
+        if ($csrf) {
+            return response()->json([
+                'error' => true,
+                'message' => __('app.errors.default')
+            ]);
+        }
+
+        $sqids = new Sqids(config('cms.sqids_salt'));
+
+        $userIdDecoded = $sqids->decode($userId);
+        $userIdDecoded = empty($userIdDecoded) ? null : $userIdDecoded[0];
 
         $user = User::where([
-            'id' => $userId,
+            'id' => $userIdDecoded,
             'password_reset_hash' => $resetPasswordHash
         ])->first();
 
-        // No user found, error
+        // No user found, show error
         if (!$user) {
-            session()->flash('message', [
-                'color' => 'error',
-                'title' => __('auth.newPassword.flashMessageErrorResetLinkExpiredTitle'),
-                'description' => __('auth.newPassword.flashMessageErrorResetLinkExpiredDescription', ['route' => RouteHelper::getRoute('reset-password')]),
-            ]);
-            return redirect(RouteHelper::getRoute('/'));
+            session()->flash('new-password-link-expired', __('auth.newPassword.flashMessageErrorResetLinkExpired'));
+            return redirect(route('admin.reset-password'));
         }
 
-        view()->share('userId', $user->id);
+        view()->share('userId', $userId);
         view()->share('resetPasswordHash', $user->password_reset_hash);
 
         view()->share('pageTitle', __('auth.newPassword.pageTitle'));
-        view()->share('metaDescription', __('auth.newPassword.metaDescription'));
-        view()->share('authPage', true);
 
-        return view('pages.new-password');
+        return view('admin::auth.new-password');
     }
 
     /**
      * New password request
      */
-    // TODO
     public function newPasswordRequest()
     {
+        $sqids = new Sqids(config('cms.sqids_salt'));
+
         $userId = request()->get('userId');
+        $userIdDecoded = $sqids->decode($userId);
+        $userIdDecoded = empty($userIdDecoded) ? null : $userIdDecoded[0];
+
         $resetPasswordHash = request()->get('resetPasswordHash');
         $csrf = request()->get('csrf');
 
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('app.errors.default')
+                'error' => true,
+                'message' => __('app.errors.default')
             ]);
         }
 
         // Check for user
         $user = User::where([
-            'id' => $userId,
+            'id' => $userIdDecoded,
             'password_reset_hash' => $resetPasswordHash
         ])->first();
 
         if (!$user) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.newPassword.validate.errorExpired')
+                'error' => true,
+                'message' => __('auth.newPassword.validate.errorExpired')
             ]);
         }
 
@@ -375,20 +366,20 @@ class AuthController extends Controller
         // Validate password
         if (strlen($password) < 8) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.newPassword.validate.errorPasswordMin')
+                'error' => true,
+                'message' => __('auth.newPassword.validate.errorPasswordMin')
             ]);
         }
         if (strlen($password) > 50) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.newPassword.validate.errorPasswordMax')
+                'error' => true,
+                'message' => __('auth.newPassword.validate.errorPasswordMax')
             ]);
         }
         if ($password != $passwordRepeat) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('auth.newPassword.validate.errorPasswordMatch')
+                'error' => true,
+                'message' => __('auth.newPassword.validate.errorPasswordMatch')
             ]);
         }
 
@@ -399,56 +390,55 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json([
-            'success' => 1,
-            'successText' => __('auth.newPassword.form.successText')
+            'success' => true,
+            'message' => __('auth.newPassword.form.successText')
         ]);
     }
 
     /**
      * Handle verify email
      */
-    // TODO
-    public function verifyEmail($userId, $email, $emailVerifyHash)
-    {
-        $sqids = new Sqids(config('app.sqids_salt'));
+    // public function verifyEmail($userId, $email, $emailVerifyHash)
+    // {
+    //     $sqids = new Sqids(config('app.sqids_salt'));
 
-        $userId = $sqids->decode($userId);
-        $userId = empty($userId) ? null : $userId[0];
+    //     $userId = $sqids->decode($userId);
+    //     $userId = empty($userId) ? null : $userId[0];
 
-        $email = StringHelper::decrypt($email);
+    //     $email = StringHelper::decrypt($email);
 
-        // Get user
-        $user = User::where([
-            'id' => $userId,
-            'email' => $email ? $email : null,
-            'email_verify_hash' => $emailVerifyHash
-        ])->first();
+    //     // Get user
+    //     $user = User::where([
+    //         'id' => $userId,
+    //         'email' => $email ? $email : null,
+    //         'email_verify_hash' => $emailVerifyHash
+    //     ])->first();
 
-        // No user found, error
-        if (!$user) {
-            session()->flash('message', [
-                'color' => 'error',
-                'title' => __('auth.verifyEmail.flashMessageErrorTitle'),
-                'description' => __('auth.verifyEmail.flashMessageErrorDescription'),
-            ]);
-            return redirect(RouteHelper::getRoute('/'));
-        }
+    //     // No user found, error
+    //     if (!$user) {
+    //         session()->flash('message', [
+    //             'color' => 'error',
+    //             'title' => __('auth.verifyEmail.flashMessageErrorTitle'),
+    //             'description' => __('auth.verifyEmail.flashMessageErrorDescription'),
+    //         ]);
+    //         return redirect(RouteHelper::getRoute('/'));
+    //     }
 
-        // Log user in
-        Auth::login($user, true);
+    //     // Log user in
+    //     Auth::login($user, true);
 
-        // Update user
-        $user->email_verify_hash = null;
-        $user->email_verified_at = new \DateTime();
-        $user->save();
+    //     // Update user
+    //     $user->email_verify_hash = null;
+    //     $user->email_verified_at = new \DateTime();
+    //     $user->save();
 
-        session()->flash('message', [
-            'color' => 'success',
-            'title' => __('auth.verifyEmail.flashMessageSuccessTitle'),
-        ]);
+    //     session()->flash('message', [
+    //         'color' => 'success',
+    //         'title' => __('auth.verifyEmail.flashMessageSuccessTitle'),
+    //     ]);
 
-        return redirect('/');
-    }
+    //     return redirect('/');
+    // }
 
     /**
      * Sign out and redirect

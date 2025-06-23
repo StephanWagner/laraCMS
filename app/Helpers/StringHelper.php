@@ -11,6 +11,30 @@ class StringHelper
     private static $iv = '1503236205612866';
 
     /**
+     * Generate a random string
+     */
+    public static function getHash($length = 8)
+    {
+        $charactersLetters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersNumbers = '0123456789';
+        $characters = $charactersLetters . $charactersNumbers;
+        $string = '';
+
+        // Start with letter
+        $string .= $charactersLetters[mt_rand(0, (strlen($charactersLetters) - 1))];
+
+        // Add letter or number
+        for ($i = 0; $i < $length - 2; $i++) {
+            $string .= $characters[mt_rand(0, (strlen($characters) - 1))];
+        }
+
+        // End with letter
+        $string .= $charactersLetters[mt_rand(0, (strlen($charactersLetters) - 1))];
+
+        return $string;
+    }
+
+    /**
      * Remove multiple, leading or trailing spaces
      */
     public static function removeSpaces($value = '', $all = false)

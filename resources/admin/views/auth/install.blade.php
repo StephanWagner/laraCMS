@@ -5,11 +5,11 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {{ __('auth.install.form.title') }}
+            {!! __('auth.install.form.title') !!}
         </h1>
 
         <div class="auth__form-description">
-            {{ __('auth.install.form.description') }}
+            {!! __('auth.install.form.description') !!}
         </div>
 
         <form class="auth__form -install" data-install-form onsubmit="return false">
@@ -21,6 +21,9 @@
                 name="csrf"
                 data-install-form-input="csrf"
                 type="text"
+                aria-hidden="true"
+                tabindex="-1"
+                autocomplete="new-password"
             >
 
             <div class="auth__textfields">

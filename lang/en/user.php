@@ -5,10 +5,8 @@ return [
         'pageTitle' => 'Account',
         'navTitle' => 'Account',
 
-        // TODO
-
-
         // Settings
+        // TODO
         'settings' => [
             // Page settings
             'pageSettingsTitle' => 'Page Settings',
@@ -52,8 +50,8 @@ return [
         ],
 
         // Delete
-        'delete' => [
-            'deleteAccountLinkText' => 'Delete Account',
-        ],
+        // 'delete' => [
+        //     'deleteAccountLinkText' => 'Delete Account',
+        // ],
     ],
 ];

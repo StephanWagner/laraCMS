@@ -26,4 +26,16 @@ return [
     'theme' => [
         'active' => env('CMS_THEME', 'laracms'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sqids Configuration
+    |--------------------------------------------------------------------------
+    |
+    | A unique, random string used to encode internal IDs (e.g. for short links).
+    | Must be at least 16 characters. Do not share or change after installation.
+    |
+     */
+    'sqids_salt' => env('CMS_SQIDS_SALT'),
+
 ];

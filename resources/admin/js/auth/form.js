@@ -1,12 +1,21 @@
 import { __ } from "../utils/locale";
 import { animate } from "../utils/animate";
 
-function showAuthFormError(submitButton, txt) {
+function showAuthFormMessage(type = 'error', submitButton, txt) {
   const formMessageEl = document.querySelector('.auth__form-message');
   formMessageEl.innerHTML = txt || __('error');
-  formMessageEl.classList.remove('-success');
-  formMessageEl.classList.add('-error');
-  animate(submitButton, 'shake');
+  formMessageEl.classList[type === 'success' ? 'add' : 'remove']('-success');
+  formMessageEl.classList[type === 'error' ? 'add' : 'remove']('-error');
+  formMessageEl.classList.add('-active');
+  (type === 'error') && animate(submitButton, 'shake');
 }
 
-export { showAuthFormError }
+function showAuthFormError(submitButton, txt) {
+  showAuthFormMessage('error', submitButton, txt);
+}
+
+function showAuthFormSuccess(submitButton, txt) {
+  showAuthFormMessage('success', submitButton, txt);
+}
+
+export { showAuthFormError, showAuthFormSuccess }

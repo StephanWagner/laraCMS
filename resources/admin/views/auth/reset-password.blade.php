@@ -5,23 +5,27 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {!! __('auth.login.form.title') !!}
+            {!! __('auth.resetPassword.form.title') !!}
         </h1>
 
-        @if (session('install-success'))
+        @if (session('new-password-link-expired'))
+            <div class="auth__form-description -error">
+                {!! session('new-password-link-expired') !!}
+            </div>
+        @else
             <div class="auth__form-description">
-                {!! session('install-success') !!}
+                {!! __('auth.resetPassword.form.description') !!}
             </div>
         @endif
 
-        <form class="auth__form -login" data-login-form onsubmit="return false">
+        <form class="auth__form -reset-password" data-reset-password-form onsubmit="return false">
 
             <div class="auth__form-message"></div>
 
             <input
                 class="textfield -h"
                 name="csrf"
-                data-login-form-input="csrf"
+                data-reset-password-form-input="csrf"
                 type="text"
                 aria-hidden="true"
                 tabindex="-1"
@@ -36,25 +40,11 @@
                         name="email"
                         data-submit-on-enter
                         data-clear-error-on-input
-                        data-login-form-input="email"
+                        data-reset-password-form-input="email"
                         type="text"
-                        placeholder="{{ __('auth.login.form.placeholderEmail') }}"
+                        placeholder="{{ __('auth.resetPassword.form.placeholderEmail') }}"
                         autocomplete="email"
                         spellcheck="false"
-                    >
-                </div>
-
-                <div class="textfield__container auth__textfield-container">
-                    <input
-                        class="textfield auth__textfield -block"
-                        name="password"
-                        data-submit-on-enter
-                        data-clear-error-on-input
-                        data-login-form-input="password"
-                        type="password"
-                        placeholder="{{ __('auth.login.form.placeholderPassword') }}"
-                        maxlength="50"
-                        autocomplete="password"
                     >
                 </div>
             </div>
@@ -64,15 +54,15 @@
                     type="button"
                     class="button auth__button -block"
                     data-submit-button
-                    data-login-form-submit-button
+                    data-reset-password-form-submit-button
                 >
-                    <span>{{ __('auth.login.form.submitButtonText') }}</span>
+                    <span>{{ __('auth.resetPassword.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>
 
         <div class="auth__form-links">
-            <a class="auth__form-link" href="{{ route('admin.reset-password') }}">{{ __('auth.login.form.linkForgotPassword') }}</a>
+            <a class="auth__form-link" href="{{ route('admin.login') }}">{{ __('auth.resetPassword.form.backToSignIn') }}</a>
         </div>
 
     </div>

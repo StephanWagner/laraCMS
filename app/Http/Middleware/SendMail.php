@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Illuminate\Support\Facades\Mail;
+
+class SendMail
+{
+    /**
+     * Reset password mail
+     */
+    static function resetPassword($data)
+    {
+        $recipient = $data['user']->email;
+
+        $mailData = [
+            'template' => 'reset-password',
+            'subject' => __('mail.resetPassword.subject'),
+            'data' => $data
+        ];
+
+        Mail::to($recipient)->send(new \App\Mail\Mail($mailData));
+    }
+}
