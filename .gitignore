@@ -1,6 +1,6 @@
 # laracms
-/public/admin/js/*.js
-/public/admin/css/*.css
+/public/admin-assets/js/*.js
+/public/admin-assets/css/*.css
 /public/themes/**/js/*.js
 /public/themes/**/css/*.css
 

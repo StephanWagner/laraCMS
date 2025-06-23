@@ -1,0 +1,14 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.admin__scaffold {
+  display: flex;
+}
+
+.admin__container {
+  flex: 1;
+}
+
+.admin__main {
+  min-height: calc(100vw - $headerHeight);
+}

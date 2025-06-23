@@ -4,8 +4,8 @@ import laravel from 'laravel-vite-plugin';
 const themes = ['laracms'];
 
 const input = {
-  'admin/js/app': 'resources/admin/js/app.js',
-  'admin/css/main': 'resources/admin/scss/main.scss',
+  'admin-assets/js/app': 'resources/admin/js/app.js',
+  'admin-assets/css/main': 'resources/admin/scss/main.scss',
 };
 
 themes.forEach((theme) => {

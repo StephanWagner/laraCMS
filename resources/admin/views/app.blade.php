@@ -10,26 +10,29 @@
     <link rel="icon" type="image/png" href="/admin-assets/img/favicon.png">
     <link rel="apple-touch-icon" type="image/png" href="/admin-assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/admin-assets/site.webmanifest">
+@if (app()->environment('local'))
+    @vite('admin/css/main')
+@else
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
+@endif
 </head>
 
-<body class="admin">
+<body>
 
-    <header class="header__wrapper">
-        <div class="container">
-            <h1>{{ config('cms.name') }}</h1>
-            <nav>
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+    <div class="admin__scaffold">
 
-            </nav>
+        @include('admin::panel')
+
+        <div class="admin__container">
+
+            @include('admin::header')
+
+            <main class="admin__main">
+                @yield('main')
+            </main>
+
         </div>
-    </header>
-
-    <main class="admin-content">
-        <div class="container">
-            @yield('content')
-        </div>
-    </main>
+    </div>
 
     <script type="module" src="{{ $assetHelper::versioned('admin-assets/js/app.js') }}"></script>
 </body>

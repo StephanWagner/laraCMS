@@ -1,0 +1,20 @@
+<div class="panel__wrapper">
+    <div class="panel__container">
+
+        <div class="panel__label">
+            {{ __('Administration') }}
+        </div>
+        <nav class="panel__nav">
+            <a class="panel__link" href="{{ route('admin.dashboard') }}">
+                <div class="panel__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 -960 960 960">
+                        <path d="M180-200v-353.85q0-17.17 7.68-32.53 7.69-15.37 21.24-25.31l227.7-171.54q18.95-14.46 43.32-14.46t43.44 14.46l227.7 171.54q13.55 9.94 21.24 25.31 7.68 15.36 7.68 32.53V-200q0 24.54-17.73 42.27Q744.54-140 720-140H592.31q-15.37 0-25.76-10.4-10.4-10.39-10.4-25.76v-195.38q0-15.36-10.39-25.76-10.39-10.39-25.76-10.39h-80q-15.37 0-25.76 10.39-10.39 10.4-10.39 25.76v195.38q0 15.37-10.4 25.76-10.39 10.4-25.76 10.4H240q-24.54 0-42.27-17.73Q180-175.46 180-200Z"/>
+                    </svg>
+                </div>
+                <div class="panel__link-text">
+                    {{ __('Dashboard') }}
+                </div>
+            </a>
+        </nav>
+    </div>
+</div>

@@ -1,6 +1,17 @@
 @use "variables" as *;
 @use "mixins" as *;
 
+@use "app";
+
+// Layout
+@use "layout/scaffold";
+@use "layout/header";
+@use "layout/panel";
+
+* {
+  color: red !important;
+}
+
 // Global styles
 body {
   background-color: $backgroundColor;
