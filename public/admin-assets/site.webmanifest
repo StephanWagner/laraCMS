@@ -1,0 +1,19 @@
+{
+  "name": "laraCMS",
+  "icons": [
+    {
+      "src": "/admin/img/favicon-app-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/admin/img/favicon-app.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#020508"
+}

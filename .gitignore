@@ -1,3 +1,10 @@
+# laracms
+/public/admin/js/*.js
+/public/admin/css/*.css
+/public/themes/**/js/*.js
+/public/themes/**/css/*.css
+
+# laravel
 *.log
 .DS_Store
 .env
