@@ -15,6 +15,7 @@
 }
 
 .header__user-menu {
+  position: relative;
   flex-shrink: 0;
   height: $headerHeight;
   width: $headerHeight;
@@ -23,13 +24,14 @@
   align-items: center;
   justify-content: center;
 
-  >svg {
+  > svg {
     width: 36px;
     height: 36px;
     fill: $secondaryTextColor;
     transition: transition('fill');
   }
 
+  &.-active,
   &:hover {
     >svg {
       fill: $lightTextColor;
