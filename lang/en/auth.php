@@ -1,5 +1,31 @@
 <?php
 return [
+    // Install
+    'install' => [
+        'pageTitle' => 'Install',
+        'form' => [
+            'title' => 'Install',
+            'description' => 'To get started, please create your first user account. This account will have full developer access and can manage all parts of the system, including creating additional admin users later.',
+            'placeholderName' => 'Your name',
+            'placeholderEmail' => 'Email',
+            'placeholderPassword' => 'Password',
+            'submitButtonText' => 'Create Developer Account',
+        ],
+        'validate' => [
+            'nameEmpty' => 'Please type in your name.',
+            'nameMin' => 'Your name needs to be at least 3 characters long.',
+            'nameMax' => 'Your name can not be more than 30 characters long.',
+            'nameAlphaNum' => 'Your name can only contain letters and numbers.',
+            'emailEmpty' => 'Please type in the email address.',
+            'emailInvalid' => 'Invalid email address.',
+            'passwordEmpty' => 'Please type in the password.',
+            'passwordMin' => 'The password needs to be at least 8 characters long.',
+            'passwordMax' => 'The password can not be more than 50 characters long.',
+        ],
+        'successText' => 'Your developer account has been created. You can now log in and start configuring your CMS.',
+    ],
+
+    // Login
     'login' => [
         'pageTitle' => 'Login',
         'form' => [
@@ -12,9 +38,13 @@ return [
         ],
     ],
 
+    // Logout
     'logout' => [
         'navTitle' => 'Logout',
     ],
+
+
+
 
     // TODO
 

@@ -1,0 +1,45 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.message__container {
+  position: fixed;
+  z-index: 2100;
+  right: 8px;
+  bottom: 8px;
+  background: #000;
+  padding: 12px 20px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  max-width: calc(100% - 8px - 8px);
+  cursor: pointer;
+  transform: translateY(100%);
+  transition: transition("opacity", "transform", "margin");
+  opacity: 0;
+
+  &.-visible {
+    opacity: 1;
+    transform: translateY(0);
+
+    &.-close {
+      opacity: 0;
+    }
+  }
+
+  &.-info {
+    background: $info-color;
+  }
+
+  &.-warning {
+    background: $warning-color;
+  }
+
+  &.-error {
+    background: $error-color;
+  }
+
+  &.-success {
+    background: $success-color;
+  }
+}

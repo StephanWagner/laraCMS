@@ -2,7 +2,7 @@
 @use "../mixins" as *;
 
 .auth__wrapper {
-  width: 360px;
+  width: 380px;
   max-width: calc(100% - 32px);
 
   @media (max-width: 400px) {
@@ -16,12 +16,35 @@
   font-weight: 600;
   margin: 0 0 24px;
   text-align: center;
+  color: $light-text-color;
+}
+
+.auth__form-description {
+  margin: 0 0 24px;
+}
+
+.auth__form-message {
+  margin: -8px 0 16px;
+  padding: 0 24px;
+  text-align: center;
+  font-weight: 600;
+
+  @media (max-width: 600px) {
+    padding: 0 16px;
+  }
+
+  &.-success {
+    color: $success-text-color;
+  }
+
+  &.-error {
+    color: $error-text-color;
+  }
 }
 
 .auth__button-container {
   margin: 12px 0 0;
 }
-
 
 .auth__form-links {
   margin: 24px 0 0;

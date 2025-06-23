@@ -1,4 +1,6 @@
 # laracms
+/storage/installed.lock
+
 /public/admin-assets/js/*.js
 /public/admin-assets/js/*.map
 /public/admin-assets/css/*.css

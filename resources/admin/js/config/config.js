@@ -7,6 +7,9 @@ const config = {
   fastTransitionSpeed: 180,
   defaultTransitionSpeed: 280,
   slowTransitionSpeed: 460,
+
+  // Locale
+  fallbackLocale: 'en',
 };
 
 export { config }

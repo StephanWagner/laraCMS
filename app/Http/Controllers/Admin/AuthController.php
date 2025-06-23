@@ -16,6 +16,86 @@ use Sqids\Sqids;
 class AuthController extends Controller
 {
     /**
+     * View for install page
+     */
+    public function install()
+    {
+        // Prevent reinstallation
+        if (User::count() > 0 || file_exists(storage_path('installed.lock'))) {
+            abort(403, 'CMS is already installed.');
+
+            // TODO error pages
+        }
+
+        view()->share('pageTitle', __('auth.install.pageTitle'));
+
+        return view('admin::auth.install');
+    }
+
+    /**
+     * Handle install request
+     */
+    public function installRequest()
+    {
+        sleep(1);
+
+        $name = StringHelper::removeSpaces(request()->get('name'));
+        $email = StringHelper::removeSpaces(request()->get('email'));
+        $password = request()->get('password');
+        $csrf = request()->get('csrf');
+
+        // CSRF block
+        if ($csrf) {
+            return response()->json([
+                'error' => true,
+                'message' => __('app.errors.default')
+            ]);
+        }
+
+        $validate = ValidateHelper::name($name);
+        if ($validate !== true) {
+            return response()->json([
+                'error' => true,
+                'message' => __('auth.install.validate.' . $validate)
+            ]);
+        }
+
+        $validate = ValidateHelper::email($email);
+        if ($validate !== true) {
+            return response()->json([
+                'error' => true,
+                'message' => __('auth.install.validate.' . $validate)
+            ]);
+        }
+
+        $validate = ValidateHelper::password($password);
+        if ($validate !== true) {
+            return response()->json([
+                'error' => true,
+                'message' => __('auth.install.validate.' . $validate)
+            ]);
+        }
+
+        User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make($password),
+            'role' => 'developer',
+        ]);
+
+        // Mark install as complete
+        file_put_contents(storage_path('installed.lock'), now());
+
+        session()->flash('install-success', __('auth.install.successText'));
+
+        // Redirect to login
+        return response()->json([
+            'success' => true,
+            'redirect' => route('admin.login')
+        ]);
+    }
+
+    /**
      * View for login page
      */
     public function login()
@@ -23,6 +103,8 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect('/');
         }
+
+        view()->share('pageTitle', __('auth.login.pageTitle'));
 
         return view('admin::auth.login');
     }
@@ -32,6 +114,8 @@ class AuthController extends Controller
      */
     public function loginRequest()
     {
+        sleep(1);
+
         $email = request()->get('email');
         $password = request()->get('password');
         $csrf = request()->get('csrf');
@@ -39,8 +123,8 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => 1,
-                'errorText' => __('app.errors.default')
+                'error' => true,
+                'message' => __('app.errors.default')
             ]);
         }
 
@@ -54,7 +138,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle the sign in
+     * Handle the login
      */
     private function handleLogin($data)
     {
@@ -74,13 +158,15 @@ class AuthController extends Controller
 
         return [
             'error' => true,
-            'errorText' => __('auth.signIn.form.error'),
+            'message' => __('auth.login.form.error'),
         ];
     }
 
     /**
      * Delete account page
      */
+
+     // TODO
     public function delete()
     {
         if (!Auth::check()) {
@@ -95,6 +181,8 @@ class AuthController extends Controller
     /**
      * Delete account request
      */
+
+     // TODO
     public function deleteRequest()
     {
         // Abort if not logged in
@@ -133,6 +221,8 @@ class AuthController extends Controller
     /**
      * Delete account
      */
+
+     // TODO
     private function deleteAccount($userId)
     {
         $user = User::where('id', $userId)->first();
@@ -157,6 +247,8 @@ class AuthController extends Controller
     /**
      * View for reset password page
      */
+
+     // TODO
     public function resetPassword()
     {
         // view()->share('pageTitle', __('auth.resetPassword.pageTitle'));
@@ -169,6 +261,8 @@ class AuthController extends Controller
     /**
      * Reset password request
      */
+
+     // TODO
     public function resetPasswordRequest()
     {
         $email = request()->get('email');
@@ -211,6 +305,7 @@ class AuthController extends Controller
     /**
      * View for setting new password page
      */
+    // TODO
     public function newPassword($userId, $resetPasswordHash)
     {
         $sqids = new Sqids(config('app.sqids_salt'));
@@ -246,6 +341,7 @@ class AuthController extends Controller
     /**
      * New password request
      */
+    // TODO
     public function newPasswordRequest()
     {
         $userId = request()->get('userId');
@@ -311,6 +407,7 @@ class AuthController extends Controller
     /**
      * Handle verify email
      */
+    // TODO
     public function verifyEmail($userId, $email, $emailVerifyHash)
     {
         $sqids = new Sqids(config('app.sqids_salt'));
@@ -356,10 +453,10 @@ class AuthController extends Controller
     /**
      * Sign out and redirect
      */
-    public function signOut()
+    public function logout()
     {
         Auth::logout();
 
-        return redirect(RouteHelper::getRoute('/'));
+        return redirect(route('admin.login'));
     }
 }

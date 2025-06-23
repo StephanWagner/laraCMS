@@ -96,7 +96,8 @@ textarea.textfield {
   }
 
   &.-h {
-    display: none !important;
+    position: absolute !important;
+    left: -10000px !important;
   }
 
   &.-error {

@@ -5,23 +5,21 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {{ __('auth.login.form.title') }}
+            {{ __('auth.install.form.title') }}
         </h1>
 
-        @if (session('install-success'))
-            <div class="auth__form-description">
-                {{ session('install-success') }}
-            </div>
-        @endif
+        <div class="auth__form-description">
+            {{ __('auth.install.form.description') }}
+        </div>
 
-        <form class="auth__form -login" data-login-form onsubmit="return false">
+        <form class="auth__form -install" data-install-form onsubmit="return false">
 
             <div class="auth__form-message"></div>
 
             <input
                 class="textfield -h"
                 name="csrf"
-                data-login-form-input="csrf"
+                data-install-form-input="csrf"
                 type="text"
             >
 
@@ -30,13 +28,27 @@
                 <div class="textfield__container auth__textfield-container">
                     <input
                         class="textfield auth__textfield -block"
+                        name="name"
+                        data-submit-on-enter
+                        data-clear-error-on-input
+                        data-install-form-input="name"
+                        type="text"
+                        placeholder="{{ __('auth.install.form.placeholderName') }}"
+                        autocomplete="name"
+                        spellcheck="false"
+                    >
+                </div>
+
+                <div class="textfield__container auth__textfield-container">
+                    <input
+                        class="textfield auth__textfield -block"
                         name="email"
                         data-submit-on-enter
                         data-clear-error-on-input
-                        data-login-form-input="email"
+                        data-install-form-input="email"
                         type="text"
-                        placeholder="{{ __('auth.login.form.placeholderEmail') }}"
-                        autocomplete="email"
+                        placeholder="{{ __('auth.install.form.placeholderEmail') }}"
+                        autocomplete="new-email"
                         spellcheck="false"
                     >
                 </div>
@@ -47,11 +59,11 @@
                         name="password"
                         data-submit-on-enter
                         data-clear-error-on-input
-                        data-login-form-input="password"
+                        data-install-form-input="password"
                         type="password"
-                        placeholder="{{ __('auth.login.form.placeholderPassword') }}"
+                        placeholder="{{ __('auth.install.form.placeholderPassword') }}"
                         maxlength="50"
-                        autocomplete="password"
+                        autocomplete="new-password"
                     >
                 </div>
             </div>
@@ -61,16 +73,12 @@
                     type="button"
                     class="button auth__button -block"
                     data-submit-button
-                    data-login-form-submit-button
+                    data-install-form-submit-button
                 >
-                    <span>{{ __('auth.login.form.submitButtonText') }}</span>
+                    <span>{{ __('auth.install.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>
-
-        <div class="auth__form-links">
-            <a class="auth__form-link" href="{{ route('admin.reset-password') }}">{{ __('auth.login.form.linkForgotPassword') }}</a>
-        </div>
 
     </div>
 

@@ -12,6 +12,11 @@
 @use "form/textfields";
 @use "form/buttons";
 
+// Utils
+@use "utils/animate";
+@use "utils/message";
+@use "utils/modal";
+
 // Layout
 @use "layout/scaffold";
 @use "layout/auth";

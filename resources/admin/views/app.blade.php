@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ explode('_', app()->getLocale())[0] }}">
 <head>
-    <title>{{ config('cms.name') }}</title>
+    <title>{{ !empty($pageTitle) ? $pageTitle . ' · ' : '' }}{{ config('cms.name') }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#528bff">

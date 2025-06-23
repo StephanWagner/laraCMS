@@ -1,0 +1,232 @@
+[class^="animated-"],
+[class*=" animated-"] {
+  animation-fill-mode: both;
+}
+
+// Tada
+
+.animated-tada {
+  animation: tada 1000ms;
+}
+
+@keyframes tada {
+  0% {
+    transform: scale(1);
+  }
+
+  10%,
+  20% {
+    transform: scale(0.8) rotate(-4deg);
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: scale(1.2) rotate(4deg);
+  }
+
+  40%,
+  60%,
+  80% {
+    transform: scale(1.2) rotate(-4deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+// Flash
+
+.animated-flash {
+  animation: flash 480ms;
+}
+
+@keyframes flash {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+// Shake
+
+.animated-shake {
+  animation: shake 400ms;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+// Pulse up
+
+.animated-pulseUp {
+  animation: pulseUp 340ms;
+}
+
+@keyframes pulseUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.10);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated-pulseUpSmall {
+  animation: pulseUpSmall 340ms;
+}
+
+@keyframes pulseUpSmall {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Pulse down
+
+.animated-pulseDown {
+  animation: pulseDown 340ms;
+}
+
+@keyframes pulseDown {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.90);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated-pulseDownSmall {
+  animation: pulseDownSmall 340ms;
+}
+
+@keyframes pulseDownSmall {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Pop in
+
+.animated-popIn {
+  animation: popIn 280ms;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Pop out
+
+.animated-popOut {
+  animation: popOut 480ms;
+}
+
+@keyframes popOut {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.15);
+  }
+
+  50% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+// Fade in
+
+.animated-fadeIn {
+  animation: fadeIn 280ms;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+// Fade out
+
+.animated-fadeOut {
+  animation: fadeOut 280ms;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

@@ -16,10 +16,18 @@ $secondary-text-color: $color-surface-6;
 $tertiary-text-color: $color-surface-5;
 $light-text-color: #fff;
 
-$error-color: #f00;
-$error-text-color: $error-color;
-$success-color: #0e0;
-$success-text-color: #0b0;
+$info-color: #457ae5;
+$info-background-color: #f0f5ff;
+$info-text-color: #2a4b8c;
+$warning-color: #ffa60d;
+$warning-background-color: #fff9f0;
+$warning-text-color: #663614;
+$error-color: #ef4444;
+$error-background-color: #fef2f2;
+$error-text-color: #ef4444;
+$success-color: #29cc6d;
+$success-background-color: #f0fcf5;
+$success-text-color: #146636;
 
 // Text
 $default-font-family: 'Nunito Sans', sans-serif;
@@ -58,7 +66,7 @@ $textfield-border-color-disabled: $color-surface-3;
 
 // Buttons
 $button-color: #fff;
-$button-color-disabled: red;
+$button-color-disabled: $color-surface-3;
 $button-background-color: $primary-color;
 $button-background-gradient: $primary-gradient;
-$button-background-color-disabled: red;
+$button-background-color-disabled: $color-surface-4;
