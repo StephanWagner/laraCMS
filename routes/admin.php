@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\InstallController;
 
-Route::middleware(['web', 'isCmsInstalled'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
 
     // Install
     Route::get('/install', [AuthController::class, 'install'])->name('install');

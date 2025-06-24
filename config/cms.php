@@ -38,4 +38,28 @@ return [
      */
     'sqids_salt' => env('CMS_SQIDS_SALT'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Available locales for admin
+    |--------------------------------------------------------------------------
+    |
+    | List of all locales that the admin area supports
+    |
+    */
+
+    'available_locales' => [
+        'en' => [
+            'id' => 'en',
+            'name' => 'English',
+            'name_local' => 'English',
+            'code' => 'EN',
+            'flag_filename' => 'gb',
+        ],
+        'de' => [
+            'id' => 'de',
+            'name' => 'German',
+            'name_local' => 'Deutsch',
+            'code' => 'DE',
+        ],
+    ],
 ];
