@@ -5,11 +5,11 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {!! __('auth.install.form.title') !!}
+            {!! __('admin::auth.install.form.title') !!}
         </h1>
 
         <div class="auth__form-description">
-            {!! __('auth.install.form.description') !!}
+            {!! __('admin::auth.install.form.description') !!}
         </div>
 
         <form class="auth__form -install" data-install-form onsubmit="return false">
@@ -36,7 +36,7 @@
                         data-clear-error-on-input
                         data-install-form-input="name"
                         type="text"
-                        placeholder="{{ __('auth.install.form.placeholderName') }}"
+                        placeholder="{{ __('admin::auth.install.form.placeholderName') }}"
                         autocomplete="name"
                         spellcheck="false"
                     >
@@ -50,7 +50,7 @@
                         data-clear-error-on-input
                         data-install-form-input="email"
                         type="text"
-                        placeholder="{{ __('auth.install.form.placeholderEmail') }}"
+                        placeholder="{{ __('admin::auth.install.form.placeholderEmail') }}"
                         autocomplete="email"
                         spellcheck="false"
                     >
@@ -64,7 +64,7 @@
                         data-clear-error-on-input
                         data-install-form-input="password"
                         type="password"
-                        placeholder="{{ __('auth.install.form.placeholderPassword') }}"
+                        placeholder="{{ __('admin::auth.install.form.placeholderPassword') }}"
                         maxlength="50"
                         autocomplete="new-password"
                     >
@@ -78,7 +78,7 @@
                     data-submit-button
                     data-install-form-submit-button
                 >
-                    <span>{{ __('auth.install.form.submitButtonText') }}</span>
+                    <span>{{ __('admin::auth.install.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>

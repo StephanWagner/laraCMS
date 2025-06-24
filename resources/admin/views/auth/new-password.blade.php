@@ -5,11 +5,11 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {!! __('auth.newPassword.form.title') !!}
+            {!! __('admin::auth.newPassword.form.title') !!}
         </h1>
 
         <div class="auth__form-description">
-            {!! __('auth.newPassword.form.description') !!}
+            {!! __('admin::auth.newPassword.form.description') !!}
         </div>
 
         <form class="auth__form -new-password" data-new-password-form onsubmit="return false">
@@ -51,7 +51,7 @@
                         data-clear-error-on-input
                         data-new-password-form-input="password"
                         type="password"
-                        placeholder="{{ __('auth.newPassword.form.placeholderPassword') }}"
+                        placeholder="{{ __('admin::auth.newPassword.form.placeholderPassword') }}"
                         autocomplete="new-password"
                         spellcheck="false"
                         maxlength="50"
@@ -66,7 +66,7 @@
                         data-clear-error-on-input
                         data-new-password-form-input="password-repeat"
                         type="password"
-                        placeholder="{{ __('auth.newPassword.form.placeholderPasswordRepeat') }}"
+                        placeholder="{{ __('admin::auth.newPassword.form.placeholderPasswordRepeat') }}"
                         autocomplete="new-password"
                         spellcheck="false"
                         maxlength="50"
@@ -81,13 +81,13 @@
                     data-submit-button
                     data-new-password-form-submit-button
                 >
-                    <span>{{ __('auth.newPassword.form.submitButtonText') }}</span>
+                    <span>{{ __('admin::auth.newPassword.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>
 
         <div class="auth__form-links">
-            <a class="auth__form-link" href="{{ route('admin.login') }}">{{ __('auth.newPassword.form.backToSignIn') }}</a>
+            <a class="auth__form-link" href="{{ route('admin.login') }}">{{ __('admin::auth.newPassword.form.backToSignIn') }}</a>
         </div>
 
     </div>

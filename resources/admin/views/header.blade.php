@@ -15,7 +15,7 @@
                             </svg>
                         </div>
                         <div class="menu-overlay__link-text">
-                            {{ __('user.account.navTitle') }}
+                            {{ __('admin::user.account.navTitle') }}
                         </div>
                     </a>
                     <a href="{{ route('admin.logout') }}" class="menu-overlay__link">
@@ -25,7 +25,7 @@
                             </svg>
                         </div>
                         <div class="menu-overlay__link-text">
-                            {{ __('auth.logout.navTitle') }}
+                            {{ __('admin::auth.logout.navTitle') }}
                         </div>
                     </a>
                 </div>

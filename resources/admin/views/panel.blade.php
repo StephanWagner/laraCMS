@@ -2,7 +2,7 @@
     <div class="panel__container">
 
         <div class="panel__label">
-            {{ __('Administration') }}
+            {{ __('admin::Administration') }}
         </div>
         <nav class="panel__nav">
             <a class="panel__link{{ request()->routeIs('admin.dashboard') ? ' -active' : '' }}" href="{{ route('admin.dashboard') }}">
@@ -12,7 +12,7 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Dashboard') }}
+                    {{ __('admin::Dashboard') }}
                 </div>
             </a>
             <a class="panel__link" href="{{ '/' }}">
@@ -22,7 +22,7 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Settings') }}
+                    {{ __('admin::Settings') }}
                 </div>
             </a>
             <a class="panel__link" href="{{ '/' }}">
@@ -32,13 +32,13 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Users') }}
+                    {{ __('admin::Users') }}
                 </div>
             </a>
         </nav>
 
         <div class="panel__label">
-            {{ __('Content') }}
+            {{ __('admin::Content') }}
         </div>
         <nav class="panel__nav">
             <a class="panel__link" href="{{ '/' }}">
@@ -48,7 +48,7 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Pages') }}
+                    {{ __('admin::Pages') }}
                 </div>
             </a>
             <a class="panel__link" href="{{ '/' }}">
@@ -58,7 +58,7 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Posts') }}
+                    {{ __('admin::Posts') }}
                 </div>
             </a>
             <a class="panel__link" href="{{ '/' }}">
@@ -68,14 +68,14 @@
                     </svg>
                 </div>
                 <div class="panel__link-text">
-                    {{ __('Media') }}
+                    {{ __('admin::Media') }}
                 </div>
             </a>
         </nav>
 
         @if (auth()->user()?->hasRole('developer'))
             <div class="panel__label">
-                {{ __('Developer') }}
+                {{ __('admin::Developer') }}
             </div>
             <nav class="panel__nav">
                 <a class="panel__link" href="{{ '/' }}">
@@ -85,7 +85,7 @@
                         </svg>
                     </div>
                     <div class="panel__link-text">
-                        {{ __('Content Types') }}
+                        {{ __('admin::Content Types') }}
                     </div>
                 </a>
                 <a class="panel__link" href="{{ '/' }}">
@@ -95,7 +95,7 @@
                         </svg>
                     </div>
                     <div class="panel__link-text">
-                        {{ __('Blocks') }}
+                        {{ __('admin::Blocks') }}
                     </div>
                 </a>
             </nav>

@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
         View::addNamespace('admin', resource_path('admin/views'));
         View::addNamespace('theme', resource_path('themes/' . config('cms.theme.active') . '/views'));
 
+        // Language namespaces
+        $this->loadTranslationsFrom(base_path('lang/admin'), 'admin');
+
         // Current active theme
         View::share('theme', config('cms.theme.active'));
 

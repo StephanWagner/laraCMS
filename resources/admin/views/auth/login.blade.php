@@ -5,7 +5,7 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {!! __('auth.login.form.title') !!}
+            {!! __('admin::auth.login.form.title') !!}
         </h1>
 
         @if (session('install-success'))
@@ -38,7 +38,7 @@
                         data-clear-error-on-input
                         data-login-form-input="email"
                         type="text"
-                        placeholder="{{ __('auth.login.form.placeholderEmail') }}"
+                        placeholder="{{ __('admin::auth.login.form.placeholderEmail') }}"
                         autocomplete="email"
                         spellcheck="false"
                     >
@@ -52,7 +52,7 @@
                         data-clear-error-on-input
                         data-login-form-input="password"
                         type="password"
-                        placeholder="{{ __('auth.login.form.placeholderPassword') }}"
+                        placeholder="{{ __('admin::auth.login.form.placeholderPassword') }}"
                         maxlength="50"
                         autocomplete="password"
                     >
@@ -66,13 +66,13 @@
                     data-submit-button
                     data-login-form-submit-button
                 >
-                    <span>{{ __('auth.login.form.submitButtonText') }}</span>
+                    <span>{{ __('admin::auth.login.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>
 
         <div class="auth__form-links">
-            <a class="auth__form-link" href="{{ route('admin.reset-password') }}">{{ __('auth.login.form.linkForgotPassword') }}</a>
+            <a class="auth__form-link" href="{{ route('admin.reset-password') }}">{{ __('admin::auth.login.form.linkForgotPassword') }}</a>
         </div>
 
     </div>

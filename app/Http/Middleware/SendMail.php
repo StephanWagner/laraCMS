@@ -15,7 +15,7 @@ class SendMail
 
         $mailData = [
             'template' => 'reset-password',
-            'subject' => __('mail.resetPassword.subject'),
+            'subject' => __('admin::mail.resetPassword.subject'),
             'data' => $data
         ];
 

@@ -43,7 +43,7 @@ async function apiFetch(endpoint, {
       if (onError) {
         onError(responseData);
       } else {
-        error(responseData?.message || __('error'));
+        error(responseData?.message || __('admin::error'));
       }
       return;
     }
@@ -59,7 +59,7 @@ async function apiFetch(endpoint, {
       if (onError) {
         onError(responseData);
       } else {
-        error(responseData.message || __('error'));
+        error(responseData.message || __('admin::error'));
       }
       return;
     }

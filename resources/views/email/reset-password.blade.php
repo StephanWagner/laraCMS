@@ -1,11 +1,11 @@
 @include('email.email-header')
 
 <div style="font-size: 23px; font-weight: bold; margin: 0 0 24px; text-align: center; color: #fff">
-    {!! __('mail.resetPassword.title', ['name' => $mailData['data']['user']['name']]) !!}
+    {!! __('admin::mail.resetPassword.title', ['name' => $mailData['data']['user']['name']]) !!}
 </div>
 
 <div style="margin: 0 0 32px; text-align: center">
-    {!! __('mail.resetPassword.textAboveButton') !!}
+    {!! __('admin::mail.resetPassword.textAboveButton') !!}
 </div>
 
 <div style="margin: 0 0 32px; text-align: center">
@@ -14,14 +14,14 @@
         style="color: #fff; text-decoration: none"
         href="{{ $mailData['data']['buttonLink'] }}"
     >
-        {{ __('mail.resetPassword.buttonText') }}
+        {{ __('admin::mail.resetPassword.buttonText') }}
     </a>
 </div>
 
 <div style="text-align: center">
-    {!! __('mail.resetPassword.textBelowButton') !!}
+    {!! __('admin::mail.resetPassword.textBelowButton') !!}
 </div>
 
 @include('email.email-footer', [
-    'footerText' => __('mail.resetPassword.footer', ['app-name' => config('cms.name')])
+    'footerText' => __('admin::mail.resetPassword.footer', ['app-name' => config('cms.name')])
 ])

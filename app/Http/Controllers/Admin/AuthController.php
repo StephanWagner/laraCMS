@@ -23,7 +23,7 @@ class AuthController extends Controller
             abort(403);
         }
 
-        view()->share('pageTitle', __('auth.install.pageTitle'));
+        view()->share('pageTitle', __('admin::auth.install.pageTitle'));
 
         return view('admin::auth.install');
     }
@@ -42,7 +42,7 @@ class AuthController extends Controller
         if ($csrf) {
             return response()->json([
                 'error' => true,
-                'message' => __('app.errors.default')
+                'message' => __('admin::app.errors.default')
             ]);
         }
 
@@ -50,7 +50,7 @@ class AuthController extends Controller
         if ($validate !== true) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.install.validate.' . $validate)
+                'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
         if ($validate !== true) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.install.validate.' . $validate)
+                'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
 
@@ -66,7 +66,7 @@ class AuthController extends Controller
         if ($validate !== true) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.install.validate.' . $validate)
+                'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
 
@@ -80,7 +80,7 @@ class AuthController extends Controller
         // Mark install as complete
         file_put_contents(storage_path('installed.lock'), now());
 
-        session()->flash('install-success', __('auth.install.successText'));
+        session()->flash('install-success', __('admin::auth.install.successText'));
 
         // Redirect to login
         return response()->json([
@@ -98,7 +98,7 @@ class AuthController extends Controller
             return redirect('/');
         }
 
-        view()->share('pageTitle', __('auth.login.pageTitle'));
+        view()->share('pageTitle', __('admin::auth.login.pageTitle'));
 
         return view('admin::auth.login');
     }
@@ -116,7 +116,7 @@ class AuthController extends Controller
         if ($csrf) {
             return response()->json([
                 'error' => true,
-                'message' => __('app.errors.default')
+                'message' => __('admin::app.errors.default')
             ]);
         }
 
@@ -150,7 +150,7 @@ class AuthController extends Controller
 
         return [
             'error' => true,
-            'message' => __('auth.login.form.error'),
+            'message' => __('admin::auth.login.form.error'),
         ];
     }
 
@@ -164,7 +164,7 @@ class AuthController extends Controller
     //         return redirect('/'); // TODO
     //     }
 
-    //     // TODO view()->share('pageTitle', __('auth.delete.pageTitle'));
+    //     // TODO view()->share('pageTitle', __('admin::auth.delete.pageTitle'));
 
     //     return view('pages.delete');
     // }
@@ -188,7 +188,7 @@ class AuthController extends Controller
     //     if (!Hash::check($password, Auth::user()->password)) {
     //         return response()->json([
     //             'error' => 1,
-    //             'errorText' => __('auth.delete.form.errorWrongPassword')
+    //             'errorText' => __('admin::auth.delete.form.errorWrongPassword')
     //         ]);
     //     }
 
@@ -226,8 +226,8 @@ class AuthController extends Controller
     //     // Show flash message
     //     session()->flash('message', [
     //         'color' => 'notice',
-    //         'title' => __('auth.delete.flashMessageTitle'),
-    //         'description' => __('auth.delete.flashMessageDescription'),
+    //         'title' => __('admin::auth.delete.flashMessageTitle'),
+    //         'description' => __('admin::auth.delete.flashMessageDescription'),
     //     ]);
 
     //     return true;
@@ -238,7 +238,7 @@ class AuthController extends Controller
      */
     public function resetPassword()
     {
-        view()->share('pageTitle', __('auth.resetPassword.pageTitle'));
+        view()->share('pageTitle', __('admin::auth.resetPassword.pageTitle'));
 
         return view('admin::auth.reset-password');
     }
@@ -255,7 +255,7 @@ class AuthController extends Controller
         if ($csrf) {
             return response()->json([
                 'error' => true,
-                'message' => __('app.errors.default')
+                'message' => __('admin::app.errors.default')
             ]);
         }
 
@@ -267,7 +267,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.resetPassword.form.errorEmailText')
+                'message' => __('admin::auth.resetPassword.form.errorEmailText')
             ]);
         }
 
@@ -281,7 +281,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => __('auth.resetPassword.form.successText')
+            'message' => __('admin::auth.resetPassword.form.successText')
         ]);
     }
 
@@ -296,7 +296,7 @@ class AuthController extends Controller
         if ($csrf) {
             return response()->json([
                 'error' => true,
-                'message' => __('app.errors.default')
+                'message' => __('admin::app.errors.default')
             ]);
         }
 
@@ -312,14 +312,14 @@ class AuthController extends Controller
 
         // No user found, show error
         if (!$user) {
-            session()->flash('new-password-link-expired', __('auth.newPassword.flashMessageErrorResetLinkExpired'));
+            session()->flash('new-password-link-expired', __('admin::auth.newPassword.flashMessageErrorResetLinkExpired'));
             return redirect(route('admin.reset-password'));
         }
 
         view()->share('userId', $userId);
         view()->share('resetPasswordHash', $user->password_reset_hash);
 
-        view()->share('pageTitle', __('auth.newPassword.pageTitle'));
+        view()->share('pageTitle', __('admin::auth.newPassword.pageTitle'));
 
         return view('admin::auth.new-password');
     }
@@ -342,7 +342,7 @@ class AuthController extends Controller
         if ($csrf) {
             return response()->json([
                 'error' => true,
-                'message' => __('app.errors.default')
+                'message' => __('admin::app.errors.default')
             ]);
         }
 
@@ -355,7 +355,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.newPassword.validate.errorExpired')
+                'message' => __('admin::auth.newPassword.validate.errorExpired')
             ]);
         }
 
@@ -366,19 +366,19 @@ class AuthController extends Controller
         if (strlen($password) < 8) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.newPassword.validate.errorPasswordMin')
+                'message' => __('admin::auth.newPassword.validate.errorPasswordMin')
             ]);
         }
         if (strlen($password) > 50) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.newPassword.validate.errorPasswordMax')
+                'message' => __('admin::auth.newPassword.validate.errorPasswordMax')
             ]);
         }
         if ($password != $passwordRepeat) {
             return response()->json([
                 'error' => true,
-                'message' => __('auth.newPassword.validate.errorPasswordMatch')
+                'message' => __('admin::auth.newPassword.validate.errorPasswordMatch')
             ]);
         }
 
@@ -390,7 +390,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => __('auth.newPassword.form.successText')
+            'message' => __('admin::auth.newPassword.form.successText')
         ]);
     }
 
@@ -417,8 +417,8 @@ class AuthController extends Controller
     //     if (!$user) {
     //         session()->flash('message', [
     //             'color' => 'error',
-    //             'title' => __('auth.verifyEmail.flashMessageErrorTitle'),
-    //             'description' => __('auth.verifyEmail.flashMessageErrorDescription'),
+    //             'title' => __('admin::auth.verifyEmail.flashMessageErrorTitle'),
+    //             'description' => __('admin::auth.verifyEmail.flashMessageErrorDescription'),
     //         ]);
     //         return redirect(RouteHelper::getRoute('/'));
     //     }
@@ -433,7 +433,7 @@ class AuthController extends Controller
 
     //     session()->flash('message', [
     //         'color' => 'success',
-    //         'title' => __('auth.verifyEmail.flashMessageSuccessTitle'),
+    //         'title' => __('admin::auth.verifyEmail.flashMessageSuccessTitle'),
     //     ]);
 
     //     return redirect('/');

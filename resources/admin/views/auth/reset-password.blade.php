@@ -5,7 +5,7 @@
     <div class="auth__wrapper">
 
         <h1 class="auth__form-title">
-            {!! __('auth.resetPassword.form.title') !!}
+            {!! __('admin::auth.resetPassword.form.title') !!}
         </h1>
 
         @if (session('new-password-link-expired'))
@@ -14,7 +14,7 @@
             </div>
         @else
             <div class="auth__form-description">
-                {!! __('auth.resetPassword.form.description') !!}
+                {!! __('admin::auth.resetPassword.form.description') !!}
             </div>
         @endif
 
@@ -42,7 +42,7 @@
                         data-clear-error-on-input
                         data-reset-password-form-input="email"
                         type="text"
-                        placeholder="{{ __('auth.resetPassword.form.placeholderEmail') }}"
+                        placeholder="{{ __('admin::auth.resetPassword.form.placeholderEmail') }}"
                         autocomplete="email"
                         spellcheck="false"
                     >
@@ -56,13 +56,13 @@
                     data-submit-button
                     data-reset-password-form-submit-button
                 >
-                    <span>{{ __('auth.resetPassword.form.submitButtonText') }}</span>
+                    <span>{{ __('admin::auth.resetPassword.form.submitButtonText') }}</span>
                 </button>
             </div>
         </form>
 
         <div class="auth__form-links">
-            <a class="auth__form-link" href="{{ route('admin.login') }}">{{ __('auth.resetPassword.form.backToSignIn') }}</a>
+            <a class="auth__form-link" href="{{ route('admin.login') }}">{{ __('admin::auth.resetPassword.form.backToSignIn') }}</a>
         </div>
 
     </div>
