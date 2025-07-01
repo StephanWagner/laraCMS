@@ -47,50 +47,52 @@
 
             {{-- Administration --}}
 
-            <div class="panel__label">
-                {{ __('admin::panel.label.administration') }}
-            </div>
-            <nav class="panel__nav">
+            @if (auth()->user()?->hasRole('admin') || auth()->user()?->hasRole('developer'))
+                <div class="panel__label">
+                    {{ __('admin::panel.label.administration') }}
+                </div>
+                <nav class="panel__nav">
 
-                {{-- Settings --}}
+                    {{-- Settings --}}
 
-                <div class="panel__link-container -has-subs{{ request()->routeIs('admin.settings.*') ? ' -active' : '' }}">
-                    <a href="{{ route('admin.settings.site-info') }}" class="panel__link">
-                        <div class="panel__icon icon">tune</div>
-                        <div class="panel__link-text">
-                            {{ __('admin::panel.nav.settings.main') }}
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.settings.site-info') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-info') ? ' -active' : '' }}">
-                        <div class="panel__link-text">
-                            {{ __('admin::panel.nav.settings.siteInfo') }}
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.settings.site-variables') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-variables') ? ' -active' : '' }}">
-                        <div class="panel__link-text">
-                            {{ __('admin::panel.nav.settings.siteVariables') }}
-                        </div>
-                    </a>
-                    @if (auth()->user()?->hasRole('developer'))
-                        <a href="{{ route('admin.settings.developer') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
+                    <div class="panel__link-container -has-subs{{ request()->routeIs('admin.settings.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.settings.site-info') }}" class="panel__link">
+                            <div class="panel__icon icon">tune</div>
                             <div class="panel__link-text">
-                                {{ __('admin::panel.nav.settings.developer') }}
+                                {{ __('admin::panel.nav.settings.main') }}
                             </div>
                         </a>
-                    @endif
-                </div>
+                        <a href="{{ route('admin.settings.site-info') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-info') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ __('admin::panel.nav.settings.siteInfo') }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.settings.site-variables') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-variables') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ __('admin::panel.nav.settings.siteVariables') }}
+                            </div>
+                        </a>
+                        @if (auth()->user()?->hasRole('developer'))
+                            <a href="{{ route('admin.settings.developer') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
+                                <div class="panel__link-text">
+                                    {{ __('admin::panel.nav.settings.developer') }}
+                                </div>
+                            </a>
+                        @endif
+                    </div>
 
-                {{-- Users --}}
+                    {{-- Users --}}
 
-                <div class="panel__link-container{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
-                    <a href="{{ route('admin.users.list') }}" class="panel__link{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
-                        <div class="panel__icon icon">group</div>
-                        <div class="panel__link-text">
-                            {{ __('admin::panel.nav.users.main') }}
-                        </div>
-                    </a>
-                </div>
-            </nav>
+                    <div class="panel__link-container{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.users.list') }}" class="panel__link{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
+                            <div class="panel__icon icon">group</div>
+                            <div class="panel__link-text">
+                                {{ __('admin::panel.nav.users.main') }}
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+            @endif
 
             {{-- Developer --}}
 

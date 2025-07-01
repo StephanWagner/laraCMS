@@ -55,42 +55,42 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
     });
 
     // Settings
-    Route::prefix('settings')->name('settings.')->group(function () {
+    Route::middleware('accessAdmin')->prefix('settings')->name('settings.')->group(function () {
         Route::get('site-info', [SettingsController::class, 'siteInfo'])->name('site-info');
         Route::get('site-variables', [SettingsController::class, 'siteVariables'])->name('site-variables');
-        Route::get('developer', [SettingsController::class, 'developer'])->middleware('userIsDeveloper')->name('developer');
+        Route::get('developer', [SettingsController::class, 'developer'])->middleware('accessDeveloper')->name('developer');
     });
 
     // Users
-    Route::prefix('users')->name('users.')->group(function () {
+    Route::middleware('accessAdmin')->prefix('users')->name('users.')->group(function () {
         Route::get('list', [UsersController::class, 'list'])->name('list');
         Route::get('profile', [UsersController::class, 'profile'])->name('profile');
     });
 
     // Themes
-    Route::prefix('themes')->name('themes.')->group(function () {
+    Route::middleware('accessDeveloper')->prefix('themes')->name('themes.')->group(function () {
         Route::get('select', [ThemesController::class, 'select'])->name('select');
         Route::get('variables', [ThemesController::class, 'variables'])->name('variables');
     });
 
     // Menus
-    Route::prefix('menus')->name('menus.')->group(function () {
+    Route::middleware('accessDeveloper')->prefix('menus')->name('menus.')->group(function () {
         Route::get('list', [MenusController::class, 'list'])->name('list');
     });
 
     // Forms
-    Route::prefix('forms')->name('forms.')->group(function () {
+    Route::middleware('accessDeveloper')->prefix('forms')->name('forms.')->group(function () {
         Route::get('list', [FormsController::class, 'list'])->name('list');
         Route::get('submissions', [FormsController::class, 'submissions'])->name('submissions');
     });
 
     // Content types
-    Route::prefix('content-types')->name('content-types.')->group(function () {
+    Route::middleware('accessDeveloper')->prefix('content-types')->name('content-types.')->group(function () {
         Route::get('list', [ContentTypesController::class, 'list'])->name('list');
     });
 
     // Blocks
-    Route::prefix('blocks')->name('blocks.')->group(function () {
+    Route::middleware('accessDeveloper')->prefix('blocks')->name('blocks.')->group(function () {
         Route::get('list', [BlocksController::class, 'list'])->name('list');
         Route::get('groups', [BlocksController::class, 'groups'])->name('groups');
     });

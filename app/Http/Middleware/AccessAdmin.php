@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class UserIsDeveloper
+class AccessAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'developer') {
+        if (Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role === 'developer')) {
             return $next($request);
         }
 
