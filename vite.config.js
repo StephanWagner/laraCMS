@@ -4,6 +4,7 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
 
   return {
+    publicDir: false,
     build: {
       outDir: 'public',
       emptyOutDir: false,
