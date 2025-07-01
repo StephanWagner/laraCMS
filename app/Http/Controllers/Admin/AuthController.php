@@ -95,7 +95,7 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect(route('admin.dashboard'));
         }
 
         view()->share('pageTitle', __('admin::auth.login.pageTitle'));
