@@ -1,9 +1,9 @@
 <?php
 return [
-    // Account
-    'account' => [
-        'pageTitle' => 'Konto',
-        'navTitle' => 'Konto',
+    // Profile
+    'profile' => [
+        'pageTitle' => 'Profil',
+        'navTitle' => 'Profil',
 
         // Settings
         // TODO

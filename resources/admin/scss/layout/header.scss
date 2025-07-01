@@ -23,18 +23,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  > svg {
-    width: 36px;
-    height: 36px;
-    fill: $secondary-text-color;
-    transition: transition('fill');
-  }
+  color: $secondary-text-color;
+  transition: transition('color');
 
   &.-active,
   &:hover {
-    >svg {
-      fill: $light-text-color;
-    }
+    color: #fff;
   }
+}
+
+.header__user-icon {
+  width: 36px;
+  height: 36px;
+  font-size: 36px;
 }

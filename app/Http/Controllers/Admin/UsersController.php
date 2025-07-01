@@ -10,4 +10,9 @@ class UsersController extends Controller
     {
         return view('admin::pages.users.list');
     }
+
+    public function profile()
+    {
+        return view('admin::pages.users.profile');
+    }
 }

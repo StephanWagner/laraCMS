@@ -64,6 +64,7 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
     // Users
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('list', [UsersController::class, 'list'])->name('list');
+        Route::get('profile', [UsersController::class, 'profile'])->name('profile');
     });
 
     // Themes

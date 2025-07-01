@@ -15,7 +15,7 @@
   opacity: 0;
   display: none;
 
-  &.-account {
+  &.-user {
     right: 8px;
     top: calc(100% - 4px);
   }
@@ -61,21 +61,5 @@
 }
 
 .menu-overlay__icon {
-  line-height: 0;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
   margin: 0 6px 0 0;
-
-  svg {
-    width: 24px;
-    height: 24px;
-    fill: $default-text-color;
-    transition: transition("fill");
-
-    .menu-overlay__link.-active &,
-    .menu-overlay__link:hover & {
-      fill: $light-text-color;
-    }
-  }
 }

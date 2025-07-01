@@ -82,8 +82,8 @@
 
                 {{-- Users --}}
 
-                <div class="panel__link-container{{ request()->routeIs('admin.users.*') ? ' -active' : '' }}">
-                    <a href="{{ route('admin.users.list') }}" class="panel__link{{ request()->routeIs('admin.users.*') ? ' -active' : '' }}">
+                <div class="panel__link-container{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.users.list') }}" class="panel__link{{ request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
                         <div class="panel__icon icon">group</div>
                         <div class="panel__link-text">
                             {{ __('admin::panel.nav.users.main') }}
