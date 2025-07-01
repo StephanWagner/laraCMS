@@ -1,104 +1,191 @@
 <div class="panel__wrapper">
+    <div class="panel__header"></div>
     <div class="panel__container">
+        <div class="panel__content">
 
-        <div class="panel__label">
-            {{ __('admin::panel.label.administration') }}
-        </div>
-        <nav class="panel__nav">
-            <a class="panel__link{{ request()->routeIs('admin.dashboard') ? ' -active' : '' }}" href="{{ route('admin.dashboard') }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M566.11-600q-15.42 0-25.76-10.35Q530-620.69 530-636.34v-147.31q0-15.66 10.43-26Q550.86-820 566.27-820h217.62q15.42 0 25.76 10.35 10.35 10.34 10.35 26v147.31q0 15.65-10.43 25.99Q799.14-600 783.73-600H566.11Zm-390 140q-15.42 0-25.76-10.35Q140-480.7 140-496v-288.01q0-15.3 10.43-25.64Q160.86-820 176.27-820h217.62q15.42 0 25.76 10.35Q430-799.3 430-784v288.01q0 15.3-10.43 25.64Q409.14-460 393.73-460H176.11Zm390 320q-15.42 0-25.76-10.35Q530-160.7 530-176v-288.01q0-15.3 10.43-25.64Q550.86-500 566.27-500h217.62q15.42 0 25.76 10.35Q820-479.3 820-464v288.01q0 15.3-10.43 25.64Q799.14-140 783.73-140H566.11Zm-390 0q-15.42 0-25.76-10.35-10.35-10.34-10.35-26v-147.31q0-15.65 10.43-25.99Q160.86-360 176.27-360h217.62q15.42 0 25.76 10.35Q430-339.31 430-323.66v147.31q0 15.66-10.43 26Q409.14-140 393.73-140H176.11Z"/>
-                    </svg>
-                </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.dashboard.main') }}
-                </div>
-            </a>
-            <a class="panel__link" href="{{ '/' }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M479.99-130q-12.76 0-21.37-8.63Q450-147.25 450-160v-160q0-12.75 8.63-21.37 8.63-8.63 21.38-8.63 12.76 0 21.37 8.63Q510-332.75 510-320v50h290q12.75 0 21.37 8.63 8.63 8.63 8.63 21.38 0 12.76-8.63 21.37Q812.75-210 800-210H510v50q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63ZM160-210q-12.75 0-21.37-8.63-8.63-8.63-8.63-21.38 0-12.76 8.63-21.37Q147.25-270 160-270h160q12.75 0 21.37 8.63 8.63 8.63 8.63 21.38 0 12.76-8.63 21.37Q332.75-210 320-210H160Zm159.99-160q-12.76 0-21.37-8.63Q290-387.25 290-400v-50H160q-12.75 0-21.37-8.63-8.63-8.63-8.63-21.38 0-12.76 8.63-21.37Q147.25-510 160-510h130v-50q0-12.75 8.63-21.37 8.63-8.63 21.38-8.63 12.76 0 21.37 8.63Q350-572.75 350-560v160q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63ZM480-450q-12.75 0-21.37-8.63-8.63-8.63-8.63-21.38 0-12.76 8.63-21.37Q467.25-510 480-510h320q12.75 0 21.37 8.63 8.63 8.63 8.63 21.38 0 12.76-8.63 21.37Q812.75-450 800-450H480Zm159.99-160q-12.76 0-21.37-8.63Q610-627.25 610-640v-160q0-12.75 8.63-21.37 8.63-8.63 21.38-8.63 12.76 0 21.37 8.63Q670-812.75 670-800v50h130q12.75 0 21.37 8.63 8.63 8.63 8.63 21.38 0 12.76-8.63 21.37Q812.75-690 800-690H670v50q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63ZM160-690q-12.75 0-21.37-8.63-8.63-8.63-8.63-21.38 0-12.76 8.63-21.37Q147.25-750 160-750h320q12.75 0 21.37 8.63 8.63 8.63 8.63 21.38 0 12.76-8.63 21.37Q492.75-690 480-690H160Z"/>
-                    </svg>
-                </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.settings.main') }}
-                </div>
-            </a>
-            <a class="panel__link" href="{{ '/' }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M71.93-276.62q0-30.92 15.96-55.19 15.96-24.27 42.63-37.76 57.02-27.89 114.67-43.01 57.66-15.11 126.73-15.11 69.08 0 126.73 15.11 57.66 15.12 114.68 43.01 26.67 13.49 42.63 37.76 15.96 24.27 15.96 55.19v28.16q0 24.15-17.73 42.46-17.73 18.31-43.04 18.31H132.69q-25.3 0-43.03-17.73-17.73-17.74-17.73-43.04v-28.16Zm664.53 88.93q7.54-13.77 11.5-29.31t3.96-31.46v-33.08q0-39.38-19.28-75.07-19.29-35.68-54.72-61.23 40.23 6 76.39 18.57 36.15 12.58 69 29.73 31 16.54 47.88 38.99 16.88 22.44 16.88 49.01v33.08q0 25.3-17.73 43.04-17.73 17.73-43.03 17.73h-90.85ZM371.92-492.31q-57.75 0-98.87-41.12-41.12-41.13-41.12-98.88 0-57.75 41.12-98.87 41.12-41.13 98.87-41.13 57.75 0 98.88 41.13 41.12 41.12 41.12 98.87 0 57.75-41.12 98.88-41.13 41.12-98.88 41.12Zm345.38-140q0 57.75-41.12 98.88-41.12 41.12-98.87 41.12-6.77 0-17.23-1.54-10.47-1.54-17.23-3.38 23.66-28.45 36.37-63.12 12.7-34.67 12.7-72 0-37.34-12.96-71.73-12.96-34.38-36.11-63.3 8.61-3.08 17.23-4 8.61-.93 17.23-.93 57.75 0 98.87 41.13 41.12 41.12 41.12 98.87Z"/>
-                    </svg>
-                </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.users.main') }}
-                </div>
-            </a>
-        </nav>
+            {{-- Dashboard --}}
 
-        <div class="panel__label">
-            {{ __('admin::panel.label.content') }}
-        </div>
-        <nav class="panel__nav">
-            <a class="panel__link" href="{{ '/' }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M360-250h240q12.75 0 21.37-8.63 8.63-8.63 8.63-21.38 0-12.76-8.63-21.37Q612.75-310 600-310H360q-12.75 0-21.37 8.63-8.63 8.63-8.63 21.38 0 12.76 8.63 21.37Q347.25-250 360-250Zm0-160h240q12.75 0 21.37-8.63 8.63-8.63 8.63-21.38 0-12.76-8.63-21.37Q612.75-470 600-470H360q-12.75 0-21.37 8.63-8.63 8.63-8.63 21.38 0 12.76 8.63 21.37Q347.25-410 360-410ZM252.31-100Q222-100 201-121q-21-21-21-51.31v-615.38Q180-818 201-839q21-21 51.31-21h287.77q14.63 0 27.89 5.62 13.26 5.61 23.11 15.46l167.84 167.84q9.85 9.85 15.46 23.11 5.62 13.26 5.62 27.89v447.77Q780-142 759-121q-21 21-51.31 21H252.31ZM540-656q0 15.3 10.35 25.65Q560.7-620 576-620h144L540-800v144Z"/>
-                    </svg>
+            <nav class="panel__nav">
+                <div class="panel__link-container{{ request()->routeIs('admin.dashboard.*') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.dashboard.view') }}" class="panel__link{{ request()->routeIs('admin.dashboard.*') ? ' -active' : '' }}">
+                        <div class="panel__icon icon">dashboard</div>
+                        <div class="panel__link-text">
+                            {{ __('admin::panel.nav.dashboard.main') }}
+                        </div>
+                    </a>
                 </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.pages.main') }}
-                </div>
-            </a>
-            <a class="panel__link" href="{{ '/' }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M300-172.31v-416q0-29.92 21.5-50.8Q343-660 372.92-660h414.77q29.92 0 51.12 21.19Q860-617.61 860-587.69v269.3q0 14.47-5.62 27.81-5.61 13.35-15.46 23.19L692.61-121.08q-9.84 9.85-23.19 15.46-13.34 5.62-27.81 5.62h-269.3q-29.92 0-51.12-21.19Q300-142.39 300-172.31ZM101-703.08Q95.39-733 112.66-757q17.26-24 47.19-29.61L569.23-859q29.92-5.61 53.92 11.66 24 17.26 29.62 47.19l9.23 52.46H372.31q-66 0-113 47t-47 113v346.61q-14.85-7.84-25.39-21.5-10.53-13.65-13.53-31.11L101-703.08ZM800-320H676.15q-15.46 0-25.8 10.35Q640-299.31 640-283.85V-160l160-160Z"/>
-                    </svg>
-                </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.posts.main') }}
-                </div>
-            </a>
-            <a class="panel__link" href="{{ '/' }}">
-                <div class="panel__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                        <path d="M363.08-406.15h373.84L612.77-569.23l-95.08 121.54-62.77-77.69-91.84 119.23ZM322.31-260Q292-260 271-281q-21-21-21-51.31v-455.38Q250-818 271-839q21-21 51.31-21h455.38Q808-860 829-839q21 21 21 51.31v455.38Q850-302 829-281q-21 21-51.31 21H322.31Zm0-60h455.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-455.38q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H322.31q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v455.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85Zm-140 200Q152-120 131-141q-21-21-21-51.31v-515.38h60v515.38q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85h515.38v60H182.31Zm140-680h455.38q4.62 0 8.46 3.85 3.85 3.84 3.85 8.46v455.38q0 4.62-3.85 8.46-3.84 3.85-8.46 3.85H322.31q-4.62 0-8.46-3.85-3.85-3.84-3.85-8.46v-455.38q0-4.62 3.85-8.46 3.84-3.85 8.46-3.85Z"/>
-                    </svg>
-                </div>
-                <div class="panel__link-text">
-                    {{ __('admin::panel.nav.media.main') }}
-                </div>
-            </a>
-        </nav>
+            </nav>
 
-        @if (auth()->user()?->hasRole('developer'))
+            {{-- Content --}}
+
             <div class="panel__label">
-                {{ __('admin::panel.label.developer') }}
+                {{ __('admin::panel.label.content') }}
             </div>
             <nav class="panel__nav">
-                <a class="panel__link" href="{{ '/' }}">
-                    <div class="panel__icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                            <path d="M322.33-289.23q15.05 0 25.21-10.18 10.15-10.18 10.15-25.23t-10.18-25.21Q337.33-360 322.28-360t-25.2 10.18q-10.16 10.18-10.16 25.23t10.18 25.2q10.19 10.16 25.23 10.16Zm0-155.39q15.05 0 25.21-10.18 10.15-10.18 10.15-25.23t-10.18-25.2q-10.18-10.15-25.23-10.15t-25.2 10.18q-10.16 10.18-10.16 25.23t10.18 25.2q10.19 10.15 25.23 10.15Zm0-155.38q15.05 0 25.21-10.18 10.15-10.18 10.15-25.23t-10.18-25.2q-10.18-10.16-25.23-10.16t-25.2 10.18q-10.16 10.18-10.16 25.23t10.18 25.21Q307.29-600 322.33-600Zm151.52 305.38h167.69q12.75 0 21.37-8.63 8.63-8.62 8.63-21.38 0-12.75-8.63-21.37-8.62-8.61-21.37-8.61H473.85q-12.75 0-21.38 8.62-8.62 8.63-8.62 21.39 0 12.75 8.62 21.37 8.63 8.61 21.38 8.61Zm0-155.38h167.69q12.75 0 21.37-8.63 8.63-8.63 8.63-21.38 0-12.76-8.63-21.37-8.62-8.62-21.37-8.62H473.85q-12.75 0-21.38 8.63-8.62 8.63-8.62 21.38 0 12.76 8.62 21.37 8.63 8.62 21.38 8.62Zm0-155.39h167.69q12.75 0 21.37-8.62 8.63-8.63 8.63-21.39 0-12.75-8.63-21.37-8.62-8.61-21.37-8.61H473.85q-12.75 0-21.38 8.63-8.62 8.62-8.62 21.38 0 12.75 8.62 21.37 8.63 8.61 21.38 8.61ZM212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Z"/>
-                        </svg>
+                @foreach ($contentTypes as $type)
+                    <div class="panel__link-container">
+                        <a href="{{ route('admin.content.list', ['type' => $type->key]) }}" class="panel__link">
+                            <div class="panel__icon icon">{{ $type->settings['icon'] ?? 'dangerous' }}</div>
+                            <div class="panel__link-text">
+                                {{ $type->name }}
+                            </div>
+                        </a>
                     </div>
-                    <div class="panel__link-text">
-                        {{ __('admin::panel.nav.contentTypes.main') }}
-                    </div>
-                </a>
-                <a class="panel__link" href="{{ '/' }}">
-                    <div class="panel__icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                            <path d="M633.77-486.08 486.85-633q-5.62-5.61-7.93-11.9-2.3-6.28-2.3-13.46 0-7.18 2.3-13.41 2.31-6.23 7.93-11.84l146.92-146.93q5.61-5.61 11.9-7.92 6.28-2.31 13.46-2.31 7.18 0 13.41 2.31t11.84 7.92l146.93 146.93q5.61 5.61 7.92 11.89 2.31 6.28 2.31 13.46 0 7.18-2.31 13.41-2.31 6.24-7.92 11.85L684.38-486.08q-5.61 5.62-11.89 7.92-6.29 2.31-13.46 2.31-7.18 0-13.42-2.31-6.23-2.3-11.84-7.92Zm-481.46-77.77v-207.69q0-15.36 10.39-25.76 10.4-10.39 25.76-10.39h207.69q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76v207.69q0 15.37-10.4 25.76-10.39 10.4-25.76 10.4H188.46q-15.36 0-25.76-10.4-10.39-10.39-10.39-25.76Zm375.38 375.39v-207.69q0-15.37 10.4-25.76 10.39-10.4 25.76-10.4h207.69q15.36 0 25.76 10.4 10.39 10.39 10.39 25.76v207.69q0 15.36-10.39 25.76-10.4 10.39-25.76 10.39H563.85q-15.37 0-25.76-10.39-10.4-10.4-10.4-25.76Zm-375.38 0v-207.69q0-15.37 10.39-25.76 10.4-10.4 25.76-10.4h207.69q15.37 0 25.76 10.4 10.4 10.39 10.4 25.76v207.69q0 15.36-10.4 25.76-10.39 10.39-25.76 10.39H188.46q-15.36 0-25.76-10.39-10.39-10.4-10.39-25.76Z"/>
-                        </svg>
-                    </div>
-                    <div class="panel__link-text">
-                        {{ __('admin::panel.nav.blocks.main') }}
-                    </div>
-                </a>
+                @endforeach
+
+                {{-- Media --}}
+
+                <div class="panel__link-container{{ request()->routeIs('admin.media.*') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.media.list') }}" class="panel__link{{ request()->routeIs('admin.media.*') ? ' -active' : '' }}">
+                        <div class="panel__icon icon">filter</div>
+                        <div class="panel__link-text">
+                            {{ __('admin::panel.nav.media.main') }}
+                        </div>
+                    </a>
+                </div>
             </nav>
-        @endif
+
+            {{-- Administration --}}
+
+            <div class="panel__label">
+                {{ __('admin::panel.label.administration') }}
+            </div>
+            <nav class="panel__nav">
+
+                {{-- Settings --}}
+
+                <div class="panel__link-container -has-subs{{ request()->routeIs('admin.settings.*') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.settings.site-info') }}" class="panel__link">
+                        <div class="panel__icon icon">tune</div>
+                        <div class="panel__link-text">
+                            {{ __('admin::panel.nav.settings.main') }}
+                        </div>
+                    </a>
+                    <a href="{{ route('admin.settings.site-info') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-info') ? ' -active' : '' }}">
+                        <div class="panel__link-text">
+                            {{ 'Site Info' }}
+                        </div>
+                    </a>
+                    <a href="{{ route('admin.settings.site-variables') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-variables') ? ' -active' : '' }}">
+                        <div class="panel__link-text">
+                            {{ 'Site Variables' }}
+                        </div>
+                    </a>
+                    @if (auth()->user()?->hasRole('developer'))
+                        <a href="{{ route('admin.settings.developer') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'Developer' }}
+                            </div>
+                        </a>
+                    @endif
+                </div>
+
+                {{-- Users --}}
+
+                <div class="panel__link-container{{ request()->routeIs('admin.users.*') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.users.list') }}" class="panel__link{{ request()->routeIs('admin.users.*') ? ' -active' : '' }}">
+                        <div class="panel__icon icon">group</div>
+                        <div class="panel__link-text">
+                            {{ __('admin::panel.nav.users.main') }}
+                        </div>
+                    </a>
+                </div>
+            </nav>
+
+            {{-- Developer --}}
+
+            @if (auth()->user()?->hasRole('developer'))
+                <div class="panel__label">
+                    {{ __('admin::panel.label.developer') }}
+                </div>
+                <nav class="panel__nav">
+
+                    {{-- Themes --}}
+
+                    <div class="panel__link-container -has-subs{{ request()->routeIs('admin.themes.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.themes.select') }}" class="panel__link">
+                            <div class="panel__icon icon">palette</div>
+                            <div class="panel__link-text">
+                                {{ 'Themes' }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.themes.select') }}" class="panel__link -sub{{ request()->routeIs('admin.themes.select') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'Select Theme' }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.themes.variables') }}" class="panel__link -sub{{ request()->routeIs('admin.themes.variables') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'Theme Variables' }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {{-- Menus --}}
+
+                    <div class="panel__link-container -has-subs{{ request()->routeIs('admin.menus.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.menus.list') }}" class="panel__link{{ request()->routeIs('admin.menus.*') ? ' -active' : '' }}">
+                            <div class="panel__icon icon">menu_open</div>
+                            <div class="panel__link-text">
+                                {{ 'Menus' }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {{-- Forms --}}
+
+                    <div class="panel__link-container -has-subs{{ request()->routeIs('admin.forms.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.forms.list') }}" class="panel__link">
+                            <div class="panel__icon icon">table_edit</div>
+                            <div class="panel__link-text">
+                                {{ 'Forms' }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.forms.list') }}" class="panel__link -sub{{ request()->routeIs('admin.forms.list') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'All Forms' }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.forms.submissions') }}" class="panel__link -sub{{ request()->routeIs('admin.forms.submissions') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'Submissions' }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {{-- Content types --}}
+
+                    <div class="panel__link-container{{ request()->routeIs('admin.content-types.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.content-types.list') }}" class="panel__link{{ request()->routeIs('admin.content-types.*') ? ' -active' : '' }}">
+                            <div class="panel__icon icon">list_alt</div>
+                            <div class="panel__link-text">
+                                {{ __('admin::panel.nav.contentTypes.main') }}
+                            </div>
+                        </a>
+                    </div>
+
+                    {{-- Blocks --}}
+
+                    <div class="panel__link-container -has-subs{{ request()->routeIs('admin.blocks.*') ? ' -active' : '' }}">
+                        <a href="{{ route('admin.blocks.list') }}" class="panel__link">
+                            <div class="panel__icon icon">widgets</div>
+                            <div class="panel__link-text">
+                                {{ __('admin::panel.nav.blocks.main') }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.blocks.list') }}" class="panel__link -sub{{ request()->routeIs('admin.blocks.list') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'All Blocks' }}
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.blocks.groups') }}" class="panel__link -sub{{ request()->routeIs('admin.blocks.groups') ? ' -active' : '' }}">
+                            <div class="panel__link-text">
+                                {{ 'Block groups' }}
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+            @endif
+        </div>
     </div>
 </div>

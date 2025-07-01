@@ -1,5 +1,5 @@
 @extends('admin::app')
 
 @section('content')
-    <div>Admin Dashboard</div>
+    <div style="padding: 16px 24px">Menus: List</div>
 @endsection

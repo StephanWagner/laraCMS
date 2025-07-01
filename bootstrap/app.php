@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
             'isCmsInstalled' => \App\Http\Middleware\IsCmsInstalled::class,
+            'userIsDeveloper' => \App\Http\Middleware\UserIsDeveloper::class,
             'setLocale' => \App\Http\Middleware\SetLocale::class,
         ]);
     })

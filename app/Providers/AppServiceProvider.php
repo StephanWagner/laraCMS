@@ -33,8 +33,5 @@ class AppServiceProvider extends ServiceProvider
 
         // Helpers
         View::share('assetHelper', AssetHelper::class);
-
-        // Debugging
-        // app()->setLocale('de');
     }
 }

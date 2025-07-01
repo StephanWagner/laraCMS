@@ -5,12 +5,19 @@
   background: $color-surface-2;
   width: $panel-width;
   flex-shrink: 0;
-  padding: $header-height 0 0;
+}
+
+.panel__header {
+  height: $header-height;
 }
 
 .panel__container {
   height: calc(100vh - $header-height);
   overflow: auto;
+}
+
+.panel__content {
+  padding: 0 0 24px;
 }
 
 .panel__label {
@@ -30,12 +37,30 @@
   }
 }
 
+.panel__link-container {
+  transition: transition('background-color');
+
+  &.-active {
+    background-color: $color-surface-2-lighter;
+
+    &.-has-subs {
+      >.panel__link:not(.-sub):first-child {
+        color: #fff;
+
+        &::before {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
 .panel__link {
   position: relative;
   display: flex;
   color: $default-text-color;
   text-decoration: none;
-  padding: 3px 12px 3px 8px;
+  padding: 4px 12px 4px 8px;
   transition: transition('color');
 
   &::before {
@@ -75,6 +100,16 @@
     border-bottom: 8px solid transparent;
     border-right: 8px solid $color-surface-1;
   }
+
+  &.-sub {
+    font-size: 13px;
+    padding-left: calc(8px + 24px + 6px);
+    display: none;
+
+    .panel__link-container.-active & {
+      display: block;
+    }
+  }
 }
 
 .panel__link-text {
@@ -82,20 +117,5 @@
 }
 
 .panel__icon {
-  flex-shrink: 0;
-  line-height: 0;
-  width: 24px;
-  height: 24px;
   margin: 0 6px 0 0;
-
-  > svg {
-    width: 24px;
-    height: 24px;
-    fill: $default-text-color;
-    transition: transiton('fill');
-
-    .panel__link:hover & {
-      fill: $light-text-color;
-    }
-  }
 }
