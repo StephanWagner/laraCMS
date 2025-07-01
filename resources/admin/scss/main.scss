@@ -1,9 +1,12 @@
 @use "variables" as *;
 @use "mixins" as *;
 
+// Fonts
+@use "fonts/material-symbols";
+@use "fonts/nunito-sans";
+
 // Lib
 @use "lib/reset";
-@use "lib/font-nunito-sans";
 @use "lib/common";
 
 // App
