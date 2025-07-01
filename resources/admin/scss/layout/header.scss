@@ -23,17 +23,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $secondary-text-color;
-  transition: transition('color');
-
-  &.-active,
-  &:hover {
-    color: #fff;
-  }
 }
 
-.header__user-icon {
+.header__user-menu-icon {
   width: 36px;
   height: 36px;
   font-size: 36px;
+  color: $secondary-text-color;
+  transition: transition('color');
+
+  .header__user-menu:hover &,
+  .header__user-menu.-active & {
+    color: #fff;
+  }
 }
