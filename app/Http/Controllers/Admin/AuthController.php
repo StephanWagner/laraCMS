@@ -76,6 +76,7 @@ class AuthController extends Controller
             'email' => $email,
             'password' => Hash::make($password),
             'role' => 'developer',
+            'language' => app()->getLocale(),
         ]);
 
         // Mark install as complete

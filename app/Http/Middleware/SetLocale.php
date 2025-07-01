@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
-// use App\Vendor\IP2Location\IP2Location;
 
 class SetLocale
 {
@@ -22,16 +21,15 @@ class SetLocale
         // if (strlen($routeLanguageId) === 2 && array_key_exists($routeLanguageId, config('cms.available_locales'))) {
         //     $languageId = $routeLanguageId;
         // }
-
-        // if ($request->user()) {
-        //     // Update users language
-        //     if (!empty($languageId) && array_key_exists($languageId, config('cms.available_locales')) && $request->user()->language != $languageId) {
-        //         User::where(['id' => $request->user()->id])->update(['language' => $languageId]);
-        //     } else {
-        //         // Get users language
-        //         $languageId = $request->user()->language;
-        //     }
-        // }
+        if ($request->user()) {
+            // Update users language
+            if (!empty($languageId) && array_key_exists($languageId, config('cms.available_locales')) && $request->user()->language != $languageId) {
+                User::where(['id' => $request->user()->id])->update(['language' => $languageId]);
+            } else {
+                // Get users language
+                $languageId = $request->user()->language;
+            }
+        }
 
         // Get language from session
         if (empty($languageId) && session()->get('languageId')) {
@@ -48,17 +46,6 @@ class SetLocale
                 $languageId = $acceptLanguageId;
             }
         }
-
-        // Get language from country code
-        // if (empty($languageId)) {
-        //     $countryCode = IP2Location::getCountryCode();
-        //     if (!empty($countryCode)) {
-        //         $languageIdFromCountryCode = config('cms.country_code_to_locale.' . strtoupper($countryCode));
-        //         if (!empty($languageIdFromCountryCode)) {
-        //             $languageId = $languageIdFromCountryCode;
-        //         }
-        //     }
-        // }
 
         // Use fallback language
         if (empty($languageId) || !array_key_exists($languageId, config('cms.available_locales'))) {

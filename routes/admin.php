@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UsersController;
@@ -32,7 +33,7 @@ Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name
 });
 
 
-Route::middleware(['web', 'auth', 'isCmsInstalled'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
     // Auth
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 

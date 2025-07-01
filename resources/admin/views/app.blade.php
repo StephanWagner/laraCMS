@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ explode('_', app()->getLocale())[0] }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <title>{{ !empty($pageTitle) ? $pageTitle . ' · ' : '' }}{{ config('cms.name') }}</title>
     <meta charset="utf-8">

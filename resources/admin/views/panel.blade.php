@@ -23,8 +23,8 @@
             </div>
             <nav class="panel__nav">
                 @foreach ($contentTypes as $type)
-                    <div class="panel__link-container">
-                        <a href="{{ route('admin.content.list', ['type' => $type->key]) }}" class="panel__link">
+                    <div class="panel__link-container{{ request()->routeIs('admin.content.*') && request()->route('type') == $type->key ? ' -active' : '' }}">
+                        <a href="{{ route('admin.content.list', ['type' => $type->key]) }}" class="panel__link{{ request()->routeIs('admin.content.*') && request()->route('type') == $type->key ? ' -active' : '' }}">
                             <div class="panel__icon icon">{{ $type->settings['icon'] ?? 'dangerous' }}</div>
                             <div class="panel__link-text">
                                 {{ $type->name }}
@@ -63,18 +63,18 @@
                     </a>
                     <a href="{{ route('admin.settings.site-info') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-info') ? ' -active' : '' }}">
                         <div class="panel__link-text">
-                            {{ 'Site Info' }}
+                            {{ __('admin::panel.nav.settings.siteInfo') }}
                         </div>
                     </a>
                     <a href="{{ route('admin.settings.site-variables') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.site-variables') ? ' -active' : '' }}">
                         <div class="panel__link-text">
-                            {{ 'Site Variables' }}
+                            {{ __('admin::panel.nav.settings.siteVariables') }}
                         </div>
                     </a>
                     @if (auth()->user()?->hasRole('developer'))
                         <a href="{{ route('admin.settings.developer') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'Developer' }}
+                                {{ __('admin::panel.nav.settings.developer') }}
                             </div>
                         </a>
                     @endif
@@ -106,17 +106,17 @@
                         <a href="{{ route('admin.themes.select') }}" class="panel__link">
                             <div class="panel__icon icon">palette</div>
                             <div class="panel__link-text">
-                                {{ 'Themes' }}
+                                {{ __('admin::panel.nav.themes.main') }}
                             </div>
                         </a>
                         <a href="{{ route('admin.themes.select') }}" class="panel__link -sub{{ request()->routeIs('admin.themes.select') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'Select Theme' }}
+                                {{ __('admin::panel.nav.themes.selectTheme') }}
                             </div>
                         </a>
                         <a href="{{ route('admin.themes.variables') }}" class="panel__link -sub{{ request()->routeIs('admin.themes.variables') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'Theme Variables' }}
+                                {{ __('admin::panel.nav.themes.themeVariables') }}
                             </div>
                         </a>
                     </div>
@@ -127,7 +127,7 @@
                         <a href="{{ route('admin.menus.list') }}" class="panel__link{{ request()->routeIs('admin.menus.*') ? ' -active' : '' }}">
                             <div class="panel__icon icon">menu_open</div>
                             <div class="panel__link-text">
-                                {{ 'Menus' }}
+                                {{ __('admin::panel.nav.menus.main') }}
                             </div>
                         </a>
                     </div>
@@ -138,17 +138,17 @@
                         <a href="{{ route('admin.forms.list') }}" class="panel__link">
                             <div class="panel__icon icon">table_edit</div>
                             <div class="panel__link-text">
-                                {{ 'Forms' }}
+                                {{ __('admin::panel.nav.forms.main') }}
                             </div>
                         </a>
                         <a href="{{ route('admin.forms.list') }}" class="panel__link -sub{{ request()->routeIs('admin.forms.list') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'All Forms' }}
+                                {{ __('admin::panel.nav.forms.list') }}
                             </div>
                         </a>
                         <a href="{{ route('admin.forms.submissions') }}" class="panel__link -sub{{ request()->routeIs('admin.forms.submissions') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'Submissions' }}
+                                {{ __('admin::panel.nav.forms.submissions') }}
                             </div>
                         </a>
                     </div>
@@ -175,12 +175,12 @@
                         </a>
                         <a href="{{ route('admin.blocks.list') }}" class="panel__link -sub{{ request()->routeIs('admin.blocks.list') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'All Blocks' }}
+                                {{ __('admin::panel.nav.blocks.list') }}
                             </div>
                         </a>
                         <a href="{{ route('admin.blocks.groups') }}" class="panel__link -sub{{ request()->routeIs('admin.blocks.groups') ? ' -active' : '' }}">
                             <div class="panel__link-text">
-                                {{ 'Block groups' }}
+                                {{ __('admin::panel.nav.blocks.groups') }}
                             </div>
                         </a>
                     </div>

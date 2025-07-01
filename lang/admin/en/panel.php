@@ -9,32 +9,60 @@ return [
 
     // Links
     'nav' => [
-        // Admin
+        // Dashboard
         'dashboard' => [
             'main' => 'Dashboard',
         ],
-        'settings' => [
-            'main' => 'Settings',
-        ],
-        'users' => [
-            'main' => 'Users',
-        ],
+
         // Content
-        'pages' => [
-            'main' => 'Pages',
-        ],
-        'posts' => [
-            'main' => 'Posts',
-        ],
+
+        // Media
         'media' => [
             'main' => 'Media',
         ],
-        // Developer
+
+        // Settings
+        'settings' => [
+            'main' => 'Settings',
+            'siteInfo' => 'Site Settings',
+            'siteVariables' => 'Site Variables',
+            'developer' => 'Developer',
+        ],
+
+        // Users
+        'users' => [
+            'main' => 'Users',
+        ],
+
+        // Themes
+        'themes' => [
+            'main' => 'Themes',
+            'selectTheme' => 'Select Theme',
+            'themeVariables' => 'Theme Variables',
+        ],
+
+        // Menus
+        'menus' => [
+            'main' => 'Menus',
+        ],
+
+        // Forms
+        'forms' => [
+            'main' => 'Forms',
+            'list' => 'All Forms',
+            'submissions' => 'Submissions',
+        ],
+
+        // Content types
         'contentTypes' => [
             'main' => 'Content Types',
         ],
+
+        // Blocks
         'blocks' => [
             'main' => 'Blocks',
+            'list' => 'All Blocks',
+            'groups' => 'Block groups',
         ],
     ],
 ];
