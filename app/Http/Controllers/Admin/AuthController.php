@@ -8,6 +8,7 @@ use App\Helpers\ValidateHelper;
 use App\Helpers\MailHelper;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Sqids\Sqids;
 
@@ -272,7 +273,7 @@ class AuthController extends Controller
         }
 
         // Set reset hash
-        $resetPasswordHash = $user->password_reset_hash ? $user->password_reset_hash : StringHelper::getHash(8);
+        $resetPasswordHash = $user->password_reset_hash ? $user->password_reset_hash : Str::random(8);
         $user->password_reset_hash = $resetPasswordHash;
         $user->save();
 

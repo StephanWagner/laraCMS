@@ -7,12 +7,30 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+		// Force delete everything
+        // TODO remove
+		Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('settings');
+        Schema::dropIfExists('relations');
+        Schema::dropIfExists('media_versions');
+        Schema::dropIfExists('media');
+        Schema::dropIfExists('content_blocks');
+        Schema::dropIfExists('blocks');
+        Schema::dropIfExists('block_groups');
+        Schema::dropIfExists('contents');
+        Schema::dropIfExists('content_types');
+		Schema::enableForeignKeyConstraints();
+
         // Content Types
         Schema::create('content_types', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
             $table->string('name');
+            $table->unsignedInteger('order')->default(1);
             $table->json('settings')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -25,6 +43,8 @@ return new class extends Migration {
             $table->unsignedInteger('order')->default(1);
             $table->boolean('active')->default(true);
             $table->json('settings')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -35,6 +55,8 @@ return new class extends Migration {
             $table->string('key')->unique();
             $table->string('name');
             $table->unsignedInteger('order')->default(1);
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
 
@@ -46,6 +68,8 @@ return new class extends Migration {
             $table->string('name');
             $table->unsignedInteger('order')->default(1);
             $table->json('settings')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -58,7 +82,6 @@ return new class extends Migration {
             $table->unsignedInteger('order')->default(1);
             $table->boolean('active')->default(true);
             $table->json('settings')->nullable();
-            $table->timestamps();
         });
 
         // Media
@@ -70,6 +93,8 @@ return new class extends Migration {
             $table->string('original_name')->nullable();
             $table->unsignedBigInteger('size')->nullable();
             $table->json('meta')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
 
@@ -81,7 +106,6 @@ return new class extends Migration {
             $table->string('filename');
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('height')->nullable();
-            $table->timestamps();
 
             $table->unique(['media_id', 'size_key']);
         });
@@ -96,7 +120,6 @@ return new class extends Migration {
             $table->string('relation_type')->nullable(); // "image", "category"
             $table->string('field_name')->nullable();
             $table->unsignedInteger('order')->default(1);
-            $table->timestamps();
 
             $table->index(['source_type', 'source_id']);
             $table->index(['target_type', 'target_id']);
@@ -108,7 +131,6 @@ return new class extends Migration {
             $table->id();
             $table->string('key')->unique();
             $table->text('value')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -121,7 +143,7 @@ return new class extends Migration {
         Schema::dropIfExists('content_blocks');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('block_groups');
-        Schema::dropIfExists('content');
+        Schema::dropIfExists('contents');
         Schema::dropIfExists('content_types');
     }
 };
