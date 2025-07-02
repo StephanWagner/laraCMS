@@ -32,13 +32,12 @@ Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name
     Route::post('/new-password', [AuthController::class, 'newPasswordRequest'])->name('new-password-request');
 });
 
-
 Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
     // Auth
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Dashboard
-    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'view'])->name('view');
     });
 

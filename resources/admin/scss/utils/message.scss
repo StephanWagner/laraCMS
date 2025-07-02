@@ -2,6 +2,7 @@
 @use "../mixins" as *;
 
 .message__container {
+  // TODO test
   position: fixed;
   z-index: 2100;
   right: 8px;
@@ -9,7 +10,7 @@
   background: #000;
   padding: 12px 20px;
   border-radius: 12px;
-  color: #fff;
+  color: $light-text-color;
   font-size: 18px;
   font-weight: 600;
   max-width: calc(100% - 8px - 8px);

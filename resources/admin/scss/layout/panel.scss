@@ -45,7 +45,7 @@
 
     &.-has-subs {
       >.panel__link:not(.-sub):first-child {
-        color: #fff;
+        color: $light-text-color;
 
         &::before {
           display: none !important;
@@ -69,7 +69,7 @@
     top: 1px;
     bottom: 1px;
     left: 0;
-    max-height: 28px;
+    max-height: 30px;
     border-radius: 0 4px 4px 0;
     background: $primary-color;
     transition: transition('width', 'opacity');

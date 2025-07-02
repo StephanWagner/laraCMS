@@ -66,7 +66,7 @@ $textfield-border-color-error: $error-color;
 $textfield-border-color-disabled: $color-surface-3;
 
 // Buttons
-$button-color: #fff;
+$button-color: $light-text-color;
 $button-color-disabled: $color-surface-3;
 $button-background-color: $primary-color;
 $button-background-gradient: $primary-gradient;
