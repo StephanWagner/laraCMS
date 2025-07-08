@@ -17,6 +17,9 @@
 .header__user-menu {
   position: relative;
   flex-shrink: 0;
+}
+
+.header__user-menu-toggler {
   height: $header-height;
   width: $header-height;
   cursor: pointer;
@@ -32,8 +35,8 @@
   color: $secondary-text-color;
   transition: transition('color');
 
-  .header__user-menu:hover &,
-  .header__user-menu.-active & {
+  .header__user-menu-toggler:hover &,
+  .header__user-menu-toggler.-active & {
     color: #fff;
   }
 }
