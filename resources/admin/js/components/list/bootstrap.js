@@ -1,14 +1,13 @@
 import { ListView } from './list-view';
 
 export function initList() {
-  const wrapper = document.querySelector('.list__wrapper');
+  const wrapper = document.querySelector('[data-list]');
   if (!wrapper) return;
 
-  const endpoint = wrapper.getAttribute('data-endpoint');
-  if (!endpoint) return;
+  const key = wrapper.getAttribute('data-list');
 
   new ListView({
+    key,
     wrapper,
-    endpoint,
   });
 }

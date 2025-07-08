@@ -3,28 +3,50 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\ContentType;
 
 class ListService
 {
     public static function getList(string $key)
     {
         $settingKey = 'list_settings.' . $key;
+
         $raw = DB::table('settings')->where('key', $settingKey)->value('value');
+
+        if (!$raw && $contentType = ContentType::where('key', $key)->first()) {
+            $raw = $contentType->settings['list'] ?? null;
+        }
 
         if (!$raw) return null;
 
         $config = json_decode($raw, true);
+        $config['key'] = $key;
 
-        $modelClass = self::getModelClassForKey($key);
-        if (!class_exists($modelClass)) return null;
+        $modelClassName = $config['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        if (!class_exists($modelClass)) {
+            return null;
+        }
+
+        if (!is_subclass_of($modelClass, \Illuminate\Database\Eloquent\Model::class)) {
+            return null;
+        }
 
         $query = $modelClass::query();
 
         // Apply ordering
-        $orderBy = $config['defaultOrderBy'] ?? 'id';
-        $direction = $config['defaultOrderDirection'] ?? 'desc';
+        $orderBy = request()->get('order-by', $config['defaultOrderBy'] ?? 'id');
+        $orderDirection = strtolower(request()->get('order-direction', $config['defaultOrderDirection'] ?? 'desc'));
 
-        $query->orderBy($orderBy, $direction);
+        if (!in_array($orderDirection, ['asc', 'desc'])) {
+            $orderDirection = 'desc';
+        }
+
+        $config['orderBy'] = $orderBy;
+        $config['orderDirection'] = $orderDirection;
+
+        $query->orderBy($orderBy, $orderDirection);
 
         // Get paginated result
         $perPage = $config['defaultPerPage'] ?? 20;
@@ -34,15 +56,6 @@ class ListService
             'config' => $config,
             'items' => $items,
         ];
-    }
-
-    protected function getModelClassForKey($key)
-    {
-        return match ($key) {
-            'content_types' => \App\Models\ContentType::class,
-            'users' => \App\Models\User::class,
-            default => null,
-        };
     }
 }
 

@@ -15,6 +15,7 @@ class ListSettingsSeeder extends Seeder
             [
                 'key' => 'list_settings.content_types',
                 'value' => collect([
+                    'model' => 'ContentType',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'desc',
                     'defaultPerPage' => 20,
@@ -69,12 +70,11 @@ class ListSettingsSeeder extends Seeder
                         ],
                     ],
                 ])->toJson(),
-                'created_at' => $now,
-                'updated_at' => $now,
             ],
             [
                 'key' => 'list_settings.users',
                 'value' => collect([
+                    'model' => 'User',
                     'defaultOrderBy' => 'title',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
@@ -143,8 +143,6 @@ class ListSettingsSeeder extends Seeder
                         ],
                     ],
                 ])->toJson(),
-                'created_at' => $now,
-                'updated_at' => $now,
             ],
         ]);
     }

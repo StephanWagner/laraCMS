@@ -1,13 +1,13 @@
 import { apiFetch } from '../../utils/api-fetch';
 
 export class ListView {
-  constructor({ wrapper, endpoint }) {
-    if (!wrapper) return;
+  constructor({ key, wrapper }) {
+    if (!key || !wrapper) return;
 
+    this.key = key;
     this.wrapper = wrapper;
-    this.endpoint = endpoint;
 
-    this.container = null;
+    this.listData = window.listData || null;
 
     this.init();
   }
@@ -25,7 +25,7 @@ export class ListView {
     // Filters
     const filters = document.createElement('div');
     header.className = 'list-filters__container';
-    filters.innerHTML = 'SEARCH / FILTERS';
+    header.innerHTML = 'SEARCH / FILTERS';
     header.appendChild(filters);
 
     // Content
@@ -34,10 +34,11 @@ export class ListView {
 
     const contentHeader = document.createElement('div');
     contentHeader.className = 'list-content__header';
-    filters.innerHTML = 'CONTENT HEADER';
+    contentHeader.innerHTML = 'CONTENT HEADER';
     content.appendChild(contentHeader);
 
     const contentItems = document.createElement('div');
+    contentItems.setAttribute('data-list-items', '');
     contentItems.className = 'list-content__items';
     contentItems.innerHTML = 'ITEMS';
     content.appendChild(contentItems);
@@ -52,7 +53,11 @@ export class ListView {
     this.container.appendChild(footer);
     this.wrapper.appendChild(this.container);
 
-    this.loadData();
+    if (this.listData) {
+      this.render(this.listData);
+    } else {
+      this.loadData(); // TODO
+    }
   }
 
   loadData(params = {}) {
@@ -72,19 +77,23 @@ export class ListView {
     return this.endpoint + (query ? `?${query}` : '');
   }
 
-  render(data) {
-    const itemsEl = this.container.querySelector('.list-content__items');
+  render(listData) {
+    console.log(listData);
+
+    const itemsEl = this.container.querySelector('[data-list-items]');
     itemsEl.innerHTML = '';
 
-    if (!data || !data.length) {
+    const listItems = listData?.items?.data || [];
+
+    if (!listItems || !listItems.length) {
       itemsEl.innerHTML = '<p>No items found.</p>';
       return;
     }
 
-    data.forEach(item => {
+    listItems.forEach(item => {
       const el = document.createElement('div');
-      el.className = 'list-item';
-      el.textContent = item.title || '[no title]';
+      el.className = 'list-item__container';
+      el.textContent = item.name || item.title || '[no title]';
       itemsEl.appendChild(el);
     });
   }
