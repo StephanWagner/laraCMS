@@ -1,4 +1,4 @@
-@include('email.email-header')
+@include('admin::email.email-header')
 
 <div style="font-size: 23px; font-weight: bold; margin: 0 0 24px; text-align: center; color: #fff">
     {!! __('admin::mail.resetPassword.title', ['name' => $mailData['data']['user']['name']]) !!}
@@ -22,6 +22,6 @@
     {!! __('admin::mail.resetPassword.textBelowButton') !!}
 </div>
 
-@include('email.email-footer', [
+@include('admin::email.email-footer', [
     'footerText' => __('admin::mail.resetPassword.footer', ['app-name' => config('cms.name')])
 ])

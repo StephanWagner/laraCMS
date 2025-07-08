@@ -14,7 +14,7 @@ class SendMail
         $recipient = $data['user']->email;
 
         $mailData = [
-            'template' => 'reset-password',
+            'template' => 'admin::email.reset-password',
             'subject' => __('admin::mail.resetPassword.subject'),
             'data' => $data
         ];

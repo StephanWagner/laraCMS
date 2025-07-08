@@ -29,6 +29,6 @@ class Mail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->mailData['subject'])->view('email.' . $this->mailData['template']);
+        return $this->subject($this->mailData['subject'])->view($this->mailData['template']);
     }
 }
