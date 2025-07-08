@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->string('key')->unique();
             $table->string('name');
             $table->unsignedInteger('order')->default(1);
+            $table->boolean('active')->default(true);
             $table->json('settings')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
@@ -67,6 +68,7 @@ return new class extends Migration {
             $table->string('key')->unique();
             $table->string('name');
             $table->unsignedInteger('order')->default(1);
+            $table->boolean('active')->default(true);
             $table->json('settings')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
