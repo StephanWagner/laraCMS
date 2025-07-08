@@ -21,6 +21,7 @@ class SetLocale
         // if (strlen($routeLanguageId) === 2 && array_key_exists($routeLanguageId, config('cms.available_locales'))) {
         //     $languageId = $routeLanguageId;
         // }
+
         if ($request->user()) {
             // Update users language
             if (!empty($languageId) && array_key_exists($languageId, config('cms.available_locales')) && $request->user()->language != $languageId) {

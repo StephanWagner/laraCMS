@@ -47,7 +47,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $validate = ValidateHelper::name($name);
+        $validate = ValidateHelper::userName($name);
         if ($validate !== true) {
             return response()->json([
                 'error' => true,
@@ -55,7 +55,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $validate = ValidateHelper::email($email);
+        $validate = ValidateHelper::userEmail($email);
         if ($validate !== true) {
             return response()->json([
                 'error' => true,
@@ -63,7 +63,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $validate = ValidateHelper::password($password);
+        $validate = ValidateHelper::userPassword($password);
         if ($validate !== true) {
             return response()->json([
                 'error' => true,

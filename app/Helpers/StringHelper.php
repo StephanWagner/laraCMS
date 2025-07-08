@@ -15,6 +15,7 @@ class StringHelper
     /**
      * Sanitise input
      */
+    // TODO ask ChatGPT to be more clear
     public static function sanitise($html)
     {
         if (empty($html)) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ explode('_', app()->getLocale())[0] }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <title>{{ config('app.name') }}</title>
     <meta charset="utf-8">
@@ -14,23 +14,16 @@
 
 <body>
 
-    <header class="site-header">
-        <div class="container">
-            <h1>{{ config('app.name') }}</h1>
-            <nav>
-                @includeIf("theme::partials.nav")
-            </nav>
-        </div>
+    <header>
+        HEADER
     </header>
 
-    <main class="site-content">
-        <div class="container">
-            @yield('content')
-        </div>
-    </main>
+    <div class="container">
+        @yield('content')
+    </div>
 
-    <footer class="site-footer">
-        @includeIf("theme::partials.footer")
+    <footer>
+        FOOTER
     </footer>
 
     <script type="module" src="{{ $assetHelper::versioned('themes/' . $theme . '/js/app.js') }}"></script>

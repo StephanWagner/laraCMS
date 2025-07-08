@@ -6,9 +6,9 @@ use App\Models\User;
 
 class ValidateHelper
 {
-    // Validate name
+    // Validate a users name
 
-    static function name($value = null)
+    static function userName($value = null)
     {
         // Clean up
         $value = StringHelper::removeSpaces($value);
@@ -34,7 +34,7 @@ class ValidateHelper
 
     // Validate email
 
-    static function email($value = null)
+    static function userEmail($value = null)
     {
         // Clean up
         $value = StringHelper::removeSpaces($value);
@@ -56,7 +56,7 @@ class ValidateHelper
 
     // Validate password
 
-    static function password($value = null)
+    static function userPassword($value = null)
     {
         // Not empty
         if (empty($value)) {

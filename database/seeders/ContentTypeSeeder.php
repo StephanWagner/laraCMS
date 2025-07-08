@@ -19,12 +19,12 @@ class ContentTypeSeeder extends Seeder
                 'key' => 'page',
                 'name' => 'Pages',
                 'order' => 1,
-                'settings' => json_encode([
+                'settings' => collect([
                     'uri' => '/{slug}',
                     'icon' => 'description',
                     'listable' => false,
                     'default_status' => 'published',
-                ]),
+                ])->toJson(),
                 'created_by' => $developerId,
                 'updated_by' => $developerId,
                 'created_at' => $now,
@@ -34,12 +34,12 @@ class ContentTypeSeeder extends Seeder
                 'key' => 'blog',
                 'name' => 'Blogs',
                 'order' => 2,
-                'settings' => json_encode([
+                'settings' => collect([
                     'uri' => '/{key}/{id}-{slug}',
                     'icon' => 'note_stack',
                     'listable' => true,
                     'default_status' => 'draft',
-                ]),
+                ])->toJson(),
                 'created_by' => $developerId,
                 'updated_by' => $developerId,
                 'created_at' => $now,

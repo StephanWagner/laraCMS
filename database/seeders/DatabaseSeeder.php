@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            CmsSettingsSeeder::class,
+            ListSettingsSeeder::class,
             ContentTypeSeeder::class,
         ]);
     }
