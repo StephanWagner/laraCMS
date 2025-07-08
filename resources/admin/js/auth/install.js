@@ -31,24 +31,26 @@ function initInstall() {
     submitButton.classList.add('-loading');
     submitButton.disabled = true;
 
-    apiFetch('/admin/install', {
+    apiFetch({
+      url: '/admin/install',
       method: 'POST',
       data: { csrf, name, email, password },
-      onSuccess: (response) => {
+      success: response => {
         if (response.success) {
           window.location.href = response.redirect || '/admin/login';
         } else {
           showAuthFormError(submitButton, response.message);
         }
       },
-      onError: (response) => {
+      error: response => {
         showAuthFormError(submitButton, response.message);
-      }
-    }).finally(() => {
-      submitButton.classList.remove('-loading');
-      submitButton.disabled = false;
+      },
+      complete: () => {
+        submitButton.classList.remove('-loading');
+        submitButton.disabled = false;
+      },
     });
   });
 }
 
-export { initInstall }
+export { initInstall };

@@ -28,24 +28,26 @@ function initLogin() {
     submitButton.classList.add('-loading');
     submitButton.disabled = true;
 
-    apiFetch('/admin/login', {
+    apiFetch({
+      url: '/admin/login',
       method: 'POST',
       data: { csrf, email, password },
-      onSuccess: (response) => {
+      success: response => {
         if (response.success) {
           window.location.href = response.redirect || '/admin';
         } else {
           showAuthFormError(submitButton, response.message);
         }
       },
-      onError: (response) => {
+      error: response => {
         showAuthFormError(submitButton, response.message);
-      }
-    }).finally(() => {
-      submitButton.classList.remove('-loading');
-      submitButton.disabled = false;
+      },
+      complete: () => {
+        submitButton.classList.remove('-loading');
+        submitButton.disabled = false;
+      },
     });
   });
 }
 
-export { initLogin }
+export { initLogin };

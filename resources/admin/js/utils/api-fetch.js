@@ -1,77 +1,60 @@
-import { error, networkError } from './message';
 import { getCsrfToken } from './csrf';
-import { __ } from './locale';
 
-async function apiFetch(endpoint, {
-  method = 'POST',
-  data = {},
-  csrf = true,
-  headers = {},
-  onSuccess = null,
-  onError = null
-} = {}) {
-  try {
-    const fetchHeaders = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      ...headers
-    };
+export function apiFetch(options) {
+  const {
+    url,
+    method = 'POST',
+    data = null,
+    headers = {},
+    before,
+    complete,
+    success,
+    error,
+  } = options;
 
-    if (csrf) {
-      const csrfToken = getCsrfToken();
-      if (csrfToken) {
-        fetchHeaders['X-CSRF-TOKEN'] = csrfToken;
-      }
-    }
+  const xhr = new XMLHttpRequest();
+  xhr.open(method, url, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Accept', 'application/json');
 
-    const response = await fetch(endpoint, {
-      method,
-      headers: fetchHeaders,
-      body: JSON.stringify(data)
-    });
-
-    const contentType = response.headers.get('Content-Type') || '';
-    let responseData;
-
-    if (contentType.includes('application/json')) {
-      responseData = await response.json();
-    } else {
-      responseData = await response.text();
-    }
-
-    if (!response.ok) {
-      if (onError) {
-        onError(responseData);
-      } else {
-        error(responseData?.message || __('admin::error'));
-      }
-      return;
-    }
-
-    // Handle app-level success flag
-    if (
-      typeof responseData === 'object' &&
-      (
-        responseData.success === false ||
-        responseData.error === true
-      )
-    ) {
-      if (onError) {
-        onError(responseData);
-      } else {
-        error(responseData.message || __('admin::error'));
-      }
-      return;
-    }
-
-    if (onSuccess) {
-      onSuccess(responseData);
-    }
-
-    return responseData;
-  } catch (err) {
-    networkError(err);
+  // Add CSRF token
+  const csrfToken = getCsrfToken();
+  if (csrfToken) {
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
   }
+
+  // Custom headers
+  for (const key in headers) {
+    if (headers.hasOwnProperty(key)) {
+      xhr.setRequestHeader(key, headers[key]);
+    }
+  }
+
+  xhr.onload = function () {
+    let response;
+    try {
+      response = JSON.parse(xhr.responseText);
+    } catch (e) {
+      response = xhr.responseText;
+    }
+
+    if (typeof success === 'function') success(response, xhr);
+    if (typeof complete === 'function') complete(xhr);
+  };
+
+  xhr.onerror = function () {
+    if (typeof error === 'function') error(xhr);
+    if (typeof complete === 'function') complete(xhr);
+  };
+
+  if (typeof before === 'function') before();
+
+  xhr.send(data ? JSON.stringify(data) : null);
 }
 
-export { apiFetch }
+export function getNetworkErrorId(xhr) {
+  if (xhr && xhr.status === 0) return 'networkError';
+  if (xhr && xhr.status === 429) return 'tooManyRequests';
+  if (xhr && xhr.status === 419) return 'csrfExpired';
+  return 'global';
+}

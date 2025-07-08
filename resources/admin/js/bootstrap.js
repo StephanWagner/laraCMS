@@ -4,8 +4,9 @@ import { initInstall } from "./auth/install";
 import { initLogin } from "./auth/login";
 import { initResetPassword } from "./auth/reset-password";
 import { initNewPassword } from "./auth/new-password";
+import { initList } from "./components/list/bootstrap";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Forms
   initForms();
   initInstall();
@@ -15,4 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Menus
   initMenus();
+
+  // List
+  initList();
 });

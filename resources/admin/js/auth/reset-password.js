@@ -26,10 +26,11 @@ function initResetPassword() {
     submitButton.disabled = true;
     emailInput.disabled = true;
 
-    apiFetch('/admin/reset-password', {
+    apiFetch({
+      url: '/admin/reset-password',
       method: 'POST',
       data: { csrf, email },
-      onSuccess: (response) => {
+      success: response => {
         if (response.success) {
           showAuthFormSuccess(submitButton, response.message);
         } else {
@@ -38,15 +39,16 @@ function initResetPassword() {
           emailInput.disabled = false;
         }
       },
-      onError: (response) => {
+      error: response => {
         showAuthFormError(submitButton, response.message);
         submitButton.disabled = false;
         emailInput.disabled = false;
-      }
-    }).finally(() => {
-      submitButton.classList.remove('-loading');
+      },
+      complete: () => {
+        submitButton.classList.remove('-loading');
+      },
     });
   });
 }
 
-export { initResetPassword }
+export { initResetPassword };

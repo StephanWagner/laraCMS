@@ -12,9 +12,13 @@ function initNewPassword() {
   submitButton.addEventListener('click', () => {
     const csrfInput = document.querySelector('[data-new-password-form-input="csrf"]');
     const userIdInput = document.querySelector('[data-new-password-form-input="user-id"]');
-    const resetPasswordHashInput = document.querySelector('[data-new-password-form-input="reset-password-hash"]');
+    const resetPasswordHashInput = document.querySelector(
+      '[data-new-password-form-input="reset-password-hash"]'
+    );
     const passwordInput = document.querySelector('[data-new-password-form-input="password"]');
-    const passwordRepeatInput = document.querySelector('[data-new-password-form-input="password-repeat"]');
+    const passwordRepeatInput = document.querySelector(
+      '[data-new-password-form-input="password-repeat"]'
+    );
 
     const csrf = csrfInput?.value;
     const userId = userIdInput?.value;
@@ -34,10 +38,11 @@ function initNewPassword() {
     passwordInput.disabled = true;
     passwordRepeatInput.disabled = true;
 
-    apiFetch('/admin/new-password', {
+    apiFetch({
+      url: '/admin/new-password',
       method: 'POST',
       data: { csrf, userId, resetPasswordHash, password, passwordRepeat },
-      onSuccess: (response) => {
+      success: response => {
         if (response.success) {
           showAuthFormSuccess(submitButton, response.message);
         } else {
@@ -47,16 +52,17 @@ function initNewPassword() {
           passwordRepeatInput.disabled = false;
         }
       },
-      onError: (response) => {
+      error: response => {
         showAuthFormError(submitButton, response.message);
         submitButton.disabled = false;
         passwordInput.disabled = false;
         passwordRepeatInput.disabled = false;
-      }
-    }).finally(() => {
-      submitButton.classList.remove('-loading');
+      },
+      complete: () => {
+        submitButton.classList.remove('-loading');
+      },
     });
   });
 }
 
-export { initNewPassword }
+export { initNewPassword };
