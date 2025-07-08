@@ -1,4 +1,4 @@
-function getSlug(title) {
+export function getSlug(title) {
 	// Trim and decode HTML entities
 	title = title.trim();
 	const textarea = document.createElement('textarea');
@@ -27,5 +27,3 @@ function getSlug(title) {
 
 	return title;
 }
-
-export { getSlug }

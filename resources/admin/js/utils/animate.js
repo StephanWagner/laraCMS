@@ -12,7 +12,7 @@ const animationSpeeds = {
   fadeOut: 280,
 };
 
-function animate(el, animation, complete) {
+export function animate(el, animation, complete) {
   const className = `animated-${animation}`;
   const duration = animationSpeeds[animation] || 500;
 
@@ -35,5 +35,3 @@ function animate(el, animation, complete) {
 
   el.dataset.animatingTimeout = timeout;
 }
-
-export { animate };

@@ -1,4 +1,4 @@
-function flipSwap(el, direction = 'down') {
+export function flipSwap(el, direction = 'down') {
   const sibling = direction === 'down' ? el.nextElementSibling : el.previousElementSibling;
   if (!sibling) return;
 
@@ -35,11 +35,8 @@ function flipSwap(el, direction = 'down') {
   updateBlockFlipButtons();
 }
 
-function updateBlockFlipButtons() {
+export function updateBlockFlipButtons() {
   document.querySelectorAll('.block__wrapper .block__action.-up, .block__wrapper .block__action.-down').forEach(el => el.classList.remove('-disabled'));
   document.querySelector('.block__wrapper:first-child .block__action.-up')?.classList.add('-disabled');
   document.querySelector('.block__wrapper:last-child .block__action.-down')?.classList.add('-disabled');
 }
-
-
-export { flipSwap, updateBlockFlipButtons }

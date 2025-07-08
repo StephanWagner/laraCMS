@@ -1,9 +1,22 @@
 /**
- *
+ * Init the submit form on enter events
  */
 
-function initFormSubmitOnEnter() {
-  document.querySelectorAll('[data-submit-on-enter]').forEach((input) => {
+export function initSubmitOnEnter(scope = document) {
+  const elements = [];
+
+  // Include scope itself if it matches the selector
+  if (scope.matches?.('[data-submit-on-enter]')) {
+    elements.push(scope);
+  }
+
+  // Also include all matching descendants
+  elements.push(...scope.querySelectorAll('[data-submit-on-enter]'));
+
+  elements.forEach((input) => {
+    if (input.dataset._submitOnEnterListenerAttached) return;
+    input.dataset._submitOnEnterListenerAttached = 'true';
+
     input.addEventListener('keydown', (ev) => {
       if (ev.key === 'Enter') {
         ev.preventDefault();
@@ -23,10 +36,21 @@ function initFormSubmitOnEnter() {
 /**
  * Clear input errors on input
  */
-function initClearErrorOnInput() {
-  const elements = document.querySelectorAll('[data-clear-error-on-input]');
+export function initClearErrorOnInput(scope = document) {
+  const elements = [];
+
+  // Include the scope itself if it matches
+  if (scope.matches?.('[data-clear-error-on-input]')) {
+    elements.push(scope);
+  }
+
+  // Include all matching children
+  elements.push(...scope.querySelectorAll('[data-clear-error-on-input]'));
 
   elements.forEach((el) => {
+    if (el.dataset._clearErrorOnInputListenerAttached) return;
+    el.dataset._clearErrorOnInputListenerAttached = 'true';
+
     const clearError = () => {
       el.classList.remove('-error');
     };
@@ -37,9 +61,7 @@ function initClearErrorOnInput() {
   });
 }
 
-function initForms() {
+export function initForms() {
   initClearErrorOnInput();
-  initFormSubmitOnEnter();
+  initSubmitOnEnter();
 }
-
-export { initForms }

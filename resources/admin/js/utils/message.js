@@ -4,7 +4,7 @@ import { __ } from './locale';
 /**
  * Adjust message positions
  */
-function adjustMessages() {
+export function adjustMessages() {
   let height = 0;
 
   const messages = Array.from(document.querySelectorAll('.message__container')).reverse();
@@ -21,7 +21,7 @@ function adjustMessages() {
 /**
  * Main message function
  */
-function message(txt, color = 'default') {
+export function message(txt, color = 'default') {
   const container = document.createElement('div');
   container.className = `message__container -${color}`;
   container.innerHTML = txt;
@@ -76,7 +76,7 @@ function message(txt, color = 'default') {
 /**
  * Error message
  */
-function error(txt) {
+export function error(txt) {
   txt = txt || __('admin::error');
   return message(txt, 'error');
 }
@@ -84,14 +84,14 @@ function error(txt) {
 /**
  * Success message
  */
-function success(txt) {
+export function success(txt) {
   return message(txt, 'success');
 }
 
 /**
  * Network error helper
  */
-function networkError(responseOrError) {
+export function networkError(responseOrError) {
   if (responseOrError && typeof responseOrError.status === 'number') {
     const status = responseOrError.status;
 
@@ -102,5 +102,3 @@ function networkError(responseOrError) {
 
   return error(__('admin::networkError'));
 }
-
-export { message, error, success, networkError };

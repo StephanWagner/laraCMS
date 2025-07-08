@@ -4,7 +4,7 @@ import { locale } from "../config/locale";
 /**
  * Translate strings
  */
-function __(id, replace = {}, localeId, useLocale = locale) {
+export function __(id, replace = {}, localeId, useLocale = locale) {
 
   // TODO window.app.locale
   const currentLocale = localeId || window.app?.locale || config.fallbackLocale;
@@ -21,5 +21,3 @@ function __(id, replace = {}, localeId, useLocale = locale) {
 
   return str;
 }
-
-export { __ }

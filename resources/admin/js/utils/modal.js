@@ -3,7 +3,7 @@ import { config } from '../config/config';
 const timeouts = {};
 const keyupHandlers = {};
 
-function openModal(id, onOpen, sourceEl) {
+export function openModal(id, onOpen, sourceEl) {
   const modalEl = getModal(id);
 
   document.body.classList.add('block-scroll');
@@ -37,7 +37,7 @@ function openModal(id, onOpen, sourceEl) {
   return modalEl;
 }
 
-function closeModal(id, onClose, onCloseComplete) {
+export function closeModal(id, onClose, onCloseComplete) {
   const modalEl = getModal(id);
 
   if (!modalEl.classList.contains('-open')) return;
@@ -62,7 +62,7 @@ function closeModal(id, onClose, onCloseComplete) {
   return modalEl;
 }
 
-function getModal(id) {
+export function getModal(id) {
   let modalEl = document.querySelector(`.modal__wrapper[data-id="${id}"]`);
 
   if (modalEl) {
@@ -122,7 +122,7 @@ function enableClosingModal(id) {
   if (modalEl) modalEl.dataset.blockClosing = 'false';
 }
 
-function confirmModal(data) {
+export function confirmModal(data) {
   const {
     title,
     description,
@@ -179,16 +179,7 @@ function confirmModal(data) {
   openModal(modalId, onOpen);
 }
 
-function closeConfirmModal(onClose, onCloseComplete) {
+export function closeConfirmModal(onClose, onCloseComplete) {
   const modalId = 'confirm';
   closeModal(modalId, onClose, onCloseComplete);
 }
-
-export {
-  openModal,
-  closeModal,
-  disableClosingModal,
-  enableClosingModal,
-  confirmModal,
-  closeConfirmModal
-};
