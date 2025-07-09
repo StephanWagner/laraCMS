@@ -35,6 +35,18 @@ class ListService
 
         $query = $modelClass::query();
 
+        $with = [];
+
+        foreach ($config['columns'] as $column) {
+            if (!empty($column['relation'])) {
+                $with[] = $column['relation'];
+            }
+        }
+
+        if (!empty($with)) {
+            $query->with($with);
+        }
+
         // Apply ordering
         $orderBy = request()->get('order-by', $config['defaultOrderBy'] ?? 'id');
         $orderDirection = strtolower(request()->get('order-direction', $config['defaultOrderDirection'] ?? 'desc'));
@@ -58,4 +70,3 @@ class ListService
         ];
     }
 }
-

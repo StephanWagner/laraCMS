@@ -16,7 +16,9 @@ class Block extends Model
         'key',
         'name',
         'order',
-        'settings'
+        'settings',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

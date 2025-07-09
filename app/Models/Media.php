@@ -15,7 +15,9 @@ class Media extends Model
         'media_type',
         'original_name',
         'size',
-        'meta'
+        'meta',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

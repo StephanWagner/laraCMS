@@ -2,7 +2,7 @@
 $primary-color: #528bff;
 $secondary-color: #52c4ff;
 
-$primary-gradient: linear-gradient(to top right, #528bff, #52c4ff);
+$primary-gradient: linear-gradient(to top right, $primary-color, $secondary-color);
 
 $color-surface-1: #080b0f;
 $color-surface-2: #121821;

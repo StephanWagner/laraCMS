@@ -17,7 +17,9 @@ class Content extends Model
         'slug',
         'order',
         'active',
-        'settings'
+        'settings',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

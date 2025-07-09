@@ -12,7 +12,9 @@ class BlockGroup extends Model
     protected $fillable = [
         'key',
         'name',
-        'order'
+        'order',
+        'created_by',
+        'updated_by',
     ];
 
     public function blocks()

@@ -1,7 +1,10 @@
 @extends('admin::app')
 
 @section('content')
-    <div style="padding: 16px 24px">Content Types: List</div>
+    <div class="content__content">
 
-    @include('admin::components.list')
+        @include('admin::components.list', [
+            'key' => 'content_types',
+        ])
+    </div>
 @endsection

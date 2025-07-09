@@ -2,4 +2,4 @@
     window.listData = @json($listData ?? []);
 </script>
 
-<div class="list__wrapper" data-list="content_types"></div>
+<div class="list__wrapper" data-list="{{ $key }}"></div>

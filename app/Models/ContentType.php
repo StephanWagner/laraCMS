@@ -14,7 +14,9 @@ class ContentType extends Model
     protected $fillable = [
         'key',
         'name',
-        'settings'
+        'settings',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [

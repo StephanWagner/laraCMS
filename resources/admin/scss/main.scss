@@ -1,6 +1,8 @@
 @use "variables" as *;
 @use "mixins" as *;
 
+// TODO normalize
+
 // Fonts
 @use "fonts/material-symbols";
 @use "fonts/nunito-sans";
@@ -30,3 +32,4 @@
 
 // Components
 @use "components/menu";
+@use "components/list";

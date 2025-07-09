@@ -9,15 +9,13 @@ class ListSettingsSeeder extends Seeder
 {
     public function run()
     {
-        $now = now();
-
         DB::table('settings')->insertOrIgnore([
             [
                 'key' => 'list_settings.content_types',
                 'value' => collect([
                     'model' => 'ContentType',
                     'defaultOrderBy' => 'order',
-                    'defaultOrderDirection' => 'desc',
+                    'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
                     'columns' => [
                         [
@@ -26,6 +24,13 @@ class ListSettingsSeeder extends Seeder
                             'label' => null,
                             'source' => 'order',
                             'sortable' => true,
+                        ],
+                        [
+                            'key' => 'icon',
+                            'type' => 'icon',
+                            'label' => null,
+                            'source' => 'settings.icon',
+                            'sortable' => false,
                         ],
                         [
                             'key' => 'title',
@@ -38,7 +43,8 @@ class ListSettingsSeeder extends Seeder
                             'key' => 'created-by',
                             'type' => 'username',
                             'label' => 'Created By',
-                            'source' => 'created_by',
+                            'source' => 'creator.name',
+                            'relation' => 'creator',
                             'sortable' => true,
                             'visibility' => [
                                 'xl' => true,
@@ -51,6 +57,7 @@ class ListSettingsSeeder extends Seeder
                         [
                             'key' => 'updated-at',
                             'type' => 'datetime',
+                            'relativeDatetime' => true,
                             'source' => 'updated_at',
                             'label' => 'Updated',
                             'sortable' => true,
@@ -66,7 +73,10 @@ class ListSettingsSeeder extends Seeder
                             'key' => 'actions',
                             'type' => 'actions',
                             'label' => null,
-                            'actions' => ['toggle', 'duplicate', 'edit', 'delete']
+                            'actions' => [
+                                'edit',
+                                'delete'
+                            ]
                         ],
                     ],
                 ])->toJson(),
@@ -123,7 +133,8 @@ class ListSettingsSeeder extends Seeder
                         ],
                         [
                             'key' => 'latest-login',
-                            'type' => 'datetime-readable',
+                            'type' => 'datetime',
+                            'relativeDatetime' => true,
                             'label' => 'Latest Login',
                             'source' => 'latest_login',
                             'sortable' => true,
@@ -139,7 +150,11 @@ class ListSettingsSeeder extends Seeder
                             'key' => 'actions',
                             'type' => 'actions',
                             'label' => null,
-                            'actions' => ['toggle', 'edit', 'delete']
+                            'actions' => [
+                                'toggle',
+                                'edit',
+                                'delete'
+                            ],
                         ],
                     ],
                 ])->toJson(),

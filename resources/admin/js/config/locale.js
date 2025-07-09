@@ -18,17 +18,34 @@ const locale = {
     en: 'Session expired, please reload.',
     de: 'Sitzung abgelaufen, bitte neu laden.',
   },
-  formErrorTitle1: {
-    en: 'An error has occurred.',
-    de: 'Es ist ein Fehler aufgetreten.',
+  // TODO
+  // formErrorTitle1: {
+  //   en: 'An error has occurred.',
+  //   de: 'Es ist ein Fehler aufgetreten.',
+  // },
+  // formErrorTitleN: {
+  //   en: '{n} errors have occurred.',
+  //   de: 'Es sind {n} Fehler aufgetreten.',
+  // },
+  // formErrorText: {
+  //   en: 'Please check your input and try again.',
+  //   de: 'Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.',
+  // },
+  relativeDateJustNow: {
+    en: 'Just now',
+    de: 'Gerade eben',
   },
-  formErrorTitleN: {
-    en: '{n} errors have occurred.',
-    de: 'Es sind {n} Fehler aufgetreten.',
+  relativeDateMinutes: {
+    en: '{minutes} minutes ago',
+    de: 'Vor {minutes} Minuten',
   },
-  formErrorText: {
-    en: 'Please check your input and try again.',
-    de: 'Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.',
+  relativeDateToday: {
+    en: 'Today at {time}',
+    de: 'Heute um {time}',
+  },
+  relativeDateYesterday: {
+    en: 'Yesterday at {time}',
+    de: 'Gestern um {time}',
   },
 };
 
