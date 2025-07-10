@@ -18,3 +18,20 @@
 
   @return $transition;
 }
+
+@function transitionSlow($values...) {
+  $transition: "";
+
+  @each $name in $values {
+    @if ($transition !="") {
+      $transition: $transition,
+        string.unquote($name) $slow-transition-speed;
+    }
+
+    @else {
+      $transition: string.unquote($name) $slow-transition-speed;
+    }
+  }
+
+  @return $transition;
+}

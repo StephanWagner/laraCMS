@@ -7,7 +7,7 @@ use App\Models\ContentType;
 
 class ListService
 {
-    public static function getList(string $key)
+    public static function getList(string $key, array $params = [])
     {
         $settingKey = 'list_settings.' . $key;
 
@@ -35,6 +35,7 @@ class ListService
 
         $query = $modelClass::query();
 
+        // Add relations
         $with = [];
 
         foreach ($config['columns'] as $column) {
@@ -48,17 +49,31 @@ class ListService
         }
 
         // Apply ordering
-        $orderBy = request()->get('order-by', $config['defaultOrderBy'] ?? 'id');
-        $orderDirection = strtolower(request()->get('order-direction', $config['defaultOrderDirection'] ?? 'desc'));
+        $orderBy = $params['orderBy'] ?? ($config['defaultOrderBy'] ?? 'id');
+        $orderDirection = $params['orderDirection'] ?? ($config['defaultOrderDirection'] ?? 'asc');
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
-            $orderDirection = 'desc';
+            $orderDirection = 'asc';
         }
 
         $config['orderBy'] = $orderBy;
         $config['orderDirection'] = $orderDirection;
 
-        $query->orderBy($orderBy, $orderDirection);
+        $column = collect($config['columns'])->firstWhere('source', $orderBy);
+
+        if (isset($column['relation']) && str_contains($column['source'], '.')) {
+            [$relation, $field] = explode('.', $column['source'], 2);
+            $relationMethod = $query->getModel()->{$relation}();
+            $relatedTable = $relationMethod->getRelated()->getTable();
+            $relatedAlias = $relation;
+            $foreignKey = $relationMethod->getQualifiedForeignKeyName();
+            $query
+                ->leftJoin("{$relatedTable} as {$relatedAlias}", $foreignKey, '=', "{$relatedAlias}.id")
+                ->orderBy("{$relatedAlias}.{$field}", $orderDirection)
+                ->select($query->getModel()->getTable() . '.*');
+        } else {
+            $query->orderBy($orderBy, $orderDirection);
+        }
 
         // Get paginated result
         $perPage = $config['defaultPerPage'] ?? 20;

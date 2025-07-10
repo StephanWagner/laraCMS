@@ -24,6 +24,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => null,
                             'source' => 'order',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                         ],
                         [
                             'key' => 'icon',
@@ -38,6 +39,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => 'Title',
                             'source' => 'name',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                         ],
                         [
                             'key' => 'created-by',
@@ -46,6 +48,7 @@ class ListSettingsSeeder extends Seeder
                             'source' => 'creator.name',
                             'relation' => 'creator',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
@@ -61,6 +64,7 @@ class ListSettingsSeeder extends Seeder
                             'source' => 'updated_at',
                             'label' => 'Updated',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'desc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
@@ -95,6 +99,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => 'Name',
                             'source' => 'name',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                         ],
                         [
                             'key' => 'email',
@@ -102,6 +107,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => 'Email',
                             'source' => 'email',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
@@ -123,6 +129,7 @@ class ListSettingsSeeder extends Seeder
                                 ],
                             ],
                             'sortable' => true,
+                            'defaultOrderDirection' => 'asc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
@@ -138,6 +145,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => 'Latest Login',
                             'source' => 'latest_login',
                             'sortable' => true,
+                            'defaultOrderDirection' => 'desc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,

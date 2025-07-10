@@ -2,16 +2,15 @@
 @use "../mixins" as *;
 
 .message__container {
-  // TODO test
   position: fixed;
   z-index: 2100;
   right: 8px;
   bottom: 8px;
   background: #000;
-  padding: 12px 20px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: $medium-border-radius;
   color: $light-text-color;
-  font-size: 18px;
+  font-size: $default-font-size;
   font-weight: 600;
   max-width: calc(100% - 8px - 8px);
   cursor: pointer;

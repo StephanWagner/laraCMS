@@ -77,7 +77,7 @@ export function message(txt, color = 'default') {
  * Error message
  */
 export function error(txt) {
-  txt = txt || __('admin::error');
+  txt = txt || __('error');
   return message(txt, 'error');
 }
 
@@ -95,10 +95,11 @@ export function networkError(responseOrError) {
   if (responseOrError && typeof responseOrError.status === 'number') {
     const status = responseOrError.status;
 
-    if (status === 429) return error(__('admin::tooManyRequests'));
-    if (status === 419) return error(__('admin::csrfExpired'));
-    return error(__('admin::error'));
+    if (status === 0) return error(__('networkError'));
+    if (status === 429) return error(__('tooManyRequests'));
+    if (status === 419) return error(__('csrfExpired'));
+    return error();
   }
 
-  return error(__('admin::networkError'));
+  return error();
 }

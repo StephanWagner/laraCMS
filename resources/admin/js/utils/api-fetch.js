@@ -52,9 +52,3 @@ export function apiFetch(options) {
   xhr.send(data ? JSON.stringify(data) : null);
 }
 
-export function getNetworkErrorId(xhr) {
-  if (xhr && xhr.status === 0) return 'networkError';
-  if (xhr && xhr.status === 429) return 'tooManyRequests';
-  if (xhr && xhr.status === 419) return 'csrfExpired';
-  return 'global';
-}

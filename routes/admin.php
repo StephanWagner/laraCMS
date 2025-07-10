@@ -93,4 +93,9 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
         Route::get('list', [BlocksController::class, 'list'])->name('list');
         Route::get('groups', [BlocksController::class, 'groups'])->name('groups');
     });
+
+    // Api
+    Route::prefix('api')->name('api.')->group(function () {
+        Route::post('/list', [\App\Http\Controllers\Admin\ApiController::class, 'list']);
+    });
 });
