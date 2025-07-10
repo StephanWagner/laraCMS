@@ -11,7 +11,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('admin::*', function ($view) {
-            $view->with('contentTypes', ContentType::orderBy('order')->get());
+            $view->with('contentTypes', ContentType::orderBy('order')->where('active', 1)->get());
         });
     }
 }

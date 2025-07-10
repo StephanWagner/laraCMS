@@ -13,6 +13,7 @@
     "vite": "^6.2.4"
   },
   "dependencies": {
-    "luxon": "^3.6.1"
+    "luxon": "^3.6.1",
+    "sortablejs": "^1.15.6"
   }
 }

@@ -1,7 +1,9 @@
+import Sortable from 'sortablejs';
 import { apiFetch } from '../../utils/api-fetch';
 import { getNestedValue } from '../../utils/object';
 import { formatDatetime } from '../../utils/datetime';
-import { networkError } from '../../utils/message';
+import { networkError, success } from '../../utils/message';
+import { config } from '../../config/config';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -41,7 +43,6 @@ export class ListView {
 
     this.contentItems = document.createElement('div');
     this.contentItems.className = 'list-content__items';
-    this.contentItems.innerHTML = 'ITEMS';
     content.appendChild(this.contentItems);
 
     // Footer
@@ -59,7 +60,10 @@ export class ListView {
         renderHeader: true,
       });
     } else {
-      this.loadData(); // TODO
+      // TODO test
+      this.loadData({
+        renderHeader: true,
+      });
     }
   }
 
@@ -86,7 +90,9 @@ export class ListView {
       success: response => {
         if (response.success && response.listData) {
           this.listData = response.listData;
-          this.render();
+          this.render({
+            renderHeader: params.renderHeader,
+          });
         } else {
           networkError(response);
         }
@@ -98,7 +104,7 @@ export class ListView {
   }
 
   render(params = {}) {
-    console.log('render', this.listData);
+    console.log('listData', this.listData);
 
     // Config
     const listConfig = this.listData?.config || {};
@@ -112,6 +118,14 @@ export class ListView {
       listColumns.forEach(column => {
         const columnEl = document.createElement('div');
         columnEl.classList.add('list__column', '-head', '-type-' + column.type);
+
+        if (column.visibility) {
+          Object.entries(column.visibility).forEach(([breakpoint, isVisible]) => {
+            if (isVisible === false) {
+              columnEl.classList.add(`-hide-${breakpoint}`);
+            }
+          });
+        }
 
         if (listConfig.orderBy == column.source) {
           columnEl.classList.add('-current-order');
@@ -163,8 +177,6 @@ export class ListView {
         this.contentHeader.append(columnEl);
       });
     } else {
-      console.log('aaa');
-
       const currentOrderEl = document.querySelector('.list__column.-head.-sortable.-current-order');
       currentOrderEl?.classList.remove('-current-order');
 
@@ -189,19 +201,32 @@ export class ListView {
     listItems.forEach(item => {
       const itemContainerEl = document.createElement('div');
       itemContainerEl.className = 'list-item__container';
+      itemContainerEl.dataset.id = item.id;
+      if (item.active === 0) {
+        itemContainerEl.classList.add('-inactive');
+      }
       this.contentItems.appendChild(itemContainerEl);
 
       listColumns.forEach(column => {
         const itemColumnEl = document.createElement('div');
         itemColumnEl.classList.add('list__column', '-body', '-type-' + column.type);
 
+        if (column.visibility) {
+          Object.entries(column.visibility).forEach(([breakpoint, isVisible]) => {
+            if (isVisible === false) {
+              itemColumnEl.classList.add(`-hide-${breakpoint}`);
+            }
+          });
+        }
+
         const basePath = listConfig.key || '';
         const editLink = `/admin/${basePath}/edit/${item.id}`;
 
         switch (column.type) {
           case 'sortable':
+            itemColumnEl.classList.add('no-select');
             const itemColumnSortableEl = document.createElement('div');
-            itemColumnSortableEl.classList.add('icon');
+            itemColumnSortableEl.classList.add('list__sortable-handle', 'icon');
             itemColumnSortableEl.innerHTML = 'drag_handle';
             itemColumnEl.append(itemColumnSortableEl);
             break;
@@ -237,12 +262,49 @@ export class ListView {
               actionEl.classList.add('list__action');
 
               const actionIconEl = document.createElement('div');
-              actionIconEl.classList.add('icon');
+              actionIconEl.classList.add('icon', 'list__action-icon');
 
-              switch (action) {
+              let actionType = action;
+
+              if (typeof action === 'object' && action !== null && 'type' in action) {
+                actionType = action.type;
+              }
+
+              switch (actionType) {
                 case 'toggle':
                   actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
                   actionEl.append(actionIconEl);
+
+                  actionEl.addEventListener('click', () => {
+                    if (item._toggleRequestRunning) return;
+
+                    apiFetch({
+                      url: '/admin/api/toggle',
+                      data: {
+                        key: listConfig.key,
+                        id: item.id,
+                      },
+                      before: () => {
+                        item._toggleRequestRunning = true;
+                      },
+                      complete: () => {
+                        item._toggleRequestRunning = false;
+                      },
+                      success: response => {
+                        if (response.success) {
+                          item.active = response.value;
+                          actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
+                          itemContainerEl.classList[item.active ? 'remove' : 'add']('-inactive');
+                          success(response.message);
+                        } else {
+                          networkError(response);
+                        }
+                      },
+                      error: xhr => {
+                        networkError(xhr);
+                      },
+                    });
+                  });
                   break;
 
                 case 'duplicate':
@@ -262,6 +324,11 @@ export class ListView {
                   actionIconEl.innerHTML = 'delete';
                   actionEl.append(actionIconEl);
                   break;
+
+                case 'more':
+                  actionIconEl.innerHTML = 'more_horiz';
+                  actionEl.append(actionIconEl);
+                  break;
               }
 
               itemColumnEl.append(actionEl);
@@ -272,5 +339,67 @@ export class ListView {
         itemContainerEl.append(itemColumnEl);
       });
     });
+
+    // Sortable lists
+    this.wrapper.classList.remove('-sortable');
+
+    if (this.sortable) {
+      this.sortable.destroy();
+      this.sortable = null;
+    }
+
+    if (listConfig.orderBy === 'order') {
+      this.wrapper.classList.add('-sortable');
+
+      this.sortable = Sortable.create(this.contentItems, {
+        handle: '.list__sortable-handle',
+        animation: config.fastTransitionSpeed,
+        ghostClass: '-sortable-ghost',
+        chosenClass: '-sortable-dragging',
+        onStart: () => {
+          document.body.classList.add('-is-dragging');
+        },
+        onEnd: evt => {
+          document.body.classList.remove('-is-dragging');
+
+          // TODO add pagination
+
+          const oldIndex = evt.oldIndex;
+          const newIndex = evt.newIndex;
+
+          if (oldIndex === newIndex) {
+            return;
+          }
+
+          const rows = Array.from(this.contentItems.children);
+
+          const [start, end] = [oldIndex, newIndex].sort((a, b) => a - b);
+          const affectedRows = rows.slice(start, end + 1);
+
+          const reorderPayload = affectedRows.map((el, i) => ({
+            id: el.dataset.id,
+            order: start + i + 1,
+          }));
+
+          apiFetch({
+            url: '/admin/api/list-reorder',
+            data: {
+              key: listConfig.key,
+              items: reorderPayload,
+            },
+            success: response => {
+              if (response.success) {
+                success(response.message);
+              } else {
+                networkError(response);
+              }
+            },
+            error: xhr => {
+              networkError(xhr);
+            },
+          });
+        },
+      });
+    }
   }
 }

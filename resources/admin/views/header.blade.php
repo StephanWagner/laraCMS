@@ -1,12 +1,12 @@
 <header class="header__wrapper">
     <div class="header__container">
         <div class="header__content"></div>
-        <div class="header__user-menu">
+        <div class="header__user-menu-container">
             <div class="header__user-menu-toggler{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}" data-toggle-menu="user">
                 <div class="header__user-menu-icon icon">account_circle</div>
             </div>
 
-            <div data-menu="user" class="menu-overlay__wrapper -user">
+            <div data-menu="user" class="header__user-menu menu-overlay__wrapper -user">
                 <div class="menu-overlay__links">
                     <a href="{{ route('admin.users.profile') }}" class="menu-overlay__link{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
                         <div class="menu-overlay__icon icon">account_circle</div>

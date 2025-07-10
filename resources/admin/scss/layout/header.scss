@@ -14,9 +14,13 @@
   flex: 1;
 }
 
-.header__user-menu {
+.header__user-menu-container {
   position: relative;
   flex-shrink: 0;
+}
+
+.header__user-menu {
+  z-index: 100;
 }
 
 .header__user-menu-toggler {

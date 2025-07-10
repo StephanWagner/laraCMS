@@ -7,7 +7,7 @@
   right: 0;
   min-width: 140px;
   transform-origin: top right;
-  box-shadow: 0 0 0 3px rgba(#fff, 0.1);
+  box-shadow: 0 0 0 1px $color-surface-3;
   background: $color-surface-2;
   border-radius: $default-border-radius;
   transition: transition("transform", "opacity");

@@ -51,8 +51,8 @@ class ListSettingsSeeder extends Seeder
                             'defaultOrderDirection' => 'asc',
                             'visibility' => [
                                 'xl' => true,
-                                'lg' => true,
-                                'md' => true,
+                                'lg' => false,
+                                'md' => false,
                                 'sm' => false,
                                 'xs' => false,
                             ],
@@ -68,8 +68,8 @@ class ListSettingsSeeder extends Seeder
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
-                                'md' => true,
-                                'sm' => true,
+                                'md' => false,
+                                'sm' => false,
                                 'xs' => false,
                             ],
                         ],
@@ -78,8 +78,16 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'actions',
                             'label' => null,
                             'actions' => [
+                                'toggle',
                                 'edit',
-                                'delete'
+                                'delete',
+                                [
+                                    'type' => 'more',
+                                    'options' => [
+                                        'moveToTop',
+                                        'moveToBottom',
+                                    ]
+                                ]
                             ]
                         ],
                     ],
@@ -161,7 +169,7 @@ class ListSettingsSeeder extends Seeder
                             'actions' => [
                                 'toggle',
                                 'edit',
-                                'delete'
+                                'delete',
                             ],
                         ],
                     ],

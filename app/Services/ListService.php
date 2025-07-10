@@ -7,19 +7,29 @@ use App\Models\ContentType;
 
 class ListService
 {
-    public static function getList(string $key, array $params = [])
+    public static function getConfig(string $key)
     {
         $settingKey = 'list_settings.' . $key;
 
-        $raw = DB::table('settings')->where('key', $settingKey)->value('value');
+        $config = DB::table('settings')->where('key', $settingKey)->value('value');
 
-        if (!$raw && $contentType = ContentType::where('key', $key)->first()) {
-            $raw = $contentType->settings['list'] ?? null;
+        if (!$config && $contentType = ContentType::where('key', $key)->first()) {
+            $config = $contentType->settings['list'] ?? null;
         }
 
-        if (!$raw) return null;
+        if ($config) {
+            $config = json_decode($config, true);
+        }
 
-        $config = json_decode($raw, true);
+        return $config;
+    }
+
+    public static function getData(string $key, array $params = [])
+    {
+        $config = self::getConfig($key);
+
+        if (!$config) return null;
+
         $config['key'] = $key;
 
         $modelClassName = $config['model'] ?? null;

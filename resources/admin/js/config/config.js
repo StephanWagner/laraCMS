@@ -1,12 +1,12 @@
 const config = {
   // Messages
   maxMessages: 3,
-  autoCloseMessages: 6000,
+  autoCloseMessages: 4000,
 
   // Transitions
-  fastTransitionSpeed: 180,
   defaultTransitionSpeed: 280,
-  slowTransitionSpeed: 460,
+  slowTransitionSpeed: 420,
+  fastTransitionSpeed: 180,
 
   // Locale
   fallbackLocale: 'en',

@@ -96,6 +96,8 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
 
     // Api
     Route::prefix('api')->name('api.')->group(function () {
-        Route::post('/list', [\App\Http\Controllers\Admin\ApiController::class, 'list']);
+        Route::post('/list', [\App\Http\Controllers\Admin\ApiController::class, 'list'])->name('list');
+        Route::post('/list-reorder', [\App\Http\Controllers\Admin\ApiController::class, 'listReorder'])->name('list-reorder');
+        Route::post('/toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
     });
 });

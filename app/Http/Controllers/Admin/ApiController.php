@@ -16,7 +16,7 @@ class ApiController extends Controller
 
         $key = request()->input('key');
 
-        $listData = ListService::getList($key, [
+        $listData = ListService::getData($key, [
             'orderBy' => request()->input('orderBy'),
             'orderDirection' => request()->input('orderDirection'),
             // 'filters' => request()->input('filters', []),
@@ -26,6 +26,61 @@ class ApiController extends Controller
         return [
             'success' => true,
             'listData' => $listData
+        ];
+    }
+
+    /**
+     * Save new list order
+     */
+    public function listReorder()
+    {
+        $key = request()->input('key');
+        $items = request()->input('items');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        foreach ($items as $item) {
+            $model = $modelClass::find($item['id']);
+            if ($model) {
+                $model->timestamps = false;
+                $model->order = $item['order'];
+                $model->save();
+            }
+        }
+
+        return [
+            'success' => true,
+            'message' => __('admin::api.listReorder.successMessage'),
+        ];
+    }
+
+    /**
+     * Toggle active state
+     */
+    public function toggle()
+    {
+        $key = request()->input('key');
+        $id = request()->input('id');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        $model = $modelClass::find($id);
+        if ($model) {
+            $model->timestamps = false;
+            $model->active = !$model->active;
+            $model->save();
+        }
+
+        return [
+            'success' => true,
+            'value' => $model->active,
+            'message' => __('admin::api.toggle.successMessage.' . ($model->active ? 'on' : 'off')),
         ];
     }
 }

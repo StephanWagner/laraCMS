@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 .-gradient-text {
   background: $primary-gradient;
@@ -7,7 +7,6 @@
   -webkit-background-clip: text;
   background-clip: text;
 }
-
 
 .icon {
   font-family: 'Material Symbols Rounded Filled';
@@ -34,3 +33,26 @@ a.icon,
 span.icon {
   display: inline-block;
 }
+
+// Order
+
+body.-is-dragging,
+body.-is-dragging * {
+  cursor: grabbing !important;
+}
+
+// No select
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+// Visibility
+.-hide-xs { @media (max-width: 400px) { display: none !important; } }
+.-hide-sm { @media (max-width: 600px) { display: none !important; } }
+.-hide-md { @media (max-width: 900px) { display: none !important; } }
+.-hide-lg { @media (max-width: 1200px) { display: none !important; } }
+.-hide-xl { @media (max-width: 1400px) { display: none !important; } }

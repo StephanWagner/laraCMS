@@ -19,7 +19,7 @@ export function formatDatetime(value, options = {}) {
     const now = DateTime.now().setZone(zone);
     const minutesAgo = Math.abs(Math.round(date.diffNow('minutes').minutes));
 
-    if (date > now.minus({ minutes: 1 })) {
+    if (date.diffNow('seconds').seconds >= -120) {
       return __('relativeDateJustNow');
     }
 
@@ -64,8 +64,6 @@ function getUserDateFormat(locale = undefined) {
     month: 'MM',
     day: 'dd',
   };
-
-  console.log(parts);
 
   return parts
     .map(part => formatMap[part.type] || part.value)
