@@ -12,8 +12,6 @@ class ApiController extends Controller
      */
     public function list()
     {
-        sleep(1);
-
         $key = request()->input('key');
 
         $listData = ListService::getData($key, [

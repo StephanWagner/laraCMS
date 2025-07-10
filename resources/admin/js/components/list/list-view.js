@@ -4,6 +4,7 @@ import { getNestedValue } from '../../utils/object';
 import { formatDatetime } from '../../utils/datetime';
 import { networkError, success } from '../../utils/message';
 import { config } from '../../config/config';
+import { confirmModal } from '../../utils/modal';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -137,6 +138,45 @@ export class ListView {
           columnEl.append(columnLabelEl);
         }
 
+        if (column.type == 'multiselect') {
+          columnEl.classList.add('no-select');
+          const columnMultiselectIconEl = document.createElement('div');
+          columnMultiselectIconEl.classList.add('list__multiselect-icon', 'icon');
+          columnMultiselectIconEl.innerHTML = 'check_box_outline_blank';
+          columnEl.append(columnMultiselectIconEl);
+          columnEl.addEventListener('click', () => {
+            const multiSelectAllEls = this.wrapper.querySelectorAll('.list-item__container');
+            const multiSelectSelectedEls = this.wrapper.querySelectorAll(
+              '.list-item__container[data-is-selected]'
+            );
+            const multiSelectNotSelectedEls = this.wrapper.querySelectorAll(
+              '.list-item__container:not([data-is-selected])'
+            );
+
+            let triggerEls;
+
+            if (
+              multiSelectSelectedEls.length === 0 ||
+              multiSelectAllEls.length === multiSelectSelectedEls.length
+            ) {
+              triggerEls = multiSelectAllEls;
+            } else {
+              triggerEls = multiSelectNotSelectedEls;
+            }
+
+            triggerEls.forEach(container => {
+              const multiselectEl = container.querySelector(
+                '.list__column.-body.-type-multiselect'
+              );
+              if (multiselectEl) {
+                multiselectEl.click();
+              }
+            });
+
+            updateMultiselect(this.wrapper);
+          });
+        }
+
         if (column.sortable) {
           columnEl.classList.add('-sortable');
           columnEl.dataset.orderBy = column.source;
@@ -220,9 +260,33 @@ export class ListView {
         }
 
         const basePath = listConfig.key || '';
-        const editLink = `/admin/${basePath}/edit/${item.id}`;
+        const editLink = listConfig.editRoute
+          ? listConfig.editRoute.replace('{id}', item.id)
+          : `/admin/${basePath}/edit/${item.id}`;
 
         switch (column.type) {
+          case 'multiselect':
+            itemColumnEl.classList.add('no-select');
+            const itemColumnMultiselectIconEl = document.createElement('div');
+            itemColumnMultiselectIconEl.classList.add('list__multiselect-icon', 'icon');
+            itemColumnMultiselectIconEl.innerHTML = 'check_box_outline_blank';
+            itemColumnEl.append(itemColumnMultiselectIconEl);
+            itemColumnEl.addEventListener('click', () => {
+              let isSelected = itemContainerEl.hasAttribute('data-is-selected');
+              if (isSelected) {
+                itemContainerEl.removeAttribute('data-is-selected');
+                isSelected = false;
+              } else {
+                itemContainerEl.setAttribute('data-is-selected', '');
+                isSelected = true;
+              }
+              itemColumnMultiselectIconEl.innerHTML = isSelected
+                ? 'check_box'
+                : 'check_box_outline_blank';
+              updateMultiselect(this.wrapper);
+            });
+            break;
+
           case 'sortable':
             itemColumnEl.classList.add('no-select');
             const itemColumnSortableEl = document.createElement('div');
@@ -340,6 +404,22 @@ export class ListView {
                 case 'delete':
                   actionIconEl.innerHTML = 'delete';
                   actionEl.append(actionIconEl);
+
+                  actionEl.addEventListener('click', () => {
+                    confirmModal({
+                      title: 'Delete',
+                      description: 'Description',
+                      cancelButtonText: 'Cancel',
+                      submitButtonText: 'Delete',
+                      cancelCallback: () => {
+                        console.log('a');
+                      },
+                      submitCallback: () => {
+                        console.log('b');
+                      },
+                    });
+                  });
+
                   break;
 
                 case 'more':
@@ -372,7 +452,7 @@ export class ListView {
         handle: '.list__sortable-handle',
         animation: config.fastTransitionSpeed,
         ghostClass: '-sortable-ghost',
-        chosenClass: '-sortable-dragging',
+        dragClass: '-sortable-dragging',
         onStart: () => {
           document.body.classList.add('-is-dragging');
         },
@@ -417,6 +497,28 @@ export class ListView {
           });
         },
       });
+    }
+
+    updateMultiselect(this.wrapper);
+  }
+}
+
+function updateMultiselect(wrapper) {
+  const multiSelectIconEl = wrapper.querySelector(
+    '.list__column.-head.-type-multiselect .list__multiselect-icon'
+  );
+  if (multiSelectIconEl) {
+    const multiSelectAllEls = wrapper.querySelectorAll('.list-item__container');
+    const multiSelectSelectedEls = wrapper.querySelectorAll(
+      '.list-item__container[data-is-selected]'
+    );
+
+    if (multiSelectSelectedEls.length === 0) {
+      multiSelectIconEl.innerHTML = 'check_box_outline_blank';
+    } else if (multiSelectAllEls.length === multiSelectSelectedEls.length) {
+      multiSelectIconEl.innerHTML = 'check_box';
+    } else {
+      multiSelectIconEl.innerHTML = 'indeterminate_check_box';
     }
   }
 }

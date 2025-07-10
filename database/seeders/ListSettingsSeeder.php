@@ -157,7 +157,7 @@ class ListSettingsSeeder extends Seeder
                                 'xl' => true,
                                 'lg' => true,
                                 'md' => true,
-                                'sm' => true,
+                                'sm' => false,
                                 'xs' => false,
                             ],
                         ],

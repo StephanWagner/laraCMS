@@ -112,12 +112,12 @@ export function getModal(id) {
   return modalEl;
 }
 
-function disableClosingModal(id) {
+export function disableClosingModal(id) {
   const modalEl = document.querySelector(`.modal__wrapper[data-id="${id}"]`);
   if (modalEl) modalEl.dataset.blockClosing = 'true';
 }
 
-function enableClosingModal(id) {
+export function enableClosingModal(id) {
   const modalEl = document.querySelector(`.modal__wrapper[data-id="${id}"]`);
   if (modalEl) modalEl.dataset.blockClosing = 'false';
 }

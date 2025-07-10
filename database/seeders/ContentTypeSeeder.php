@@ -17,7 +17,7 @@ class ContentTypeSeeder extends Seeder
         $types = [
             [
                 'key' => 'page',
-                'name' => 'Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages Pages',
+                'name' => 'Pages',
                 'order' => 1,
                 'settings' => collect([
                     'uri' => '/{slug}',
@@ -28,7 +28,7 @@ class ContentTypeSeeder extends Seeder
                 'created_by' => $developerId,
                 'updated_by' => $developerId,
                 'created_at' => $now,
-                'updated_at' => '2025-07-09 15:02',
+                'updated_at' => $now,
             ],
             [
                 'key' => 'blog',
