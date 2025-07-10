@@ -44,6 +44,11 @@
 
   &.-inactive {
     color: $color-surface-4;
+
+    .badge {
+      background-color: $color-surface-3;
+      color: $color-surface-4;
+    }
   }
 
   .list__wrapper.-loading & {
@@ -115,6 +120,27 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0;
+    font-size: 13px;
+
+    a {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: $default-text-color;
+
+      &:hover {
+        color: $light-text-color;
+      }
+
+      .list-item__container.-inactive & {
+        color: $color-surface-4;
+
+        &:hover {
+          color: $color-surface-5;
+        }
+      }
+    }
   }
 
   &.-type-sortable {
@@ -153,25 +179,33 @@
     flex: 1 1 auto;
 
     &.-body {
-      a {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: $default-text-color;
+      font-size: 15px;
+    }
+  }
 
-        &:hover {
-          color: $light-text-color;
-        }
+  &.-type-badge {
+    flex-shrink: 0;
+    width: 95px;
 
-        .list-item__container.-inactive & {
-          color: $color-surface-4;
+    &.-head {
+      flex-direction: row-reverse;
+    }
 
-          &:hover {
-            color: $light-text-color;
-          }
-        }
-      }
+    &.-body {
+      text-align: right;
+    }
+  }
+
+  &.-type-email {
+    flex-shrink: 0;
+    width: 240px;
+
+    &.-head {
+      flex-direction: row-reverse;
+    }
+
+    &.-body {
+      text-align: right;
     }
   }
 
@@ -184,21 +218,19 @@
     }
 
     &.-body {
-      font-size: 14px;
       text-align: right;
     }
   }
 
   &.-type-datetime {
     flex-shrink: 0;
-    width: 160px;
+    width: 130px;
 
     &.-head {
       flex-direction: row-reverse;
     }
 
     &.-body {
-      font-size: 14px;
       text-align: right;
     }
   }
@@ -213,21 +245,31 @@
     width: 28px;
     height: 24px;
     transition: transition('color');
-    color: $secondary-text-color;
+    color: $secondary-text-color !important;
     cursor: pointer;
 
     &:hover {
-      color: $light-text-color;
+      color: $light-text-color !important;
+    }
+
+    &.-type-toggle {
+      .list-item__container.-inactive & {
+        color: $color-surface-4 !important;
+
+        &:hover {
+          color: $light-text-color !important;
+        }
+      }
     }
 
     a {
       display: block;
       width: 28px;
       height: 24px;
-      color: $secondary-text-color;
+      color: $secondary-text-color !important;
 
       &:hover {
-        color: $light-text-color;
+        color: $light-text-color !important;
       }
     }
   }

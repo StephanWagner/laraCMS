@@ -1,12 +1,16 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
+// Gradient text
+
 .-gradient-text {
   background: $primary-gradient;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+// Icons
 
 .icon {
   font-family: 'Material Symbols Rounded Filled';
@@ -51,8 +55,60 @@ body.-is-dragging * {
 }
 
 // Visibility
-.-hide-xs { @media (max-width: 400px) { display: none !important; } }
-.-hide-sm { @media (max-width: 600px) { display: none !important; } }
-.-hide-md { @media (max-width: 900px) { display: none !important; } }
-.-hide-lg { @media (max-width: 1200px) { display: none !important; } }
-.-hide-xl { @media (max-width: 1400px) { display: none !important; } }
+
+.-hide-xs {
+  @media (max-width: 400px) {
+    display: none !important;
+  }
+}
+
+.-hide-sm {
+  @media (max-width: 600px) {
+    display: none !important;
+  }
+}
+
+.-hide-md {
+  @media (max-width: 900px) {
+    display: none !important;
+  }
+}
+
+.-hide-lg {
+  @media (max-width: 1200px) {
+    display: none !important;
+  }
+}
+
+.-hide-xl {
+  @media (max-width: 1400px) {
+    display: none !important;
+  }
+}
+
+// Badges
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  border-radius: 9px;
+  padding: 0 8px;
+  color: #fff;
+  background: #000;
+  display: inline-block;
+  transition: transition('color', 'background-color');
+
+  &.-editor {
+    background-color: #1e3a5f;
+  }
+
+  &.-admin {
+    background-color: #592424;
+  }
+
+  &.-developer {
+    background-color: #402e61;
+  }
+}

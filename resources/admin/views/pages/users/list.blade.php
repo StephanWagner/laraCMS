@@ -1,5 +1,10 @@
 @extends('admin::app')
 
 @section('content')
-    <div style="padding: 16px 24px">Users: List</div>
+    <div class="content__content">
+
+        @include('admin::components.list', [
+            'key' => 'users',
+        ])
+    </div>
 @endsection

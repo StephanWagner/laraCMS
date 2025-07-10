@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('password_reset_hash', 64)->nullable();
             $table->timestamp('password_changed_at')->nullable()->after('password_reset_hash');
+            $table->timestamp('last_seen')->nullable();
             $table->rememberToken();
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
 

@@ -23,6 +23,7 @@ class Block extends Model
 
     protected $casts = [
         'settings' => 'array',
+        'active' => 'boolean',
     ];
 
     public function group()

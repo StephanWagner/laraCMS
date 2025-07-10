@@ -24,6 +24,7 @@ class Content extends Model
 
     protected $casts = [
         'settings' => 'array',
+        'active' => 'boolean',
     ];
 
     public function type()
@@ -39,7 +40,7 @@ class Content extends Model
     public function media()
     {
         return $this->morphMany(Relation::class, 'source')
-                    ->where('target_type', 'media');
+            ->where('target_type', 'media');
     }
 
     public function related()

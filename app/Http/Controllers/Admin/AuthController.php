@@ -142,7 +142,8 @@ class AuthController extends Controller
         if (
             Auth::attempt([
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'active' => 1,
             ], true) // TODO add remember checkbox
         ) {
             return [

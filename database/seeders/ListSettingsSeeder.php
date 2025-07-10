@@ -11,9 +11,11 @@ class ListSettingsSeeder extends Seeder
     {
         DB::table('settings')->insertOrIgnore([
             [
-                'key' => 'list_settings.content_types',
+                'key' => 'list-settings.content-types',
                 'value' => collect([
                     'model' => 'ContentType',
+                    'listRoute' => '/admin/content-types',
+                    'editRoute' => '/admin/content-types/edit/{id}',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
@@ -94,13 +96,20 @@ class ListSettingsSeeder extends Seeder
                 ])->toJson(),
             ],
             [
-                'key' => 'list_settings.users',
+                'key' => 'list-settings.users',
                 'value' => collect([
                     'model' => 'User',
-                    'defaultOrderBy' => 'title',
+                    'listRoute' => '/admin/users',
+                    'editRoute' => '/admin/users/edit/{id}',
+                    'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
                     'columns' => [
+                        [
+                            'key' => 'multiselect',
+                            'type' => 'multiselect',
+                            'label' => null,
+                        ],
                         [
                             'key' => 'title',
                             'type' => 'title',
@@ -118,8 +127,8 @@ class ListSettingsSeeder extends Seeder
                             'defaultOrderDirection' => 'asc',
                             'visibility' => [
                                 'xl' => true,
-                                'lg' => true,
-                                'md' => true,
+                                'lg' => false,
+                                'md' => false,
                                 'sm' => false,
                                 'xs' => false,
                             ],
@@ -131,9 +140,15 @@ class ListSettingsSeeder extends Seeder
                             'source' => 'role',
                             'config' => [
                                 'map' => [
-                                    'developer' => 'red',
-                                    'admin' => 'blue',
-                                    'editor' => 'green',
+                                    'developer' => [
+                                        'text' => 'Developer',
+                                    ],
+                                    'admin' => [
+                                        'text' => 'Admin',
+                                    ],
+                                    'editor' => [
+                                        'text' => 'Editor',
+                                    ],
                                 ],
                             ],
                             'sortable' => true,
@@ -150,14 +165,14 @@ class ListSettingsSeeder extends Seeder
                             'key' => 'latest-login',
                             'type' => 'datetime',
                             'relativeDatetime' => true,
-                            'label' => 'Latest Login',
-                            'source' => 'latest_login',
+                            'label' => 'Latest Activity',
+                            'source' => 'last_seen',
                             'sortable' => true,
                             'defaultOrderDirection' => 'desc',
                             'visibility' => [
                                 'xl' => true,
                                 'lg' => true,
-                                'md' => true,
+                                'md' => false,
                                 'sm' => false,
                                 'xs' => false,
                             ],

@@ -21,6 +21,7 @@ class ContentType extends Model
 
     protected $casts = [
         'settings' => 'array',
+        'active' => 'boolean',
     ];
 
     public function contents()

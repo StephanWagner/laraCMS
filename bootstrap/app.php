@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
+            'authGuard' => \App\Http\Middleware\AuthGuard::class,
+            'updateLastSeen' => \App\Http\Middleware\UpdateLastSeen::class,
             'isCmsInstalled' => \App\Http\Middleware\IsCmsInstalled::class,
             'accessAdmin' => \App\Http\Middleware\AccessAdmin::class,
             'accessDeveloper' => \App\Http\Middleware\AccessDeveloper::class,

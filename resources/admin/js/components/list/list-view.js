@@ -202,7 +202,7 @@ export class ListView {
       const itemContainerEl = document.createElement('div');
       itemContainerEl.className = 'list-item__container';
       itemContainerEl.dataset.id = item.id;
-      if (item.active === 0) {
+      if (item.active === false || item.active === 0) {
         itemContainerEl.classList.add('-inactive');
       }
       this.contentItems.appendChild(itemContainerEl);
@@ -240,10 +240,27 @@ export class ListView {
 
           case 'title':
             const title = getNestedValue(item, column.source);
-            const itemColumnLinkEl = document.createElement('a');
-            itemColumnLinkEl.href = editLink;
-            itemColumnLinkEl.innerHTML = title;
-            itemColumnEl.append(itemColumnLinkEl);
+            const itemColumnTitleLinkEl = document.createElement('a');
+            itemColumnTitleLinkEl.href = editLink;
+            itemColumnTitleLinkEl.innerHTML = title;
+            itemColumnEl.append(itemColumnTitleLinkEl);
+            break;
+
+          case 'email':
+            const email = getNestedValue(item, column.source);
+            const itemColumnEmailLinkEl = document.createElement('a');
+            itemColumnEmailLinkEl.href = 'mailto:' + email;
+            itemColumnEmailLinkEl.innerHTML = email;
+            itemColumnEl.append(itemColumnEmailLinkEl);
+            break;
+
+          case 'badge':
+            const badgeKey = getNestedValue(item, column.source);
+            const badgeText = column.config?.map[badgeKey]?.text || badgeKey;
+            const itemColumnBadgeEl = document.createElement('div');
+            itemColumnBadgeEl.classList.add('badge', '-' + badgeKey);
+            itemColumnBadgeEl.innerHTML = badgeText;
+            itemColumnEl.append(itemColumnBadgeEl);
             break;
 
           case 'datetime':
@@ -258,17 +275,17 @@ export class ListView {
 
           case 'actions':
             column.actions.forEach(action => {
-              const actionEl = document.createElement('div');
-              actionEl.classList.add('list__action');
-
-              const actionIconEl = document.createElement('div');
-              actionIconEl.classList.add('icon', 'list__action-icon');
-
               let actionType = action;
 
               if (typeof action === 'object' && action !== null && 'type' in action) {
                 actionType = action.type;
               }
+
+              const actionEl = document.createElement('div');
+              actionEl.classList.add('list__action', '-type-' + actionType);
+
+              const actionIconEl = document.createElement('div');
+              actionIconEl.classList.add('icon', 'list__action-icon');
 
               switch (actionType) {
                 case 'toggle':

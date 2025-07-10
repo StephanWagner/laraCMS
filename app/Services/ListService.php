@@ -9,7 +9,7 @@ class ListService
 {
     public static function getConfig(string $key)
     {
-        $settingKey = 'list_settings.' . $key;
+        $settingKey = 'list-settings.' . $key;
 
         $config = DB::table('settings')->where('key', $settingKey)->value('value');
 

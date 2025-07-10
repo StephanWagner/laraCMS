@@ -32,7 +32,7 @@ Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name
     Route::post('/new-password', [AuthController::class, 'newPasswordRequest'])->name('new-password-request');
 });
 
-Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
     // Auth
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -62,8 +62,10 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
 
     // Users
     Route::middleware('accessAdmin')->prefix('users')->name('users.')->group(function () {
-        Route::get('list', [UsersController::class, 'list'])->name('list');
         Route::get('profile', [UsersController::class, 'profile'])->name('profile');
+        Route::get('', [UsersController::class, 'list'])->name('list');
+        Route::get('edit/{id?}', [UsersController::class, 'edit'])->name('edit');
+        Route::post('edit/{id?}', [UsersController::class, 'save'])->name('save');
     });
 
     // Themes
@@ -85,7 +87,9 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
 
     // Content types
     Route::middleware('accessDeveloper')->prefix('content-types')->name('content-types.')->group(function () {
-        Route::get('list', [ContentTypesController::class, 'list'])->name('list');
+        Route::get('', [ContentTypesController::class, 'list'])->name('list');
+        Route::get('edit/{id?}', [ContentTypesController::class, 'edit'])->name('edit');
+        Route::post('edit/{id?}', [ContentTypesController::class, 'save'])->name('save');
     });
 
     // Blocks
@@ -96,8 +100,8 @@ Route::middleware(['web', 'auth', 'isCmsInstalled', 'setLocale'])->prefix('admin
 
     // Api
     Route::prefix('api')->name('api.')->group(function () {
-        Route::post('/list', [\App\Http\Controllers\Admin\ApiController::class, 'list'])->name('list');
-        Route::post('/list-reorder', [\App\Http\Controllers\Admin\ApiController::class, 'listReorder'])->name('list-reorder');
-        Route::post('/toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
+        Route::post('list', [\App\Http\Controllers\Admin\ApiController::class, 'list'])->name('list');
+        Route::post('list-reorder', [\App\Http\Controllers\Admin\ApiController::class, 'listReorder'])->name('list-reorder');
+        Route::post('toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
     });
 });
