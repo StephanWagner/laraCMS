@@ -8,20 +8,27 @@ use App\Services\ListService;
 class ApiController extends Controller
 {
     /**
+     * Get list params
+     */
+    protected function getListParams()
+    {
+        return [
+            'orderBy' => request()->input('orderBy'),
+            'orderDirection' => request()->input('orderDirection'),
+            'searchTerm' => request()->input('searchTerm'),
+            'perPage' => request()->input('perPage'),
+            'trashed' => request()->input('trashed'),
+        ];
+    }
+
+    /**
      * Get list data
      */
     public function list()
     {
         $key = request()->input('key');
 
-        $listData = ListService::getData($key, [
-            'orderBy' => request()->input('orderBy'),
-            'orderDirection' => request()->input('orderDirection'),
-            'searchTerm' => request()->input('searchTerm'),
-            'perPage' => request()->input('perPage'),
-            // 'filters' => request()->input('filters', []),
-            // 'page' => request()->input('page', 1),
-        ]);
+        $listData = ListService::getData($key, $this->getListParams());
 
         return [
             'success' => true,
@@ -91,6 +98,7 @@ class ApiController extends Controller
     {
         $key = request()->input('key');
         $id = request()->input('id');
+        $force = request()->input('force');
 
         $listConfig = ListService::getConfig($key);
 
@@ -99,20 +107,48 @@ class ApiController extends Controller
 
         $model = $modelClass::find($id);
         if ($model) {
-            $model->delete();;
+            $model->timestamps = false;
+            if ($force) {
+                $model->forceDelete();
+            } else {
+                $model->delete();
+            }
         }
 
-        $listData = ListService::getData($key, [
-            // TODO 'orderBy' => request()->input('orderBy'),
-            // TODO 'orderDirection' => request()->input('orderDirection'),
-            // 'filters' => request()->input('filters', []),
-            // 'page' => request()->input('page', 1),
-        ]);
+        $listData = ListService::getData($key, $this->getListParams());
 
         return [
             'success' => true,
             'listData' => $listData,
             'message' => __('admin::api.delete.successMessage'),
+        ];
+    }
+
+    /**
+     * Restore item
+     */
+    public function restore()
+    {
+        $key = request()->input('key');
+        $id = request()->input('id');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        $model = $modelClass::withTrashed()->find($id);
+        if ($model) {
+            $model->timestamps = false;
+            $model->restore();
+        }
+
+        $listData = ListService::getData($key, $this->getListParams());
+
+        return [
+            'success' => true,
+            'listData' => $listData,
+            'message' => __('admin::api.restore.successMessage'),
         ];
     }
 }

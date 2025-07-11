@@ -11,7 +11,13 @@
 
 .list-filters__container {
   display: flex;
-  gap: 12px;
+  gap: 8px;
+}
+
+.list-options__container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .list-search__container {
@@ -32,6 +38,10 @@
   border-radius: $small-border-radius $small-border-radius 0 0;
   padding: 4px 8px 3px;
 
+  .list__wrapper.-empty & {
+    display: none;
+  }
+
   &::after {
     content: '';
     height: 1px;
@@ -46,6 +56,10 @@
 .list-content__items {
   background: $color-surface-2;
   border-radius: 0 0 $small-border-radius $small-border-radius;
+
+  .list__wrapper.-empty & {
+    border-radius: $small-border-radius;
+  }
 }
 
 // Item
@@ -58,6 +72,13 @@
   line-height: 24px;
   margin: 0 0 1px;
   transition: transitionSlow('opacity', 'color');
+
+  .list__wrapper.-empty & {
+    color: $secondary-text-color;
+    text-align: center;
+    justify-content: center;
+    font-size: 14px;
+  }
 
   &.-inactive {
     color: $color-surface-4;
@@ -168,10 +189,11 @@
     &.-body {
       height: 24px;
       transition: transition('color');
-      color: $secondary-text-color;
+      color: $color-surface-4;
 
       .list__wrapper.-sortable & {
         cursor: grab;
+        color: $secondary-text-color;
       }
 
       &:hover {
@@ -184,7 +206,7 @@
 
   &.-type-multiselect {
     flex-shrink: 0;
-    width: 20px;
+    width: 24px;
     cursor: pointer;
     color: $secondary-text-color;
 
@@ -274,7 +296,6 @@
     height: 24px;
     transition: transition('color');
     color: $secondary-text-color !important;
-    cursor: pointer;
 
     &:hover {
       color: $light-text-color !important;
@@ -301,6 +322,12 @@
       }
     }
   }
+
+  &.-body {
+    .list__action {
+      cursor: pointer;
+    }
+  }
 }
 
 .list__action-icon {
@@ -316,6 +343,7 @@
   width: 20px;
   font-size: 20px;
   line-height: 24px;
+  margin: auto;
 }
 
 .list__order-icon {

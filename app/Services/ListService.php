@@ -46,6 +46,13 @@ class ListService
 
         $query = $modelClass::query();
 
+        // Item type trashed
+        $trashed = $params['trashed'] ?? false;
+        if ($trashed) {
+            $query->onlyTrashed();
+        }
+        $config['trashed'] = $trashed;
+
         // Add relations
         $with = [];
 
@@ -66,15 +73,20 @@ class ListService
         $userListSettings = $userSettings['list-settings'][$key] ?? [];
 
         // Apply ordering
-        $orderBy = $params['orderBy']
-            ?? $userListSettings['orderBy']
-            ?? $config['defaultOrderBy']
-            ?? 'id';
+        if ($trashed) {
+            $orderBy = $params['orderBy'] ?? 'deleted_at';
+            $orderDirection = $params['orderDirection'] ?? 'desc';
+        } else {
+            $orderBy = $params['orderBy']
+                ?? $userListSettings['orderBy']
+                ?? $config['defaultOrderBy']
+                ?? 'id';
 
-        $orderDirection = $params['orderDirection']
-            ?? $userListSettings['orderDirection']
-            ?? $config['defaultOrderDirection']
-            ?? 'asc';
+            $orderDirection = $params['orderDirection']
+                ?? $userListSettings['orderDirection']
+                ?? $config['defaultOrderDirection']
+                ?? 'asc';
+        }
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
             $orderDirection = 'asc';
@@ -137,18 +149,33 @@ class ListService
         $items = $query->paginate($perPage);
 
         // Update users config
-        $userSettings['list-settings'][$config['key']] = [
-            'orderBy' => $config['orderBy'],
-            'orderDirection' => $config['orderDirection'],
-            'perPage' => $config['perPage'],
-        ];
+        $userListSettings['perPage'] = $config['perPage'];
 
+        if (!$trashed) {
+            $userListSettings['orderBy'] = $config['orderBy'];
+            $userListSettings['orderDirection'] = $config['orderDirection'];
+        }
+
+        $userSettings['list-settings'][$config['key']] = $userListSettings;
         $user->settings = $userSettings;
         $user->save();
+
+        // Add meta
+        $config['meta'] = [
+            'total' => $items->total(),
+            'perPage' => $items->perPage(),
+            'currentPage' => $items->currentPage(),
+            'lastPage' => $items->lastPage(),
+            'from' => $items->firstItem(),
+            'to' => $items->lastItem(),
+            'totalCount' => $modelClass::count(),
+            'trashCount' => $modelClass::onlyTrashed()->count(),
+        ];
 
         return [
             'config' => $config,
             'items' => $items,
+            'texts' => trans('admin::list'),
         ];
     }
 }

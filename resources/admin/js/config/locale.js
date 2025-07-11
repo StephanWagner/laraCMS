@@ -37,7 +37,7 @@ const locale = {
   },
   relativeDateMinutes: {
     en: '{minutes} minutes ago',
-    de: 'Vor {minutes} Minuten',
+    de: 'vor {minutes} Minuten',
   },
   relativeDateToday: {
     en: 'Today at {time}',

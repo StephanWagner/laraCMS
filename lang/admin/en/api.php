@@ -17,4 +17,9 @@ return [
     'delete' => [
         'successMessage' => 'Item deleted.',
     ],
+
+    // Restore
+    'restore' => [
+        'successMessage' => 'Item restored.',
+    ],
 ];

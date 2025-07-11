@@ -18,6 +18,8 @@ export class ListView {
 
     this.listData = window.listData || null;
 
+    // TODO get list data then init
+
     this.init();
   }
 
@@ -57,6 +59,43 @@ export class ListView {
     const optionsContainerEl = document.createElement('div');
     optionsContainerEl.className = 'list-options__container';
     headerEl.appendChild(optionsContainerEl);
+
+    // Item amount
+    this.itemsAmountContainerEl = document.createElement('div');
+    this.itemsAmountContainerEl.className =
+      'list-items-amount__container button -selectable -all no-select';
+    optionsContainerEl.appendChild(this.itemsAmountContainerEl);
+    this.itemsAmountContainerEl.addEventListener('click', () => {
+      if (this.listData.config.trashed) {
+        this.listData.config.trashed = false;
+        this.listData.config.orderBy = null;
+        this.listData.config.orderDirection = null;
+        this.loadData({
+          renderHeader: true,
+        });
+      }
+    });
+
+    this.trashItemsAmountContainerEl = document.createElement('div');
+    this.trashItemsAmountContainerEl.className =
+      'list-items-amount__container button -selectable -trashed no-select';
+    optionsContainerEl.appendChild(this.trashItemsAmountContainerEl);
+    this.trashItemsAmountContainerEl.addEventListener('click', () => {
+      if (!this.listData.config.trashed) {
+        this.listData.config.trashed = true;
+        this.listData.config.orderBy = null;
+        this.listData.config.orderDirection = null;
+        this.loadData({
+          renderHeader: true,
+        });
+      }
+    });
+
+    updateItemAmountButtons(
+      this.itemsAmountContainerEl,
+      this.trashItemsAmountContainerEl,
+      this.listData
+    );
 
     // Per-page
     const perPageContainerEl = document.createElement('div');
@@ -104,32 +143,19 @@ export class ListView {
     this.container.appendChild(footerEl);
     this.wrapper.appendChild(this.container);
 
-    if (this.listData) {
-      this.render({
-        renderHeader: true,
-      });
-    } else {
-      // TODO test
-      this.loadData({
-        renderHeader: true,
-      });
-    }
+    this.render({
+      renderHeader: true,
+    });
   }
 
   loadData(params = {}) {
     if (this.loading) return false;
 
-    const listConfig = this.listData?.config || [];
+    const listConfig = this.listData?.config || {};
 
     apiFetch({
       url: '/admin/api/list',
-      data: {
-        key: listConfig?.key,
-        orderBy: params.orderBy || listConfig?.orderBy,
-        orderDirection: params.orderDirection || listConfig?.orderDirection,
-        searchTerm: params.searchTerm || listConfig?.searchTerm,
-        perPage: params.perPage || listConfig?.perPage,
-      },
+      data: getListParams(params, listConfig),
       before: () => {
         this.loading = true;
         this.wrapper.classList.add('-loading');
@@ -159,14 +185,45 @@ export class ListView {
 
     // Config
     const listConfig = this.listData?.config || {};
-    const listColumns = listConfig?.columns || [];
+    let listColumns = listConfig?.columns || [];
     const listItems = this.listData?.items?.data || [];
+    const listTexts = this.listData?.texts || {};
+
+    if (listConfig.trashed) {
+      listColumns.unshift({
+        key: 'multiselect',
+        type: 'multiselect',
+        label: null,
+        allowTrashed: true,
+      });
+
+      listColumns.push({
+        key: 'deleted-at',
+        type: 'datetime',
+        label: 'Deleted',
+        allowTrashed: true,
+        source: 'deleted_at',
+        sortable: true,
+      });
+
+      listColumns.push({
+        key: 'actions',
+        type: 'actions',
+        label: null,
+        allowTrashed: true,
+        actions: ['restore', 'force-delete'],
+      });
+    }
 
     // Head columns
     if (params.renderHeader) {
       this.contentHeader.innerHTML = '';
 
       listColumns.forEach(column => {
+        if (listConfig.trashed && !column.allowTrashed && column.type !== 'title') {
+          return;
+        }
+
         const columnEl = document.createElement('div');
         columnEl.classList.add('list__column', '-head', '-type-' + column.type);
 
@@ -184,7 +241,7 @@ export class ListView {
 
         if (column.label) {
           const columnLabelEl = document.createElement('div');
-          columnLabelEl.innerHTML = column.label;
+          columnLabelEl.innerHTML = resolveText(listTexts, column.label);
           columnEl.append(columnLabelEl);
         }
 
@@ -230,7 +287,8 @@ export class ListView {
         if (column.sortable) {
           columnEl.classList.add('-sortable');
           columnEl.dataset.orderBy = column.source;
-          columnEl.dataset.orderDirection = listConfig.orderDirection || column.defaultOrderDirection || 'asc';
+          columnEl.dataset.orderDirection =
+            listConfig.orderDirection || column.defaultOrderDirection || 'asc';
           columnEl.dataset.defaultOrderDirection = column.defaultOrderDirection || 'asc';
 
           const columnSortableEl = document.createElement('div');
@@ -282,21 +340,25 @@ export class ListView {
     this.contentItems.innerHTML = '';
 
     if (!listItems || !listItems.length) {
-      // TODO
-      this.contentItems.innerHTML = '<p>No items found.</p>';
-      return;
+      this.contentItems.innerHTML = '<div class="list-item__container">' + (listConfig.trashed && !listConfig.meta.trashCount ? listTexts.empty.trash : listTexts.empty.items) + '</div>';
+      this.wrapper.classList.add('-empty');
+    } else {
+      this.wrapper.classList.remove('-empty');
     }
 
     listItems.forEach(item => {
       const itemContainerEl = document.createElement('div');
       itemContainerEl.className = 'list-item__container';
       itemContainerEl.dataset.id = item.id;
-      if (item.active === false || item.active === 0) {
+      if (!listConfig.trashed && (item.active === false || item.active === 0)) {
         itemContainerEl.classList.add('-inactive');
       }
       this.contentItems.appendChild(itemContainerEl);
 
       listColumns.forEach(column => {
+        if (listConfig.trashed && !column.allowTrashed && column.type !== 'title') {
+          return;
+        }
         const itemColumnEl = document.createElement('div');
         itemColumnEl.classList.add('list__column', '-body', '-type-' + column.type);
 
@@ -456,19 +518,16 @@ export class ListView {
 
                   actionEl.addEventListener('click', () => {
                     confirmModal({
-                      title: 'Delete',
-                      description: 'Please confirm you want to delete this item.',
-                      cancelButtonText: 'Cancel',
-                      submitButtonText: 'Delete',
+                      title: this.listData.texts.deleteModal.title,
+                      description: this.listData.texts.deleteModal.textSoftDelete,
+                      cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+                      submitButtonText: this.listData.texts.deleteModal.submitButtonText,
                       submitCallback: (container, submitBtn) => {
                         if (item._deleteRequestRunning) return;
 
                         apiFetch({
                           url: '/admin/api/delete',
-                          data: {
-                            key: listConfig.key,
-                            id: item.id,
-                          },
+                          data: getListParams({}, listConfig, { id: item.id }),
                           before: () => {
                             item._deleteRequestRunning = true;
                             submitBtn.classList.add('-loading');
@@ -498,6 +557,83 @@ export class ListView {
                   });
                   break;
 
+                case 'force-delete':
+                  actionIconEl.innerHTML = 'delete_forever';
+                  actionEl.append(actionIconEl);
+
+                  actionEl.addEventListener('click', () => {
+                    confirmModal({
+                      title: this.listData.texts.deleteModal.title,
+                      description: this.listData.texts.deleteModal.textForceDelete,
+                      cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+                      submitButtonText: this.listData.texts.deleteModal.submitButtonText,
+                      submitCallback: (container, submitBtn) => {
+                        if (item._forceDeleteRequestRunning) return;
+
+                        apiFetch({
+                          url: '/admin/api/delete',
+                          data: getListParams({}, listConfig, { id: item.id, force: true }),
+                          before: () => {
+                            item._forceDeleteRequestRunning = true;
+                            submitBtn.classList.add('-loading');
+                            submitBtn.disabled = true;
+                          },
+                          complete: () => {
+                            item._forceDeleteRequestRunning = false;
+                            submitBtn.classList.remove('-loading');
+                            submitBtn.disabled = false;
+                          },
+                          success: response => {
+                            if (response.success) {
+                              this.listData = response.listData;
+                              this.render();
+                              success(response.message);
+                              closeConfirmModal();
+                            } else {
+                              networkError(response);
+                            }
+                          },
+                          error: xhr => {
+                            networkError(xhr);
+                          },
+                        });
+                      },
+                    });
+                  });
+                  break;
+
+                case 'restore':
+                  actionIconEl.innerHTML = 'restore_from_trash';
+                  actionEl.append(actionIconEl);
+
+                  actionEl.addEventListener('click', () => {
+                    if (item._restoreRequestRunning) return;
+
+                    apiFetch({
+                      url: '/admin/api/restore',
+                      data: getListParams({}, listConfig, { id: item.id }),
+                      before: () => {
+                        item._restoreRequestRunning = true;
+                      },
+                      complete: () => {
+                        item._restoreRequestRunning = false;
+                      },
+                      success: response => {
+                        if (response.success) {
+                          this.listData = response.listData;
+                          this.render();
+                          success(response.message);
+                        } else {
+                          networkError(response);
+                        }
+                      },
+                      error: xhr => {
+                        networkError(xhr);
+                      },
+                    });
+                  });
+                  break;
+
                 case 'more':
                   actionIconEl.innerHTML = 'more_horiz';
                   actionEl.append(actionIconEl);
@@ -521,7 +657,14 @@ export class ListView {
       this.sortable = null;
     }
 
-    if (listConfig.orderBy === 'order' && !listConfig.searchTerm) {
+    if (
+      listItems &&
+      listItems.length &&
+      !listConfig.trashed &&
+      listConfig.orderBy === 'order' &&
+      listConfig.orderDirection === 'asc' &&
+      !listConfig.searchTerm
+    ) {
       this.wrapper.classList.add('-sortable');
 
       this.sortable = Sortable.create(this.contentItems, {
@@ -576,7 +719,24 @@ export class ListView {
     }
 
     updateMultiselect(this.wrapper);
+    updateItemAmountButtons(
+      this.itemsAmountContainerEl,
+      this.trashItemsAmountContainerEl,
+      this.listData
+    );
   }
+}
+
+function getListParams(params = {}, listConfig = {}, obj = {}) {
+  return {
+    key: listConfig?.key,
+    orderBy: params?.orderBy || listConfig?.orderBy,
+    orderDirection: params?.orderDirection || listConfig?.orderDirection,
+    searchTerm: params?.searchTerm || listConfig?.searchTerm,
+    perPage: params?.perPage || listConfig?.perPage,
+    trashed: params?.trashed || listConfig?.trashed,
+    ...obj,
+  };
 }
 
 function updateMultiselect(wrapper) {
@@ -597,4 +757,22 @@ function updateMultiselect(wrapper) {
       multiSelectIconEl.innerHTML = 'indeterminate_check_box';
     }
   }
+}
+
+function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
+  itemsEl.classList[listData.config.trashed ? 'remove' : 'add']('-active');
+  trashItemsEl.classList[listData.config.trashed ? 'add' : 'remove']('-active');
+
+  const countItems = listData.config.meta.totalCount;
+  const countTrash = listData.config.meta.trashCount;
+
+  const textItems = listData.texts.itemCount['items' + (countItems == 1 ? '1' : 'N')];
+  const textTrash = listData.texts.itemCount['trash' + (countTrash == 1 ? '1' : 'N')];
+
+  itemsEl.innerHTML = textItems.replace('{n}', countItems);
+  trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);
+}
+
+function resolveText(texts, textId) {
+  return getNestedValue(texts, textId) ?? textId;
 }

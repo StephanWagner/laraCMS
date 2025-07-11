@@ -17,4 +17,9 @@ return [
     'delete' => [
         'successMessage' => 'Eintrag gelöscht.',
     ],
+
+    // Restore
+    'restore' => [
+        'successMessage' => 'Eintrag wiederhergestellt.',
+    ],
 ];
