@@ -129,13 +129,18 @@ class ListService
         }
 
         // Get paginated result
-        $perPage = $config['defaultPerPage'] ?? 20;
+        $perPage = $params['perPage']
+            ?? $userListSettings['perPage']
+            ?? $config['defaultPerPage']
+            ?? 25;
+        $config['perPage'] = $perPage;
         $items = $query->paginate($perPage);
 
         // Update users config
         $userSettings['list-settings'][$config['key']] = [
             'orderBy' => $config['orderBy'],
             'orderDirection' => $config['orderDirection'],
+            'perPage' => $config['perPage'],
         ];
 
         $user->settings = $userSettings;

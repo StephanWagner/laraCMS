@@ -18,7 +18,9 @@ class ListSettingsSeeder extends Seeder
                     'editRoute' => '/admin/content-types/edit/{id}',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
-                    'defaultPerPage' => 20,
+                    'defaultPerPage' => 25,
+                    'hasMultiSelect' => false,
+                    'hasSoftDelete' => true,
                     'searchables' => [
                         ['column' => 'name'],
                     ],
@@ -106,7 +108,9 @@ class ListSettingsSeeder extends Seeder
                     'editRoute' => '/admin/users/edit/{id}',
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
-                    'defaultPerPage' => 20,
+                    'defaultPerPage' => 25,
+                    'hasMultiSelect' => true,
+                    'hasSoftDelete' => true,
                     'searchables' => [
                         ['column' => 'name'],
                         ['column' => 'email'],

@@ -5,6 +5,8 @@
 
 .list-header__container {
   margin: 0 0 12px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .list-filters__container {

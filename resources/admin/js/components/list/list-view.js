@@ -7,6 +7,7 @@ import { config } from '../../config/config';
 import { confirmModal, closeConfirmModal } from '../../utils/modal';
 import { debounce } from '../../utils/debounce';
 import { textfield } from '../../form/input/textfield';
+import { select } from '../../form/input/select';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -51,6 +52,35 @@ export class ListView {
       this.loadData();
     }, 300);
     this.searchInputEl.addEventListener('input', handleSearch);
+
+    // Options container
+    const optionsContainerEl = document.createElement('div');
+    optionsContainerEl.className = 'list-options__container';
+    headerEl.appendChild(optionsContainerEl);
+
+    // Per-page
+    const perPageContainerEl = document.createElement('div');
+    perPageContainerEl.className = 'list-per-page__container';
+    optionsContainerEl.appendChild(perPageContainerEl);
+
+    const perPageSelectContainerEl = select({
+      name: 'per-page',
+      size: 'small',
+      value: this.listData.config.perPage || this.listData.config.defaultPerPage || 25,
+      options: [
+        { value: '1', label: '1' },
+        { value: '10', label: '10' },
+        { value: '25', label: '25' },
+        { value: '50', label: '50' },
+        { value: '100', label: '100' },
+      ],
+      onChange: () => {
+        const perPage = perPageSelectContainerEl._selectEl.value;
+        this.listData.config.perPage = parseInt(perPage);
+        this.loadData();
+      },
+    });
+    perPageContainerEl.appendChild(perPageSelectContainerEl);
 
     // Content
     const contentEl = document.createElement('div');
@@ -98,6 +128,7 @@ export class ListView {
         orderBy: params.orderBy || listConfig?.orderBy,
         orderDirection: params.orderDirection || listConfig?.orderDirection,
         searchTerm: params.searchTerm || listConfig?.searchTerm,
+        perPage: params.perPage || listConfig?.perPage,
       },
       before: () => {
         this.loading = true;

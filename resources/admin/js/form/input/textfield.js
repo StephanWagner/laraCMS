@@ -9,7 +9,6 @@ export function textfield({
   size = 'default',
   className = '',
   icon = '',
-  iconPosition = 'left',
   onInput = null,
   onChange = null,
   onFocus = null,
@@ -17,12 +16,12 @@ export function textfield({
 } = {}) {
   // Create wrapper
   const wrapper = document.createElement('div');
-  wrapper.className = `textfield__container -size-${size} ${className}`.trim();
+  wrapper.className = `textfield__container -textfield -size-${size} ${className}`.trim();
 
   // Optional icon
   let iconEl = null;
   if (icon) {
-    wrapper.classList.add('-has-icon', '-icon-position-' + iconPosition);
+    wrapper.classList.add('-has-icon');
     iconEl = document.createElement('div');
     iconEl.className = 'textfield__icon icon';
     iconEl.textContent = icon;

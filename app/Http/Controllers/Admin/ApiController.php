@@ -18,6 +18,7 @@ class ApiController extends Controller
             'orderBy' => request()->input('orderBy'),
             'orderDirection' => request()->input('orderDirection'),
             'searchTerm' => request()->input('searchTerm'),
+            'perPage' => request()->input('perPage'),
             // 'filters' => request()->input('filters', []),
             // 'page' => request()->input('page', 1),
         ]);

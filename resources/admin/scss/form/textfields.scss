@@ -69,6 +69,7 @@ button::-moz-focus-inner {
 }
 
 input.textfield,
+select.textfield,
 textarea.textfield {
   position: relative;
   z-index: 1;
@@ -100,7 +101,8 @@ textarea.textfield {
     height: 32px;
     font-size: 14px;
     border-radius: $small-border-radius;
-    padding: 0 12px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .textfield__container.-has-icon & {
@@ -122,6 +124,14 @@ textarea.textfield {
   }
 }
 
+// Select fields
+
+select.textfield {
+  appearance: none;
+  cursor: pointer;
+  padding-right: calc(1px + 6px + 24px + 4px) !important;
+}
+
 // Textareas
 
 textarea.textfield {
@@ -130,18 +140,31 @@ textarea.textfield {
   line-height: inherit;
 }
 
+.select__pointer-icon,
 .textfield__icon {
   width: 24px;
   height: 24px;
   position: absolute;
   z-index: 2;
   top: 50%;
-  left: 6px;
   transform: translateY(-50%);
-  color: $color-surface-4;
+  color: $color-surface-6;
   transition: transition('color');
+  pointer-events: none;
 
   .textfield__container.-has-focus & {
-    color: $color-surface-6;
+    color: $default-text-color;
+  }
+}
+
+.textfield__icon {
+  left: 6px;
+}
+
+.select__pointer-icon {
+  right: 6px;
+
+  .textfield__container:hover & {
+    color: $default-text-color;
   }
 }
