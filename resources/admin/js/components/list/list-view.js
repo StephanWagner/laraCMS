@@ -8,6 +8,7 @@ import { confirmModal, closeConfirmModal } from '../../utils/modal';
 import { debounce } from '../../utils/debounce';
 import { textfield } from '../../form/input/textfield';
 import { select } from '../../form/input/select';
+import { renderPagination } from './pagination';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -51,6 +52,7 @@ export class ListView {
     const handleSearch = debounce(() => {
       const searchTerm = this.searchInputEl.value.trim();
       this.listData.config.searchTerm = searchTerm;
+      this.listData.config.page = 1;
       this.loadData();
     }, 300);
     this.searchInputEl.addEventListener('input', handleSearch);
@@ -70,6 +72,7 @@ export class ListView {
         this.listData.config.trashed = false;
         this.listData.config.orderBy = null;
         this.listData.config.orderDirection = null;
+        this.listData.config.page = 1;
         this.loadData({
           renderHeader: true,
         });
@@ -85,6 +88,7 @@ export class ListView {
         this.listData.config.trashed = true;
         this.listData.config.orderBy = null;
         this.listData.config.orderDirection = null;
+        this.listData.config.page = 1;
         this.loadData({
           renderHeader: true,
         });
@@ -108,6 +112,8 @@ export class ListView {
       value: this.listData.config.perPage || this.listData.config.defaultPerPage || 25,
       options: [
         { value: '1', label: '1' },
+        { value: '2', label: '2' },
+        { value: '3', label: '3' },
         { value: '10', label: '10' },
         { value: '25', label: '25' },
         { value: '50', label: '50' },
@@ -116,6 +122,7 @@ export class ListView {
       onChange: () => {
         const perPage = perPageSelectContainerEl._selectEl.value;
         this.listData.config.perPage = parseInt(perPage);
+        this.listData.config.page = 1;
         this.loadData();
       },
     });
@@ -136,7 +143,16 @@ export class ListView {
     // Footer
     const footerEl = document.createElement('div');
     footerEl.className = 'list-footer__container';
-    footerEl.innerHTML = 'FOOTER';
+
+    // Multiselect container
+    this.multiselectContainerEl = document.createElement('div');
+    this.multiselectContainerEl.className = 'list-multiselect__container';
+    footerEl.appendChild(this.multiselectContainerEl);
+
+    // Pagination container
+    this.paginationContainerEl = document.createElement('div');
+    this.paginationContainerEl.className = 'list-pagination__container';
+    footerEl.appendChild(this.paginationContainerEl);
 
     this.container.appendChild(headerEl);
     this.container.appendChild(contentEl);
@@ -340,7 +356,12 @@ export class ListView {
     this.contentItems.innerHTML = '';
 
     if (!listItems || !listItems.length) {
-      this.contentItems.innerHTML = '<div class="list-item__container">' + (listConfig.trashed && !listConfig.meta.trashCount ? listTexts.empty.trash : listTexts.empty.items) + '</div>';
+      this.contentItems.innerHTML =
+        '<div class="list-item__container">' +
+        (listConfig.trashed && !listConfig.meta.trashCount
+          ? listTexts.empty.trash
+          : listTexts.empty.items) +
+        '</div>';
       this.wrapper.classList.add('-empty');
     } else {
       this.wrapper.classList.remove('-empty');
@@ -718,12 +739,30 @@ export class ListView {
       });
     }
 
+    // Update multiselect
     updateMultiselect(this.wrapper);
+
+    // Update item amount buttons
     updateItemAmountButtons(
       this.itemsAmountContainerEl,
       this.trashItemsAmountContainerEl,
       this.listData
     );
+
+    // Update navigation
+    const current_page = this.listData.items.current_page;
+    const last_page = this.listData.items.last_page;
+    const inputPlaceholderText = this.listData.texts.pagination.inputPlaceholderText;
+    const onPageChange = function (page) {
+      this.listData.config.page = page;
+      this.loadData();
+    }.bind(this);
+    this.paginationContainerEl.innerHTML = '';
+    const paginationContainerEl = renderPagination(
+      { current_page, last_page, inputPlaceholderText },
+      onPageChange
+    );
+    this.paginationContainerEl.append(paginationContainerEl);
   }
 }
 
@@ -735,6 +774,7 @@ function getListParams(params = {}, listConfig = {}, obj = {}) {
     searchTerm: params?.searchTerm || listConfig?.searchTerm,
     perPage: params?.perPage || listConfig?.perPage,
     trashed: params?.trashed || listConfig?.trashed,
+    page: params?.page || listConfig?.page,
     ...obj,
   };
 }

@@ -146,7 +146,17 @@ class ListService
             ?? $config['defaultPerPage']
             ?? 25;
         $config['perPage'] = $perPage;
-        $items = $query->paginate($perPage);
+
+        $page = request()->input('page') ?? 1;
+
+        $items = $query->paginate($perPage, ['*'], 'page', $page);
+
+        // If page is out of bounds (e.g. after deletion), fallback to last available page
+        if ($items->lastPage() < $items->currentPage() && $items->lastPage() > 0) {
+            $items = $query->paginate($perPage, ['*'], 'page', $items->lastPage());
+        }
+
+        $config['page'] = $items->currentPage();
 
         // Update users config
         $userListSettings['perPage'] = $config['perPage'];

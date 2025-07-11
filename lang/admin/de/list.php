@@ -5,6 +5,12 @@ return [
         'items' => 'Keine Einträge gefunden.',
         'trash' => 'Der Papierkorb ist leer.',
     ],
+
+    // Pagination
+    'pagination' => [
+        'inputPlaceholderText' => 'Seite',
+    ],
+
     // Labels
     'columnLabel' => [
         'name' => 'Name',

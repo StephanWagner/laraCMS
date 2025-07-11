@@ -1,0 +1,28 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.pagination__container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+input.pagination__input.textfield {
+  width: 64px;
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.button.pagination__button {
+  text-align: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  min-width: 32px;
+}

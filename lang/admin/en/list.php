@@ -5,6 +5,12 @@ return [
         'items' => 'No items found.',
         'trash' => 'Trash is empty.',
     ],
+
+    // Pagination
+    'pagination' => [
+        'inputPlaceholderText' => 'Page',
+    ],
+
     // Labels
     'columnLabel' => [
         'name' => 'Name',

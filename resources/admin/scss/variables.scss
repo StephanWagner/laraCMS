@@ -8,7 +8,7 @@ $color-surface-1: #080b0f;
 $color-surface-2: #121821;
 $color-surface-2-lighter: #1b2330;
 $color-surface-3: #232a35;
-$color-surface-3-lighter: #2f3541;
+$color-surface-3-lighter: #353c48;
 $color-surface-4: #4a5667;
 $color-surface-5: #5f6b7a;
 $color-surface-6: #8895a8;
@@ -70,7 +70,7 @@ $textfield-border-color-disabled: $color-surface-3;
 
 // Buttons
 $button-color: $light-text-color;
-$button-color-disabled: $color-surface-3;
+$button-color-disabled: $color-surface-3-lighter;
 $button-background-color: $primary-color;
 $button-background-gradient: $primary-gradient;
-$button-background-color-disabled: $color-surface-4;
+$button-background-color-disabled: $color-surface-2;
