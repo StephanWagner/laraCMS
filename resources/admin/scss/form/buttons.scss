@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 // Buttons
 
@@ -34,6 +34,7 @@
 
   &:hover {
     box-shadow: inset 0 0 0 1px rgba(#fff, 0.6);
+    color: $button-color;
   }
 
   &.-block {
@@ -41,11 +42,27 @@
     width: 100%;
   }
 
+  &.-small {
+    padding: 4px 16px;
+    border-radius: $small-border-radius;
+  }
+
+  &.-secondary {
+    background-color: $color-surface-1;
+    background-image: none;
+    color: $default-text-color;
+
+    &:hover {
+      box-shadow: none;
+      color: $light-text-color;
+    }
+  }
+
   &.-danger {
     background: $error-color;
   }
 
-  >span {
+  > span {
     position: relative;
     z-index: 2;
   }
@@ -74,14 +91,16 @@
 }
 
 .button[disabled].-loading::before {
-  background-image: linear-gradient(-45deg,
-      rgba(255, 255, 255, 0.18) 25%,
-      rgba(255, 255, 255, 0) 25%,
-      rgba(255, 255, 255, 0) 50%,
-      rgba(255, 255, 255, 0.18) 50%,
-      rgba(255, 255, 255, 0.18) 75%,
-      rgba(255, 255, 255, 0) 75%,
-      rgba(255, 255, 255, 0)) !important;
+  background-image: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.18) 25%,
+    rgba(255, 255, 255, 0) 25%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.18) 75%,
+    rgba(255, 255, 255, 0) 75%,
+    rgba(255, 255, 255, 0)
+  ) !important;
   background-size: 48px 48px !important;
   background-repeat: repeat !important;
   transition: background-position 6000s linear !important;

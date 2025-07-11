@@ -12,4 +12,9 @@ return [
             'off' => 'Item deactivated.',
         ],
     ],
+
+    // Delete
+    'delete' => [
+        'successMessage' => 'Item deleted.',
+    ],
 ];

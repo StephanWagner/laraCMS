@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('last_seen')->nullable();
             $table->rememberToken();
             $table->boolean('active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
 

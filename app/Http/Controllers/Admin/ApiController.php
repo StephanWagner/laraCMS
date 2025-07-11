@@ -81,4 +81,36 @@ class ApiController extends Controller
             'message' => __('admin::api.toggle.successMessage.' . ($model->active ? 'on' : 'off')),
         ];
     }
+
+    /**
+     * Delete item
+     */
+    public function delete()
+    {
+        $key = request()->input('key');
+        $id = request()->input('id');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        $model = $modelClass::find($id);
+        if ($model) {
+            $model->delete();;
+        }
+
+        $listData = ListService::getData($key, [
+            // TODO 'orderBy' => request()->input('orderBy'),
+            // TODO 'orderDirection' => request()->input('orderDirection'),
+            // 'filters' => request()->input('filters', []),
+            // 'page' => request()->input('page', 1),
+        ]);
+
+        return [
+            'success' => true,
+            'listData' => $listData,
+            'message' => __('admin::api.delete.successMessage'),
+        ];
+    }
 }

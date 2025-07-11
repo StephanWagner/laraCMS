@@ -50,7 +50,7 @@
 
 .modal__content-container {
   position: relative;
-  background: #fff;
+  background: $color-surface-2;
   border-radius: 16px;
   width: 600px;
   margin: auto;
@@ -81,7 +81,7 @@
 }
 
 .modal__close-button {
-  background: #fff;
+  background: $color-surface-2;
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -93,19 +93,19 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    fill: blue;
-    transition: transition('fill');
-  }
+  transition: transition('color');
+  color: $color-surface-5;
 
   &:hover {
-    svg {
-      fill: #000;
-    }
+    color: $light-text-color;
   }
+}
+
+.modal__close-button-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .account-modal__confirm-title {
@@ -163,6 +163,7 @@
   }
 
   .confirm-modal-title {
+    font-size: 19px;
     font-weight: 600;
     margin: 0 0 8px;
   }
@@ -174,7 +175,7 @@
   gap: 12px;
   margin: 16px 0 0;
   padding: 16px 0 0;
-  border-top: 1px solid red;
+  border-top: 1px solid $color-surface-3;
 
   @media (max-width: 380px) {
     margin: 12px 0 0;

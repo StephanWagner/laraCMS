@@ -4,7 +4,7 @@ import { getNestedValue } from '../../utils/object';
 import { formatDatetime } from '../../utils/datetime';
 import { networkError, success } from '../../utils/message';
 import { config } from '../../config/config';
-import { confirmModal } from '../../utils/modal';
+import { confirmModal, closeConfirmModal } from '../../utils/modal';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -408,18 +408,45 @@ export class ListView {
                   actionEl.addEventListener('click', () => {
                     confirmModal({
                       title: 'Delete',
-                      description: 'Description',
+                      description: 'Please confirm you want to delete this item.',
                       cancelButtonText: 'Cancel',
                       submitButtonText: 'Delete',
-                      cancelCallback: () => {
-                        console.log('a');
-                      },
-                      submitCallback: () => {
-                        console.log('b');
+                      submitCallback: (container, submitBtn) => {
+                        if (item._deleteRequestRunning) return;
+
+                        apiFetch({
+                          url: '/admin/api/delete',
+                          data: {
+                            key: listConfig.key,
+                            id: item.id,
+                          },
+                          before: () => {
+                            item._deleteRequestRunning = true;
+                            submitBtn.classList.add('-loading');
+                            submitBtn.disabled = true;
+                          },
+                          complete: () => {
+                            item._deleteRequestRunning = false;
+                            submitBtn.classList.remove('-loading');
+                            submitBtn.disabled = false;
+                          },
+                          success: response => {
+                            if (response.success) {
+                              this.listData = response.listData;
+                              this.render();
+                              success(response.message);
+                              closeConfirmModal();
+                            } else {
+                              networkError(response);
+                            }
+                          },
+                          error: xhr => {
+                            networkError(xhr);
+                          },
+                        });
                       },
                     });
                   });
-
                   break;
 
                 case 'more':

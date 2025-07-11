@@ -12,4 +12,9 @@ return [
             'off' => 'Eintrag deaktiviert.',
         ],
     ],
+
+    // Delete
+    'delete' => [
+        'successMessage' => 'Eintrag gelöscht.',
+    ],
 ];
