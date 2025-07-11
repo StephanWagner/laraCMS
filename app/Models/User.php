@@ -49,6 +49,7 @@ class User extends Authenticatable
             'last_seen' => 'datetime',
             'password' => 'hashed',
             'active' => 'boolean',
+            'settings' => 'array',
         ];
     }
 

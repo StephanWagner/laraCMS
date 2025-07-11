@@ -22,8 +22,8 @@ class Block extends Model
     ];
 
     protected $casts = [
-        'settings' => 'array',
         'active' => 'boolean',
+        'settings' => 'array',
     ];
 
     public function group()

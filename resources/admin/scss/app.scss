@@ -25,3 +25,11 @@ a,
     color: $light-text-color;
   }
 }
+
+h1 {
+  color: $default-text-color;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}

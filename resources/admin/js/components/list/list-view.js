@@ -199,7 +199,7 @@ export class ListView {
         if (column.sortable) {
           columnEl.classList.add('-sortable');
           columnEl.dataset.orderBy = column.source;
-          columnEl.dataset.orderDirection = column.defaultOrderDirection || 'asc';
+          columnEl.dataset.orderDirection = listConfig.orderDirection || column.defaultOrderDirection || 'asc';
           columnEl.dataset.defaultOrderDirection = column.defaultOrderDirection || 'asc';
 
           const columnSortableEl = document.createElement('div');

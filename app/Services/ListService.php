@@ -59,9 +59,22 @@ class ListService
             $query->with($with);
         }
 
+        // Get user settings
+        $user = auth()->user();
+        $userSettings = $user->settings ?? [];
+        $userSettings['list-settings'] = $userSettings['list-settings'] ?? [];
+        $userListSettings = $userSettings['list-settings'][$key] ?? [];
+
         // Apply ordering
-        $orderBy = $params['orderBy'] ?? ($config['defaultOrderBy'] ?? 'id');
-        $orderDirection = $params['orderDirection'] ?? ($config['defaultOrderDirection'] ?? 'asc');
+        $orderBy = $params['orderBy']
+            ?? $userListSettings['orderBy']
+            ?? $config['defaultOrderBy']
+            ?? 'id';
+
+        $orderDirection = $params['orderDirection']
+            ?? $userListSettings['orderDirection']
+            ?? $config['defaultOrderDirection']
+            ?? 'asc';
 
         if (!in_array($orderDirection, ['asc', 'desc'])) {
             $orderDirection = 'asc';
@@ -118,6 +131,15 @@ class ListService
         // Get paginated result
         $perPage = $config['defaultPerPage'] ?? 20;
         $items = $query->paginate($perPage);
+
+        // Update users config
+        $userSettings['list-settings'][$config['key']] = [
+            'orderBy' => $config['orderBy'],
+            'orderDirection' => $config['orderDirection'],
+        ];
+
+        $user->settings = $userSettings;
+        $user->save();
 
         return [
             'config' => $config,

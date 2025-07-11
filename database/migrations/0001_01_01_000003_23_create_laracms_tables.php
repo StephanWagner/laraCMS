@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-		// Force delete everything
+        // Force delete everything
         // TODO remove
-		Schema::disableForeignKeyConstraints();
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('settings');
         Schema::dropIfExists('relations');
         Schema::dropIfExists('media_versions');
@@ -19,7 +19,7 @@ return new class extends Migration {
         Schema::dropIfExists('block_groups');
         Schema::dropIfExists('contents');
         Schema::dropIfExists('content_types');
-		Schema::enableForeignKeyConstraints();
+        Schema::enableForeignKeyConstraints();
 
         // Content Types
         Schema::create('content_types', function (Blueprint $table) {
