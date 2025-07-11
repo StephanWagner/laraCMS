@@ -1,6 +1,21 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
+// Header
+
+.list-header__container {
+  margin: 0 0 12px;
+}
+
+.list-filters__container {
+  display: flex;
+  gap: 12px;
+}
+
+.list-search__container {
+  width: 160px;
+}
+
 // Item header
 
 .list-content__container {

@@ -19,6 +19,9 @@ class ListSettingsSeeder extends Seeder
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
+                    'searchables' => [
+                        ['column' => 'name'],
+                    ],
                     'columns' => [
                         [
                             'key' => 'order',
@@ -104,6 +107,11 @@ class ListSettingsSeeder extends Seeder
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 20,
+                    'searchables' => [
+                        ['column' => 'name'],
+                        ['column' => 'email'],
+                        ['column' => 'role'],
+                    ],
                     'columns' => [
                         [
                             'key' => 'multiselect',

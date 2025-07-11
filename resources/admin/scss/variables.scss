@@ -8,6 +8,7 @@ $color-surface-1: #080b0f;
 $color-surface-2: #121821;
 $color-surface-2-lighter: #1b2330;
 $color-surface-3: #232a35;
+$color-surface-3-lighter: #2f3541;
 $color-surface-4: #4a5667;
 $color-surface-5: #5f6b7a;
 $color-surface-6: #8895a8;
@@ -62,7 +63,7 @@ $textfield-background-color: $color-surface-2;
 
 $textfield-border-color: $color-surface-3;
 $textfield-border-radius: $medium-border-radius;
-$textfield-border-color-hover: $color-surface-4;
+$textfield-border-color-hover: $color-surface-3-lighter;
 $textfield-border-color-focus: $primary-color;
 $textfield-border-color-error: $error-color;
 $textfield-border-color-disabled: $color-surface-3;

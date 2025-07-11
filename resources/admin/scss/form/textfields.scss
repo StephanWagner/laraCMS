@@ -1,12 +1,12 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 // Reset
 
 input,
-input[type="text"],
-input[type="email"],
-input[type="password"],
+input[type='text'],
+input[type='email'],
+input[type='password'],
 textarea {
   line-height: inherit;
   -webkit-appearance: none;
@@ -53,13 +53,14 @@ button::-moz-focus-inner {
   color: $textfield-color-disabled;
 }
 
-[disabled]:-ms-input-placeholder {
+[disabled]::-ms-input-placeholder {
   color: $textfield-color-disabled;
 }
 
 // Textfields
 
 .textfield__container {
+  position: relative;
   margin: 0 0 12px;
 
   &:last-child {
@@ -70,17 +71,21 @@ button::-moz-focus-inner {
 input.textfield,
 textarea.textfield {
   position: relative;
+  z-index: 1;
   color: $textfield-color;
   background-color: $textfield-background-color;
   border: 1px solid $textfield-border-color;
   padding: 0 16px;
   height: $textfield-height;
   font-size: $default-font-size;
+  line-height: 1;
   font-weight: normal;
   border-radius: $textfield-border-radius;
   resize: none;
   box-shadow: none;
-  transition: transition("border-color", "background-color", "color");
+  transition: transition('border-color', 'background-color', 'color');
+  display: block;
+  width: 100%;
 
   &:hover {
     border-color: $textfield-border-color-hover;
@@ -90,9 +95,16 @@ textarea.textfield {
     border-color: $textfield-border-color-focus;
   }
 
-  &.-block {
-    display: block;
-    width: 100%;
+  &.-small,
+  .textfield__container.-size-small & {
+    height: 32px;
+    font-size: 14px;
+    border-radius: $small-border-radius;
+    padding: 0 12px;
+  }
+
+  .textfield__container.-has-icon & {
+    padding-left: calc(1px + 6px + 24px + 4px);
   }
 
   &.-h {
@@ -116,4 +128,20 @@ textarea.textfield {
   height: auto;
   padding: 8px 16px;
   line-height: inherit;
+}
+
+.textfield__icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+  color: $color-surface-4;
+  transition: transition('color');
+
+  .textfield__container.-has-focus & {
+    color: $color-surface-6;
+  }
 }

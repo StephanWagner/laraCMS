@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Models\ContentType;
 
@@ -83,6 +84,35 @@ class ListService
                 ->select($query->getModel()->getTable() . '.*');
         } else {
             $query->orderBy($orderBy, $orderDirection);
+        }
+
+        // Apply search
+        $searchTerm = $params['searchTerm'] ?? null;
+
+        if ($searchTerm) {
+            $searchables = $config['searchables'] ?? [];
+            if (empty($searchables)) {
+                if (Schema::hasColumn($modelClass::getModel()->getTable(), 'title')) {
+                    $searchables[] = 'title';
+                } elseif (Schema::hasColumn($modelClass::getModel()->getTable(), 'name')) {
+                    $searchables[] = 'name';
+                }
+            }
+
+            if (!empty($searchables)) {
+                $query->where(function ($q) use ($searchables, $searchTerm) {
+                    foreach ($searchables as $field) {
+                        if (is_array($field) && isset($field['column'])) {
+                            $field = $field['column'];
+                        }
+                        $q->orWhere($field, 'like', '%' . $searchTerm . '%');
+                    }
+                });
+            }
+
+            $config['searchTerm'] = $searchTerm;
+        } else {
+            $config['searchTerm'] = null;
         }
 
         // Get paginated result

@@ -17,6 +17,7 @@ class ApiController extends Controller
         $listData = ListService::getData($key, [
             'orderBy' => request()->input('orderBy'),
             'orderDirection' => request()->input('orderDirection'),
+            'searchTerm' => request()->input('searchTerm'),
             // 'filters' => request()->input('filters', []),
             // 'page' => request()->input('page', 1),
         ]);

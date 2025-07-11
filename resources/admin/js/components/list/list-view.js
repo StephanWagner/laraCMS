@@ -5,6 +5,8 @@ import { formatDatetime } from '../../utils/datetime';
 import { networkError, success } from '../../utils/message';
 import { config } from '../../config/config';
 import { confirmModal, closeConfirmModal } from '../../utils/modal';
+import { debounce } from '../../utils/debounce';
+import { textfield } from '../../form/input/textfield';
 
 export class ListView {
   constructor({ key, wrapper }) {
@@ -24,36 +26,52 @@ export class ListView {
     this.container.className = 'list__container';
 
     // Header
-    const header = document.createElement('div');
-    header.className = 'list-header__container';
-    header.innerHTML = 'HEADER';
+    const headerEl = document.createElement('div');
+    headerEl.className = 'list-header__container';
 
-    // Filters
-    const filters = document.createElement('div');
-    header.className = 'list-filters__container';
-    header.innerHTML = 'SEARCH / FILTERS';
-    header.appendChild(filters);
+    // Filters container
+    const filtersContainerEl = document.createElement('div');
+    filtersContainerEl.className = 'list-filters__container';
+    headerEl.appendChild(filtersContainerEl);
+
+    // Search
+    const searchContainerEl = document.createElement('div');
+    searchContainerEl.className = 'list-search__container';
+    filtersContainerEl.appendChild(searchContainerEl);
+    const searchInputContainerEl = textfield({
+      name: 'list-search',
+      size: 'small',
+      icon: 'search',
+    });
+    searchContainerEl.appendChild(searchInputContainerEl);
+    this.searchInputEl = searchInputContainerEl._inputEl;
+    const handleSearch = debounce(() => {
+      const searchTerm = this.searchInputEl.value.trim();
+      this.listData.config.searchTerm = searchTerm;
+      this.loadData();
+    }, 300);
+    this.searchInputEl.addEventListener('input', handleSearch);
 
     // Content
-    const content = document.createElement('div');
-    content.className = 'list-content__container';
+    const contentEl = document.createElement('div');
+    contentEl.className = 'list-content__container';
 
     this.contentHeader = document.createElement('div');
     this.contentHeader.className = 'list-content__header';
-    content.appendChild(this.contentHeader);
+    contentEl.appendChild(this.contentHeader);
 
     this.contentItems = document.createElement('div');
     this.contentItems.className = 'list-content__items';
-    content.appendChild(this.contentItems);
+    contentEl.appendChild(this.contentItems);
 
     // Footer
-    const footer = document.createElement('div');
-    footer.className = 'list-footer__container';
-    footer.innerHTML = 'FOOTER';
+    const footerEl = document.createElement('div');
+    footerEl.className = 'list-footer__container';
+    footerEl.innerHTML = 'FOOTER';
 
-    this.container.appendChild(header);
-    this.container.appendChild(content);
-    this.container.appendChild(footer);
+    this.container.appendChild(headerEl);
+    this.container.appendChild(contentEl);
+    this.container.appendChild(footerEl);
     this.wrapper.appendChild(this.container);
 
     if (this.listData) {
@@ -79,6 +97,7 @@ export class ListView {
         key: listConfig?.key,
         orderBy: params.orderBy || listConfig?.orderBy,
         orderDirection: params.orderDirection || listConfig?.orderDirection,
+        searchTerm: params.searchTerm || listConfig?.searchTerm,
       },
       before: () => {
         this.loading = true;
@@ -197,10 +216,9 @@ export class ListView {
               const currentDirection = columnEl.dataset.orderDirection;
               newDirection = currentDirection;
             }
-            this.loadData({
-              orderBy: column.source,
-              orderDirection: newDirection,
-            });
+            this.listData.config.orderBy = column.source;
+            this.listData.config.orderDirection = newDirection;
+            this.loadData();
           });
 
           columnEl.append(columnSortableEl);
@@ -472,7 +490,7 @@ export class ListView {
       this.sortable = null;
     }
 
-    if (listConfig.orderBy === 'order') {
+    if (listConfig.orderBy === 'order' && !listConfig.searchTerm) {
       this.wrapper.classList.add('-sortable');
 
       this.sortable = Sortable.create(this.contentItems, {
