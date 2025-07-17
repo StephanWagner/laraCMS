@@ -18,7 +18,7 @@ class ListService
             $config = $contentType->settings['list'] ?? null;
         }
 
-        if ($config) {
+        if (is_string($config)) {
             $config = json_decode($config, true);
         }
 
