@@ -13,6 +13,11 @@ return [
         ],
     ],
 
+    // Duplicate
+    'duplicate' => [
+        'successMessage' => 'Item duplicated.',
+    ],
+
     // Delete
     'delete' => [
         'successMessage' => 'Item deleted.',

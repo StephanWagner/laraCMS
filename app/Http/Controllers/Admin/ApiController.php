@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
 
@@ -92,6 +93,89 @@ class ApiController extends Controller
     }
 
     /**
+     * Duplicate item
+     */
+    public function duplicate()
+    {
+        $key = request()->input('key');
+        $id = request()->input('id');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        $model = $modelClass::find($id);
+
+        if ($model) {
+            $newModel = $model->replicate();
+
+            $attributes = $model->getAttributes();
+            $labelKey = array_key_exists('title', $attributes) ? 'title' : (array_key_exists('name', $attributes) ? 'name' : null);
+
+            if ($labelKey) {
+                $original = $model->$labelKey;
+                $base = preg_replace('/\s\((Copy(?: \d+)?)\)$/i', '', $original);
+
+                $existing = $modelClass::where($labelKey, 'like', $base . ' (Copy%')->pluck($labelKey);
+
+                $max = 0;
+                foreach ($existing as $existingValue) {
+                    if (preg_match('/\s\(Copy(?: (\d+))?\)$/i', $existingValue, $matches)) {
+                        $n = isset($matches[1]) ? (int) $matches[1] : 1;
+                        if ($n > $max) $max = $n;
+                    }
+                }
+
+                $newLabel = $base . ' (Copy' . ($max + 1 > 1 ? ' ' . ($max + 1) : '') . ')';
+                $newModel->$labelKey = $newLabel;
+            }
+
+            $table = $model->getTable();
+            $columns = Schema::getColumnListing($table);
+
+            if (in_array('active', $columns)) {
+                $newModel->active = 0;
+            }
+
+            if (!empty($listConfig['duplicate']['uniqueColumns'])) {
+                foreach ($listConfig['duplicate']['uniqueColumns'] as $col) {
+                    if (in_array($col, $columns)) {
+                        $original = $model->$col;
+                        $base = preg_replace('/-\d+$/', '', $original);
+
+                        $existing = $model->newQuery()
+                            ->where($col, 'like', $base . '-%')
+                            ->pluck($col);
+
+                        $max = 1;
+                        foreach ($existing as $val) {
+                            if (preg_match('/-(\d+)$/', $val, $m)) {
+                                $n = (int)$m[1];
+                                $max = max($max, $n + 1);
+                            }
+                        }
+
+                        $newModel->$col = $base . '-' . $max;
+                    }
+                }
+            }
+
+            $newModel->push();
+        }
+
+        // TODO Also duplicate relations
+
+        $listData = ListService::getData($key, $this->getListParams());
+
+        return [
+            'success' => true,
+            'listData' => $listData,
+            'message' => __('admin::api.duplicate.successMessage'),
+        ];
+    }
+
+    /**
      * Delete item
      */
     public function delete()
@@ -105,7 +189,7 @@ class ApiController extends Controller
         $modelClassName = $listConfig['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
 
-        $model = $modelClass::find($id);
+        $model = $modelClass::withTrashed()->find($id);
         if ($model) {
             $model->timestamps = false;
             if ($force) {
@@ -113,6 +197,10 @@ class ApiController extends Controller
             } else {
                 $model->delete();
             }
+        } else {
+            return [
+                'success' => false,
+            ];
         }
 
         $listData = ListService::getData($key, $this->getListParams());
@@ -141,6 +229,10 @@ class ApiController extends Controller
         if ($model) {
             $model->timestamps = false;
             $model->restore();
+        } else {
+            return [
+                'success' => false,
+            ];
         }
 
         $listData = ListService::getData($key, $this->getListParams());

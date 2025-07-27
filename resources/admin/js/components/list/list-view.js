@@ -523,6 +523,38 @@ export class ListView {
                 case 'duplicate':
                   actionIconEl.innerHTML = 'content_copy';
                   actionEl.append(actionIconEl);
+
+                  actionEl.addEventListener('click', () => {
+                    if (item._duplicateRequestRunning) return;
+
+                    apiFetch({
+                      url: '/admin/api/duplicate',
+                      data: getListParams({}, listConfig, { id: item.id }),
+                      before: () => {
+                        item._duplicateRequestRunning = true;
+                      },
+                      complete: () => {
+                        item._duplicateRequestRunning = false;
+                      },
+                      success: response => {
+                        if (response.success) {
+                          this.listData = response.listData;
+                          this.render();
+                          success(response.message);
+                        } else {
+                          networkError(response);
+                        }
+                      },
+                      error: xhr => {
+                        networkError(xhr);
+                      },
+                    });
+                  });
+                  break;
+
+                case 'reorder':
+                  actionIconEl.innerHTML = 'format_line_spacing';
+                  actionEl.append(actionIconEl);
                   break;
 
                 case 'edit':

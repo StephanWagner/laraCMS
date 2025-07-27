@@ -105,5 +105,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         Route::post('toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
         Route::post('delete', [\App\Http\Controllers\Admin\ApiController::class, 'delete'])->name('delete');
         Route::post('restore', [\App\Http\Controllers\Admin\ApiController::class, 'restore'])->name('restore');
+        Route::post('duplicate', [\App\Http\Controllers\Admin\ApiController::class, 'duplicate'])->name('duplicate');
     });
 });

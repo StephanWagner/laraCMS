@@ -13,6 +13,11 @@ return [
         ],
     ],
 
+    // Duplicate
+    'duplicate' => [
+        'successMessage' => 'Eintrag dupliziert.',
+    ],
+
     // Delete
     'delete' => [
         'successMessage' => 'Eintrag gelöscht.',
