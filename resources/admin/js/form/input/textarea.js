@@ -4,9 +4,10 @@ export function textarea({
   name = '',
   value = '',
   placeholder = '',
+  maxlength = null,
   rows = 3,
-  disabled = false,
   required = false,
+  disabled = false,
   readonly = false,
   size = 'default',
   className = '',
@@ -19,6 +20,10 @@ export function textarea({
   const wrapper = document.createElement('div');
   wrapper.className = `input__container -textarea -size-${size} ${className}`.trim();
 
+  if (required) wrapper.classList.add('-required');
+  if (disabled) wrapper.classList.add('-disabled');
+  if (readonly) wrapper.classList.add('-readonly');
+
   // Create textarea
   const textareaEl = document.createElement('textarea');
 
@@ -26,10 +31,10 @@ export function textarea({
   if (id) textareaEl.id = id;
   if (name) textareaEl.name = name;
   if (placeholder) textareaEl.placeholder = placeholder;
+  if (maxlength) inputEl.maxLength = maxlength;
   textareaEl.rows = rows;
   textareaEl.value = value;
   textareaEl.disabled = disabled;
-  textareaEl.required = required;
   textareaEl.readOnly = readonly;
 
   // Classes

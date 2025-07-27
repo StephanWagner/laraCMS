@@ -27,6 +27,8 @@ class FormSettingsSeeder extends Seeder
                                 'size' => 'large',
                                 'id' => 'user-name',
                                 'name' => 'name',
+                                'required' => true,
+                                'maxlength' => 30,
                             ],
                         ],
                         [
@@ -39,6 +41,8 @@ class FormSettingsSeeder extends Seeder
                                 'type' => 'textfield',
                                 'id' => 'user-email',
                                 'name' => 'email',
+                                'required' => true,
+                                'maxlength' => 255,
                             ],
                         ],
                         [
@@ -51,6 +55,7 @@ class FormSettingsSeeder extends Seeder
                                 'type' => 'select',
                                 'id' => 'user-role',
                                 'name' => 'role',
+                                'required' => true,
                                 'options' => [
                                     [
                                         'value' => 'editor',

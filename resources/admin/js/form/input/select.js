@@ -5,9 +5,9 @@ export function select({
   placeholder = '',
   options = [],
   restrictOptions = {},
-  disabled = false,
   required = false,
-  readonly = false,
+  disabled = false,
+  multiple = false,
   size = 'default',
   className = '',
   icon = '',
@@ -19,11 +19,15 @@ export function select({
   const wrapper = document.createElement('div');
   wrapper.className = `input__container -select -size-${size} ${className}`.trim();
 
+  if (required) wrapper.classList.add('-required');
+  if (disabled) wrapper.classList.add('-disabled');
+  if (multiple) wrapper.classList.add('-multiple');
+
   // Pointer icon
-    const painterIconEl = document.createElement('div');
-    painterIconEl.className = 'select__pointer-icon icon';
-    painterIconEl.textContent = 'keyboard_arrow_down';
-    wrapper.appendChild(painterIconEl);
+  const painterIconEl = document.createElement('div');
+  painterIconEl.className = 'select__pointer-icon icon';
+  painterIconEl.textContent = 'keyboard_arrow_down';
+  wrapper.appendChild(painterIconEl);
 
   // Optional icon
   let iconEl = null;
@@ -41,8 +45,6 @@ export function select({
   if (id) selectEl.id = id;
   if (name) selectEl.name = name;
   selectEl.disabled = disabled;
-  selectEl.required = required;
-  selectEl.readOnly = readonly;
 
   // Optional placeholder
   if (placeholder) {
@@ -57,21 +59,31 @@ export function select({
   // Get current user role
   const userRole = window.app?.auth?.role || null;
 
-  // Filter options
-  const filteredOptions = options.filter(opt => {
+  options.forEach(opt => {
     const restrictedTo = restrictOptions[opt.value];
-    if (!restrictedTo) return true;
-    return restrictedTo.includes(userRole);
-  });
 
-  // Populate options
-  filteredOptions.forEach(opt => {
+    const isRestricted = Array.isArray(restrictedTo);
+    const isAllowed = !isRestricted || restrictedTo.includes(userRole);
+    const isSelected = opt.value == value;
+
+    // Skip completely if user isn't allowed and it's not selected
+    if (!isAllowed && !isSelected) return;
+
     const optEl = document.createElement('option');
     optEl.value = opt.value;
     optEl.textContent = opt.label;
-    if (opt.value == value) optEl.selected = true;
+
+    if (isSelected) optEl.selected = true;
+
+    if (!isAllowed && isSelected) selectEl.disabled = true;
+
     selectEl.appendChild(optEl);
   });
+
+  // Disabled status
+  if (selectEl.disabled) {
+    wrapper.classList.add('-disabled');
+  }
 
   // Focus / blur styling
   selectEl.addEventListener('focus', e => {

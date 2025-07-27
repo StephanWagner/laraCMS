@@ -3,6 +3,7 @@ export function textfield({
   name = '',
   value = '',
   placeholder = '',
+  maxlength = null,
   disabled = false,
   required = false,
   readonly = false,
@@ -17,6 +18,10 @@ export function textfield({
   // Create wrapper
   const wrapper = document.createElement('div');
   wrapper.className = `input__container -textfield -size-${size} ${className}`.trim();
+
+  if (required) wrapper.classList.add('-required');
+  if (disabled) wrapper.classList.add('-disabled');
+  if (readonly) wrapper.classList.add('-readonly');
 
   // Optional icon
   let iconEl = null;
@@ -35,9 +40,9 @@ export function textfield({
   if (id) inputEl.id = id;
   if (name) inputEl.name = name;
   if (placeholder) inputEl.placeholder = placeholder;
+  if (maxlength) inputEl.maxLength = maxlength;
   inputEl.value = value;
   inputEl.disabled = disabled;
-  inputEl.required = required;
   inputEl.readOnly = readonly;
 
   // Handle focus/blur styling

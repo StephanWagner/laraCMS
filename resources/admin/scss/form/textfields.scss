@@ -161,7 +161,7 @@ textarea.textfield {
 .select__pointer-icon {
   right: 6px;
 
-  .input__container:hover & {
+  .input__container:not(.-disabled):hover & {
     color: $default-text-color;
   }
 }
