@@ -12,7 +12,13 @@
     <link rel="apple-touch-icon" type="image/png" href="/admin-assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/admin-assets/site.webmanifest">
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
-    <script>window.app = @json(['locale' => app()->getLocale()])</script>
+    <script>window.app = @json([
+        'locale' => app()->getLocale(),
+        'auth' => [
+            'id' => auth()->user()->id,
+            'role' => auth()->user()->role
+        ]
+    ])</script>
 </head>
 
 <body class="{{ Auth::check() ? '-logged-in' : ''}}">

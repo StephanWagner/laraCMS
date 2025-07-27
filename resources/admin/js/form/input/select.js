@@ -4,6 +4,7 @@ export function select({
   value = '',
   placeholder = '',
   options = [],
+  restrictOptions = {},
   disabled = false,
   required = false,
   readonly = false,
@@ -53,8 +54,18 @@ export function select({
     selectEl.appendChild(placeholderOption);
   }
 
+  // Get current user role
+  const userRole = window.app?.auth?.role || null;
+
+  // Filter options
+  const filteredOptions = options.filter(opt => {
+    const restrictedTo = restrictOptions[opt.value];
+    if (!restrictedTo) return true;
+    return restrictedTo.includes(userRole);
+  });
+
   // Populate options
-  options.forEach(opt => {
+  filteredOptions.forEach(opt => {
     const optEl = document.createElement('option');
     optEl.value = opt.value;
     optEl.textContent = opt.label;

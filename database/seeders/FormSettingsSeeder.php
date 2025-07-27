@@ -40,7 +40,36 @@ class FormSettingsSeeder extends Seeder
                                 'id' => 'user-email',
                                 'name' => 'email',
                             ],
-                        ]
+                        ],
+                        [
+                            'position' => 'form',
+                            'label' => 'items.role.label',
+                            'description' => 'items.role.description',
+                            'validate' => ['required'],
+                            'source' => 'role',
+                            'inputOptions' => [
+                                'type' => 'select',
+                                'id' => 'user-role',
+                                'name' => 'role',
+                                'options' => [
+                                    [
+                                        'value' => 'editor',
+                                        'label' => 'Editor',
+                                    ],
+                                    [
+                                        'value' => 'admin',
+                                        'label' => 'Admin',
+                                    ],
+                                    [
+                                        'value' => 'developer',
+                                        'label' => 'Developer',
+                                    ],
+                                ],
+                                'restrictOptions' => [
+                                    'developer' => ['developer']
+                                ],
+                            ],
+                        ],
                     ],
                 ])->toJson(),
             ],

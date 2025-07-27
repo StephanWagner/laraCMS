@@ -16,6 +16,10 @@ return [
                 'label' => 'E-Mail Adresse',
                 'description' => 'Wird für den Login und wichtige Benachrichtigungen verwendet.',
             ],
+            'role' => [
+                'label' => 'Rolle',
+                'description' => 'Legt fest, welche Bereiche der Benutzer im System verwalten kann.',
+            ],
         ],
     ],
 

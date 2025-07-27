@@ -16,6 +16,10 @@ return [
                 'label' => 'Email address',
                 'description' => 'Used for login and important notifications.',
             ],
+            'role' => [
+                'label' => 'Role',
+                'description' => 'Controls what the user can see and manage in the admin panel.',
+            ],
         ],
     ],
 
