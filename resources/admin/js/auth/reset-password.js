@@ -1,4 +1,4 @@
-import { apiFetch } from '../utils/api-fetch';
+import { apiFetch } from '../services/api-fetch';
 import { animate } from '../utils/animate';
 import { showAuthFormError, showAuthFormSuccess } from './form';
 

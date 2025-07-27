@@ -1,18 +1,20 @@
-import { initMenus } from "./components/menu";
-import { initForms } from "./lib/form";
+import { initMenus } from "./ui/menu";
 import { initInstall } from "./auth/install";
 import { initLogin } from "./auth/login";
 import { initResetPassword } from "./auth/reset-password";
 import { initNewPassword } from "./auth/new-password";
-import { initList } from "./components/list/bootstrap";
+import { initList } from "./list/bootstrap";
+import { initForm } from "./form/bootstrap";
+import { initFormEvents } from "./form/events";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Forms
-  initForms();
+  initForm();
   initInstall();
   initLogin();
   initResetPassword();
   initNewPassword();
+  initFormEvents();
 
   // Menus
   initMenus();

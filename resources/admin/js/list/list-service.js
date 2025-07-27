@@ -1,16 +1,16 @@
 import Sortable from 'sortablejs';
-import { apiFetch } from '../../utils/api-fetch';
-import { getNestedValue } from '../../utils/object';
-import { formatDatetime } from '../../utils/datetime';
-import { networkError, success } from '../../utils/message';
-import { config } from '../../config/config';
-import { confirmModal, closeConfirmModal } from '../../utils/modal';
-import { debounce } from '../../utils/debounce';
-import { textfield } from '../../form/input/textfield';
-import { select } from '../../form/input/select';
+import { apiFetch } from '../services/api-fetch';
+import { getNestedValue } from '../utils/object';
+import { formatDatetime } from '../utils/datetime';
+import { networkError, success } from '../ui/message';
+import { config } from '../config/config';
+import { confirmModal, closeConfirmModal } from '../ui/modal';
+import { debounce } from '../utils/debounce';
+import { textfield } from '../form/input/textfield';
+import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
 
-export class ListView {
+export class ListService {
   constructor({ key, wrapper }) {
     if (!key || !wrapper) return;
 
@@ -19,7 +19,7 @@ export class ListView {
 
     this.listData = window.listData || null;
 
-    // TODO get list data then init
+    // TODO if list data is missing, get list data then init
 
     this.init();
   }

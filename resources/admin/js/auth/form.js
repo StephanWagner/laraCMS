@@ -3,7 +3,7 @@ import { animate } from "../utils/animate";
 
 function showAuthFormMessage(type = 'error', submitButton, txt) {
   const formMessageEl = document.querySelector('.auth__form-message');
-  formMessageEl.innerHTML = txt || __('admin::error');
+  formMessageEl.innerHTML = txt || __('error');
   formMessageEl.classList[type === 'success' ? 'add' : 'remove']('-success');
   formMessageEl.classList[type === 'error' ? 'add' : 'remove']('-error');
   formMessageEl.classList.add('-active');

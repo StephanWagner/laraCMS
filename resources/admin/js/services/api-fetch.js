@@ -1,4 +1,4 @@
-import { getCsrfToken } from './csrf';
+import { getCsrfToken } from '../utils/csrf';
 
 export function apiFetch(options) {
   const {

@@ -1,4 +1,4 @@
-import { ListView } from './list-view';
+import { ListService } from './list-service';
 
 export function initList() {
   const wrapper = document.querySelector('[data-list]');
@@ -6,7 +6,7 @@ export function initList() {
 
   const key = wrapper.getAttribute('data-list');
 
-  new ListView({
+  new ListService({
     key,
     wrapper,
   });

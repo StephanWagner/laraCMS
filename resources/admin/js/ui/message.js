@@ -1,5 +1,5 @@
 import { config } from '../config/config';
-import { __ } from './locale';
+import { __ } from '../utils/locale';
 
 /**
  * Adjust message positions

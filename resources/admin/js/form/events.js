@@ -1,7 +1,6 @@
 /**
  * Init the submit form on enter events
  */
-
 export function initSubmitOnEnter(scope = document) {
   const elements = [];
 
@@ -13,22 +12,29 @@ export function initSubmitOnEnter(scope = document) {
   // Also include all matching descendants
   elements.push(...scope.querySelectorAll('[data-submit-on-enter]'));
 
-  elements.forEach((input) => {
-    if (input.dataset._submitOnEnterListenerAttached) return;
-    input.dataset._submitOnEnterListenerAttached = 'true';
-
-    input.addEventListener('keydown', (ev) => {
+  elements.forEach(inputEl => {
+    inputEl.addEventListener('keydown', ev => {
       if (ev.key === 'Enter') {
         ev.preventDefault();
 
-        const form = input.closest('form');
-        if (!form) return;
+        let submitButton;
 
-        const submitButton = form.querySelector('[data-submit-button]');
+        const attr = inputEl.getAttribute('data-submit-on-enter');
+
+        if (attr) {
+          submitButton = document.querySelector('[data-submit-button="' + attr + '"]');
+        } else {
+          const form = inputEl.closest('form');
+
+          if (form) {
+            submitButton = form.querySelector('[data-submit-button]');
+          }
+        }
         if (submitButton) {
           submitButton.click();
         }
       }
+      inputEl.removeAttribute('data-submit-on-enter');
     });
   });
 }
@@ -47,21 +53,19 @@ export function initClearErrorOnInput(scope = document) {
   // Include all matching children
   elements.push(...scope.querySelectorAll('[data-clear-error-on-input]'));
 
-  elements.forEach((el) => {
-    if (el.dataset._clearErrorOnInputListenerAttached) return;
-    el.dataset._clearErrorOnInputListenerAttached = 'true';
-
+  elements.forEach(inputEl => {
     const clearError = () => {
-      el.classList.remove('-error');
+      inputEl.classList.remove('-error');
     };
 
-    el.addEventListener('input', clearError);
-    el.addEventListener('change', clearError);
-    el.addEventListener('paste', clearError);
+    inputEl.addEventListener('input', clearError);
+    inputEl.addEventListener('change', clearError);
+    inputEl.addEventListener('paste', clearError);
+    inputEl.removeAttribute('data-clear-error-on-input');
   });
 }
 
-export function initForms() {
+export function initFormEvents() {
   initClearErrorOnInput();
   initSubmitOnEnter();
 }
