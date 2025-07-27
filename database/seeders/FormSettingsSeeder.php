@@ -15,19 +15,31 @@ class FormSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'User',
                     'editRoute' => '/admin/users/edit/{id}',
+                    'texts' => 'users.form',
                     'form' => [
                         [
-                            'type' => 'textfield',
                             'position' => 'form',
-                            'label' => 'Full name',
-                            'design' => 'large',
-                            'validate' => ['required', 'min:3', 'max:30']
+                            'label' => 'items.name.label',
+                            'validate' => ['required', 'min:3', 'max:30'],
+                            'source' => 'name',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'size' => 'large',
+                                'id' => 'user-name',
+                                'name' => 'name',
+                            ],
                         ],
                         [
-                            'type' => 'textfield',
                             'position' => 'form',
-                            'label' => 'Email address',
-                            'validate' => ['required', 'email', 'max:255']
+                            'label' => 'items.email.label',
+                            'description' => 'items.email.description',
+                            'validate' => ['required', 'email', 'max:255'],
+                            'source' => 'email',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'id' => 'user-email',
+                                'name' => 'email',
+                            ],
                         ]
                     ],
                 ])->toJson(),

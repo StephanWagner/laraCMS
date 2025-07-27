@@ -47,10 +47,12 @@ class FormService
             $item = $modelClass::where('id', $id)->first();
         }
 
+        $texts = !empty($config['texts']) ? trans('admin::' . $config['texts']) : null;
+
         return [
             'config' => $config,
             'item' => $item ?? null,
-            'texts' => trans('admin::list'),
+            'texts' => $texts,
         ];
     }
 }

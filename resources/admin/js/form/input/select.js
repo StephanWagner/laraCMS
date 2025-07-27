@@ -16,7 +16,7 @@ export function select({
 } = {}) {
   // Wrapper
   const wrapper = document.createElement('div');
-  wrapper.className = `textfield__container -select -size-${size} ${className}`.trim();
+  wrapper.className = `input__container -select -size-${size} ${className}`.trim();
 
   // Pointer icon
     const painterIconEl = document.createElement('div');

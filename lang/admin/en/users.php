@@ -7,6 +7,16 @@ return [
     'form' => [
         'titleNew' => 'Create new user',
         'titleEdit' => 'Edit user',
+
+        'items' => [
+            'name' => [
+                'label' => 'Full name',
+            ],
+            'email' => [
+                'label' => 'Email address',
+                'description' => 'Used for login and important notifications.',
+            ],
+        ],
     ],
 
     // TODO

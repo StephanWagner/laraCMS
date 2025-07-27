@@ -1,8 +1,8 @@
 import { apiFetch } from '../services/api-fetch';
 import { networkError, success } from '../ui/message';
 import { initFormEvents } from './events';
-import { textfield } from './input/textfield';
 import { input } from './input';
+import { getNestedValue } from '../utils/object';
 
 export class FormService {
   constructor({ key, wrapper }) {
@@ -25,30 +25,25 @@ export class FormService {
 
     const formConfig = this.formData?.config;
     const formItems = formConfig?.form || [];
+    const item = this.formData?.item || null;
+    const texts = this.formData?.texts || {};
 
     formItems.forEach(formItem => {
       console.log(formItem);
 
-      let inputContainerEl;
-      let inputEl;
+      const inputOptions = formItem.inputOptions;
 
-      switch (formItem.type) {
-        case 'textfield':
-          inputEl = textfield(formItem.inputOptions);
-          break;
+      if (item && formItem.source) {
+        inputOptions.value = getNestedValue(item, formItem.source) || null;
       }
 
-      if (inputEl) {
-        inputContainerEl = input({
-          label: formItem.label,
-          description: formItem.description,
-          inputEl
-        });
-      }
+      const inputContainerEl = input({
+        label: formItem.label ? resolveText(texts, formItem.label) : null,
+        description: formItem.description ? resolveText(texts, formItem.description) : null,
+        inputOptions,
+      });
 
-      if (inputContainerEl) {
-        this.container.appendChild(inputContainerEl);
-      }
+      this.container.appendChild(inputContainerEl);
     });
 
     this.wrapper.appendChild(this.container);
@@ -84,4 +79,8 @@ export class FormService {
       },
     });
   }
+}
+
+function resolveText(texts, textId) {
+  return getNestedValue(texts, textId) ?? textId;
 }

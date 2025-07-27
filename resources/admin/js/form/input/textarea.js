@@ -17,7 +17,7 @@ export function textarea({
 } = {}) {
   // Create wrapper
   const wrapper = document.createElement('div');
-  wrapper.className = `textfield__container -textarea -size-${size} ${className}`.trim();
+  wrapper.className = `input__container -textarea -size-${size} ${className}`.trim();
 
   // Create textarea
   const textareaEl = document.createElement('textarea');

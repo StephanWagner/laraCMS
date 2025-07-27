@@ -7,8 +7,17 @@ return [
     'form' => [
         'titleNew' => 'Neuen Benutzer erstellen',
         'titleEdit' => 'Benutzer bearbeiten',
-    ],
 
+        'items' => [
+            'name' => [
+                'label' => 'Vollständiger Name',
+            ],
+            'email' => [
+                'label' => 'E-Mail Adresse',
+                'description' => 'Wird für den Login und wichtige Benachrichtigungen verwendet.',
+            ],
+        ],
+    ],
 
     // TODO
 

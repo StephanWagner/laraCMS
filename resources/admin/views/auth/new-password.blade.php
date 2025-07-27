@@ -43,7 +43,7 @@
 
             <div class="auth__textfields">
 
-                <div class="textfield__container auth__textfield-container">
+                <div class="input__container auth__textfield-container">
                     <input
                         class="textfield auth__textfield -block"
                         name="password"
@@ -58,7 +58,7 @@
                     >
                 </div>
 
-                <div class="textfield__container auth__textfield-container">
+                <div class="input__container auth__textfield-container">
                     <input
                         class="textfield auth__textfield -block"
                         name="password-repeat"
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="button-container auth__button-container">
+            <div class="auth__button-container">
                 <button
                     type="button"
                     class="button auth__button -block"

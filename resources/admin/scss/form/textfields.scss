@@ -59,15 +59,6 @@ button::-moz-focus-inner {
 
 // Textfields
 
-.textfield__container {
-  position: relative;
-  margin: 0 0 12px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 input.textfield,
 select.textfield,
 textarea.textfield {
@@ -96,8 +87,14 @@ textarea.textfield {
     border-color: $textfield-border-color-focus;
   }
 
+  &.-large,
+  .input__container.-size-large & {
+    height: 52px;
+    font-size: 17px;
+  }
+
   &.-small,
-  .textfield__container.-size-small & {
+  .input__container.-size-small & {
     height: 32px;
     font-size: 14px;
     border-radius: $small-border-radius;
@@ -105,7 +102,7 @@ textarea.textfield {
     padding-right: 12px;
   }
 
-  .textfield__container.-has-icon & {
+  .input__container.-has-icon & {
     padding-left: calc(1px + 6px + 24px + 4px);
   }
 
@@ -152,7 +149,7 @@ textarea.textfield {
   transition: transition('color');
   pointer-events: none;
 
-  .textfield__container.-has-focus & {
+  .input__container.-has-focus & {
     color: $default-text-color;
   }
 }
@@ -164,7 +161,7 @@ textarea.textfield {
 .select__pointer-icon {
   right: 6px;
 
-  .textfield__container:hover & {
+  .input__container:hover & {
     color: $default-text-color;
   }
 }

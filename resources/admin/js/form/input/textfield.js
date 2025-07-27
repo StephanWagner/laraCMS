@@ -16,7 +16,7 @@ export function textfield({
 } = {}) {
   // Create wrapper
   const wrapper = document.createElement('div');
-  wrapper.className = `textfield__container -textfield -size-${size} ${className}`.trim();
+  wrapper.className = `input__container -textfield -size-${size} ${className}`.trim();
 
   // Optional icon
   let iconEl = null;
