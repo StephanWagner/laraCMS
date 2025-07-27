@@ -1,5 +1,3 @@
-<h1>{{ __('admin::contentTypes.list.title') }}</h1>
-
 <script>
     window.listData = @json($listData ?? []);
 </script>

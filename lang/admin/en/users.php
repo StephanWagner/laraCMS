@@ -1,5 +1,16 @@
 <?php
 return [
+    'list' => [
+        'title' => 'Users',
+    ],
+
+    'form' => [
+        'titleNew' => 'Create new user',
+        'titleEdit' => 'Edit user',
+    ],
+
+    // TODO
+
     // Profile
     'profile' => [
         'pageTitle' => 'Profile',

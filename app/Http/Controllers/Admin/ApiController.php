@@ -138,15 +138,22 @@ class ApiController extends Controller
                 $newModel->active = 0;
             }
 
+            if (in_array('order', $columns)) {
+                $maxOrder = $model->newQuery()->max('order');
+                $newModel->order = $maxOrder + 1;
+            }
+
             if (!empty($listConfig['duplicate']['uniqueColumns'])) {
                 foreach ($listConfig['duplicate']['uniqueColumns'] as $col) {
-                    if (in_array($col, $columns)) {
-                        $original = $model->$col;
+                    if (isset($col['column']) && in_array($col['column'], $columns)) {
+                        $columnName = $col['column'];
+                        $original = $model->$columnName;
                         $base = preg_replace('/-\d+$/', '', $original);
 
                         $existing = $model->newQuery()
-                            ->where($col, 'like', $base . '-%')
-                            ->pluck($col);
+                            ->withTrashed()
+                            ->where($columnName, 'like', $base . '-%')
+                            ->pluck($columnName);
 
                         $max = 1;
                         foreach ($existing as $val) {
@@ -156,7 +163,7 @@ class ApiController extends Controller
                             }
                         }
 
-                        $newModel->$col = $base . '-' . $max;
+                        $newModel->$columnName = $base . '-' . $max;
                     }
                 }
             }

@@ -1,5 +1,17 @@
 <?php
 return [
+    'list' => [
+        'title' => 'Benutzer',
+    ],
+
+    'form' => [
+        'titleNew' => 'Neuen Benutzer erstellen',
+        'titleEdit' => 'Benutzer bearbeiten',
+    ],
+
+
+    // TODO
+
     // Profile
     'profile' => [
         'pageTitle' => 'Profil',

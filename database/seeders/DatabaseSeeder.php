@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CmsSettingsSeeder::class,
             ListSettingsSeeder::class,
+            FormSettingsSeeder::class,
             ContentTypeSeeder::class,
         ]);
     }

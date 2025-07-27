@@ -6,8 +6,20 @@
 }
 
 .header__container {
+  position: relative;
+  z-index: 10;
   height: $header-height;
   display: flex;
+
+  &::after {
+    content:'';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $color-surface-1;
+  }
 }
 
 .header__content {

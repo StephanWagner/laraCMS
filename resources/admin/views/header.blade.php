@@ -11,7 +11,7 @@
                     <a href="{{ route('admin.users.profile') }}" class="menu-overlay__link{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
                         <div class="menu-overlay__icon icon">account_circle</div>
                         <div class="menu-overlay__link-text">
-                            {{ __('admin::user.profile.navTitle') }}
+                            {{ __('admin::users.profile.navTitle') }}
                         </div>
                     </a>
                     <a href="{{ route('admin.logout') }}" class="menu-overlay__link">

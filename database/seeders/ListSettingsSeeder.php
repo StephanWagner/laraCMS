@@ -15,14 +15,22 @@ class ListSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'ContentType',
                     'listRoute' => '/admin/content-types',
-                    'editRoute' => '/admin/content-types/edit/{id}',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,
                     'hasMultiSelect' => false,
                     'hasSoftDelete' => true,
                     'searchables' => [
-                        ['column' => 'name'],
+                        [
+                            'column' => 'name'
+                        ],
+                    ],
+                    'duplicate' => [
+                        'uniqueColumns' => [
+                            [
+                                'column' => 'key'
+                            ],
+                        ],
                     ],
                     'columns' => [
                         [
@@ -89,14 +97,9 @@ class ListSettingsSeeder extends Seeder
                             'actions' => [
                                 'toggle',
                                 'edit',
-                                'delete',
-                                [
-                                    'type' => 'more',
-                                    'options' => [
-                                        'moveToTop',
-                                        'moveToBottom',
-                                    ]
-                                ]
+                                'duplicate',
+                                'reorder',
+                                'delete'
                             ]
                         ],
                     ],
@@ -107,7 +110,6 @@ class ListSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'User',
                     'listRoute' => '/admin/users',
-                    'editRoute' => '/admin/users/edit/{id}',
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,

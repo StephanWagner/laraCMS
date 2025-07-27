@@ -62,10 +62,10 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
 
     // Users
     Route::middleware('accessAdmin')->prefix('users')->name('users.')->group(function () {
-        Route::get('profile', [UsersController::class, 'profile'])->name('profile');
         Route::get('', [UsersController::class, 'list'])->name('list');
         Route::get('edit/{id?}', [UsersController::class, 'edit'])->name('edit');
         Route::post('edit/{id?}', [UsersController::class, 'save'])->name('save');
+        Route::get('profile', [UsersController::class, 'profile'])->name('profile');
     });
 
     // Themes
