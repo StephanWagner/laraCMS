@@ -10,11 +10,7 @@ class UsersController extends Controller
 {
     public function list()
     {
-        $listData = ListService::getData('users');
-
-        return view('admin::pages.users.list', [
-            'listData' => $listData,
-        ]);
+        return ListService::getView('users');
     }
 
     public function edit(?int $id = null)

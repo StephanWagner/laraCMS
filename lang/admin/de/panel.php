@@ -11,7 +11,7 @@ return [
     'nav' => [
         // Dashboard
         'dashboard' => [
-            'main' => 'Übersicht',
+            'main' => 'Dashboard',
         ],
 
         // Content

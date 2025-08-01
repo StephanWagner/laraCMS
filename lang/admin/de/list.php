@@ -36,10 +36,10 @@ return [
     // Delete modal
     'deleteModal' => [
         'title' => 'Löschen',
-        'textSoftDelete' => 'Möchtest du dieses Element wirklich in den Papierkorb verschieben? Du kannst es später wiederherstellen.',
-        'textSoftDeleteBulk' => 'Möchtest du die ausgewählten Elemente wirklich in den Papierkorb verschieben? Du kannst sie später wiederherstellen.',
-        'textForceDelete' => 'Dieses Element wird dauerhaft gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.',
-        'textForceDeleteBulk' => 'Alle ausgewählten Elemente werden dauerhaft gelöscht. Dieser Vorgang kann nicht rückgängig gemacht werden.',
+        'textSoftDelete' => 'Möchtest du diesen Eintrag wirklich in den Papierkorb verschieben? Du kannst ihn später wiederherstellen.',
+        'textSoftDeleteBulk' => 'Möchtest du die ausgewählten Einträge wirklich in den Papierkorb verschieben? Du kannst sie später wiederherstellen.',
+        'textForceDelete' => '<b class="-error-text"><span class="icon -error-text-icon">warning</span>Achtung:</b> Der Eintrag wird dauerhaft gelöscht und kann nicht wiederhergestellt werden.',
+        'textForceDeleteBulk' => '<b class="-error-text"><span class="icon -error-text-icon">warning</span>Achtung:</b> Alle ausgewählten Einträge werden dauerhaft gelöscht und können nicht wiederhergestellt werden.',
         'submitButtonText' => 'Löschen',
         'cancelButtonText' => 'Abbrechen',
     ],

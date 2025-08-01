@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixins" as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
 :root {
   color-scheme: dark;
@@ -26,10 +26,15 @@ a,
   }
 }
 
-h1 {
+h1,
+.h1 {
   color: $default-text-color;
   font-weight: 600;
   font-size: 22px;
   margin: 0 0 16px;
   line-height: 1.4;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

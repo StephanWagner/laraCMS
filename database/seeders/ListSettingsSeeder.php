@@ -14,6 +14,7 @@ class ListSettingsSeeder extends Seeder
                 'key' => 'list-settings.content-types',
                 'value' => collect([
                     'model' => 'ContentType',
+                    'title' => 'admin::contentTypes.list.title',
                     'listRoute' => '/admin/content-types',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
@@ -109,6 +110,7 @@ class ListSettingsSeeder extends Seeder
                 'key' => 'list-settings.users',
                 'value' => collect([
                     'model' => 'User',
+                    'title' => 'admin::users.list.title',
                     'listRoute' => '/admin/users',
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',

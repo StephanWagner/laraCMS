@@ -1,7 +1,7 @@
 @use "../variables" as *;
 @use "../mixins" as *;
 
-.error__wrapper {
+.error-page__wrapper {
   position: relative;
   min-height: 100%;
   display: flex;
@@ -10,15 +10,15 @@
   justify-content: center;
 }
 
-.error__container {
+.error-page__container {
   padding: 0 24px;
 }
 
-.error__content {
+.error-page__content {
   text-align: center;
 }
 
-.error__code {
+.error-page__code {
   font-size: 80px;
   font-weight: bold;
   margin: 0 0 16px;
@@ -27,7 +27,7 @@
   justify-content: center;
 }
 
-.error__title {
+.error-page__title {
   font-size: 29px;
   line-height: 1.4;
   font-weight: 600;
@@ -38,7 +38,7 @@
   }
 }
 
-.error__subtitle {
+.error-page__subtitle {
   font-size: 17px;
   font-weight: normal;
   margin: 0;

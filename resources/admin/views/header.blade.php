@@ -1,6 +1,11 @@
 <header class="header__wrapper">
     <div class="header__container">
-        <div class="header__content"></div>
+        <div class="header__content">
+            <div class="header__page-title-container">
+                <div class="header__page-title h1">{{ !empty($contentTitle) ? $contentTitle : '' }}</div>
+            </div>
+            <div class="header__form-buttons">TODO</div>
+        </div>
         <div class="header__user-menu-container">
             <div class="header__user-menu-toggler{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}" data-toggle-menu="user">
                 <div class="header__user-menu-icon icon">account_circle</div>

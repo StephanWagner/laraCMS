@@ -9,10 +9,6 @@ class ContentController extends Controller
 {
     public function list($type)
     {
-        $listData = ListService::getData($type);
-
-        return view('admin::pages.content.list', [
-            'listData' => $listData
-        ]);
+        return ListService::getView($type);
     }
 }

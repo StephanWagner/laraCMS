@@ -8,6 +8,9 @@ use App\Models\ContentType;
 
 class ListService
 {
+    /**
+     * Get the list config
+     */
     public static function getConfig(string $key)
     {
         $settingKey = 'list-settings.' . $key;
@@ -25,6 +28,9 @@ class ListService
         return $config;
     }
 
+    /**
+     * Get the list data
+     */
     public static function getData(string $key, array $params = [])
     {
         $config = self::getConfig($key);
@@ -187,5 +193,19 @@ class ListService
             'items' => $items,
             'texts' => trans('admin::list'),
         ];
+    }
+
+    /**
+     * Get the list view
+     */
+    public static function getView(string $key)
+    {
+        $listData = self::getData($key);
+
+        return view('admin::pages.list', [
+            'contentTitle' => !empty($listData['config']['title']) ? __($listData['config']['title']) : '',
+            'key' => $key,
+            'listData' => $listData,
+        ]);
     }
 }

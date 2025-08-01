@@ -1,13 +1,25 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
-// Gradient text
+// Text
 
 .-gradient-text {
   background: $primary-gradient;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+.-error-text {
+  color: $error-text-color;
+}
+
+.icon.-error-text-icon {
+  vertical-align: text-top;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin: 0 4px 0 0;
 }
 
 // Icons

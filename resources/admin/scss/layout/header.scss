@@ -24,6 +24,13 @@
 
 .header__content {
   flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.header__page-title-container {
+  flex: 1;
+  padding: 0 24px 0 0;
 }
 
 .header__user-menu-container {
