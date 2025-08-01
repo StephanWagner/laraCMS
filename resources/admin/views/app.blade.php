@@ -4,7 +4,7 @@
     <title>{!! !empty($pageTitle) ? $pageTitle . ' · ' : '' !!}{!! config('cms.name') !!}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#528bff">
+    <meta name="theme-color" content="#080b0f">
     <meta name="color-scheme" content="dark">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="{{ $assetHelper::versioned('admin-assets/css/main.css') }}">
     <script>window.app = @json([
         'locale' => app()->getLocale(),
-        'auth' => [
-            'id' => auth()->user()->id,
-            'role' => auth()->user()->role
-        ]
+        'auth' => Auth::check() ? [
+            'id' => Auth::user()->id,
+            'role' => Auth::user()->role
+        ] : null
     ])</script>
 </head>
 
