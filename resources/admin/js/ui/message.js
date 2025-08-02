@@ -40,30 +40,9 @@ export function message(txt, color = 'default') {
   }, config.autoCloseMessages);
 
   // Limit number of visible messages
-  const messages = document.querySelectorAll('.message__container');
+  const messages = document.querySelectorAll('.message__container:not([data-closing])');
   if (messages.length > config.maxMessages) {
     closeMessage(messages[0]);
-  }
-
-  /**
-   * Close message function
-   */
-  function closeMessage(container) {
-    if (container.dataset.closing) {
-      return;
-    }
-
-    container.dataset.closing = '1';
-    container.classList.add('-close');
-
-    if (container.dataset.timer) {
-      clearTimeout(parseInt(container.dataset.timer));
-    }
-
-    setTimeout(() => {
-      container.remove();
-      adjustMessages();
-    }, config.defaultTransitionSpeed);
   }
 
   // Manual close on click
@@ -71,6 +50,28 @@ export function message(txt, color = 'default') {
 
   // Adjust positions
   adjustMessages();
+}
+
+/**
+ * Close message function
+ */
+function closeMessage(container) {
+  if (!container || container.dataset.closing) return;
+
+  container.dataset.closing = '1';
+  container.classList.add('-close');
+
+  if (container.dataset.timer) {
+    clearTimeout(parseInt(container.dataset.timer));
+    delete container.dataset.timer;
+  }
+
+  setTimeout(() => {
+    if (container.parentNode) {
+      container.remove();
+      adjustMessages();
+    }
+  }, config.defaultTransitionSpeed);
 }
 
 /**

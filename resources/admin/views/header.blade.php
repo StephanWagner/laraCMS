@@ -14,9 +14,15 @@
             </div>
             <div class="header__form-buttons">
                 @if (!empty($listData))
-                    <a href="{{ route($listData['config']['formRoute']) }}" class="header__form-button button -medium -has-icon"><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
+                    <a
+                        href="{{ route($listData['config']['formRoute']) }}"
+                        class="header__form-button button -medium -has-icon"
+                    ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
                 @elseif (!empty($formData))
-                    <button class="header__form-button button -medium">{{ __('admin::form.buttons.save') }}</button>
+                    <button
+                        class="header__form-button button -medium"
+                        data-save-form="{{ $formData['config']['key'] }}"
+                    >{{ __('admin::form.buttons.save') }}</button>
                 @endif
             </div>
         </div>

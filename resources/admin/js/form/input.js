@@ -8,9 +8,21 @@ const inputTypes = {
   select,
 };
 
-export function input({ label, description, inputEl, inputOptions = {} }) {
+export function input({ formId = null, label, description, inputEl, inputOptions = {} }) {
   const wrapperEl = document.createElement('div');
   wrapperEl.className = 'input__wrapper';
+
+  if (formId) {
+    wrapperEl.dataset.formValue = '';
+  }
+
+  if (inputOptions && inputOptions.name) {
+    wrapperEl.dataset.inputName = inputOptions.name;
+  }
+
+  if (inputOptions && inputOptions.type) {
+    wrapperEl.dataset.inputType = inputOptions.type;
+  }
 
   if (label) {
     const labelEl = document.createElement('label');

@@ -29,8 +29,6 @@ export class FormService {
     const texts = this.formData?.texts || {};
 
     formItems.forEach(formItem => {
-      console.log(formItem);
-
       const inputOptions = formItem.inputOptions;
 
       if (item && formItem.source) {
@@ -38,6 +36,7 @@ export class FormService {
       }
 
       const inputContainerEl = input({
+        formId: formConfig.key,
         label: formItem.label ? resolveText(texts, formItem.label) : null,
         description: formItem.description ? resolveText(texts, formItem.description) : null,
         inputOptions,
@@ -49,23 +48,38 @@ export class FormService {
     this.wrapper.appendChild(this.container);
 
     initFormEvents();
+
+    // Save form events
+    const saveButton = document.querySelector(`[data-save-form="${formConfig.key}"]`);
+
+    if (saveButton) {
+      saveButton.addEventListener('click', () => {
+        this.saveForm();
+      });
+    }
   }
 
-  saveData(params = {}) {
+  saveForm() {
     if (this.saving) return false;
 
     const formConfig = this.formData?.config || {};
 
+    const saveButton = document.querySelector(`[data-save-form="${formConfig.key}"]`);
+
     apiFetch({
       url: '/admin/api/form',
       data: {
-        id: null, // TODO
+        formId: formConfig.id,
       },
       before: () => {
         this.saving = true;
+        saveButton.disabled = true;
+        saveButton.classList.add('-loading');
       },
       complete: () => {
         this.saving = false;
+        saveButton.disabled = false;
+        saveButton.classList.remove('-loading');
       },
       success: response => {
         if (response.success) {
