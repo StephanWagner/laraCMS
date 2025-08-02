@@ -176,7 +176,7 @@ function showFormErrors(key, errors = {}) {
 
     const errorEl = document.createElement('div');
     errorEl.className = 'input__error';
-    errorEl.textContent = messages[0];
+    errorEl.innerHTML = messages[0];
 
     element.appendChild(errorEl);
   });

@@ -20,6 +20,10 @@ return [
                 'label' => 'Role',
                 'description' => 'Controls what the user can see and manage in the admin panel.',
             ],
+            'password' => [
+                'label' => 'Password',
+                'description' => 'To create a strong password, use a mix of uppercase and lowercase letters, numbers, and special characters. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+            ],
         ],
     ],
 

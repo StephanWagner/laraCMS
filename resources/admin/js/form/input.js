@@ -1,12 +1,14 @@
 import { hidden } from './input/hidden';
 import { textfield } from './input/textfield';
 import { textarea } from './input/textarea';
+import { password } from './input/password';
 import { select } from './input/select';
 
 const inputTypes = {
   hidden,
   textfield,
   textarea,
+  password,
   select,
 };
 

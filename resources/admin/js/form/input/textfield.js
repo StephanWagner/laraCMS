@@ -1,10 +1,12 @@
 import { clearInputError } from "../input";
 
 export function textfield({
+  type = 'text',
   id = '',
   name = '',
   value = '',
   placeholder = '',
+  autocomplete = '',
   maxlength = null,
   disabled = false,
   required = false,
@@ -39,10 +41,11 @@ export function textfield({
   // Create input
   const inputEl = document.createElement('input');
   inputEl.className = 'textfield';
-  inputEl.type = 'text';
+  inputEl.type = type;
   if (id) inputEl.id = id;
   if (name) inputEl.name = name;
   if (placeholder) inputEl.placeholder = placeholder;
+  if (autocomplete) inputEl.autocomplete = autocomplete;
   if (maxlength) inputEl.maxLength = maxlength;
   inputEl.value = value;
   inputEl.disabled = disabled;

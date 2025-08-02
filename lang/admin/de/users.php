@@ -20,6 +20,10 @@ return [
                 'label' => 'Rolle',
                 'description' => 'Legt fest, welche Bereiche der Benutzer im System verwalten kann.',
             ],
+            'password' => [
+                'label' => 'Passwort',
+                'description' => 'Für ein sicheres Passwort verwende eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+            ],
         ],
     ],
 

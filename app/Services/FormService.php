@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Models\ContentType;
 
 class FormService
@@ -102,21 +103,42 @@ class FormService
             ];
         }
 
+        $isNew = empty($values['id']);
         $formFields = $config['form'] ?? [];
 
-        $rules = [];
+        $validateRules = [];
         foreach ($formFields as $field) {
             $source = $field['source'] ?? null;
-            $validate = $field['validate'] ?? [];
+            if (!$source) continue;
 
-            if (!$source || empty($validate)) continue;
+            $value = $values[$source] ?? null;
+            $rules = [];
 
-            $rules[$source] = implode('|', $validate);
+            if ($isNew && !empty($field['validateIfNew'])) {
+                $rules = array_merge($rules, $field['validateIfNew']);
+            }
+
+            $ignoreIfEmpty = !empty($field['ignoreIfEmpty']);
+
+            if ((!$ignoreIfEmpty || !empty($value)) && !empty($field['validate'])) {
+                $rules = array_merge($rules, $field['validate']);
+            }
+
+            $rules = array_map(function ($rule) use ($values) {
+                if (is_string($rule) && str_contains($rule, '{id}')) {
+                    return str_replace('{id}', $values['id'] ?? 'NULL', $rule);
+                }
+                return $rule;
+            }, $rules);
+
+            if ($rules) {
+                $validateRules[$source] = implode('|', $rules);
+            }
         }
 
         $validationMessages = self::getValidationMessages();
 
-        $validator = Validator::make($values, $rules, $validationMessages);
+        $validator = Validator::make($values, $validateRules, $validationMessages);
 
         if ($validator->fails()) {
             return [
@@ -142,7 +164,18 @@ class FormService
 
             $value = $values[$source] ?? null;
 
-            if (isset($values[$source])) {
+            $shouldIgnore = ($value === '' || $value === null) && !empty($field['ignoreIfEmpty']);
+            if ($shouldIgnore) continue;
+
+            if (!is_null($value)) {
+                if (!empty($field['format'])) {
+                    switch ($field['format']) {
+                        case 'Hash':
+                            $value = Hash::make($value);
+                            break;
+                    }
+                }
+
                 if (str_contains($source, '.')) {
                     [$attr, $key] = explode('.', $source, 2);
                     $nested = $model->$attr ?? [];
@@ -167,19 +200,6 @@ class FormService
      */
     private static function getValidationMessages()
     {
-        $ids = [
-            'required',
-            'email',
-            'min',
-            'max',
-        ];
-
-        $messages = [];
-
-        foreach ($ids as $id) {
-            $messages[$id] = __('admin::form.validation.' . $id);
-        }
-
-        return $messages;
+        return __('admin::form.validation');
     }
 }

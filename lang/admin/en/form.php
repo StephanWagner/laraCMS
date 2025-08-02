@@ -16,5 +16,10 @@ return [
         'email' => 'Please enter a valid email address.',
         'min' => 'Too short. Minimum is :min characters.',
         'max' => 'Too long. Maximum is :max characters.',
+        'unique' => 'This value is already in use.',
+        'email.unique' => 'This email address is already in use.',
+
+        // Custom
+        'securePassword' => 'This password is insecure. Please choose a different one. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
     ],
 ];

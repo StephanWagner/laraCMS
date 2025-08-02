@@ -2,4 +2,4 @@
     window.formData = @json($formData ?? []);
 </script>
 
-<div class="form__wrapper" data-form="{{ $key }}"></div>
+<form class="form__wrapper" data-form="{{ $key }}"></form>

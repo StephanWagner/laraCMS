@@ -5,6 +5,7 @@ export function textarea({
   name = '',
   value = '',
   placeholder = '',
+  autocomplete = '',
   maxlength = null,
   rows = 3,
   required = false,
@@ -27,28 +28,29 @@ export function textarea({
   if (readonly) wrapper.classList.add('-readonly');
 
   // Create textarea
-  const textareaEl = document.createElement('textarea');
+  const inputEl = document.createElement('textarea');
 
   // Basic attributes
-  if (id) textareaEl.id = id;
-  if (name) textareaEl.name = name;
-  if (placeholder) textareaEl.placeholder = placeholder;
+  if (id) inputEl.id = id;
+  if (name) inputEl.name = name;
+  if (placeholder) inputEl.placeholder = placeholder;
+  if (autocomplete) inputEl.autocomplete = autocomplete;
   if (maxlength) inputEl.maxLength = maxlength;
-  textareaEl.rows = rows;
-  textareaEl.value = value;
-  textareaEl.disabled = disabled;
-  textareaEl.readOnly = readonly;
+  inputEl.rows = rows;
+  inputEl.value = value;
+  inputEl.disabled = disabled;
+  inputEl.readOnly = readonly;
 
   // Classes
-  textareaEl.className = `textfield textfield--textarea ${className}`.trim();
+  inputEl.className = `textfield textfield--textarea ${className}`.trim();
 
   // Handle focus/blur styling
-  textareaEl.addEventListener('focus', e => {
+  inputEl.addEventListener('focus', e => {
     wrapper.classList.add('-has-focus');
     if (onFocus) onFocus(e);
   });
 
-  textareaEl.addEventListener('blur', e => {
+  inputEl.addEventListener('blur', e => {
     wrapper.classList.remove('-has-focus');
     if (onBlur) onBlur(e);
   });
@@ -76,9 +78,9 @@ export function textarea({
 
   checkHasValue();
 
-  wrapper.appendChild(textareaEl);
+  wrapper.appendChild(inputEl);
 
-  wrapper._input = textareaEl;
+  wrapper._inputEl = inputEl;
 
   return textarea;
 }

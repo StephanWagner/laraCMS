@@ -32,13 +32,14 @@ class FormSettingsSeeder extends Seeder
                                 'name' => 'name',
                                 'required' => true,
                                 'maxlength' => 30,
+                                'autocomplete' => 'off',
                             ],
                         ],
                         [
                             'position' => 'form',
                             'label' => 'items.email.label',
                             'description' => 'items.email.description',
-                            'validate' => ['required', 'email', 'max:255'],
+                            'validate' => ['required', 'email', 'max:255', 'unique:users,email,{id}'],
                             'source' => 'email',
                             'inputOptions' => [
                                 'type' => 'textfield',
@@ -46,6 +47,7 @@ class FormSettingsSeeder extends Seeder
                                 'name' => 'email',
                                 'required' => true,
                                 'maxlength' => 255,
+                                'autocomplete' => 'off',
                             ],
                         ],
                         [
@@ -76,6 +78,23 @@ class FormSettingsSeeder extends Seeder
                                 'restrictOptions' => [
                                     'developer' => ['developer']
                                 ],
+                            ],
+                        ],
+                        [
+                            'position' => 'form',
+                            'label' => 'items.password.label',
+                            'description' => 'items.password.description',
+                            'validate' => ['min:8', 'securePassword'],
+                            'validateIfNew' => ['required'],
+                            'source' => 'password',
+                            'format' => 'Hash',
+                            'ignoreIfEmpty' => true,
+                            'inputOptions' => [
+                                'type' => 'password',
+                                'id' => 'user-password',
+                                'name' => 'password',
+                                'requiredIfNew' => true,
+                                'autocomplete' => 'new-password',
                             ],
                         ],
                     ],
