@@ -12,10 +12,6 @@ export function input({ label, description, inputEl, inputOptions = {} }) {
   const wrapperEl = document.createElement('div');
   wrapperEl.className = 'input__wrapper';
 
-  if (inputOptions && inputOptions.required) wrapperEl.classList.add('-required');
-  if (inputOptions && inputOptions.disabled) wrapperEl.classList.add('-disabled');
-  if (inputOptions && inputOptions.readonly) wrapperEl.classList.add('-readonly');
-
   if (label) {
     const labelEl = document.createElement('label');
     labelEl.className = 'input__label';

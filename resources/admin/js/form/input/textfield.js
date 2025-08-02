@@ -46,19 +46,35 @@ export function textfield({
   inputEl.readOnly = readonly;
 
   // Handle focus/blur styling
-  inputEl.addEventListener('focus', (e) => {
+  inputEl.addEventListener('focus', e => {
     wrapper.classList.add('-has-focus');
     if (onFocus) onFocus(e);
   });
 
-  inputEl.addEventListener('blur', (e) => {
+  inputEl.addEventListener('blur', e => {
     wrapper.classList.remove('-has-focus');
     if (onBlur) onBlur(e);
   });
 
-  // Other listener
-  if (onInput) inputEl.addEventListener('input', onInput);
-  if (onChange) inputEl.addEventListener('change', onChange);
+  const checkHasValue = () => {
+    if (inputEl.value) {
+      wrapper.classList.add('-has-value');
+    } else {
+      wrapper.classList.remove('-has-value');
+    }
+  };
+
+  inputEl.addEventListener('input', () => {
+    checkHasValue();
+    if (onInput) onInput();
+  });
+
+  inputEl.addEventListener('change', () => {
+    checkHasValue();
+    if (onChange) onChange();
+  });
+
+  checkHasValue();
 
   wrapper.appendChild(inputEl);
 

@@ -85,6 +85,14 @@ export function select({
     wrapper.classList.add('-disabled');
   }
 
+  const checkHasValue = () => {
+    if (selectEl.value) {
+      wrapper.classList.add('-has-value');
+    } else {
+      wrapper.classList.remove('-has-value');
+    }
+  };
+
   // Focus / blur styling
   selectEl.addEventListener('focus', e => {
     wrapper.classList.add('-has-focus');
@@ -97,9 +105,12 @@ export function select({
   });
 
   selectEl.addEventListener('change', e => {
+    checkHasValue();
     selectEl.blur();
     if (onChange) onChange(e);
   });
+
+  checkHasValue();
 
   wrapper.appendChild(selectEl);
   wrapper._selectEl = selectEl;

@@ -1,14 +1,6 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
-.input__container {
-  position: relative;
-
-  + .input__container {
-    margin-top: 12px;
-  }
-}
-
 .input__wrapper {
   position: relative;
 
@@ -17,6 +9,27 @@
   }
 }
 
+.input__container {
+  position: relative;
+
+  + .input__container {
+    margin-top: 12px;
+  }
+
+  &.-required:not(.-has-value) {
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 4;
+      top: 6px;
+      right: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: $error-color;
+    }
+  }
+}
 // Label
 
 .input__label {
@@ -25,6 +38,8 @@
   margin: 0 0 4px;
   color: $default-text-color;
 }
+
+// Description
 
 .input__description {
   font-size: 13px;

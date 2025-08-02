@@ -1,4 +1,3 @@
-
 export function textarea({
   id = '',
   name = '',
@@ -41,19 +40,36 @@ export function textarea({
   textareaEl.className = `textfield textfield--textarea ${className}`.trim();
 
   // Handle focus/blur styling
-  textareaEl.addEventListener('focus', (e) => {
+  textareaEl.addEventListener('focus', e => {
     wrapper.classList.add('-has-focus');
     if (onFocus) onFocus(e);
   });
 
-  textareaEl.addEventListener('blur', (e) => {
+  textareaEl.addEventListener('blur', e => {
     wrapper.classList.remove('-has-focus');
     if (onBlur) onBlur(e);
   });
 
   // Other listener
-  if (onInput) textareaEl.addEventListener('input', onInput);
-  if (onChange) textareaEl.addEventListener('change', onChange);
+  const checkHasValue = () => {
+    if (inputEl.value) {
+      wrapper.classList.add('-has-value');
+    } else {
+      wrapper.classList.remove('-has-value');
+    }
+  };
+
+  inputEl.addEventListener('input', () => {
+    checkHasValue();
+    if (onInput) onInput();
+  });
+
+  inputEl.addEventListener('change', () => {
+    checkHasValue();
+    if (onChange) onChange();
+  });
+
+  checkHasValue();
 
   wrapper.appendChild(textareaEl);
 
