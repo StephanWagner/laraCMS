@@ -15,11 +15,7 @@ class UsersController extends Controller
 
     public function edit(?int $id = null)
     {
-        $formData = FormService::getData('users', $id);
-
-        return view('admin::pages.users.form', [
-            'formData' => $formData,
-        ]);
+        return FormService::getView('users', $id);
     }
 
     public function profile()

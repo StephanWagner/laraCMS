@@ -2,9 +2,23 @@
     <div class="header__container">
         <div class="header__content">
             <div class="header__page-title-container">
-                <div class="header__page-title h1">{{ !empty($contentTitle) ? $contentTitle : '' }}</div>
+                <div class="header__page-title h1">
+                    @if (!empty($contentTitle))
+                        {{ $contentTitle }}
+                    @elseif (!empty($listData['config']['title']))
+                        {{ __($listData['config']['title']) }}
+                    @elseif (!empty($formData['config']['title' . (!empty($formData['item']) ? 'Edit' : 'New')]))
+                        {{ __($formData['config']['title' . (!empty($formData['item']) ? 'Edit' : 'New')]) }}
+                    @endif
+                </div>
             </div>
-            <div class="header__form-buttons">TODO</div>
+            <div class="header__form-buttons">
+                @if (!empty($listData))
+                    <a href="{{ route($listData['config']['formRoute']) }}" class="header__form-button button -medium -has-icon"><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
+                @elseif (!empty($formData))
+                    <button class="header__form-button button -medium">{{ __('admin::form.buttons.save') }}</button>
+                @endif
+            </div>
         </div>
         <div class="header__user-menu-container">
             <div class="header__user-menu-toggler{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}" data-toggle-menu="user">

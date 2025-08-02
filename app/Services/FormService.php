@@ -7,6 +7,9 @@ use App\Models\ContentType;
 
 class FormService
 {
+    /**
+     * Get the form config
+     */
     public static function getConfig(string $key)
     {
         $settingKey = 'form-settings.' . $key;
@@ -24,11 +27,17 @@ class FormService
         return $config;
     }
 
+    /**
+     * Get the form data
+     */
     public static function getData(string $key, ?int $id = null, array $params = [])
     {
         $config = self::getConfig($key);
 
         if (!$config) return null;
+
+        if (!empty($config['listRoute'])) $config['listUri'] = route($config['listRoute']);
+        if (!empty($config['formRoute'])) $config['formUri'] = route($config['formRoute'], ['id' => '__ID__']);
 
         $config['key'] = $key;
 
@@ -54,5 +63,18 @@ class FormService
             'item' => $item ?? null,
             'texts' => $texts,
         ];
+    }
+
+    /**
+     * Get the form view
+     */
+    public static function getView(string $key, ?int $id = null)
+    {
+        $formData = self::getData($key, $id);
+
+        return view('admin::pages.form', [
+            'key' => $key,
+            'formData' => $formData,
+        ]);
     }
 }

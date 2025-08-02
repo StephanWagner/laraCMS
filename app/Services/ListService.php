@@ -37,6 +37,9 @@ class ListService
 
         if (!$config) return null;
 
+        if (!empty($config['listRoute'])) $config['listUri'] = route($config['listRoute']);
+        if (!empty($config['formRoute'])) $config['formUri'] = route($config['formRoute'], ['id' => '__ID__']);
+
         $config['key'] = $key;
 
         $modelClassName = $config['model'] ?? null;
@@ -203,7 +206,6 @@ class ListService
         $listData = self::getData($key);
 
         return view('admin::pages.list', [
-            'contentTitle' => !empty($listData['config']['title']) ? __($listData['config']['title']) : '',
             'key' => $key,
             'listData' => $listData,
         ]);

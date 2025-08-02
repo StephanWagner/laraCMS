@@ -6,6 +6,11 @@ return [
         'trash' => 'Der Papierkorb ist leer.',
     ],
 
+    // Buttons
+    'buttons' => [
+        'add' => 'Hinzufügen',
+    ],
+
     // Pagination
     'pagination' => [
         'inputPlaceholderText' => 'Seite',

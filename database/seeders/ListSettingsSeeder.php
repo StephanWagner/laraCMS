@@ -15,7 +15,8 @@ class ListSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'ContentType',
                     'title' => 'admin::contentTypes.list.title',
-                    'listRoute' => '/admin/content-types',
+                    'listRoute' => 'admin.content-types.list',
+                    'formRoute' => 'admin.content-types.edit',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,
@@ -111,7 +112,8 @@ class ListSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'User',
                     'title' => 'admin::users.list.title',
-                    'listRoute' => '/admin/users',
+                    'listRoute' => 'admin.users.list',
+                    'formRoute' => 'admin.users.edit',
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,

@@ -33,6 +33,18 @@
   padding: 0 24px 0 0;
 }
 
+// Form button
+
+.header__form-buttons {
+  margin: 0 8px 0 0;
+}
+
+.header__form-button {
+  display: block;
+}
+
+// User menu
+
 .header__user-menu-container {
   position: relative;
   flex-shrink: 0;

@@ -6,6 +6,11 @@ return [
         'trash' => 'Trash is empty.',
     ],
 
+    // Buttons
+    'buttons' => [
+        'add' => 'Add',
+    ],
+
     // Pagination
     'pagination' => [
         'inputPlaceholderText' => 'Page',

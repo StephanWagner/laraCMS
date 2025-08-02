@@ -83,6 +83,32 @@
     }
   }
 
+  &.-has-icon {
+    padding-left: calc(10px + 24px + 6px);
+
+    .icon {
+      position: absolute;
+      top: calc((42px - 24px) / 2);
+      left: 10px;
+      width: 24px;
+      height: 24px;
+      text-align: left;
+    }
+  }
+
+  &.-medium {
+    padding: 7px 20px;
+
+    &.-has-icon {
+      padding-left: calc(8px + 24px + 4px);
+
+      .icon {
+        left: 8px;
+        top: calc((38px - 24px) / 2);
+      }
+    }
+  }
+
   &.-danger {
     background: $error-color;
   }

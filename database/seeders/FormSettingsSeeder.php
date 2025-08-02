@@ -16,7 +16,8 @@ class FormSettingsSeeder extends Seeder
                     'model' => 'User',
                     'titleNew' => 'admin::users.form.titleNew',
                     'titleEdit' => 'admin::users.form.titleEdit',
-                    'editRoute' => '/admin/users/edit/{id}',
+                    'listRoute' => 'admin.users.list',
+                    'formRoute' => 'admin.users.edit',
                     'texts' => 'users.form',
                     'form' => [
                         [
