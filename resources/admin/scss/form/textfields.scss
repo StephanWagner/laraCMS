@@ -111,7 +111,8 @@ textarea.textfield {
     left: -10000px !important;
   }
 
-  &.-error {
+  &.-error,
+  .input__container.-error & {
     border-color: $textfield-border-color-error;
   }
 

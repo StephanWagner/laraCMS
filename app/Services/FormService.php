@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Models\ContentType;
 
 class FormService
@@ -76,5 +77,109 @@ class FormService
             'key' => $key,
             'formData' => $formData,
         ]);
+    }
+
+    /**
+     * Save form data
+     */
+    public static function saveForm(string $key, array $values)
+    {
+        sleep(1);
+
+        $config = self::getConfig($key);
+        if (!$config || empty($config['model'])) {
+            return [
+                'success' => false,
+                'error' => 'Invalid form key',
+            ];
+        }
+
+        $modelClass = '\\App\\Models\\' . $config['model'];
+        if (!class_exists($modelClass)) {
+            return [
+                'success' => false,
+                'error' => 'Invalid form key',
+            ];
+        }
+
+        $formFields = $config['form'] ?? [];
+
+        $rules = [];
+        foreach ($formFields as $field) {
+            $source = $field['source'] ?? null;
+            $validate = $field['validate'] ?? [];
+
+            if (!$source || empty($validate)) continue;
+
+            $rules[$source] = implode('|', $validate);
+        }
+
+        $validationMessages = self::getValidationMessages();
+
+        $validator = Validator::make($values, $rules, $validationMessages);
+
+        if ($validator->fails()) {
+            return [
+                'success' => false,
+                'error' => __('admin::form.errors.validation'),
+                'inputErrors' => $validator->errors()->toArray(),
+            ];
+        }
+
+        $id = $values['id'] ?? null;
+        $model = $id ? $modelClass::find($id) : new $modelClass();
+
+        if (!$model) {
+            return [
+                'success' => false,
+                'error' => 'Record not found', // TODO
+            ];
+        }
+
+        foreach ($formFields as $field) {
+            $source = $field['source'] ?? null;
+            if (!$source) continue;
+
+            $value = $values[$source] ?? null;
+
+            if (isset($values[$source])) {
+                if (str_contains($source, '.')) {
+                    [$attr, $key] = explode('.', $source, 2);
+                    $nested = $model->$attr ?? [];
+                    $nested[$key] = $value;
+                    $model->$attr = $nested;
+                } else {
+                    $model->$source = $value;
+                }
+            }
+        }
+
+        $model->save();
+
+        return [
+            'success' => true,
+            'item' => $model,
+        ];
+    }
+
+    /**
+     * Get validation messages
+     */
+    private static function getValidationMessages()
+    {
+        $ids = [
+            'required',
+            'email',
+            'min',
+            'max',
+        ];
+
+        $messages = [];
+
+        foreach ($ids as $id) {
+            $messages[$id] = __('admin::form.validation.' . $id);
+        }
+
+        return $messages;
     }
 }

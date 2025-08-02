@@ -19,7 +19,6 @@ export class FormService {
   }
 
   init() {
-    // Container
     this.container = document.createElement('div');
     this.container.className = 'form__container';
 
@@ -27,6 +26,17 @@ export class FormService {
     const formItems = formConfig?.form || [];
     const item = this.formData?.item || null;
     const texts = this.formData?.texts || {};
+
+    const inputIdContainerEl = input({
+      key: formConfig.key,
+      source: 'id',
+      inputOptions: {
+        type: 'hidden',
+        name: 'id',
+        value: item ? item.id : null,
+      },
+    });
+    this.container.appendChild(inputIdContainerEl);
 
     formItems.forEach(formItem => {
       const inputOptions = formItem.inputOptions;
@@ -36,10 +46,12 @@ export class FormService {
       }
 
       const inputContainerEl = input({
-        formId: formConfig.key,
+        key: formConfig.key,
+        source: formItem.source,
         label: formItem.label ? resolveText(texts, formItem.label) : null,
         description: formItem.description ? resolveText(texts, formItem.description) : null,
         inputOptions,
+        clearErrorOnInput: true,
       });
 
       this.container.appendChild(inputContainerEl);
@@ -50,7 +62,7 @@ export class FormService {
     initFormEvents();
 
     // Save form events
-    const saveButton = document.querySelector(`[data-save-form="${formConfig.key}"]`);
+    const saveButton = document.querySelector('[data-save-form="' + formConfig.key + '"]');
 
     if (saveButton) {
       saveButton.addEventListener('click', () => {
@@ -63,13 +75,14 @@ export class FormService {
     if (this.saving) return false;
 
     const formConfig = this.formData?.config || {};
-
-    const saveButton = document.querySelector(`[data-save-form="${formConfig.key}"]`);
+    const key = formConfig.key;
+    const saveButton = document.querySelector('[data-save-form="' + key + '"]');
 
     apiFetch({
       url: '/admin/api/form',
       data: {
-        formId: formConfig.id,
+        key,
+        values: getFormData(key),
       },
       before: () => {
         this.saving = true;
@@ -84,6 +97,10 @@ export class FormService {
       success: response => {
         if (response.success) {
           // TODO
+        } else if (response.error) {
+          // TODO
+
+          response.inputErrors && showFormErrors(key, response.inputErrors);
         } else {
           networkError(response);
         }
@@ -95,6 +112,72 @@ export class FormService {
   }
 }
 
+/**
+ * Resolve text
+ */
 function resolveText(texts, textId) {
   return getNestedValue(texts, textId) ?? textId;
+}
+
+/**
+ * Get form data
+ */
+function getFormData(key) {
+  const data = {};
+
+  const fields = document.querySelectorAll('[data-form-value="' + key + '"]');
+  fields.forEach(wrapper => {
+    const source = wrapper.dataset.inputSource;
+    const type = wrapper.dataset.inputType;
+
+    // Support various input types
+    let value = null;
+
+    if (type === 'textfield' || type === 'textarea' || type === 'email' || type === 'number') {
+      const input = wrapper.querySelector('input, textarea');
+      value = input?.value || '';
+    } else if (type === 'checkbox') {
+      const input = wrapper.querySelector('input[type="checkbox"]');
+      value = input?.checked || false;
+    } else if (type === 'select') {
+      const select = wrapper.querySelector('select');
+      if (select?.multiple) {
+        value = Array.from(select.selectedOptions).map(opt => opt.value);
+      } else {
+        value = select?.value || '';
+      }
+    } else {
+      const input = wrapper.querySelector('input, textarea, select');
+      value = input?.value || '';
+    }
+
+    data[source] = value;
+  });
+
+  return data;
+}
+
+/**
+ * Show form errors
+ */
+function showFormErrors(key, errors = {}) {
+  Object.entries(errors).forEach(([source, messages]) => {
+    const element = document.querySelector(
+      '[data-form-value="' + key + '"][data-input-source="' + source + '"]'
+    );
+    if (!element) return;
+
+    element.querySelector('.input__container')?.classList.add('-error');
+
+    const existingError = element.querySelector('.input__error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    const errorEl = document.createElement('div');
+    errorEl.className = 'input__error';
+    errorEl.textContent = messages[0];
+
+    element.appendChild(errorEl);
+  });
 }

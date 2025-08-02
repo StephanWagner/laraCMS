@@ -101,6 +101,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     // Api
     Route::prefix('api')->name('api.')->group(function () {
         Route::post('list', [\App\Http\Controllers\Admin\ApiController::class, 'list'])->name('list');
+        Route::post('form', [\App\Http\Controllers\Admin\ApiController::class, 'saveForm'])->name('form');
         Route::post('list-reorder', [\App\Http\Controllers\Admin\ApiController::class, 'listReorder'])->name('list-reorder');
         Route::post('toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
         Route::post('delete', [\App\Http\Controllers\Admin\ApiController::class, 'delete'])->name('delete');

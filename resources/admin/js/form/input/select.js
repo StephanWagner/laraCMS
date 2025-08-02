@@ -1,3 +1,5 @@
+import { clearInputError } from "../input";
+
 export function select({
   id = '',
   name = '',
@@ -14,6 +16,7 @@ export function select({
   onChange = null,
   onFocus = null,
   onBlur = null,
+  clearErrorOnInput = false,
 } = {}) {
   // Wrapper
   const wrapper = document.createElement('div');
@@ -105,6 +108,7 @@ export function select({
   });
 
   selectEl.addEventListener('change', e => {
+    clearErrorOnInput && clearInputError(selectEl);
     checkHasValue();
     selectEl.blur();
     if (onChange) onChange(e);

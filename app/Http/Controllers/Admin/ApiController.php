@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
+use App\Services\FormService;
 
 class ApiController extends Controller
 {
@@ -35,6 +36,15 @@ class ApiController extends Controller
             'success' => true,
             'listData' => $listData
         ];
+    }
+
+    /**
+     * Save form data
+     */
+    public function saveForm() {
+        $key = request()->input('key');
+        $values = request()->input('values');
+        return FormService::saveForm($key, $values);
     }
 
     /**

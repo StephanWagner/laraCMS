@@ -1,3 +1,5 @@
+import { clearInputError } from "../input";
+
 export function textarea({
   id = '',
   name = '',
@@ -14,6 +16,7 @@ export function textarea({
   onChange = null,
   onFocus = null,
   onBlur = null,
+  clearErrorOnInput = false,
 } = {}) {
   // Create wrapper
   const wrapper = document.createElement('div');
@@ -60,11 +63,13 @@ export function textarea({
   };
 
   inputEl.addEventListener('input', () => {
+    clearErrorOnInput && clearInputError(inputEl);
     checkHasValue();
     if (onInput) onInput();
   });
 
   inputEl.addEventListener('change', () => {
+    clearErrorOnInput && clearInputError(inputEl);
     checkHasValue();
     if (onChange) onChange();
   });

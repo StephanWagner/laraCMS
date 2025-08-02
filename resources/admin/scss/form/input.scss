@@ -4,8 +4,12 @@
 .input__wrapper {
   position: relative;
 
-  + .input__wrapper {
+  &:not([data-input-type="hidden"]) + .input__wrapper {
     margin-top: 16px;
+  }
+
+  [data-input-type="hidden"] {
+    display: none;
   }
 }
 
@@ -30,6 +34,7 @@
     }
   }
 }
+
 // Label
 
 .input__label {
@@ -46,4 +51,18 @@
   padding: 0 8px;
   margin: 4px 0 0;
   color: $secondary-text-color;
+
+  + .input__error {
+    margin-top: 0;
+  }
+}
+
+// Error
+
+.input__error {
+  font-size: 13px;
+  padding: 0 8px;
+  margin: 4px 0 0;
+  color: $error-text-color;
+  font-weight: 600;
 }

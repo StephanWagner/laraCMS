@@ -1,19 +1,33 @@
+import { hidden } from './input/hidden';
 import { textfield } from './input/textfield';
 import { textarea } from './input/textarea';
 import { select } from './input/select';
 
 const inputTypes = {
+  hidden,
   textfield,
   textarea,
   select,
 };
 
-export function input({ formId = null, label, description, inputEl, inputOptions = {} }) {
+export function input({
+  key = null,
+  source = null,
+  label = null,
+  description = null,
+  inputEl = null,
+  inputOptions = {},
+  clearErrorOnInput = false,
+}) {
   const wrapperEl = document.createElement('div');
   wrapperEl.className = 'input__wrapper';
 
-  if (formId) {
-    wrapperEl.dataset.formValue = '';
+  if (key) {
+    wrapperEl.dataset.formValue = key;
+  }
+
+  if (source) {
+    wrapperEl.dataset.inputSource = source;
   }
 
   if (inputOptions && inputOptions.name) {
@@ -41,6 +55,7 @@ export function input({ formId = null, label, description, inputEl, inputOptions
   } else if (inputOptions) {
     const { type } = inputOptions;
     const factory = inputTypes[type];
+    inputOptions.clearErrorOnInput = clearErrorOnInput;
 
     if (factory) {
       const factoryInputEl = factory(inputOptions);
@@ -56,4 +71,21 @@ export function input({ formId = null, label, description, inputEl, inputOptions
   }
 
   return wrapperEl;
+}
+
+/**
+ * Remove error from input element
+ */
+export function clearInputError(inputEl) {
+  const wrapperEl = inputEl.closest('.input__wrapper');
+  const containerEl = inputEl.closest('.input__container');
+
+  if (containerEl) {
+    containerEl.classList.remove('-error');
+  }
+
+  if (wrapperEl) {
+    const errorEl = wrapperEl.querySelector('.input__error');
+    errorEl && errorEl.remove();
+  }
 }
