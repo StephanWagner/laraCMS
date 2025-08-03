@@ -48,4 +48,15 @@ return [
         'submitButtonText' => 'Löschen',
         'cancelButtonText' => 'Abbrechen',
     ],
+
+    // Multiselect
+    'multiselect' => [
+        'buttonText1' => '1 ausgewählter Eintrag',
+        'buttonTextN' => '{n} ausgewählte Einträge',
+        'actionRestore' => 'Wiederherstellen',
+        'actionDelete' => 'Löschen',
+        'actionForceDelete' => 'Dauerhaft löschen',
+        'actionActivate' => 'Aktivieren',
+        'actionDeactivate' => 'Deaktivieren',
+    ],
 ];

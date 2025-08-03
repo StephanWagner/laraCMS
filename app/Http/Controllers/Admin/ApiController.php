@@ -41,7 +41,8 @@ class ApiController extends Controller
     /**
      * Save form data
      */
-    public function saveForm() {
+    public function saveForm()
+    {
         $key = request()->input('key');
         $values = request()->input('values');
         return FormService::saveForm($key, $values);
@@ -82,23 +83,44 @@ class ApiController extends Controller
     {
         $key = request()->input('key');
         $id = request()->input('id');
+        $ids = request()->input('ids', []);
+        $action = request()->input('action');
 
         $listConfig = ListService::getConfig($key);
-
         $modelClassName = $listConfig['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
 
-        $model = $modelClass::find($id);
-        if ($model) {
+        $idList = collect($ids);
+        if ($id && !$idList->contains($id)) {
+            $idList->push($id);
+        }
+
+        if ($idList->isEmpty()) {
+            return ['success' => false];
+        }
+
+        $models = $modelClass::whereIn('id', $idList)->get();
+        $lastValue = null;
+
+        foreach ($models as $model) {
             $model->timestamps = false;
-            $model->active = !$model->active;
+
+            if ($action === 'activate') {
+                $model->active = true;
+            } elseif ($action === 'deactivate') {
+                $model->active = false;
+            } else {
+                $model->active = !$model->active;
+            }
+
             $model->save();
+            $lastValue = $model->active;
         }
 
         return [
             'success' => true,
-            'value' => $model->active,
-            'message' => __('admin::api.toggle.successMessage.' . ($model->active ? 'on' : 'off')),
+            'value' =>  $idList->count() > 1 ? ($action == 'activate' ? 1 : 0) : $model->active,
+            'message' => __('admin::api.toggle.successMessage.' . ($idList->count() > 1 ? ($action == 'activate' ? 'onBulk' : 'offBulk') : ($lastValue ? 'on' : 'off')), ['items' => $idList->count()]),
         ];
     }
 
@@ -199,25 +221,27 @@ class ApiController extends Controller
     {
         $key = request()->input('key');
         $id = request()->input('id');
+        $ids = request()->input('ids', []);
         $force = request()->input('force');
 
         $listConfig = ListService::getConfig($key);
-
         $modelClassName = $listConfig['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
 
-        $model = $modelClass::withTrashed()->find($id);
-        if ($model) {
+        $idList = collect($ids);
+        if ($id && !$idList->contains($id)) {
+            $idList->push($id);
+        }
+
+        if ($idList->isEmpty()) {
+            return ['success' => false];
+        }
+
+        $models = $modelClass::withTrashed()->whereIn('id', $idList)->get();
+
+        foreach ($models as $model) {
             $model->timestamps = false;
-            if ($force) {
-                $model->forceDelete();
-            } else {
-                $model->delete();
-            }
-        } else {
-            return [
-                'success' => false,
-            ];
+            $force ? $model->forceDelete() : $model->delete();
         }
 
         $listData = ListService::getData($key, $this->getListParams());
@@ -225,7 +249,7 @@ class ApiController extends Controller
         return [
             'success' => true,
             'listData' => $listData,
-            'message' => __('admin::api.delete.successMessage'),
+            'message' => __('admin::api.delete.successMessage' . ($idList->count() > 1 ? 'Bulk' : ''), ['items' => $idList->count()]),
         ];
     }
 
@@ -236,20 +260,26 @@ class ApiController extends Controller
     {
         $key = request()->input('key');
         $id = request()->input('id');
+        $ids = request()->input('ids', []);
 
         $listConfig = ListService::getConfig($key);
-
         $modelClassName = $listConfig['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
 
-        $model = $modelClass::withTrashed()->find($id);
-        if ($model) {
+        $idList = collect($ids);
+        if ($id && !$idList->contains($id)) {
+            $idList->push($id);
+        }
+
+        if ($idList->isEmpty()) {
+            return ['success' => false];
+        }
+
+        $models = $modelClass::withTrashed()->whereIn('id', $idList)->get();
+
+        foreach ($models as $model) {
             $model->timestamps = false;
             $model->restore();
-        } else {
-            return [
-                'success' => false,
-            ];
         }
 
         $listData = ListService::getData($key, $this->getListParams());
@@ -257,7 +287,7 @@ class ApiController extends Controller
         return [
             'success' => true,
             'listData' => $listData,
-            'message' => __('admin::api.restore.successMessage'),
+            'message' => __('admin::api.restore.successMessage' . ($idList->count() > 1 ? 'Bulk' : ''), ['items' => $idList->count()]),
         ];
     }
 }

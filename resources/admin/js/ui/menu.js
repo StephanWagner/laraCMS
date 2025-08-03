@@ -3,7 +3,7 @@ import { config } from '../config/config';
 // Variables
 const timeouts = {};
 
-function initMenus() {
+export function initMenus() {
   document.querySelectorAll('[data-toggle-menu]').forEach((triggerEl) => {
     triggerEl.addEventListener('click', () => {
       const id = triggerEl.getAttribute('data-toggle-menu');
@@ -13,13 +13,13 @@ function initMenus() {
 }
 
 // Helpers
-function menuIsOpen(id) {
+export function menuIsOpen(id) {
   const menuEl = document.querySelector(`[data-menu="${id}"]`);
   return menuEl?.classList.contains('-open');
 }
 
-function openMenu(id) {
-  const triggerEl = document.querySelector(`[data-toggle-menu="${id}"]`);
+export function openMenu(id, triggerId = null) {
+  const triggerEl = document.querySelector(`[data-toggle-menu="${triggerId || id}"]`);
   const menuEl = document.querySelector(`[data-menu="${id}"]`);
 
   if (!triggerEl || !menuEl) {
@@ -39,8 +39,8 @@ function openMenu(id) {
   });
 
   function handleOutsideClick(ev) {
-    const isOverlay = ev.target.classList.contains('menu-overlay');
-    const insideOverlay = ev.target.closest('.menu-overlay');
+    const isOverlay = ev.target.classList.contains('menu-overlay__wrapper');
+    const insideOverlay = ev.target.closest('.menu-overlay__wrapper');
 
     if (!isOverlay && !insideOverlay) {
       closeMenu(id);
@@ -49,8 +49,8 @@ function openMenu(id) {
   }
 }
 
-function closeMenu(id) {
-  const triggerEl = document.querySelector(`[data-toggle-menu="${id}"]`);
+export function closeMenu(id, triggerId = null) {
+  const triggerEl = document.querySelector(`[data-toggle-menu="${triggerId || id}"]`);
   const menuEl = document.querySelector(`[data-menu="${id}"]`);
 
   if (!menuEl || !menuEl.classList.contains('-open')) {
@@ -64,5 +64,3 @@ function closeMenu(id) {
     menuEl.classList.remove('-show');
   }, config.defaultTransitionSpeed);
 }
-
-export { initMenus, closeMenu };

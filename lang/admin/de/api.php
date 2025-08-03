@@ -9,7 +9,9 @@ return [
     'toggle' => [
         'successMessage' => [
             'on' => 'Eintrag aktiviert.',
+            'onBulk' => ':items Einträge aktiviert.',
             'off' => 'Eintrag deaktiviert.',
+            'offBulk' => ':items Einträge deaktiviert.',
         ],
     ],
 
@@ -21,10 +23,12 @@ return [
     // Delete
     'delete' => [
         'successMessage' => 'Eintrag gelöscht.',
+        'successMessageBulk' => ':items Einträge gelöscht.',
     ],
 
     // Restore
     'restore' => [
         'successMessage' => 'Eintrag wiederhergestellt.',
+        'successMessageBulk' => ':items Einträge wiederhergestellt.',
     ],
 ];

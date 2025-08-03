@@ -9,6 +9,7 @@ import { debounce } from '../utils/debounce';
 import { textfield } from '../form/input/textfield';
 import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
+import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -268,23 +269,23 @@ export class ListService {
           columnMultiselectIconEl.innerHTML = 'check_box_outline_blank';
           columnEl.append(columnMultiselectIconEl);
           columnEl.addEventListener('click', () => {
-            const multiSelectAllEls = this.wrapper.querySelectorAll('.list-item__container');
-            const multiSelectSelectedEls = this.wrapper.querySelectorAll(
+            const multiselectAllEls = this.wrapper.querySelectorAll('.list-item__container');
+            const multiselectSelectedEls = this.wrapper.querySelectorAll(
               '.list-item__container[data-is-selected]'
             );
-            const multiSelectNotSelectedEls = this.wrapper.querySelectorAll(
+            const multiselectNotSelectedEls = this.wrapper.querySelectorAll(
               '.list-item__container:not([data-is-selected])'
             );
 
             let triggerEls;
 
             if (
-              multiSelectSelectedEls.length === 0 ||
-              multiSelectAllEls.length === multiSelectSelectedEls.length
+              multiselectSelectedEls.length === 0 ||
+              multiselectAllEls.length === multiselectSelectedEls.length
             ) {
-              triggerEls = multiSelectAllEls;
+              triggerEls = multiselectAllEls;
             } else {
-              triggerEls = multiSelectNotSelectedEls;
+              triggerEls = multiselectNotSelectedEls;
             }
 
             triggerEls.forEach(container => {
@@ -296,7 +297,7 @@ export class ListService {
               }
             });
 
-            updateMultiselect(this.wrapper);
+            this.updateMultiselect();
           });
         }
 
@@ -415,7 +416,7 @@ export class ListService {
               itemColumnMultiselectIconEl.innerHTML = isSelected
                 ? 'check_box'
                 : 'check_box_outline_blank';
-              updateMultiselect(this.wrapper);
+              this.updateMultiselect();
             });
             break;
 
@@ -772,7 +773,7 @@ export class ListService {
     }
 
     // Update multiselect
-    updateMultiselect(this.wrapper);
+    this.updateMultiselect();
 
     // Update item amount buttons
     updateItemAmountButtons(
@@ -796,6 +797,359 @@ export class ListService {
     );
     this.paginationContainerEl.append(paginationContainerEl);
   }
+
+  onTrashPage() {
+    const trashButton = document.querySelector('.list-items-amount__container.-trashed');
+    return trashButton && trashButton.classList.contains('-active');
+  }
+
+  updateMultiselect() {
+    const wrapper = this.wrapper;
+    const listTexts = this.listData?.texts || {};
+
+    const multiselectIconEl = wrapper.querySelector(
+      '.list__column.-head.-type-multiselect .list__multiselect-icon'
+    );
+    if (multiselectIconEl) {
+      const multiselectAllEls = wrapper.querySelectorAll('.list-item__container');
+      const multiselectSelectedEls = wrapper.querySelectorAll(
+        '.list-item__container[data-is-selected]'
+      );
+
+      const multiselectAmount = multiselectSelectedEls.length;
+      const multiselectContainerEl = document.querySelector('.list-multiselect__container');
+      const multiselectCurrentButtonEl = document.querySelector('.list-multiselect__button');
+      multiselectCurrentButtonEl && multiselectCurrentButtonEl.remove();
+
+      if (multiselectAmount === 0) {
+        multiselectIconEl.innerHTML = 'check_box_outline_blank';
+      } else {
+        if (multiselectAllEls.length === multiselectAmount) {
+          multiselectIconEl.innerHTML = 'check_box';
+        } else {
+          multiselectIconEl.innerHTML = 'indeterminate_check_box';
+        }
+
+        const multiselectButtonEl = document.createElement('div');
+        multiselectButtonEl.className = 'list-multiselect__button button -selectable no-select';
+        multiselectButtonEl.dataset.toggleMenu = 'multiselect';
+        multiselectButtonEl.innerHTML = resolveText(
+          listTexts,
+          'multiselect.buttonText' + (multiselectAmount == 1 ? '1' : 'N')
+        ).replace('{n}', multiselectAmount);
+
+        multiselectButtonEl.addEventListener('click', () => {
+          this.openMultiselectMenu();
+        });
+
+        multiselectContainerEl.append(multiselectButtonEl);
+      }
+    }
+  }
+
+  /**
+   * Deselect all selected elements
+   */
+  deselectAll() {
+    document.querySelectorAll('.list-item__container[data-is-selected]').forEach(el => {
+      el.removeAttribute('data-is-selected');
+      el.querySelector('.list__multiselect-icon').innerHTML = 'check_box_outline_blank';
+    });
+    this.updateMultiselect();
+  }
+
+  /**
+   * Open the multiselect menu
+   */
+  openMultiselectMenu() {
+    const listConfig = this.listData?.config || {};
+    const listTexts = this.listData?.texts || {};
+    const multiselectContainerEl = document.querySelector('.list-multiselect__container');
+    const currentMultiselectMenuEl = document.querySelector(
+      '.list-multiselect__menu' + (this.onTrashPage() ? '.-trash' : ':not(.-trash)')
+    );
+
+    if (!currentMultiselectMenuEl) {
+      const multiselectMenuEl = document.createElement('div');
+      multiselectMenuEl.className =
+        'list-multiselect__menu menu-overlay__wrapper -secondary-links -multiselect' +
+        (this.onTrashPage() ? ' -trash' : '');
+      multiselectMenuEl.dataset.menu = 'multiselect' + (this.onTrashPage() ? '-trash' : '');
+
+      const multiselectMenuLinksEl = document.createElement('div');
+      multiselectMenuLinksEl.className = 'menu-overlay__links';
+      multiselectMenuEl.append(multiselectMenuLinksEl);
+
+      const multiselectActions = this.onTrashPage()
+        ? [
+            {
+              action: 'restore',
+              icon: 'restore_from_trash',
+              text: 'multiselect.actionRestore',
+              callback: () => {
+                closeMenu('multiselect-trash', 'multiselect');
+                if (this._bulkRestoreRequestRunning) return;
+
+                const ids = Array.from(
+                  document.querySelectorAll('.list-item__container[data-is-selected]')
+                ).map(el => el.dataset.id);
+
+                apiFetch({
+                  url: '/admin/api/restore',
+                  data: getListParams({}, listConfig, { ids }),
+                  before: () => {
+                    this._bulkRestoreRequestRunning = true;
+                  },
+                  complete: () => {
+                    this._bulkRestoreRequestRunning = false;
+                  },
+                  success: response => {
+                    if (response.success) {
+                      this.listData = response.listData;
+                      this.render();
+                      success(response.message);
+                    } else {
+                      networkError(response);
+                    }
+                  },
+                  error: xhr => {
+                    networkError(xhr);
+                  },
+                });
+              },
+            },
+            {
+              action: 'force-delete',
+              icon: 'delete_forever',
+              text: 'multiselect.actionForceDelete',
+              callback: () => {
+                closeMenu('multiselect-trash', 'multiselect');
+                confirmModal({
+                  title: this.listData.texts.deleteModal.title,
+                  description: this.listData.texts.deleteModal.textForceDeleteBulk,
+                  cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+                  submitButtonText: this.listData.texts.deleteModal.submitButtonText,
+                  submitCallback: (container, submitBtn) => {
+                    if (this._bulkForceDeleteRequestRunning) return;
+
+                    const ids = Array.from(
+                      document.querySelectorAll('.list-item__container[data-is-selected]')
+                    ).map(el => el.dataset.id);
+
+                    apiFetch({
+                      url: '/admin/api/delete',
+                      data: getListParams({}, listConfig, { ids, force: true }),
+                      before: () => {
+                        this._bulkForceDeleteRequestRunning = true;
+                        submitBtn.classList.add('-loading');
+                        submitBtn.disabled = true;
+                      },
+                      complete: () => {
+                        this._bulkForceDeleteRequestRunning = false;
+                        submitBtn.classList.remove('-loading');
+                        submitBtn.disabled = false;
+                      },
+                      success: response => {
+                        if (response.success) {
+                          this.listData = response.listData;
+                          this.render();
+                          success(response.message);
+                          closeConfirmModal();
+                        } else {
+                          networkError(response);
+                        }
+                      },
+                      error: xhr => {
+                        networkError(xhr);
+                      },
+                    });
+                  },
+                });
+              },
+            },
+          ]
+        : [
+            {
+              action: 'activate',
+              icon: 'toggle_on',
+              text: 'multiselect.actionActivate',
+              callback: () => {
+                if (this._bulkActivateRequestRunning) return;
+
+                const ids = Array.from(
+                  document.querySelectorAll('.list-item__container[data-is-selected]')
+                ).map(el => el.dataset.id);
+
+                apiFetch({
+                  url: '/admin/api/toggle',
+                  data: {
+                    key: listConfig.key,
+                    action: 'activate',
+                    ids,
+                  },
+                  before: () => {
+                    this._bulkActivateRequestRunning = true;
+                  },
+                  complete: () => {
+                    this._bulkActivateRequestRunning = false;
+                  },
+                  success: response => {
+                    if (response.success) {
+                      closeMenu('multiselect');
+
+                      ids.forEach(id => {
+                        const itemContainerEl = document.querySelector(
+                          `.list-item__container[data-id="${id}"]`
+                        );
+                        const actionIconEl = itemContainerEl?.querySelector(
+                          '.list__action.-type-toggle .list__action-icon'
+                        );
+                        if (!itemContainerEl || !actionIconEl) return;
+                        actionIconEl.innerHTML = 'toggle_on';
+                        itemContainerEl.classList.remove('-inactive');
+                      });
+
+                      this.deselectAll();
+                      success(response.message);
+                    } else {
+                      networkError(response);
+                    }
+                  },
+                  error: xhr => {
+                    networkError(xhr);
+                  },
+                });
+              },
+            },
+            {
+              action: 'deactivate',
+              icon: 'toggle_off',
+              text: 'multiselect.actionDeactivate',
+              callback: () => {
+                if (this._bulkDectivateRequestRunning) return;
+
+                const ids = Array.from(
+                  document.querySelectorAll('.list-item__container[data-is-selected]')
+                ).map(el => el.dataset.id);
+
+                apiFetch({
+                  url: '/admin/api/toggle',
+                  data: {
+                    key: listConfig.key,
+                    action: 'deactivate',
+                    ids,
+                  },
+                  before: () => {
+                    this._bulkDectivateRequestRunning = true;
+                  },
+                  complete: () => {
+                    this._bulkDectivateRequestRunning = false;
+                  },
+                  success: response => {
+                    if (response.success) {
+                      closeMenu('multiselect');
+
+                      ids.forEach(id => {
+                        const itemContainerEl = document.querySelector(
+                          `.list-item__container[data-id="${id}"]`
+                        );
+                        const actionIconEl = itemContainerEl?.querySelector(
+                          '.list__action.-type-toggle .list__action-icon'
+                        );
+                        if (!itemContainerEl || !actionIconEl) return;
+                        actionIconEl.innerHTML = 'toggle_off';
+                        itemContainerEl.classList.add('-inactive');
+                      });
+
+                      this.deselectAll();
+                      success(response.message);
+                    } else {
+                      networkError(response);
+                    }
+                  },
+                  error: xhr => {
+                    networkError(xhr);
+                  },
+                });
+              },
+            },
+            {
+              action: 'delete',
+              icon: 'delete',
+              text: 'multiselect.actionDelete',
+              callback: () => {
+                closeMenu('multiselect');
+                confirmModal({
+                  title: this.listData.texts.deleteModal.title,
+                  description: this.listData.texts.deleteModal.textSoftDeleteBulk,
+                  cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+                  submitButtonText: this.listData.texts.deleteModal.submitButtonText,
+                  submitCallback: (container, submitBtn) => {
+                    if (this._bulkDeleteRequestRunning) return;
+
+                    const ids = Array.from(
+                      document.querySelectorAll('.list-item__container[data-is-selected]')
+                    ).map(el => el.dataset.id);
+
+                    apiFetch({
+                      url: '/admin/api/delete',
+                      data: getListParams({}, listConfig, { ids }),
+                      before: () => {
+                        this._bulkDeleteRequestRunning = true;
+                        submitBtn.classList.add('-loading');
+                        submitBtn.disabled = true;
+                      },
+                      complete: () => {
+                        this._bulkDeleteRequestRunning = false;
+                        submitBtn.classList.remove('-loading');
+                        submitBtn.disabled = false;
+                      },
+                      success: response => {
+                        if (response.success) {
+                          this.listData = response.listData;
+                          this.render();
+                          success(response.message);
+                          closeConfirmModal();
+                        } else {
+                          networkError(response);
+                        }
+                      },
+                      error: xhr => {
+                        networkError(xhr);
+                      },
+                    });
+                  },
+                });
+              },
+            },
+          ];
+
+      multiselectActions.forEach(action => {
+        const multiselectMenuLinkEl = document.createElement('div');
+        multiselectMenuLinkEl.className = 'menu-overlay__link';
+        multiselectMenuLinkEl.addEventListener('click', () => {
+          action.callback && action.callback();
+        });
+        multiselectMenuLinksEl.append(multiselectMenuLinkEl);
+
+        const multiselectMenuLinkIconEl = document.createElement('div');
+        multiselectMenuLinkIconEl.className = 'menu-overlay__icon icon';
+        multiselectMenuLinkIconEl.innerHTML = action.icon;
+        multiselectMenuLinkEl.append(multiselectMenuLinkIconEl);
+
+        const multiselectMenuLinkTextEl = document.createElement('div');
+        multiselectMenuLinkTextEl.className = 'menu-overlay__link-text';
+        multiselectMenuLinkTextEl.innerHTML = resolveText(listTexts, action.text);
+        multiselectMenuLinkEl.append(multiselectMenuLinkTextEl);
+      });
+
+      multiselectContainerEl.append(multiselectMenuEl);
+    }
+
+    const triggerId = 'multiselect';
+    const menuId = 'multiselect' + (this.onTrashPage() ? '-trash' : '');
+    menuIsOpen(menuId) ? closeMenu(menuId, triggerId) : openMenu(menuId, triggerId);
+  }
 }
 
 function getListParams(params = {}, listConfig = {}, obj = {}) {
@@ -809,26 +1163,6 @@ function getListParams(params = {}, listConfig = {}, obj = {}) {
     page: params?.page || listConfig?.page,
     ...obj,
   };
-}
-
-function updateMultiselect(wrapper) {
-  const multiSelectIconEl = wrapper.querySelector(
-    '.list__column.-head.-type-multiselect .list__multiselect-icon'
-  );
-  if (multiSelectIconEl) {
-    const multiSelectAllEls = wrapper.querySelectorAll('.list-item__container');
-    const multiSelectSelectedEls = wrapper.querySelectorAll(
-      '.list-item__container[data-is-selected]'
-    );
-
-    if (multiSelectSelectedEls.length === 0) {
-      multiSelectIconEl.innerHTML = 'check_box_outline_blank';
-    } else if (multiSelectAllEls.length === multiSelectSelectedEls.length) {
-      multiSelectIconEl.innerHTML = 'check_box';
-    } else {
-      multiSelectIconEl.innerHTML = 'indeterminate_check_box';
-    }
-  }
 }
 
 function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {

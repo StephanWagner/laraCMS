@@ -48,4 +48,15 @@ return [
         'submitButtonText' => 'Delete',
         'cancelButtonText' => 'Cancel',
     ],
+
+    // Multiselect
+    'multiselect' => [
+        'buttonText1' => '1 Selected item',
+        'buttonTextN' => '{n} Selected items',
+        'actionRestore' => 'Restore',
+        'actionDelete' => 'Delete',
+        'actionForceDelete' => 'Delete permanently',
+        'actionActivate' => 'Activate',
+        'actionDeactivate' => 'Deactivate',
+    ],
 ];
