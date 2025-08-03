@@ -2,6 +2,46 @@ import { config } from '../config/config';
 import { __ } from '../utils/locale';
 
 /**
+ * Show flash message
+ */
+export function showFlashMessage(title, text = null, type = 'success', prependTo = '.form__wrapper') {
+  const formWrapperEl = document.querySelector(prependTo);
+  if (!formWrapperEl) return;
+
+  const oldWrapperEl = formWrapperEl.querySelector('.flash-message__wrapper');
+  if (oldWrapperEl) oldWrapperEl.remove();
+
+  const wrapperEl = document.createElement('div');
+  wrapperEl.className = 'flash-message__wrapper -' + type;
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'flash-message__title';
+  titleEl.innerHTML = title;
+  wrapperEl.append(titleEl);
+
+  if (text) {
+    const textEl = document.createElement('div');
+    textEl.className = 'flash-message__text';
+    textEl.innerHTML = text;
+    wrapperEl.append(textEl);
+  }
+
+  formWrapperEl.prepend(wrapperEl);
+}
+
+export function showFlashInfo(title, text = null, prependTo = '.form__wrapper') {
+  return showFlashMessage(title, text, 'info', prependTo);
+}
+
+export function showFlashError(title, text = null, prependTo = '.form__wrapper') {
+  return showFlashMessage(title, text, 'error', prependTo);
+}
+
+export function showFlashSuccess(title, text = null, prependTo = '.form__wrapper') {
+  return showFlashMessage(title, text, 'success', prependTo);
+}
+
+/**
  * Adjust message positions
  */
 export function adjustMessages() {

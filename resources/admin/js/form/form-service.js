@@ -3,6 +3,8 @@ import { networkError, success } from '../ui/message';
 import { initFormEvents } from './events';
 import { input } from './input';
 import { getNestedValue } from '../utils/object';
+import { showFlashInfo, showFlashSuccess } from '../ui/message';
+import { animate } from '../utils/animate';
 
 export class FormService {
   constructor({ key, wrapper }) {
@@ -96,10 +98,15 @@ export class FormService {
       },
       success: response => {
         if (response.success) {
-          // TODO
+          animate(saveButton, 'pulseUpSmall');
+          response.successText && showFlashSuccess(response.successText);
+          document.querySelector(
+            '[data-form-value="' + key + '"][data-input-source="id"] input'
+          ).value = response.item.id;
+          history.pushState(null, '', response.editRoute);
         } else if (response.error) {
-          // TODO
-
+          animate(saveButton, 'shake');
+          response.errorTitle ? showFlashInfo(response.errorTitle, response.errorText) : error();
           response.inputErrors && showFormErrors(key, response.inputErrors);
         } else {
           networkError(response);

@@ -5,9 +5,12 @@ return [
         'save' => 'Save',
     ],
 
-    // Errors
-    'errors' => [
-        'validation' => 'Please check the form for errors and try again.',
+    // Messages
+    'messages' => [
+        'saveSuccessTitleNew' => 'Entry created successfully.',
+        'saveSuccessTitleEdit' => 'Changes have been saved.',
+        'errorValidationTitle' => 'Something went wrong.',
+        'errorValidationText' => 'Please check the form for errors and try again.',
     ],
 
     // Validations

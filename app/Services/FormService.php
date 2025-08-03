@@ -85,21 +85,19 @@ class FormService
      */
     public static function saveForm(string $key, array $values)
     {
-        sleep(1);
-
         $config = self::getConfig($key);
         if (!$config || empty($config['model'])) {
             return [
-                'success' => false,
-                'error' => 'Invalid form key',
+                'error' => true,
+                'errorTitle' => 'Invalid form key.',
             ];
         }
 
         $modelClass = '\\App\\Models\\' . $config['model'];
         if (!class_exists($modelClass)) {
             return [
-                'success' => false,
-                'error' => 'Invalid form key',
+                'error' => true,
+                'errorTitle' => 'Invalid form key.',
             ];
         }
 
@@ -142,8 +140,9 @@ class FormService
 
         if ($validator->fails()) {
             return [
-                'success' => false,
-                'error' => __('admin::form.errors.validation'),
+                'error' => true,
+                'errorTitle' => __('admin::form.messages.errorValidationTitle'),
+                'errorText' => __('admin::form.messages.errorValidationText'),
                 'inputErrors' => $validator->errors()->toArray(),
             ];
         }
@@ -153,8 +152,8 @@ class FormService
 
         if (!$model) {
             return [
-                'success' => false,
-                'error' => 'Record not found', // TODO
+                'error' => true,
+                'errorTitle' => 'Record not found.',
             ];
         }
 
@@ -191,7 +190,9 @@ class FormService
 
         return [
             'success' => true,
+            'successText' => __('admin::form.messages.saveSuccessTitle' . ($isNew ? 'New' : 'Edit')),
             'item' => $model,
+            'editRoute' => route($config['formRoute'], ['id' => $model->id])
         ];
     }
 

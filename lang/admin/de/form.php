@@ -5,9 +5,12 @@ return [
         'save' => 'Speichern',
     ],
 
-    // Errors
-    'errors' => [
-        'validation' => 'Bitte überprüfe das Formular auf Fehler und versuche es erneut.',
+    // Messages
+    'messages' => [
+        'saveSuccessTitleNew' => 'Eintrag wurde erfolgreich erstellt.',
+        'saveSuccessTitleEdit' => 'Änderungen wurden gespeichert.',
+        'errorValidationTitle' => 'Etwas ist schiefgelaufen.',
+        'errorValidationText' => 'Bitte überprüfe das Formular auf Fehler und versuche es erneut.',
     ],
 
     // Validations

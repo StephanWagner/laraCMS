@@ -18,9 +18,9 @@ $secondary-text-color: $color-surface-6;
 $tertiary-text-color: $color-surface-5;
 $light-text-color: #fff;
 
-$info-color: #457ae5;
-$info-background-color: #f0f5ff;
-$info-text-color: #2a4b8c;
+$info-color: #375ba8;
+$info-background-color: #122038;
+$info-text-color: $default-text-color;
 $warning-color: #ffa60d;
 $warning-background-color: #fff9f0;
 $warning-text-color: #663614;
@@ -28,8 +28,8 @@ $error-color: #ef4444;
 $error-background-color: #fef2f2;
 $error-text-color: $error-color;
 $success-color: #29cc6d;
-$success-background-color: #f0fcf5;
-$success-text-color: $success-color;
+$success-background-color: #0e2417;
+$success-text-color: #a9f5c6;
 
 // Text
 $default-font-family: 'Nunito Sans', sans-serif;
