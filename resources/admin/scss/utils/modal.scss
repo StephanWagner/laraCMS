@@ -108,41 +108,28 @@
   line-height: 20px;
 }
 
-.account-modal__confirm-title {
-  text-align: center;
-  font-size: 24px;
+.modal__title {
+  font-size: 19px;
   font-weight: 600;
-  margin: 0 0 16px;
-  padding: 24px 0 0;
-
-  @media (max-width: 400px) {
-    padding: 24px 0 0;
-  }
+  margin: 0 0 8px;
 }
 
-.account-modal__confirm-description {
-  text-align: center;
-  max-width: 300px;
-  margin: auto;
+.modal__text {
+  font-size: 14px;
 }
 
-.account-modal__confirm-buttons {
+.modal__footer {
   display: flex;
+  justify-content: end;
   gap: 12px;
-  margin: 32px 0 0;
+  margin: 16px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid $color-surface-3;
 
-  @media (max-width: 600px) {
-    gap: 8px;
-    flex-direction: column-reverse;
+  @media (max-width: 380px) {
+    margin: 12px 0 0;
+    padding: 12px 0 0;
   }
-
-  @media (max-width: 400px) {
-    margin: 32px 0 0;
-  }
-}
-
-.account-modal__confirm-button {
-  width: calc(50% - 6px);
 }
 
 // Confirm modal
@@ -155,34 +142,5 @@
     @media (max-width: 380px) {
       padding: 16px 12px;
     }
-  }
-
-  .confirm-modal-title,
-  .confirm-modal-description {
-    text-align: left;
-  }
-
-  .confirm-modal-description {
-    font-size: 14px;
-  }
-
-  .confirm-modal-title {
-    font-size: 19px;
-    font-weight: 600;
-    margin: 0 0 8px;
-  }
-}
-
-.confirm-modal-footer {
-  display: flex;
-  justify-content: end;
-  gap: 12px;
-  margin: 16px 0 0;
-  padding: 16px 0 0;
-  border-top: 1px solid $color-surface-3;
-
-  @media (max-width: 380px) {
-    margin: 12px 0 0;
-    padding: 12px 0 0;
   }
 }

@@ -576,7 +576,7 @@ export class ListService {
                       description: this.listData.texts.deleteModal.textSoftDelete,
                       cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                       submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                      submitCallback: (container, submitBtn) => {
+                      submitCallback: (modalEl, submitBtn) => {
                         if (item._deleteRequestRunning) return;
 
                         apiFetch({
@@ -618,10 +618,10 @@ export class ListService {
                   actionEl.addEventListener('click', () => {
                     confirmModal({
                       title: this.listData.texts.deleteModal.title,
-                      description: this.listData.texts.deleteModal.textForceDelete,
+                      text: this.listData.texts.deleteModal.textForceDelete,
                       cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                       submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                      submitCallback: (container, submitBtn) => {
+                      submitCallback: (modalEl, submitBtn) => {
                         if (item._forceDeleteRequestRunning) return;
 
                         apiFetch({
@@ -926,10 +926,10 @@ export class ListService {
                 closeMenu('multiselect-trash', 'multiselect');
                 confirmModal({
                   title: this.listData.texts.deleteModal.title,
-                  description: this.listData.texts.deleteModal.textForceDeleteBulk,
+                  text: this.listData.texts.deleteModal.textForceDeleteBulk,
                   cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                   submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                  submitCallback: (container, submitBtn) => {
+                  submitCallback: (modalEl, submitBtn) => {
                     if (this._bulkForceDeleteRequestRunning) return;
 
                     const ids = Array.from(
@@ -1081,10 +1081,10 @@ export class ListService {
                 closeMenu('multiselect');
                 confirmModal({
                   title: this.listData.texts.deleteModal.title,
-                  description: this.listData.texts.deleteModal.textSoftDeleteBulk,
+                  text: this.listData.texts.deleteModal.textSoftDeleteBulk,
                   cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                   submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                  submitCallback: (container, submitBtn) => {
+                  submitCallback: (modalEl, submitBtn) => {
                     if (this._bulkDeleteRequestRunning) return;
 
                     const ids = Array.from(

@@ -1,0 +1,26 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// Delete account
+
+.delete-account__container {
+  margin: 24px 0 0;
+}
+
+.delete-account__modal {
+  .modal__text {
+    margin: 0 0 16px;
+  }
+}
+
+.delete-account__modal-error {
+  display: none;
+  font-weight: 600;
+  font-size: 14px;
+  margin: -8px 0 8px;
+  color: $error-text-color;
+
+  &.-active {
+    display: block;
+  }
+}

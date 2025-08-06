@@ -3,6 +3,17 @@ import { config } from '../config/config';
 const timeouts = {};
 const keyupHandlers = {};
 
+export function initModals() {
+  document.querySelectorAll('[data-modal]').forEach(triggerEl => {
+    if (triggerEl._modalEventAdded) return;
+    triggerEl.addEventListener('click', function () {
+      triggerEl._modalEventAdded = true;
+      const id = triggerEl.dataset.modal;
+      openModal(id);
+    });
+  });
+}
+
 export function openModal(id, onOpen, sourceEl) {
   const modalEl = getModal(id);
 
@@ -25,8 +36,8 @@ export function openModal(id, onOpen, sourceEl) {
   });
 
   // Escape key close
-  const keyupHandler = (ev) => {
-    if (ev.key === "Escape") {
+  const keyupHandler = ev => {
+    if (ev.key === 'Escape') {
       closeModal(id);
     }
   };
@@ -74,7 +85,7 @@ export function getModal(id) {
   modalEl.classList.add('modal__wrapper');
   modalEl.dataset.id = id;
 
-  modalEl.addEventListener('click', (ev) => {
+  modalEl.addEventListener('click', ev => {
     if (!ev.target.closest('.modal__content-container')) {
       closeModal(id);
     }
@@ -122,37 +133,45 @@ export function enableClosingModal(id) {
 export function confirmModal(data) {
   const {
     title,
-    description,
+    text,
     cancelButtonText,
     submitButtonText,
     cancelCallback,
-    submitCallback
+    submitCallback,
+    onOpen,
   } = data;
 
   const modalId = 'confirm';
 
-  function onOpen() {
+  function onConfirmOpen(modalEl, sourceEl) {
     document.querySelectorAll(`[data-modal-content="${modalId}"]`).forEach(el => el.remove());
 
     const containerEl = document.createElement('div');
-    containerEl.classList.add('confirm-modal-container');
+    containerEl.classList.add('confirm-modal__container');
     containerEl.dataset.modalContent = modalId;
 
     const titleEl = document.createElement('div');
-    titleEl.classList.add('confirm-modal-title');
+    titleEl.classList.add('modal__title', 'confirm-modal__title');
     titleEl.innerHTML = title;
     containerEl.appendChild(titleEl);
 
     const descEl = document.createElement('div');
-    descEl.classList.add('confirm-modal-description');
-    descEl.innerHTML = description;
+    descEl.classList.add('modal__text', 'confirm-modal__text');
+    descEl.innerHTML = text;
     containerEl.appendChild(descEl);
 
     const footerEl = document.createElement('div');
-    footerEl.classList.add('confirm-modal-footer');
+    footerEl.classList.add('modal__footer', 'confirm-modal__footer');
 
     const cancelBtn = document.createElement('button');
-    cancelBtn.classList.add('confirm-modal-button', 'button', '-small', '-secondary', '-cancel');
+    cancelBtn.classList.add(
+      'modal__button',
+      'confirm-modal__button',
+      'button',
+      '-small',
+      '-secondary',
+      '-cancel'
+    );
     cancelBtn.innerHTML = `<span>${cancelButtonText}</span>`;
     cancelBtn.addEventListener('click', () => {
       closeConfirmModal();
@@ -160,20 +179,31 @@ export function confirmModal(data) {
     });
 
     const submitBtn = document.createElement('button');
-    submitBtn.classList.add('confirm-modal-button', 'button', '-primary', '-small', '-submit');
+    submitBtn.classList.add(
+      'modal__button',
+      'confirm-modal__button',
+      'button',
+      '-small',
+      '-primary',
+      '-submit'
+    );
     submitBtn.innerHTML = `<span>${submitButtonText}</span><em></em><u></u>`;
     submitBtn.addEventListener('click', () => {
-      submitCallback?.(containerEl, submitBtn);
+      submitCallback?.(modalEl, submitBtn);
     });
 
     footerEl.appendChild(cancelBtn);
     footerEl.appendChild(submitBtn);
     containerEl.appendChild(footerEl);
 
-    document.querySelector(`.modal__wrapper[data-id="${modalId}"] .modal__content`).appendChild(containerEl);
+    document
+      .querySelector(`.modal__wrapper[data-id="${modalId}"] .modal__content`)
+      .appendChild(containerEl);
+
+    onOpen?.(modalEl, sourceEl);
   }
 
-  openModal(modalId, onOpen);
+  openModal(modalId, onConfirmOpen);
 }
 
 export function closeConfirmModal(onClose, onCloseComplete) {

@@ -5,7 +5,9 @@ const timeouts = {};
 
 export function initMenus() {
   document.querySelectorAll('[data-toggle-menu]').forEach((triggerEl) => {
+    if (triggerEl._menuEventAdded) return;
     triggerEl.addEventListener('click', () => {
+      triggerEl._menuEventAdded = true;
       const id = triggerEl.getAttribute('data-toggle-menu');
       menuIsOpen(id) ? closeMenu(id) : openMenu(id);
     });

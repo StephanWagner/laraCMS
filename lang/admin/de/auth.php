@@ -44,28 +44,10 @@ return [
     ],
 
     // Delete
-    // TODO
-    // 'delete' => [
-    //     'pageTitle' => 'Konto löschen',
-    //     'form' => [
-    //         'title' => 'Konto löschen',
-    //         'subtitle' => 'Schade dass du uns verlässt!',
-    //         'description' => 'Gib dein Passwort ein,<br>dann klicke auf "Konto löschen".',
-    //         'placeholderPassword' => 'Passwort',
-    //         'submitButtonText' => 'Konto löschen',
-    //         'linkKeepAccount' => 'Konto behalten!',
-    //         'linkForgotPassword' => 'Passwort vergessen?',
-    //         'errorWrongPassword' => 'Falsches Passwort.',
-    //     ],
-    //     'confirmModal' => [
-    //         'title' => 'Bist du sicher?',
-    //         'description' => 'Diese Aktion kann nicht rückgängig gemacht werden!',
-    //         'cancelButton' => 'Abbrechen',
-    //         'submitButton' => 'Konto löschen',
-    //     ],
-    //     'flashMessageTitle' => 'Dein Konto wurde erfolgreich gelöscht.',
-    //     'flashMessageDescription' => 'Es tut uns leid, dich zu verlieren. Wenn du es dir anders überlegst, sind wir immer hier.',
-    // ],
+    'delete' => [
+        'errorWrongPassword' => 'Falsches Passwort.',
+        'flashMessageTitle' => 'Dein Konto wurde erfolgreich gelöscht.',
+    ],
 
     // Reset password
     'resetPassword' => [
@@ -101,10 +83,4 @@ return [
             'errorPasswordMatch' => 'Passwörter stimmen nicht überein.',
         ],
     ],
-
-    // 'verifyEmail' => [
-    //     'flashMessageErrorTitle' => 'Wir konnten deine E-Mail-Adresse nicht verifizieren.',
-    //     'flashMessageErrorDescription' => 'Der Link ist möglicherweise abgelaufen oder die E-Mail-Adresse wurde nicht erkannt.',
-    //     'flashMessageSuccessTitle' => 'Vielen Dank! Du hast deine E-Mail-Adresse erfolgreich verifiziert.',
-    // ],
 ];

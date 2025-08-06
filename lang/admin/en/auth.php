@@ -44,28 +44,10 @@ return [
     ],
 
     // Delete
-    // TODO
-    // 'delete' => [
-    //     'pageTitle' => 'Delete Account',
-    //     'form' => [
-    //         'title' => 'Delete Account',
-    //         'subtitle' => 'We’re sad to see you leave us!',
-    //         'description' => 'Type in your password,<br>then click on "Delete account".',
-    //         'placeholderPassword' => 'Password',
-    //         'submitButtonText' => 'Delete account',
-    //         'linkKeepAccount' => 'Keep account!',
-    //         'linkForgotPassword' => 'Forgot password?',
-    //         'errorWrongPassword' => 'Incorrect password.',
-    //     ],
-    //     'confirmModal' => [
-    //         'title' => 'Are you sure?',
-    //         'description' => 'This action cannot be undone!',
-    //         'cancelButton' => 'Cancel',
-    //         'submitButton' => 'Delete account',
-    //     ],
-    //     'flashMessageTitle' => 'Your account has been successfully deleted.',
-    //     'flashMessageDescription' => 'We’re sorry to see you go. If you ever change your mind, we’re always here.',
-    // ],
+    'delete' => [
+        'errorWrongPassword' => 'Incorrect password.',
+        'flashMessageTitle' => 'Your account has been successfully deleted.',
+    ],
 
     // Reset password
     'resetPassword' => [
@@ -101,10 +83,4 @@ return [
             'errorPasswordMatch' => 'Passwords do not match.',
         ],
     ],
-
-    // 'verifyEmail' => [
-    //     'flashMessageErrorTitle' => 'We couldn’t verify your email address.',
-    //     'flashMessageErrorDescription' => 'The link may have expired, or the email was not recognized.',
-    //     'flashMessageSuccessTitle' => 'Thank you! You’ve successfully verified your email address.',
-    // ],
 ];

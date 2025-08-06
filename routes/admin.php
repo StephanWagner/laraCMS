@@ -35,6 +35,7 @@ Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name
 Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
     // Auth
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/delete-account', [AuthController::class, 'deleteAccount'])->name('delete-account');
 
     // Dashboard
     Route::name('dashboard.')->group(function () {

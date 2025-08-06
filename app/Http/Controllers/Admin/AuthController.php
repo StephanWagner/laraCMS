@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\CmsHelper;
 use App\Helpers\StringHelper;
 use App\Helpers\ValidateHelper;
 use App\Helpers\MailHelper;
@@ -158,83 +159,66 @@ class AuthController extends Controller
     }
 
     /**
-     * Delete account page
-     */
-    // TODO
-    // public function delete()
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect('/'); // TODO
-    //     }
-
-    //     // TODO view()->share('pageTitle', __('admin::auth.delete.pageTitle'));
-
-    //     return view('pages.delete');
-    // }
-
-    /**
      * Delete account request
      */
-    // TODO
-    // public function deleteRequest()
-    // {
-    //     // Abort if not logged in
-    //     if (!Auth::check()) {
-    //         return response()->json([
-    //             'error' => true,
-    //         ]);
-    //     }
+    public function deleteAccount()
+    {
+        // Abort if not logged in
+        if (!Auth::check()) {
+            return response()->json([
+                'error' => true,
+            ]);
+        }
 
-    //     $password = request()->get('password');
+        $password = request()->get('password');
 
-    //     // Abort if password is wrong
-    //     if (!Hash::check($password, Auth::user()->password)) {
-    //         return response()->json([
-    //             'error' => 1,
-    //             'errorText' => __('admin::auth.delete.form.errorWrongPassword')
-    //         ]);
-    //     }
+        // Abort if password is wrong
+        if (!Hash::check($password, Auth::user()->password)) {
+            return response()->json([
+                'error' => true,
+                'errorText' => __('admin::auth.delete.errorWrongPassword')
+            ]);
+        }
 
-    //     // Delete account
-    //     $accountDeleted = $this->deleteAccount(Auth::id());
+        // Delete account
+        $accountDeleted = CmsHelper::deleteUserAccount(Auth::id());
 
-    //     // Abort if not logged in
-    //     if (!$accountDeleted) {
-    //         return response()->json([
-    //             'error' => 1,
-    //         ]);
-    //     }
+        // Abort if not deleted
+        if (!$accountDeleted) {
+            return response()->json([
+                'error' => true,
+            ]);
+        }
 
-    //     // Return success
-    //     return response()->json([
-    //         'success' => 1,
-    //     ]);
-    // }
+        // Return success
+        return response()->json([
+            'success' => true,
+        ]);
+    }
 
     /**
      * Delete account
      */
-    // TODO
-    // private function deleteAccount($userId)
-    // {
-    //     $user = User::where('id', $userId)->first();
+    private function doDeleteAccount($userId)
+    {
+        $user = User::where('id', $userId)->first();
 
-    //     if (!$user) {
-    //         return false;
-    //     }
+        if (!$user) {
+            return false;
+        }
 
-    //     // Delete the user
-    //     $user->delete();
+        // Delete the user
+        $user->forceDelete();
 
-    //     // Show flash message
-    //     session()->flash('message', [
-    //         'color' => 'notice',
-    //         'title' => __('admin::auth.delete.flashMessageTitle'),
-    //         'description' => __('admin::auth.delete.flashMessageDescription'),
-    //     ]);
+        // Show flash message
+        session()->flash('message', [
+            'color' => 'notice',
+            'title' => __('admin::auth.delete.flashMessageTitle'),
+            'description' => __('admin::auth.delete.flashMessageDescription'),
+        ]);
 
-    //     return true;
-    // }
+        return true;
+    }
 
     /**
      * View for reset password page

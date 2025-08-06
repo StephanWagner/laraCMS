@@ -74,7 +74,13 @@ class FormService
     {
         $formData = self::getData($key, $id);
 
-        return view('admin::pages.form', [
+        $template = "admin::pages.{$key}.form";
+
+        if (!view()->exists($template)) {
+            $template = 'admin::pages.form';
+        }
+
+        return view($template, [
             'key' => $key,
             'formData' => $formData,
         ]);
