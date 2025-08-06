@@ -41,13 +41,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         Route::get('/', [DashboardController::class, 'view'])->name('view');
     });
 
-    // Content
-    Route::prefix('content')->name('content.')->group(function () {
-        Route::get('{type}', [ContentController::class, 'list'])->name('list');
-        Route::get('{type}/edit/{id?}', [ContentController::class, 'edit'])->name('edit');
-        Route::post('{type}/edit/{id?}', [ContentController::class, 'save'])->name('save');
-    });
-
     // Media
     Route::prefix('media')->name('media.')->group(function () {
         Route::get('list', [MediaController::class, 'list'])->name('list');
@@ -60,12 +53,38 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         Route::get('developer', [SettingsController::class, 'developer'])->middleware('accessDeveloper')->name('developer');
     });
 
-    // Users
-    Route::middleware('accessAdmin')->prefix('users')->name('users.')->group(function () {
-        Route::get('', [UsersController::class, 'list'])->name('list');
-        Route::get('edit/{id?}', [UsersController::class, 'edit'])->name('edit');
-        Route::post('edit/{id?}', [UsersController::class, 'save'])->name('save');
-        Route::get('profile', [UsersController::class, 'profile'])->name('profile');
+    // Lists and form
+    Route::controller(\App\Http\Controllers\Admin\ContentController::class)->group(function () {
+        // Content
+        Route::prefix('content')->name('content.')->group(function () {
+            Route::get('{type}', 'list')->name('list');
+            Route::get('{type}/edit/{id?}', 'edit')->name('edit');
+        });
+
+        // Content types
+        foreach (
+            [
+                [
+                    'name' => 'content-types',
+                    'middleware' => ['accessDeveloper'],
+                ],
+                [
+                    'name' => 'users',
+                    'middleware' => ['accessAdmin'],
+                ],
+                [
+                    'name' => 'profile',
+                ]
+            ] as $content
+        ) {
+            if (empty($content['middleware'])) $content['middleware'] = [];
+            $content['middleware'][] = 'injectContentType:' . $content['name'];
+
+            Route::middleware($content['middleware'])->prefix($content['name'])->name($content['name'] . '.')->group(function () {
+                Route::get('', 'list')->name('list');
+                Route::get('edit/{id?}', 'edit')->name('edit');
+            });
+        }
     });
 
     // Themes
@@ -85,13 +104,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         Route::get('submissions', [FormsController::class, 'submissions'])->name('submissions');
     });
 
-    // Content types
-    Route::middleware('accessDeveloper')->prefix('content-types')->name('content-types.')->group(function () {
-        Route::get('', [ContentTypesController::class, 'list'])->name('list');
-        Route::get('edit/{id?}', [ContentTypesController::class, 'edit'])->name('edit');
-        Route::post('edit/{id?}', [ContentTypesController::class, 'save'])->name('save');
-    });
-
     // Blocks
     Route::middleware('accessDeveloper')->prefix('blocks')->name('blocks.')->group(function () {
         Route::get('list', [BlocksController::class, 'list'])->name('list');
@@ -99,13 +111,16 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     });
 
     // Api
-    Route::prefix('api')->name('api.')->group(function () {
-        Route::post('list', [\App\Http\Controllers\Admin\ApiController::class, 'list'])->name('list');
-        Route::post('form', [\App\Http\Controllers\Admin\ApiController::class, 'saveForm'])->name('form');
-        Route::post('list-reorder', [\App\Http\Controllers\Admin\ApiController::class, 'listReorder'])->name('list-reorder');
-        Route::post('toggle', [\App\Http\Controllers\Admin\ApiController::class, 'toggle'])->name('toggle');
-        Route::post('delete', [\App\Http\Controllers\Admin\ApiController::class, 'delete'])->name('delete');
-        Route::post('restore', [\App\Http\Controllers\Admin\ApiController::class, 'restore'])->name('restore');
-        Route::post('duplicate', [\App\Http\Controllers\Admin\ApiController::class, 'duplicate'])->name('duplicate');
-    });
+    Route::prefix('api')
+        ->name('api.')
+        ->controller(\App\Http\Controllers\Admin\ApiController::class)
+        ->group(function () {
+            Route::post('list', 'list')->name('list');
+            Route::post('save-form', 'saveForm')->name('save-form');
+            Route::post('reorder-list', 'reorderList')->name('reorder-list');
+            Route::post('toggle', 'toggle')->name('toggle');
+            Route::post('delete', 'delete')->name('delete');
+            Route::post('restore', 'restore')->name('restore');
+            Route::post('duplicate', 'duplicate')->name('duplicate');
+        });
 });

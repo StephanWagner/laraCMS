@@ -25,6 +25,11 @@ export class FormService {
     this.container.className = 'form__container';
 
     const formConfig = this.formData?.config;
+
+    if (!formConfig) {
+      return console.warn('No form config found.');
+    }
+
     const formItems = formConfig?.form || [];
     const item = this.formData?.item || null;
     const texts = this.formData?.texts || {};
@@ -81,7 +86,7 @@ export class FormService {
     const saveButton = document.querySelector('[data-save-form="' + key + '"]');
 
     apiFetch({
-      url: '/admin/api/form',
+      url: '/admin/api/save-form',
       data: {
         key,
         values: getFormData(key),

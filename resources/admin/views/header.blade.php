@@ -27,13 +27,13 @@
             </div>
         </div>
         <div class="header__user-menu-container">
-            <div class="header__user-menu-toggler{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}" data-toggle-menu="user">
+            <div class="header__user-menu-toggler{{ request()->routeIs('admin.profile.edit') ? ' -active' : '' }}" data-toggle-menu="user">
                 <div class="header__user-menu-icon icon">account_circle</div>
             </div>
 
             <div data-menu="user" class="header__user-menu menu-overlay__wrapper -user">
                 <div class="menu-overlay__links">
-                    <a href="{{ route('admin.users.profile') }}" class="menu-overlay__link{{ request()->routeIs('admin.users.profile') ? ' -active' : '' }}">
+                    <a href="{{ route('admin.profile.edit') }}" class="menu-overlay__link{{ request()->routeIs('admin.profile.edit') ? ' -active' : '' }}">
                         <div class="menu-overlay__icon icon">account_circle</div>
                         <div class="menu-overlay__link-text">
                             {{ __('admin::users.profile.navTitle') }}

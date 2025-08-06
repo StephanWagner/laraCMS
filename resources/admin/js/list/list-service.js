@@ -752,7 +752,7 @@ export class ListService {
           }));
 
           apiFetch({
-            url: '/admin/api/list-reorder',
+            url: '/admin/api/reorder-list',
             data: {
               key: listConfig.key,
               items: reorderPayload,
@@ -1172,8 +1172,8 @@ function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
   const countItems = listData.config.meta.totalCount;
   const countTrash = listData.config.meta.trashCount;
 
-  const textItems = listData.texts.itemCount['items' + (countItems == 1 ? '1' : 'N')];
-  const textTrash = listData.texts.itemCount['trash' + (countTrash == 1 ? '1' : 'N')];
+  const textItems = listData.texts.itemCount['items' + (countItems == 1 || countItems == 0 ? countItems : 'N')];
+  const textTrash = listData.texts.itemCount['trash' + (countTrash == 1 || countTrash == 0 ? countTrash : 'N')];
 
   itemsEl.innerHTML = textItems.replace('{n}', countItems);
   trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);

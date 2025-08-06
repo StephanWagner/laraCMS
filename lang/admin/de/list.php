@@ -32,8 +32,10 @@ return [
 
     // Item count
     'itemCount' => [
+        'items0' => 'Keine Einträge',
         'items1' => '1 Eintrag',
         'itemsN' => '{n} Einträge',
+        'trash0' => 'Papierkorb ist leer',
         'trash1' => '1 im Papierkorb',
         'trashN' => '{n} im Papierkorb',
     ],

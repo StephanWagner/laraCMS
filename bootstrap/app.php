@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'isCmsInstalled' => \App\Http\Middleware\IsCmsInstalled::class,
             'accessAdmin' => \App\Http\Middleware\AccessAdmin::class,
             'accessDeveloper' => \App\Http\Middleware\AccessDeveloper::class,
+            'accessDeveloper' => \App\Http\Middleware\AccessDeveloper::class,
+            'injectContentType' => \App\Http\Middleware\InjectContentType::class,
+
+            // TODO How to differientiate between admin and frontend?
+            // TODO Dont use as alias, alwas use so that 404 pages do work
             'setLocale' => \App\Http\Middleware\SetLocale::class,
         ]);
     })

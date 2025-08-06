@@ -32,8 +32,10 @@ return [
 
     // Item count
     'itemCount' => [
+        'items0' => 'No items',
         'items1' => '1 item',
-        'itemsN' => '{n} item',
+        'itemsN' => '{n} items',
+        'trash0' => 'Trash is empty',
         'trash1' => '1 in trash',
         'trashN' => '{n} in trash',
     ],

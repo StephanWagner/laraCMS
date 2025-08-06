@@ -51,7 +51,7 @@ class ApiController extends Controller
     /**
      * Save new list order
      */
-    public function listReorder()
+    public function reorderList()
     {
         $key = request()->input('key');
         $items = request()->input('items');
