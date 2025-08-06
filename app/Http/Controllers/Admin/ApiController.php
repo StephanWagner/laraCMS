@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
@@ -45,6 +46,16 @@ class ApiController extends Controller
     {
         $key = request()->input('key');
         $values = request()->input('values');
+
+        // Authenticate
+        if ($key === 'profile') {
+            if (empty($values['id'])) {
+                abort(403);
+            } else if ($values['id'] != Auth::user()->id) {
+                abort(403, 'You are not allowed to edit this profile.');
+            }
+        }
+
         return FormService::saveForm($key, $values);
     }
 
