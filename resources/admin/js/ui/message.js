@@ -133,14 +133,16 @@ export function success(txt) {
  * Network error helper
  */
 export function networkError(responseOrError) {
+  const errorMessage = responseOrError && responseOrError.message ? responseOrError.message : null;
+
   if (responseOrError && typeof responseOrError.status === 'number') {
     const status = responseOrError.status;
 
     if (status === 0) return error(__('networkError'));
     if (status === 429) return error(__('tooManyRequests'));
     if (status === 419) return error(__('csrfExpired'));
-    return error();
+    return error(errorMessage);
   }
 
-  return error();
+  return error(errorMessage);
 }
