@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 .auth__wrapper {
   width: 380px;
@@ -7,6 +7,14 @@
 
   @media (max-width: 400px) {
     width: 100%;
+  }
+
+  .flash-message__wrapper {
+    margin-bottom: 48px;
+
+    @media (max-width: 600px) {
+      margin-bottom: 32px;
+    }
   }
 }
 

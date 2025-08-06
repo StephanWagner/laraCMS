@@ -1,9 +1,9 @@
 import { apiFetch } from '../services/api-fetch';
-import { networkError, success } from '../ui/message';
+import { networkError } from '../ui/message';
 import { initFormEvents } from './events';
 import { input } from './input';
 import { getNestedValue } from '../utils/object';
-import { showFlashInfo, showFlashSuccess } from '../ui/message';
+import { showFlashInfo } from '../ui/message';
 import { animate } from '../utils/animate';
 
 export class FormService {
@@ -108,7 +108,7 @@ export class FormService {
       success: response => {
         if (response.success) {
           animate(saveButton, 'pulseUpSmall');
-          response.successText && showFlashSuccess(response.successText);
+          response.successText && showFlashInfo(response.successText);
           document.querySelector(
             '[data-form-value="' + key + '"][data-input-source="id"] input'
           ).value = response.item.id;

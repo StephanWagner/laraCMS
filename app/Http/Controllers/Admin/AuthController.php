@@ -193,31 +193,8 @@ class AuthController extends Controller
         // Return success
         return response()->json([
             'success' => true,
+            'redirect' => route('admin.login'),
         ]);
-    }
-
-    /**
-     * Delete account
-     */
-    private function doDeleteAccount($userId)
-    {
-        $user = User::where('id', $userId)->first();
-
-        if (!$user) {
-            return false;
-        }
-
-        // Delete the user
-        $user->forceDelete();
-
-        // Show flash message
-        session()->flash('message', [
-            'color' => 'notice',
-            'title' => __('admin::auth.delete.flashMessageTitle'),
-            'description' => __('admin::auth.delete.flashMessageDescription'),
-        ]);
-
-        return true;
     }
 
     /**

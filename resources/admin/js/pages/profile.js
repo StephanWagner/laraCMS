@@ -58,7 +58,7 @@ export function initProfilePage() {
             },
             success: response => {
               if (response.success) {
-                window.location.href = '/admin';
+                window.location.href = response.redirect || '/admin';
               } else if (response.error) {
                 const errorEl = modalEl.querySelector('.delete-account__modal-error');
                 errorEl.innerHTML = response.errorText || __('error');

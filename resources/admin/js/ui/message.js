@@ -4,7 +4,7 @@ import { __ } from '../utils/locale';
 /**
  * Show flash message
  */
-export function showFlashMessage(title, text = null, type = 'success', prependTo = '.form__wrapper') {
+export function showFlashMessage(title, text = null, type = 'info', prependTo = '.form__wrapper') {
   const formWrapperEl = document.querySelector(prependTo);
   if (!formWrapperEl) return;
 

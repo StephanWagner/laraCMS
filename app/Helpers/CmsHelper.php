@@ -22,9 +22,8 @@ class CmsHelper
 
         // Show flash message
         session()->flash('message', [
-            'color' => 'notice',
+            'type' => 'info',
             'title' => __('admin::auth.delete.flashMessageTitle'),
-            'description' => __('admin::auth.delete.flashMessageDescription'),
         ]);
 
         return true;

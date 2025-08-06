@@ -46,7 +46,7 @@ return [
     // Delete
     'delete' => [
         'errorWrongPassword' => 'Incorrect password.',
-        'flashMessageTitle' => 'Your account has been successfully deleted.',
+        'flashMessageTitle' => 'Your account was successfully deleted.',
     ],
 
     // Reset password
