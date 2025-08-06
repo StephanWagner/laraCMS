@@ -1,5 +1,5 @@
-@use "../variables" as *;
-@use "../mixins" as *;
+@use '../variables' as *;
+@use '../mixins' as *;
 
 .header__wrapper {
   background-color: $color-surface-2;
@@ -12,7 +12,7 @@
   display: flex;
 
   &::after {
-    content:'';
+    content: '';
     position: absolute;
     top: 100%;
     left: 0;
@@ -37,10 +37,25 @@
 
 .header__form-buttons {
   margin: 0 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .header__form-button {
-  display: block;
+  &.-icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
 }
 
 // User menu

@@ -19,6 +19,9 @@
                         class="header__form-button button -medium -has-icon"
                     ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
                 @elseif (!empty($formData))
+                    @if (!empty($formData['config']['listRoute']))
+                        <a href="{{ route($formData['config']['listRoute']) }}" class="header__form-button -icon"><div class="icon">arrow_back_ios_new</div></a>
+                    @endif
                     <button
                         class="header__form-button button -medium"
                         data-save-form="{{ $formData['config']['key'] }}"
