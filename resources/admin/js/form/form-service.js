@@ -52,6 +52,10 @@ export class FormService {
         inputOptions.value = getNestedValue(item, formItem.source) || null;
       }
 
+      if (!item && inputOptions.requiredIfNew) {
+        inputOptions.required = true;
+      }
+
       const inputContainerEl = input({
         key: formConfig.key,
         source: formItem.source,
