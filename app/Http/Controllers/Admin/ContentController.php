@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
 use App\Services\FormService;
@@ -18,6 +19,10 @@ class ContentController extends Controller
     public function edit(?int $id = null)
     {
         $type = $this->resolveType();
+
+        if ($type === 'profile') {
+            $id = Auth::user()->id;
+        }
 
         return FormService::getView($type, $id);
     }

@@ -100,6 +100,84 @@ class FormSettingsSeeder extends Seeder
                     ],
                 ])->toJson(),
             ],
+            [
+                'key' => 'form-settings.profile',
+                'value' => collect([
+                    'model' => 'User',
+                    'titleEdit' => 'admin::users.profile.pageTitle',
+                    'formRoute' => 'admin.profile.edit',
+                    'texts' => 'users.form',
+                    'form' => [
+                        [
+                            'position' => 'form',
+                            'label' => 'items.name.label',
+                            'validate' => ['required', 'min:3', 'max:30'],
+                            'source' => 'name',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'size' => 'large',
+                                'id' => 'user-name',
+                                'name' => 'name',
+                                'required' => true,
+                                'maxlength' => 30,
+                                'autocomplete' => 'off',
+                            ],
+                        ],
+                        [
+                            'position' => 'form',
+                            'label' => 'items.email.label',
+                            'description' => 'items.email.description',
+                            'validate' => ['required', 'email', 'max:255', 'unique:users,email,{id}'],
+                            'source' => 'email',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'id' => 'user-email',
+                                'name' => 'email',
+                                'required' => true,
+                                'maxlength' => 255,
+                                'autocomplete' => 'off',
+                            ],
+                        ],
+                        [
+                            'position' => 'form',
+                            'label' => 'items.language.label',
+                            'validate' => ['required'],
+                            'source' => 'language',
+                            'inputOptions' => [
+                                'type' => 'select',
+                                'id' => 'user-language',
+                                'name' => 'language',
+                                'required' => true,
+                                'options' => [
+                                    [
+                                        'value' => 'en',
+                                        'label' => 'English',
+                                    ],
+                                    [
+                                        'value' => 'de',
+                                        'label' => 'Deutsch',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'position' => 'form',
+                            'label' => 'items.password.label',
+                            'description' => 'items.password.description',
+                            'validate' => ['min:8', 'securePassword'],
+                            'source' => 'password',
+                            'format' => 'Hash',
+                            'ignoreIfEmpty' => true,
+                            'inputOptions' => [
+                                'type' => 'password',
+                                'id' => 'user-password',
+                                'name' => 'password',
+                                'autocomplete' => 'new-password',
+                            ],
+                        ],
+                    ],
+                ])->toJson(),
+            ],
         ]);
     }
 }
