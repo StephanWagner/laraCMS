@@ -198,8 +198,6 @@ export class ListService {
   }
 
   render(params = {}) {
-    console.log('listData', this.listData);
-
     // Config
     const listConfig = this.listData?.config || {};
     let listColumns = listConfig?.columns || [];
