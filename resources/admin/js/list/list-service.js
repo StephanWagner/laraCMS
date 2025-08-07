@@ -571,7 +571,7 @@ export class ListService {
                   actionEl.addEventListener('click', () => {
                     confirmModal({
                       title: this.listData.texts.deleteModal.title,
-                      description: this.listData.texts.deleteModal.textSoftDelete,
+                      text: this.listData.texts.deleteModal.textSoftDelete,
                       cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                       submitButtonText: this.listData.texts.deleteModal.submitButtonText,
                       submitCallback: (modalEl, submitBtn) => {
