@@ -16,7 +16,7 @@ class ContentController extends Controller
         return ListService::getView($type);
     }
 
-    public function edit(?int $id = null)
+    public function edit(?string $type = null, ?int $id = null)
     {
         $type = $this->resolveType();
 

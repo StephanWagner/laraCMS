@@ -15,12 +15,12 @@
             <div class="header__form-buttons">
                 @if (!empty($listData))
                     <a
-                        href="{{ route($listData['config']['formRoute']) }}"
+                        href="{{ $listData['config']['editUriNew'] }}"
                         class="header__form-button button -medium -has-icon"
                     ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
                 @elseif (!empty($formData))
                     @if (!empty($formData['config']['listRoute']))
-                        <a href="{{ route($formData['config']['listRoute']) }}" class="header__form-button -icon"><div class="icon">arrow_back_ios_new</div></a>
+                        <a href="{{ $formData['config']['listUri'] }}" class="header__form-button -icon"><div class="icon">arrow_back_ios_new</div></a>
                     @endif
                     <button
                         class="header__form-button button -medium"

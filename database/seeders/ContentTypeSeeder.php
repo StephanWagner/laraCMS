@@ -28,8 +28,8 @@ class ContentTypeSeeder extends Seeder
                     ',
                     'list' => [
                         'model' => 'Content',
-                        'listRoute' => '/admin/content/page', // TODO
-                        'editRoute' => '/admin/content/page/edit/{id}', // TODO
+                        'listRoute' => 'admin.content.list',
+                        'editRoute' => 'admin.content.edit',
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,
@@ -112,8 +112,8 @@ class ContentTypeSeeder extends Seeder
                     ',
                     'list' => [
                         'model' => 'Content',
-                        'listRoute' => '/admin/content/page', // TODO
-                        'editRoute' => '/admin/content/page/edit/{id}', // TODO
+                        'listRoute' => 'admin.content.list',
+                        'editRoute' => 'admin.content.edit',
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,

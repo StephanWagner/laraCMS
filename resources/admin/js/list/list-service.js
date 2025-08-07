@@ -393,8 +393,8 @@ export class ListService {
         }
 
         const basePath = listConfig.key || '';
-        const editLink = listConfig.formUri
-          ? listConfig.formUri.replace('__ID__', item.id)
+        const editLink = listConfig.editUri
+          ? listConfig.editUri.replace('__ID__', item.id)
           : `/admin/${basePath}/edit/${item.id}`;
 
         switch (column.type) {

@@ -17,7 +17,7 @@ class FormSettingsSeeder extends Seeder
                     'titleNew' => 'admin::users.form.titleNew',
                     'titleEdit' => 'admin::users.form.titleEdit',
                     'listRoute' => 'admin.users.list',
-                    'formRoute' => 'admin.users.edit',
+                    'editRoute' => 'admin.users.edit',
                     'texts' => 'users.form',
                     'form' => [
                         [
@@ -105,7 +105,7 @@ class FormSettingsSeeder extends Seeder
                 'value' => collect([
                     'model' => 'User',
                     'titleEdit' => 'admin::users.profile.pageTitle',
-                    'formRoute' => 'admin.profile.edit',
+                    'editRoute' => 'admin.profile.edit',
                     'texts' => 'users.form',
                     'form' => [
                         [

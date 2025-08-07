@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ContentType;
+use App\Helpers\RouteHelper;
 
 class FormService
 {
@@ -37,11 +38,9 @@ class FormService
         $config = self::getConfig($key);
 
         if (!$config) return null;
-
-        if (!empty($config['listRoute'])) $config['listUri'] = route($config['listRoute']);
-        if (!empty($config['formRoute'])) $config['formUri'] = route($config['formRoute'], ['id' => '__ID__']);
-
+        
         $config['key'] = $key;
+        $config = RouteHelper::addListAndEditUris($config);
 
         $modelClassName = $config['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
@@ -198,7 +197,7 @@ class FormService
             'success' => true,
             'successText' => __('admin::form.messages.saveSuccessTitle' . ($isNew ? 'New' : 'Edit')),
             'item' => $model,
-            'editRoute' => route($config['formRoute'], ['id' => $model->id])
+            'editRoute' => route($config['editRoute'], ['id' => $model->id])
         ];
     }
 

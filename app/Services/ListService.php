@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Models\ContentType;
+use App\Helpers\RouteHelper;
 
 class ListService
 {
@@ -37,10 +38,8 @@ class ListService
 
         if (!$config) return null;
 
-        if (!empty($config['listRoute'])) $config['listUri'] = route($config['listRoute']);
-        if (!empty($config['formRoute'])) $config['formUri'] = route($config['formRoute'], ['id' => '__ID__']);
-
         $config['key'] = $key;
+        $config = RouteHelper::addListAndEditUris($config);
 
         $modelClassName = $config['model'] ?? null;
         $modelClass = 'App\\Models\\' . $modelClassName;
