@@ -46,30 +46,31 @@ export class FormService {
     this.container.appendChild(inputIdContainerEl);
 
     formItems.forEach(formItem => {
-      if (formItem.type !== 'input') {
-        return;
+      if (formItem.type === 'input') {
+        const inputOptions = formItem.inputOptions;
+
+        if (item && formItem.source) {
+          inputOptions.value = getNestedValue(item, formItem.source) || null;
+        }
+
+        if (!item && inputOptions.requiredIfNew) {
+          inputOptions.required = true;
+        }
+
+        const inputContainerEl = input({
+          key: formConfig.key,
+          source: formItem.source,
+          label: formItem.label ? resolveText(texts, formItem.label) : null,
+          description: formItem.description ? resolveText(texts, formItem.description) : null,
+          inputOptions,
+          clearErrorOnInput: true,
+        });
+
+        this.container.appendChild(inputContainerEl);
+      } else if (formItem.type === 'blocks') {
+        // TODO: Implement block creator
+        console.log('Block creator for:', formItem);
       }
-
-      const inputOptions = formItem.inputOptions;
-
-      if (item && formItem.source) {
-        inputOptions.value = getNestedValue(item, formItem.source) || null;
-      }
-
-      if (!item && inputOptions.requiredIfNew) {
-        inputOptions.required = true;
-      }
-
-      const inputContainerEl = input({
-        key: formConfig.key,
-        source: formItem.source,
-        label: formItem.label ? resolveText(texts, formItem.label) : null,
-        description: formItem.description ? resolveText(texts, formItem.description) : null,
-        inputOptions,
-        clearErrorOnInput: true,
-      });
-
-      this.container.appendChild(inputContainerEl);
     });
 
     this.wrapper.appendChild(this.container);
