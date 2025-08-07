@@ -21,9 +21,10 @@ class FormSettingsSeeder extends Seeder
                     'texts' => 'users.form',
                     'form' => [
                         [
+                            'type' => 'input',
                             'position' => 'form',
-                            'label' => 'items.name.label',
-                            'validate' => ['required', 'min:3', 'max:30'],
+                            'label' => 'items.name.label', // TODO Use lang:: to tell JS to use from lang file
+                            'validate' => ['required', 'max:30'],
                             'source' => 'name',
                             'inputOptions' => [
                                 'type' => 'textfield',
@@ -36,6 +37,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.email.label',
                             'description' => 'items.email.description',
@@ -51,6 +53,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.role.label',
                             'description' => 'items.role.description',
@@ -81,6 +84,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.password.label',
                             'description' => 'items.password.description',
@@ -109,9 +113,10 @@ class FormSettingsSeeder extends Seeder
                     'texts' => 'users.form',
                     'form' => [
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.name.label',
-                            'validate' => ['required', 'min:3', 'max:30'],
+                            'validate' => ['required', 'max:30'],
                             'source' => 'name',
                             'inputOptions' => [
                                 'type' => 'textfield',
@@ -124,6 +129,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.email.label',
                             'description' => 'items.email.description',
@@ -139,6 +145,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.language.label',
                             'validate' => ['required'],
@@ -161,6 +168,7 @@ class FormSettingsSeeder extends Seeder
                             ],
                         ],
                         [
+                            'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.password.label',
                             'description' => 'items.password.description',

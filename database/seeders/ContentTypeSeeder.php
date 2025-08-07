@@ -22,18 +22,49 @@ class ContentTypeSeeder extends Seeder
                 'settings' => collect([
                     'uri' => '/{slug}',
                     'icon' => 'description',
-                    'default_active' => 0,
-                    'form' => '
-                        TODO
-                    ',
+                    'defaultActive' => 0,
+                    'form' => [
+                        'model' => 'Content',
+                        'titleNew' => 'admin::content.page.form.titleNew',
+                        'titleEdit' => 'admin::content.page.form.titleEdit',
+                        'listRoute' => 'admin.content.list',
+                        'editRoute' => 'admin.content.edit',
+                        'texts' => 'content.page.form',
+                        'form' => [
+                            [
+                                'type' => 'input',
+                                'position' => 'form',
+                                'label' => 'items.title.label',
+                                'validate' => ['required', 'max:255'],
+                                'source' => 'title',
+                                'inputOptions' => [
+                                    'type' => 'textfield',
+                                    'size' => 'large',
+                                    'id' => 'content-title',
+                                    'name' => 'title',
+                                    'required' => true,
+                                    'maxlength' => 255,
+                                    'autocomplete' => 'off',
+                                ],
+                            ],
+                            // TODO sidebar with slug, active, publish_date
+                            [
+                                'type' => 'blocks',
+                                'position' => 'form',
+                                // TODO 'allowedBlocks'
+                                // TODO 'disabledBlocks'
+                            ],
+                        ],
+                    ],
                     'list' => [
                         'model' => 'Content',
+                        'title' => 'admin::content.page.list.title',
                         'listRoute' => 'admin.content.list',
                         'editRoute' => 'admin.content.edit',
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,
-                        'hasMultiSelect' => false,
+                        'hasMultiSelect' => true,
                         'hasSoftDelete' => true,
                         'searchables' => [
                             ['column' => 'title'],
@@ -106,18 +137,49 @@ class ContentTypeSeeder extends Seeder
                 'settings' => collect([
                     'uri' => '/{key}/{id}-{slug}',
                     'icon' => 'note_stack',
-                    'default_active' => 0,
-                    'form' => '
-                        TODO
-                    ',
+                    'defaultActive' => 0,
+                    'form' => [
+                        'model' => 'Content',
+                        'titleNew' => 'admin::content.blog.form.titleNew',
+                        'titleEdit' => 'admin::content.blog.form.titleEdit',
+                        'listRoute' => 'admin.content.list',
+                        'editRoute' => 'admin.content.edit',
+                        'texts' => 'content.blog.form',
+                        'form' => [
+                            [
+                                'type' => 'input',
+                                'position' => 'form',
+                                'label' => 'items.title.label',
+                                'validate' => ['required', 'max:255'],
+                                'source' => 'title',
+                                'inputOptions' => [
+                                    'type' => 'textfield',
+                                    'size' => 'large',
+                                    'id' => 'content-title',
+                                    'name' => 'title',
+                                    'required' => true,
+                                    'maxlength' => 255,
+                                    'autocomplete' => 'off',
+                                ],
+                            ],
+                            // TODO sidebar with slug, active, publish_date
+                            [
+                                'type' => 'blocks',
+                                'position' => 'form',
+                                // TODO 'allowedBlocks'
+                                // TODO 'disabledBlocks'
+                            ],
+                        ],
+                    ],
                     'list' => [
                         'model' => 'Content',
+                        'title' => 'admin::content.blog.list.title',
                         'listRoute' => 'admin.content.list',
                         'editRoute' => 'admin.content.edit',
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,
-                        'hasMultiSelect' => false,
+                        'hasMultiSelect' => true,
                         'hasSoftDelete' => true,
                         'searchables' => [
                             ['column' => 'title'],

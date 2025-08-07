@@ -46,6 +46,10 @@ export class FormService {
     this.container.appendChild(inputIdContainerEl);
 
     formItems.forEach(formItem => {
+      if (formItem.type !== 'input') {
+        return;
+      }
+
       const inputOptions = formItem.inputOptions;
 
       if (item && formItem.source) {

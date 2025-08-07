@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#080b0f">
     <meta name="color-scheme" content="dark">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="/admin-assets/img/favicon.png">
     <link rel="apple-touch-icon" type="image/png" href="/admin-assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/admin-assets/site.webmanifest">

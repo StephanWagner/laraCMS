@@ -27,7 +27,7 @@
                         <a href="{{ route('admin.content.list', ['type' => $type->key]) }}" class="panel__link{{ request()->routeIs('admin.content.*') && request()->route('type') == $type->key ? ' -active' : '' }}">
                             <div class="panel__icon icon">{{ $type->settings['icon'] ?? 'dangerous' }}</div>
                             <div class="panel__link-text">
-                                {{ $type->name }}
+                                {{ \Illuminate\Support\Facades\Lang::has('admin::content.' . $type->key . '.navTitle') ? __('admin::content.' . $type->key . '.navTitle') : $type->name }}
                             </div>
                         </a>
                     </div>

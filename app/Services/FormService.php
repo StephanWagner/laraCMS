@@ -33,12 +33,12 @@ class FormService
     /**
      * Get the form data
      */
-    public static function getData(string $key, ?int $id = null, array $params = [])
+    public static function getData(string $key, ?int $id = null)
     {
         $config = self::getConfig($key);
 
         if (!$config) return null;
-        
+
         $config['key'] = $key;
         $config = RouteHelper::addListAndEditUris($config);
 
