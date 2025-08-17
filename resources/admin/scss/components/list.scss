@@ -68,6 +68,12 @@
   }
 }
 
+.list-items-amount__container {
+  &.-active {
+    cursor: default;
+  }
+}
+
 // Item
 
 .list-item__container {

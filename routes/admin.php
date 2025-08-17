@@ -4,13 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ContentController;
-use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\ThemesController;
 use App\Http\Controllers\Admin\MenusController;
 use App\Http\Controllers\Admin\FormsController;
-use App\Http\Controllers\Admin\ContentTypesController;
 use App\Http\Controllers\Admin\BlocksController;
 
 Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
@@ -42,11 +39,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         Route::get('/', [DashboardController::class, 'view'])->name('view');
     });
 
-    // Media
-    Route::prefix('media')->name('media.')->group(function () {
-        Route::get('list', [MediaController::class, 'list'])->name('list');
-    });
-
     // Settings
     Route::middleware('accessAdmin')->prefix('settings')->name('settings.')->group(function () {
         Route::get('site-info', [SettingsController::class, 'siteInfo'])->name('site-info');
@@ -55,7 +47,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     });
 
     // Lists and form
-    Route::controller(\App\Http\Controllers\Admin\ContentController::class)->group(function () {
+    Route::controller(ContentController::class)->group(function () {
         // Content
         Route::prefix('content')->name('content.')->group(function () {
             Route::get('{type}', 'listType')->name('list');
@@ -75,6 +67,9 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
                 ],
                 [
                     'name' => 'profile',
+                ],
+                [
+                    'name' => 'media',
                 ]
             ] as $content
         ) {

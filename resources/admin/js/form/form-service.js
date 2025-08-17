@@ -46,30 +46,49 @@ export class FormService {
     this.container.appendChild(inputIdContainerEl);
 
     formItems.forEach(formItem => {
-      if (formItem.type === 'input') {
-        const inputOptions = formItem.inputOptions;
+      if (formItem.skipIf && formItem.skipIf === 'new' && !item) {
+        return;
+      }
 
-        if (item && formItem.source) {
-          inputOptions.value = getNestedValue(item, formItem.source) || null;
-        }
+      // Input elements
+      switch (formItem.type) {
+        case 'input':
+          const inputOptions = formItem.inputOptions;
 
-        if (!item && inputOptions.requiredIfNew) {
-          inputOptions.required = true;
-        }
+          if (item && formItem.source) {
+            inputOptions.value = getNestedValue(item, formItem.source) || null;
+          }
 
-        const inputContainerEl = input({
-          key: formConfig.key,
-          source: formItem.source,
-          label: formItem.label ? resolveText(texts, formItem.label) : null,
-          description: formItem.description ? resolveText(texts, formItem.description) : null,
-          inputOptions,
-          clearErrorOnInput: true,
-        });
+          if (!item && inputOptions.requiredIfNew) {
+            inputOptions.required = true;
+          }
 
-        this.container.appendChild(inputContainerEl);
-      } else if (formItem.type === 'blocks') {
-        // TODO: Implement block creator
-        console.log('Block creator for:', formItem);
+          const inputContainerEl = input({
+            key: formConfig.key,
+            source: formItem.source,
+            label: formItem.label ? resolveText(texts, formItem.label) : null,
+            description: formItem.description ? resolveText(texts, formItem.description) : null,
+            inputOptions,
+            clearErrorOnInput: true,
+            onEnter: () => {
+              this.saveForm();
+            },
+          });
+
+          this.container.appendChild(inputContainerEl);
+          break;
+
+        // TODO: Block creator
+        case 'blocks':
+          console.log('Block creator for:', formItem);
+          break;
+
+        case 'html':
+          const htmlContainerEl = document.createElement('div');
+          htmlContainerEl.className = 'form-html__wrapper';
+          htmlContainerEl.innerHTML = formItem.content;
+          this.container.appendChild(htmlContainerEl);
+          break;
       }
     });
 
@@ -85,6 +104,14 @@ export class FormService {
         this.saveForm();
       });
     }
+
+    // Save form when pressing CMD + S
+    document.addEventListener('keydown', ev => {
+      if (ev.metaKey && ev.key === 's') {
+        ev.preventDefault();
+        this.saveForm();
+      }
+    });
   }
 
   saveForm() {

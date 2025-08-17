@@ -1,2 +1,8 @@
 @use '../variables' as *;
 @use '../mixins' as *;
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

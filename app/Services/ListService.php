@@ -55,11 +55,14 @@ class ListService
         $query = $modelClass::query();
 
         // Item type trashed
-        $trashed = $params['trashed'] ?? false;
-        if ($trashed) {
-            $query->onlyTrashed();
+        $trashed = false;
+        if (!empty($config['hasSoftDelete'])) {
+            $trashed = $params['trashed'] ?? false;
+            if ($trashed) {
+                $query->onlyTrashed();
+            }
+            $config['trashed'] = $trashed;
         }
-        $config['trashed'] = $trashed;
 
         // Add relations
         $with = [];
@@ -187,8 +190,11 @@ class ListService
             'from' => $items->firstItem(),
             'to' => $items->lastItem(),
             'totalCount' => $modelClass::count(),
-            'trashCount' => $modelClass::onlyTrashed()->count(),
         ];
+
+        if (!empty($config['hasSoftDelete'])) {
+            $config['meta']['trashCount'] = $modelClass::onlyTrashed()->count();
+        }
 
         return [
             'config' => $config,

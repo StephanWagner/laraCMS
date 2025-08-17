@@ -89,6 +89,7 @@ return new class extends Migration {
         // Media
         Schema::create('media', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('filename');
             $table->string('mime_type')->nullable();
             $table->string('media_type')->nullable();

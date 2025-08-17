@@ -4,11 +4,7 @@
 .input__wrapper {
   position: relative;
 
-  &:not([data-input-type='hidden']) + .input__wrapper {
-    margin-top: 16px;
-  }
-
-  [data-input-type='hidden'] {
+  &[data-input-type='hidden'] {
     display: none;
   }
 }

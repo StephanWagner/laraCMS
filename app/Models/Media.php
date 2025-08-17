@@ -10,6 +10,8 @@ class Media extends Model
     use TracksUserActivity;
 
     protected $fillable = [
+        'title',
+        'alt_text',
         'filename',
         'mime_type',
         'media_type',

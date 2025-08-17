@@ -20,6 +20,10 @@ export class ListService {
 
     this.listData = window.listData || null;
 
+    // TODO 
+    // this.data
+    // this.config
+
     // TODO if list data is missing, get list data then init
 
     this.init();
@@ -38,6 +42,14 @@ export class ListService {
     const filtersContainerEl = document.createElement('div');
     filtersContainerEl.className = 'list-filters__container';
     headerEl.appendChild(filtersContainerEl);
+
+    // Views
+    if (this.listData.config.hasGridView) {
+      const viewOptionsContainerEl = document.createElement('div');
+      viewOptionsContainerEl.className = 'list-view-options__container';
+      viewOptionsContainerEl.innerHTML = 'G|L'
+      filtersContainerEl.appendChild(viewOptionsContainerEl);
+    }
 
     // Search
     const searchContainerEl = document.createElement('div');
@@ -63,38 +75,44 @@ export class ListService {
     optionsContainerEl.className = 'list-options__container';
     headerEl.appendChild(optionsContainerEl);
 
-    // Item amount
+    // Items amount
     this.itemsAmountContainerEl = document.createElement('div');
     this.itemsAmountContainerEl.className =
       'list-items-amount__container button -selectable -all no-select';
     optionsContainerEl.appendChild(this.itemsAmountContainerEl);
-    this.itemsAmountContainerEl.addEventListener('click', () => {
-      if (this.listData.config.trashed) {
-        this.listData.config.trashed = false;
-        this.listData.config.orderBy = null;
-        this.listData.config.orderDirection = null;
-        this.listData.config.page = 1;
-        this.loadData({
-          renderHeader: true,
-        });
-      }
-    });
+    if (this.listData.config.hasSoftDelete) {
+      this.itemsAmountContainerEl.addEventListener('click', () => {
+        if (this.listData.config.trashed) {
+          this.listData.config.trashed = false;
+          this.listData.config.orderBy = null;
+          this.listData.config.orderDirection = null;
+          this.listData.config.page = 1;
+          this.loadData({
+            renderHeader: true,
+          });
+        }
+      });
+    }
 
-    this.trashItemsAmountContainerEl = document.createElement('div');
-    this.trashItemsAmountContainerEl.className =
-      'list-items-amount__container button -selectable -trashed no-select';
-    optionsContainerEl.appendChild(this.trashItemsAmountContainerEl);
-    this.trashItemsAmountContainerEl.addEventListener('click', () => {
-      if (!this.listData.config.trashed) {
-        this.listData.config.trashed = true;
-        this.listData.config.orderBy = null;
-        this.listData.config.orderDirection = null;
-        this.listData.config.page = 1;
-        this.loadData({
-          renderHeader: true,
-        });
-      }
-    });
+    // Trashed items amount
+    this.trashItemsAmountContainerEl = null;
+    if (this.listData.config.hasSoftDelete) {
+      this.trashItemsAmountContainerEl = document.createElement('div');
+      this.trashItemsAmountContainerEl.className =
+        'list-items-amount__container button -selectable -trashed no-select';
+      optionsContainerEl.appendChild(this.trashItemsAmountContainerEl);
+      this.trashItemsAmountContainerEl.addEventListener('click', () => {
+        if (!this.listData.config.trashed) {
+          this.listData.config.trashed = true;
+          this.listData.config.orderBy = null;
+          this.listData.config.orderDirection = null;
+          this.listData.config.page = 1;
+          this.loadData({
+            renderHeader: true,
+          });
+        }
+      });
+    }
 
     updateItemAmountButtons(
       this.itemsAmountContainerEl,
@@ -1165,16 +1183,21 @@ function getListParams(params = {}, listConfig = {}, obj = {}) {
 
 function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
   itemsEl.classList[listData.config.trashed ? 'remove' : 'add']('-active');
-  trashItemsEl.classList[listData.config.trashed ? 'add' : 'remove']('-active');
 
   const countItems = listData.config.meta.totalCount;
-  const countTrash = listData.config.meta.trashCount;
 
-  const textItems = listData.texts.itemCount['items' + (countItems == 1 || countItems == 0 ? countItems : 'N')];
-  const textTrash = listData.texts.itemCount['trash' + (countTrash == 1 || countTrash == 0 ? countTrash : 'N')];
+  const textItemKey = countItems == 1 || countItems == 0 ? countItems : 'N';
+  const textItems = listData.texts.itemCount['items' + textItemKey];
 
   itemsEl.innerHTML = textItems.replace('{n}', countItems);
-  trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);
+
+  if (trashItemsEl) {
+    trashItemsEl.classList[listData.config.trashed ? 'add' : 'remove']('-active');
+    const countTrash = listData.config.meta.trashCount;
+    const textTrashKey = countTrash == 1 || countTrash == 0 ? countTrash : 'N';
+    const textTrash = listData.texts.itemCount['trash' + textTrashKey];
+    trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);
+  }
 }
 
 function resolveText(texts, textId) {

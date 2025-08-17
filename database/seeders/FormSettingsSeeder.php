@@ -186,6 +186,65 @@ class FormSettingsSeeder extends Seeder
                     ],
                 ])->toJson(),
             ],
+            [
+                'key' => 'form-settings.media',
+                'value' => collect([
+                    'model' => 'Media',
+                    'titleNew' => 'admin::media.form.titleNew',
+                    'titleEdit' => 'admin::media.form.titleEdit',
+                    'listRoute' => 'admin.media.list',
+                    'editRoute' => 'admin.media.edit',
+                    'texts' => 'media.form',
+                    'form' => [
+                        [
+                            'type' => 'html',
+                            'position' => 'form',
+                            'content' => '<div>
+                                <h2>TODO Image information</h2>
+                            </div>',
+                        ],
+                        [
+                            'type' => 'input',
+                            'position' => 'form',
+                            'label' => 'items.title.label',
+                            'validate' => ['required', 'max:255'],
+                            'source' => 'title',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'size' => 'large',
+                                'id' => 'media-title',
+                                'name' => 'title',
+                                'required' => true,
+                                'maxlength' => 255,
+                                'autocomplete' => 'off',
+                            ],
+                        ],
+                        [
+                            'type' => 'input',
+                            'position' => 'form',
+                            'label' => 'items.alt-text.label',
+                            'validate' => ['max:255'],
+                            'source' => 'meta.alt_text',
+                            'inputOptions' => [
+                                'type' => 'textfield',
+                                'id' => 'media-alt-text',
+                                'name' => 'alt-text',
+                                'required' => false,
+                                'maxlength' => 255,
+                                'autocomplete' => 'off',
+                            ],
+                        ],
+                        [
+                            'type' => 'html',
+                            'position' => 'form',
+                            'skipIf' => 'new',
+                            'content' => '<div>
+                                <h2>TODO Usages</h2>
+                            </div>',
+                        ],
+                    ],
+                ])->toJson(),
+            ],
         ]);
     }
 }
