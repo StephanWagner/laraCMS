@@ -98,6 +98,7 @@
 
   &.-medium {
     padding: 7px 20px;
+    border-radius: $small-border-radius;
 
     &.-has-icon {
       padding-left: calc(8px + 24px + 4px);
