@@ -1,4 +1,4 @@
-export function scrollToTop(selector) {
+export function scrollToTop(selector = 'body') {
   const container = document.querySelector(selector);
 
   if (container) {

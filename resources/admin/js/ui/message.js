@@ -1,4 +1,5 @@
 import { config } from '../config/config';
+import { scrollToTop } from '../utils/scroll-to-top';
 import { __ } from '../utils/locale';
 
 /**
@@ -26,6 +27,7 @@ export function showFlashMessage(title, text = null, type = 'info', prependTo = 
     wrapperEl.append(textEl);
   }
 
+  scrollToTop('.content__container');
   formWrapperEl.prepend(wrapperEl);
 }
 
