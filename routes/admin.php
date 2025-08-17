@@ -58,8 +58,8 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     Route::controller(\App\Http\Controllers\Admin\ContentController::class)->group(function () {
         // Content
         Route::prefix('content')->name('content.')->group(function () {
-            Route::get('{type}', 'list')->name('list');
-            Route::get('{type}/edit/{id?}', 'edit')->name('edit');
+            Route::get('{type}', 'listType')->name('list');
+            Route::get('{type}/edit/{id?}', 'editType')->name('edit');
         });
 
         // Content types

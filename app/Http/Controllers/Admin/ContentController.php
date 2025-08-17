@@ -11,14 +11,27 @@ class ContentController extends Controller
 {
     public function list()
     {
-        $type = $this->resolveType();
+        $type = request()->attributes->get('type');
+
+        if (!$type) {
+            abort(404);
+        }
 
         return ListService::getView($type);
     }
 
-    public function edit(?string $type = null, ?int $id = null)
+    public function listType(string $type)
     {
-        $type = $this->resolveType();
+        return ListService::getView($type);
+    }
+
+    public function edit(?int $id = null)
+    {
+        $type = request()->attributes->get('type');
+
+        if (!$type) {
+            abort(404);
+        }
 
         if ($type === 'profile') {
             $id = Auth::user()->id;
@@ -27,8 +40,12 @@ class ContentController extends Controller
         return FormService::getView($type, $id);
     }
 
-    protected function resolveType(): string
+    public function editType(string $type, ?int $id = null)
     {
-        return request()->route('type') ?? request()->attributes->get('type') ?? abort(404);
+        if ($type === 'profile') {
+            $id = Auth::user()->id;
+        }
+
+        return FormService::getView($type, $id);
     }
 }
