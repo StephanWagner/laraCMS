@@ -19,6 +19,7 @@ export function textfield({
   onFocus = null,
   onBlur = null,
   clearErrorOnInput = false,
+  onEnter = null,
 } = {}) {
   // Create wrapper
   const wrapper = document.createElement('div');
@@ -80,6 +81,12 @@ export function textfield({
     clearErrorOnInput && clearInputError(inputEl);
     checkHasValue();
     if (onChange) onChange();
+  });
+
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
+    }
   });
 
   checkHasValue();

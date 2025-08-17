@@ -17,6 +17,7 @@ export function select({
   onFocus = null,
   onBlur = null,
   clearErrorOnInput = false,
+  onEnter = null,
 } = {}) {
   // Wrapper
   const wrapper = document.createElement('div');
@@ -112,6 +113,12 @@ export function select({
     checkHasValue();
     selectEl.blur();
     if (onChange) onChange(e);
+  });
+
+  selectEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
+    }
   });
 
   checkHasValue();

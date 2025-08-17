@@ -20,6 +20,7 @@ export function input({
   inputEl = null,
   inputOptions = {},
   clearErrorOnInput = false,
+  onEnter = null,
 }) {
   const wrapperEl = document.createElement('div');
   wrapperEl.className = 'input__wrapper';
@@ -58,6 +59,7 @@ export function input({
     const { type } = inputOptions;
     const factory = inputTypes[type];
     inputOptions.clearErrorOnInput = clearErrorOnInput;
+    inputOptions.onEnter = onEnter;
 
     if (factory) {
       const factoryInputEl = factory(inputOptions);
