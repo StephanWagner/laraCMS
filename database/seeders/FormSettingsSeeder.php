@@ -197,11 +197,21 @@ class FormSettingsSeeder extends Seeder
                     'texts' => 'media.form',
                     'form' => [
                         [
-                            'type' => 'html',
+                            'type' => 'input',
                             'position' => 'form',
-                            'content' => '<div>
-                                <h2>TODO Image information</h2>
-                            </div>',
+                            'label' => 'items.file-upload.label',
+                            'validate' => ['required'],
+                            'inputOptions' => [
+                                'type' => 'file',
+                                'id' => 'media-file',
+                                'name' => 'file',
+                                'required' => true,
+                            ],
+                        ],
+                        [
+                            'type' => 'file-info',
+                            'position' => 'form',
+                            'skipIf' => 'new',
                         ],
                         [
                             'type' => 'input',
@@ -223,6 +233,7 @@ class FormSettingsSeeder extends Seeder
                             'type' => 'input',
                             'position' => 'form',
                             'label' => 'items.alt-text.label',
+                            'description' => 'items.alt-text.description',
                             'validate' => ['max:255'],
                             'source' => 'meta.alt_text',
                             'inputOptions' => [

@@ -80,7 +80,10 @@ export class FormService {
 
         // TODO: Block creator
         case 'blocks':
-          console.log('Block creator for:', formItem);
+          const blocksContainerEl = document.createElement('div');
+          blocksContainerEl.className = 'form-blocks__wrapper';
+          blocksContainerEl.innerHTML = 'TODO BLOCKS';
+          this.container.appendChild(blocksContainerEl);
           break;
 
         case 'html':
@@ -88,6 +91,13 @@ export class FormService {
           htmlContainerEl.className = 'form-html__wrapper';
           htmlContainerEl.innerHTML = formItem.content;
           this.container.appendChild(htmlContainerEl);
+          break;
+
+        case 'file-info':
+          const fileInfoContainerEl = document.createElement('div');
+          fileInfoContainerEl.className = 'form-file-info__wrapper';
+          fileInfoContainerEl.innerHTML = 'TODO FILE INFO';
+          this.container.appendChild(fileInfoContainerEl);
           break;
       }
     });

@@ -3,6 +3,7 @@ import { textfield } from './input/textfield';
 import { textarea } from './input/textarea';
 import { password } from './input/password';
 import { select } from './input/select';
+import { file } from './input/file';
 
 const inputTypes = {
   hidden,
@@ -10,6 +11,7 @@ const inputTypes = {
   textarea,
   password,
   select,
+  file,
 };
 
 export function input({
