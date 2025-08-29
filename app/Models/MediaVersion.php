@@ -12,6 +12,7 @@ class MediaVersion extends Model
         'media_id',
         'size_key',
         'filename',
+        'extension',
         'width',
         'height'
     ];

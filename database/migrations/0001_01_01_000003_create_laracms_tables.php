@@ -110,6 +110,7 @@ return new class extends Migration {
             $table->foreignId('media_id')->constrained()->onDelete('cascade');
             $table->string('size_key');
             $table->string('filename');
+            $table->string('extension');
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('height')->nullable();
 

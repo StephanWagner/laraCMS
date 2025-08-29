@@ -139,6 +139,7 @@ class MediaHelper
             'large'  => [2400, 2400],
             'medium' => [1200, 1200],
             'small'  => [600, 600],
+            'thumbnail'  => [300, 300],
         ];
 
         // Convert to webp
@@ -187,8 +188,8 @@ class MediaHelper
                     'size_key' => $key,
                     'filename' => $versionFilename,
                     'extension' => $extension,
-                    'width'    => $image->width(),
-                    'height'   => $image->height(),
+                    'width' => $image->width(),
+                    'height' => $image->height(),
                 ]
             );
         }
@@ -219,7 +220,7 @@ class MediaHelper
     /**
      * Get storage folder
      */
-    private static function getStorageFolder()
+    public static function getStorageFolder()
     {
         return 'uploads';
     }

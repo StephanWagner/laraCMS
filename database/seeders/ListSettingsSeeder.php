@@ -64,7 +64,9 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'username',
                             'label' => 'columnLabel.created-by',
                             'source' => 'creator.name',
-                            'relation' => 'creator',
+                            'relation' => [
+                                'key' => 'creator',
+                            ],
                             'sortable' => true,
                             'defaultOrderDirection' => 'asc',
                             'visibility' => [
@@ -240,6 +242,22 @@ class ListSettingsSeeder extends Seeder
                             'label' => null,
                         ],
                         [
+                            'key' => 'filepreview',
+                            'type' => 'filepreview',
+                            'label' => null,
+                            'isLink' => true,
+                            'source' => 'versions.0',
+                            'relation' => [
+                                'key' => 'versions',
+                                'where' => [
+                                    'size_key' => 'thumbnail',
+                                ],
+                            ],
+                            'sortable' => false,
+                            'defaultOrderDirection' => 'asc',
+                            'allowTrashed' => true,
+                        ],
+                        [
                             'key' => 'title',
                             'type' => 'title',
                             'label' => 'columnLabel.title',
@@ -253,7 +271,9 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'username',
                             'label' => 'columnLabel.created-by',
                             'source' => 'creator.name',
-                            'relation' => 'creator',
+                            'relation' => [
+                                'key' => 'creator',
+                            ],
                             'sortable' => true,
                             'defaultOrderDirection' => 'asc',
                             'visibility' => [
@@ -286,6 +306,7 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'actions',
                             'label' => null,
                             'actions' => [
+                                'media-download',
                                 'edit',
                                 'delete',
                             ],

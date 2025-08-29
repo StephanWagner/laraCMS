@@ -10,6 +10,7 @@ import { textfield } from '../form/input/textfield';
 import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
 import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
+import { getFilePreview } from '../utils/fileicon';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -20,7 +21,7 @@ export class ListService {
 
     this.listData = window.listData || null;
 
-    // TODO 
+    // TODO
     // this.data
     // this.config
 
@@ -47,7 +48,7 @@ export class ListService {
     if (this.listData.config.hasGridView) {
       const viewOptionsContainerEl = document.createElement('div');
       viewOptionsContainerEl.className = 'list-view-options__container';
-      viewOptionsContainerEl.innerHTML = 'G|L'
+      viewOptionsContainerEl.innerHTML = 'G|L';
       filtersContainerEl.appendChild(viewOptionsContainerEl);
     }
 
@@ -451,6 +452,31 @@ export class ListService {
             itemColumnEl.append(itemColumnIconEl);
             break;
 
+          case 'filepreview':
+            let itemColumnFilepreviewElContainer;
+            if (column.isLink) {
+              itemColumnFilepreviewElContainer = document.createElement('a');
+              itemColumnFilepreviewElContainer.href = '/media/' + item.filename;
+              itemColumnFilepreviewElContainer.target = '_blank';
+            } else {
+              itemColumnFilepreviewElContainer = document.createElement('div');
+            }
+            itemColumnFilepreviewElContainer.classList.add('list__filepreview-container');
+            itemColumnEl.append(itemColumnFilepreviewElContainer);
+
+            const itemColumnFilepreviewEl = document.createElement('div');
+            itemColumnFilepreviewEl.classList.add('list__filepreview');
+            itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
+
+            if (item.media_type == 'image') {
+              const imagePreviewFilename = getNestedValue(item, column.source + '.filename');
+              itemColumnFilepreviewEl.style.backgroundImage = `url('/media/${imagePreviewFilename}')`;
+            } else {
+              itemColumnFilepreviewEl.innerHTML = getFilePreview(item.extension);
+            }
+            itemColumnFilepreviewElContainer.append(itemColumnFilepreviewEl);
+            break;
+
           case 'title':
             const title = getNestedValue(item, column.source);
             const itemColumnTitleLinkEl = document.createElement('a');
@@ -580,6 +606,15 @@ export class ListService {
                   actionEditLinkEl.href = editLink;
                   actionEditLinkEl.append(actionIconEl);
                   actionEl.append(actionEditLinkEl);
+                  break;
+
+                case 'media-download':
+                  actionIconEl.innerHTML = 'download';
+                  const actionDownloadLinkEl = document.createElement('a');
+                  actionDownloadLinkEl.href = '/media/' + item.filename;
+                  actionDownloadLinkEl.setAttribute('download', item.slug + '.' + item.extension);
+                  actionDownloadLinkEl.append(actionIconEl);
+                  actionEl.append(actionDownloadLinkEl);
                   break;
 
                 case 'delete':

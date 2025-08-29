@@ -68,8 +68,14 @@ class ListService
         $with = [];
 
         foreach ($config['columns'] as $column) {
-            if (!empty($column['relation'])) {
-                $with[] = $column['relation'];
+            if (!empty($column['relation']['key'])) {
+                if (!empty($column['relation']['where'])) {
+                    $with[$column['relation']['key']] = function ($query) use ($column) {
+                        $query->where($column['relation']['where']);
+                    };
+                } else {
+                    $with[] = $column['relation']['key'];
+                }
             }
         }
 
@@ -106,10 +112,10 @@ class ListService
         $config['orderBy'] = $orderBy;
         $config['orderDirection'] = $orderDirection;
 
-        $column = collect($config['columns'])->firstWhere('source', $orderBy);
+        $orderColumn = collect($config['columns'])->firstWhere('source', $orderBy);
 
-        if (isset($column['relation']) && str_contains($column['source'], '.')) {
-            [$relation, $field] = explode('.', $column['source'], 2);
+        if (isset($orderColumn['relation']) && str_contains($orderColumn['source'], '.')) {
+            [$relation, $field] = explode('.', $orderColumn['source'], 2);
             $relationMethod = $query->getModel()->{$relation}();
             $relatedTable = $relationMethod->getRelated()->getTable();
             $relatedAlias = $relation;

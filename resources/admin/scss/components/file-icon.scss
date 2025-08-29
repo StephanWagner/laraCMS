@@ -1,0 +1,78 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.file-icon,
+.file-icon .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.file-icon .icon {
+  position: relative;
+  z-index: 1;
+}
+
+.file-icon {
+  position: relative;
+  color: $default-text-color;
+
+  &.-type-archive {
+    color: map-get($file-extension-colors, zip);
+  }
+
+  &.-extension-xls,
+  &.-extension-xlsx,
+  &.-extension-csv,
+  &.-extension-doc,
+  &.-extension-docx,
+  &.-extension-ppt,
+  &.-extension-pptx,
+  &.-extension-pdf {
+    &::after {
+      font-family: Verdana;
+      width: 11px;
+      height: 11px;
+      font-size: 8px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 11px;
+      border-radius: 2px;
+      position: absolute;
+      top: 7px;
+      left: 0;
+      z-index: 1;
+    }
+  }
+
+  &.-extension-xls,
+  &.-extension-xlsx,
+  &.-extension-csv {
+    &::after {
+      content: 'X';
+      background: map-get($file-extension-colors, xls);
+    }
+  }
+
+  &.-extension-doc,
+  &.-extension-docx {
+    &::after {
+      content: 'W';
+      background: map-get($file-extension-colors, doc);
+    }
+  }
+
+  &.-extension-ppt,
+  &.-extension-pptx {
+    &::after {
+      content: 'P';
+      background: map-get($file-extension-colors, ppt);
+    }
+  }
+
+  &.-extension-pdf {
+    &::after {
+      content: 'P';
+      background: map-get($file-extension-colors, pdf);
+    }
+  }
+}

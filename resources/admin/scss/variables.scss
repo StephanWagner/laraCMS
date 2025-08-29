@@ -31,6 +31,14 @@ $success-color: #29cc6d;
 $success-background-color: #0e2417;
 $success-text-color: #a9f5c6;
 
+$file-extension-colors: (
+  doc: #1953b8,
+  xls: #12753d,
+  pdf: #aa0e00,
+  ppt: #D24726,
+  zip: #ffcc66,
+);
+
 // Text
 $default-font-family: 'Nunito Sans', sans-serif;
 $default-font-size: 15px;
@@ -46,6 +54,7 @@ $panel-width: 200px;
 $default-border-radius: 16px;
 $medium-border-radius: 10px;
 $small-border-radius: 8px;
+$tiny-border-radius: 4px;
 
 // Transitions
 $default-transition-speed: 280ms;

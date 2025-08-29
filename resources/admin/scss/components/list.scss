@@ -388,4 +388,23 @@
 
 .list-multiselect__container {
   position: relative;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// File preview
+
+.list__filepreview {
+  width: 32px;
+  height: 32px;
+  background: $color-surface-3 no-repeat center center / cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $tiny-border-radius;
+  margin-right: 8px;
 }
