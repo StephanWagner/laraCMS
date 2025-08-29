@@ -107,7 +107,7 @@ return new class extends Migration {
         // Media Versions
         Schema::create('media_versions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('media_id')->constrained()->onDelete('cascade');
+            $table->foreignId('media_id')->constrained()->restrictOnDelete();
             $table->string('size_key');
             $table->string('filename');
             $table->string('extension');

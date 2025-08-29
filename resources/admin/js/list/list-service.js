@@ -618,13 +618,16 @@ export class ListService {
                   break;
 
                 case 'delete':
-                  actionIconEl.innerHTML = 'delete';
+                case 'force-delete':
+                  const forceDeleting = actionType === 'force-delete' || !listConfig.hasSoftDelete;
+
+                  actionIconEl.innerHTML = forceDeleting ? 'delete_forever' : 'delete';
                   actionEl.append(actionIconEl);
 
                   actionEl.addEventListener('click', () => {
                     confirmModal({
                       title: this.listData.texts.deleteModal.title,
-                      text: this.listData.texts.deleteModal.textSoftDelete,
+                      text: this.listData.texts.deleteModal[forceDeleting ? 'textForceDelete' : 'textSoftDelete'],
                       cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                       submitButtonText: this.listData.texts.deleteModal.submitButtonText,
                       submitCallback: (modalEl, submitBtn) => {
@@ -632,7 +635,7 @@ export class ListService {
 
                         apiFetch({
                           url: '/admin/api/delete',
-                          data: getListParams({}, listConfig, { id: item.id }),
+                          data: getListParams({}, listConfig, { id: item.id, force: forceDeleting }),
                           before: () => {
                             item._deleteRequestRunning = true;
                             submitBtn.classList.add('-loading');
@@ -640,51 +643,6 @@ export class ListService {
                           },
                           complete: () => {
                             item._deleteRequestRunning = false;
-                            submitBtn.classList.remove('-loading');
-                            submitBtn.disabled = false;
-                          },
-                          success: response => {
-                            if (response.success) {
-                              this.listData = response.listData;
-                              this.render();
-                              success(response.message);
-                              closeConfirmModal();
-                            } else {
-                              networkError(response);
-                            }
-                          },
-                          error: xhr => {
-                            networkError(xhr);
-                          },
-                        });
-                      },
-                    });
-                  });
-                  break;
-
-                case 'force-delete':
-                  actionIconEl.innerHTML = 'delete_forever';
-                  actionEl.append(actionIconEl);
-
-                  actionEl.addEventListener('click', () => {
-                    confirmModal({
-                      title: this.listData.texts.deleteModal.title,
-                      text: this.listData.texts.deleteModal.textForceDelete,
-                      cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
-                      submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                      submitCallback: (modalEl, submitBtn) => {
-                        if (item._forceDeleteRequestRunning) return;
-
-                        apiFetch({
-                          url: '/admin/api/delete',
-                          data: getListParams({}, listConfig, { id: item.id, force: true }),
-                          before: () => {
-                            item._forceDeleteRequestRunning = true;
-                            submitBtn.classList.add('-loading');
-                            submitBtn.disabled = true;
-                          },
-                          complete: () => {
-                            item._forceDeleteRequestRunning = false;
                             submitBtn.classList.remove('-loading');
                             submitBtn.disabled = false;
                           },

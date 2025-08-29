@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\TracksUserActivity;
 use App\Helpers\SlugHelper;
+use App\Helpers\MediaHelper;
 
 class Media extends Model
 {
@@ -39,6 +40,14 @@ class Media extends Model
     {
         static::saving(function ($media) {
             $media->slug = !empty($media->title) ? SlugHelper::getSlug($media->title) : null;
+        });
+
+        static::deleting(function ($media) {
+            MediaHelper::deleteFile($media);
+
+            foreach ($media->versions as $version) {
+                $version->delete();
+            }
         });
     }
 }

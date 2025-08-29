@@ -170,7 +170,7 @@ class MediaHelper
             $image = $manager->read($originalPath)
                 ->scaleDown($maxWidth, $maxHeight);
 
-            $extension = strtolower(pathinfo($media->filename, PATHINFO_EXTENSION));
+            $extension = ($convertToWebp ? 'webp' : $media->extension);
             $versionFilename = ($storageSubfolder ? $storageSubfolder . '/' : '') . $media->uuid . '-' . $key;
 
             $storagePath = storage_path('app/public/' . $storageFolder . '/' . $versionFilename . '.' . $extension);
@@ -261,8 +261,16 @@ class MediaHelper
      */
     public static function deleteVersion(MediaVersion $version): void
     {
-        $filename = self::getStorageFolder() . '/' . $version->filename . '.' . $version->extension;
-        Storage::disk('public')->delete($filename);
+        self::deleteFile($version);
         $version->delete();
+    }
+
+    /**
+     * Delete media file
+     */
+    public static function deleteFile($media): void
+    {
+        $filename = self::getStorageFolder() . '/' . $media->filename . '.' . $media->extension;
+        Storage::disk('public')->delete($filename);
     }
 }

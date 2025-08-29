@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
 use App\Services\FormService;
@@ -248,8 +249,14 @@ class ApiController extends Controller
         if ($idList->isEmpty()) {
             return ['success' => false];
         }
+        
+        $usesSoftDeletes = in_array(SoftDeletes::class, class_uses_recursive($modelClass));
 
-        $models = $modelClass::withTrashed()->whereIn('id', $idList)->get();
+        $query = $usesSoftDeletes
+            ? $modelClass::withTrashed()
+            : $modelClass::query();
+        
+        $models = $query->whereIn('id', $idList)->get();
 
         foreach ($models as $model) {
             $model->timestamps = false;
