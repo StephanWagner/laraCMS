@@ -464,18 +464,14 @@ export class ListService {
             break;
 
           case 'filepreview':
-            let itemColumnFilepreviewElContainer;
+            let itemColumnFilepreviewEl;
             if (column.isLink) {
-              itemColumnFilepreviewElContainer = document.createElement('a');
-              itemColumnFilepreviewElContainer.href = '/media/' + item.filename;
-              itemColumnFilepreviewElContainer.target = '_blank';
+              itemColumnFilepreviewEl = document.createElement('a');
+              itemColumnFilepreviewEl.href = '/media/' + item.filename;
+              itemColumnFilepreviewEl.target = '_blank';
             } else {
-              itemColumnFilepreviewElContainer = document.createElement('div');
+              itemColumnFilepreviewEl = document.createElement('div');
             }
-            itemColumnFilepreviewElContainer.classList.add('list__filepreview-container');
-            itemColumnEl.append(itemColumnFilepreviewElContainer);
-
-            const itemColumnFilepreviewEl = document.createElement('div');
             itemColumnFilepreviewEl.classList.add('list__filepreview');
             itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
 
@@ -485,7 +481,7 @@ export class ListService {
             } else {
               itemColumnFilepreviewEl.innerHTML = getFilePreview(item.extension);
             }
-            itemColumnFilepreviewElContainer.append(itemColumnFilepreviewEl);
+            itemColumnEl.append(itemColumnFilepreviewEl);
             break;
 
           case 'title':

@@ -133,21 +133,24 @@ class ListService
 
         if ($searchTerm) {
             $searchables = $config['searchables'] ?? [];
+
             if (empty($searchables)) {
                 if (Schema::hasColumn($modelClass::getModel()->getTable(), 'title')) {
-                    $searchables[] = 'title';
+                    $searchables[] = ['column' => 'title'];
                 } elseif (Schema::hasColumn($modelClass::getModel()->getTable(), 'name')) {
-                    $searchables[] = 'name';
+                    $searchables[] = ['column' => 'name'];
                 }
             }
 
             if (!empty($searchables)) {
                 $query->where(function ($q) use ($searchables, $searchTerm) {
                     foreach ($searchables as $field) {
-                        if (is_array($field) && isset($field['column'])) {
-                            $field = $field['column'];
+                        if (!empty($field['type']) && $field['type'] == 'jsonColumn') {
+                            [$relation, $field] = explode('.', $field['column'], 2);
+                            $q->orWhereJsonContains($relation, [$field => $searchTerm]);
+                        } else {
+                            $q->orWhere($field['column'], 'like', '%' . $searchTerm . '%');
                         }
-                        $q->orWhere($field, 'like', '%' . $searchTerm . '%');
                     }
                 });
             }

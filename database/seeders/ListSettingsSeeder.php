@@ -23,15 +23,11 @@ class ListSettingsSeeder extends Seeder
                     'hasMultiSelect' => false,
                     'hasSoftDelete' => true,
                     'searchables' => [
-                        [
-                            'column' => 'name'
-                        ],
+                        ['column' => 'name'],
                     ],
                     'duplicate' => [
                         'uniqueColumns' => [
-                            [
-                                'column' => 'key'
-                            ],
+                            ['column' => 'key'],
                         ],
                     ],
                     'columns' => [
@@ -232,8 +228,9 @@ class ListSettingsSeeder extends Seeder
                     'hasGridView' => true,
                     'searchables' => [
                         ['column' => 'title'],
-                        ['column' => 'alt_text'],
                         ['column' => 'mime_type'],
+                        ['column' => 'meta.alt_text', 'type' => 'jsonColumn'],
+                        ['column' => 'meta.copyright', 'type' => 'jsonColumn'],
                     ],
                     'columns' => [
                         [

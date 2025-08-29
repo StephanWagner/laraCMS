@@ -1,5 +1,6 @@
 @use '../variables' as *;
 @use '../mixins' as *;
+@use "sass:map";
 
 .file-icon,
 .file-icon .icon {
@@ -17,7 +18,7 @@
   color: $default-text-color;
 
   &.-type-archive {
-    color: map-get($file-extension-colors, zip);
+    color: map.get($file-extension-colors, zip);
   }
 
   &.-extension-xls,
@@ -49,7 +50,7 @@
   &.-extension-csv {
     &::after {
       content: 'X';
-      background: map-get($file-extension-colors, xls);
+      background: map.get($file-extension-colors, xls);
     }
   }
 
@@ -57,7 +58,7 @@
   &.-extension-docx {
     &::after {
       content: 'W';
-      background: map-get($file-extension-colors, doc);
+      background: map.get($file-extension-colors, doc);
     }
   }
 
@@ -65,14 +66,14 @@
   &.-extension-pptx {
     &::after {
       content: 'P';
-      background: map-get($file-extension-colors, ppt);
+      background: map.get($file-extension-colors, ppt);
     }
   }
 
   &.-extension-pdf {
     &::after {
       content: 'P';
-      background: map-get($file-extension-colors, pdf);
+      background: map.get($file-extension-colors, pdf);
     }
   }
 }
