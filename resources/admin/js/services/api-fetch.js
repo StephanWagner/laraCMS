@@ -73,4 +73,6 @@ export function apiFetch(options) {
   } else {
     xhr.send(data ? JSON.stringify(data) : null);
   }
+
+  return xhr;
 }

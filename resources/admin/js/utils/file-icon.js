@@ -122,8 +122,8 @@ export function getFileIcon(extension) {
   
     const fileTypeMap = {
       image: 'image',
-      video: 'video_file',
-      audio: 'audio_file',
+      video: 'smart_display',
+      audio: 'music_video',
       document: 'draft',
       archive: 'folder_zip',
       code: 'code_blocks',

@@ -10,7 +10,7 @@ import { textfield } from '../form/input/textfield';
 import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
 import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
-import { getFilePreview } from '../utils/fileicon';
+import { getFilePreview } from '../utils/file-icon';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -68,7 +68,7 @@ export class ListService {
       const searchTerm = this.searchInputEl.value.trim();
       this.listData.config.searchTerm = searchTerm;
       this.listData.config.page = 1;
-      this.loadData();
+      this.loadData({}, true);
     }, 300);
     this.searchInputEl.addEventListener('input', handleSearch);
 
@@ -185,16 +185,22 @@ export class ListService {
     });
   }
 
-  loadData(params = {}) {
+  loadData(params = {}, cancelPrevious = false) {
     if (this.loading) {
-      this.pendingReload = true;
-      this.pendingReloadParams = params;
-      return false;
+      if (cancelPrevious && this.xhr) {
+        this.pendingReload = false;
+        this.pendingReloadParams = null;
+        this.xhr.abort();
+      } else {
+        this.pendingReload = true;
+        this.pendingReloadParams = params;
+        return false;
+      }
     }
 
     const listConfig = this.listData?.config || {};
 
-    apiFetch({
+    this.xhr = apiFetch({
       url: '/admin/api/list',
       data: getListParams(params, listConfig),
       before: () => {
@@ -204,7 +210,7 @@ export class ListService {
       complete: () => {
         this.loading = false;
         this.wrapper.classList.remove('-loading');
-        
+
         if (this.pendingReload) {
           this.pendingReload = false;
           this.loadData(this.pendingReloadParams || {});
@@ -634,7 +640,9 @@ export class ListService {
                   actionEl.addEventListener('click', () => {
                     confirmModal({
                       title: this.listData.texts.deleteModal.title,
-                      text: this.listData.texts.deleteModal[forceDeleting ? 'textForceDelete' : 'textSoftDelete'],
+                      text: this.listData.texts.deleteModal[
+                        forceDeleting ? 'textForceDelete' : 'textSoftDelete'
+                      ],
                       cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
                       submitButtonText: this.listData.texts.deleteModal.submitButtonText,
                       submitCallback: (modalEl, submitBtn) => {
@@ -642,7 +650,10 @@ export class ListService {
 
                         apiFetch({
                           url: '/admin/api/delete',
-                          data: getListParams({}, listConfig, { id: item.id, force: forceDeleting }),
+                          data: getListParams({}, listConfig, {
+                            id: item.id,
+                            force: forceDeleting,
+                          }),
                           before: () => {
                             item._deleteRequestRunning = true;
                             submitBtn.classList.add('-loading');
