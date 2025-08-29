@@ -12,6 +12,7 @@ export function initListUpload() {
     // List wrapper
     const listId = buttonEl.getAttribute('data-list-upload');
     const listWrapperEl = document.querySelector(`[data-list="${listId}"]`);
+    const listContainerEl = listWrapperEl.querySelector('.list__container');
 
     if (!listWrapperEl) {
       console.error('Target element not found.');
@@ -19,7 +20,7 @@ export function initListUpload() {
     }
 
     // Attach drag & drop
-    attachDragDrop(listWrapperEl, {
+    attachDragDrop(listContainerEl, {
       onDrop: files => {
         if (!files.length) return;
         uploadFiles(files, listWrapperEl);

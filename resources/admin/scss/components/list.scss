@@ -1,6 +1,16 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
+// Containers
+
+.list__wrapper {
+  position: relative;
+}
+
+.list__container {
+  position: relative;
+}
+
 // Header
 
 .list-header__container {
@@ -34,6 +44,14 @@
 
 .list-content__container {
   position: relative;
+  border-radius: $small-border-radius;
+  transition: transition('outline-color');
+  outline-color: transparent;
+
+  .list__container.-is-dragover & {
+    outline: 1px dashed $color-surface-4;
+    outline-offset: 4px;
+  }
 }
 
 .list-content__header {
