@@ -311,15 +311,27 @@ class ApiController extends Controller
     }
 
     /**
-     * Upload file
+     * Upload files for list
      */
-    public function upload()
+    public function mediaUpload()
     {
         sleep(1);
 
         $file = request()->file('file');
 
         $response = MediaHelper::store($file);
+
+        if ($response['success']) {
+            $listData = ListService::getData('media', [
+                'orderBy' => 'updated_at',
+                'orderDirection' => 'desc',
+            ]);
+
+            return [
+                'success' => true,
+                'listData' => $listData,
+            ];
+        }
 
         return response()->json($response);
     }

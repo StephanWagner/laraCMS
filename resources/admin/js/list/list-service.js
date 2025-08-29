@@ -18,6 +18,7 @@ export class ListService {
 
     this.key = key;
     this.wrapper = wrapper;
+    this.wrapper._listService = this;
 
     this.listData = window.listData || null;
 
@@ -185,7 +186,11 @@ export class ListService {
   }
 
   loadData(params = {}) {
-    if (this.loading) return false;
+    if (this.loading) {
+      this.pendingReload = true;
+      this.pendingReloadParams = params;
+      return false;
+    }
 
     const listConfig = this.listData?.config || {};
 
@@ -199,6 +204,12 @@ export class ListService {
       complete: () => {
         this.loading = false;
         this.wrapper.classList.remove('-loading');
+        
+        if (this.pendingReload) {
+          this.pendingReload = false;
+          this.loadData(this.pendingReloadParams || {});
+          this.pendingReloadParams = null;
+        }
       },
       success: response => {
         if (response.success && response.listData) {

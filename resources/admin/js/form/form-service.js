@@ -12,6 +12,7 @@ export class FormService {
 
     this.key = key;
     this.wrapper = wrapper;
+    this.wrapper._formService = this;
 
     this.formData = window.formData || null;
 

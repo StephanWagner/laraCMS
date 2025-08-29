@@ -222,7 +222,7 @@ class ListSettingsSeeder extends Seeder
                     'title' => 'admin::media.list.title',
                     'listRoute' => 'admin.media.list',
                     'addButtonAttributes' => [
-                        'data-upload-files' => 'content',
+                        'data-list-upload' => 'media',
                     ],
                     'defaultOrderBy' => 'created_at',
                     'defaultOrderDirection' => 'desc',

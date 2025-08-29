@@ -118,6 +118,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
             Route::post('delete', 'delete')->name('delete');
             Route::post('restore', 'restore')->name('restore');
             Route::post('duplicate', 'duplicate')->name('duplicate');
-            Route::post('upload', 'upload')->name('upload');
+            Route::post('media-upload', 'mediaUpload')->name('media-upload');
         });
 });
