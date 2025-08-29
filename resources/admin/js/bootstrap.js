@@ -6,6 +6,7 @@ import { initNewPassword } from './auth/new-password';
 import { initList } from './list/bootstrap';
 import { initForm } from './form/bootstrap';
 import { initFormEvents } from './form/events';
+import { initFileUpload } from './form/file-upload';
 import { initModals } from './ui/modal';
 import { initProfilePage } from './pages/profile';
 
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initResetPassword();
   initNewPassword();
   initFormEvents();
+  initFileUpload();
 
   // Menus
   initMenus();

@@ -5,7 +5,7 @@ import { __ } from '../utils/locale';
 /**
  * Show flash message
  */
-export function showFlashMessage(title, text = null, type = 'info', prependTo = '.form__wrapper') {
+export function showFlashMessage(title, text = null, type = 'info', prependTo = '.content__content') {
   const formWrapperEl = document.querySelector(prependTo);
   if (!formWrapperEl) return;
 
@@ -31,15 +31,15 @@ export function showFlashMessage(title, text = null, type = 'info', prependTo = 
   formWrapperEl.prepend(wrapperEl);
 }
 
-export function showFlashInfo(title, text = null, prependTo = '.form__wrapper') {
+export function showFlashInfo(title, text = null, prependTo = '.content__content') {
   return showFlashMessage(title, text, 'info', prependTo);
 }
 
-export function showFlashError(title, text = null, prependTo = '.form__wrapper') {
+export function showFlashError(title, text = null, prependTo = '.content__content') {
   return showFlashMessage(title, text, 'error', prependTo);
 }
 
-export function showFlashSuccess(title, text = null, prependTo = '.form__wrapper') {
+export function showFlashSuccess(title, text = null, prependTo = '.content__content') {
   return showFlashMessage(title, text, 'success', prependTo);
 }
 

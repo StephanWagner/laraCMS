@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Http\Controllers\Controller;
 use App\Services\ListService;
 use App\Services\FormService;
+use App\Helpers\MediaHelper;
 
 class ApiController extends Controller
 {
@@ -300,5 +301,19 @@ class ApiController extends Controller
             'listData' => $listData,
             'message' => __('admin::api.restore.successMessage' . ($idList->count() > 1 ? 'Bulk' : ''), ['items' => $idList->count()]),
         ];
+    }
+
+    /**
+     * Upload file
+     */
+    public function upload()
+    {
+        sleep(1);
+
+        $file = request()->file('file');
+
+        $response = MediaHelper::store($file);
+
+        return response()->json($response);
     }
 }

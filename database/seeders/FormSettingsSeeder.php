@@ -236,6 +236,7 @@ class FormSettingsSeeder extends Seeder
                             'description' => 'items.alt-text.description',
                             'validate' => ['max:255'],
                             'source' => 'meta.alt_text',
+                            'if' => '', // TODO
                             'inputOptions' => [
                                 'type' => 'textfield',
                                 'id' => 'media-alt-text',

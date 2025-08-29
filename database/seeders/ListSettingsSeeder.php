@@ -219,7 +219,9 @@ class ListSettingsSeeder extends Seeder
                     'model' => 'Media',
                     'title' => 'admin::media.list.title',
                     'listRoute' => 'admin.media.list',
-                    'editRoute' => 'admin.media.edit',
+                    'addButtonAttributes' => [
+                        'data-upload-files' => 'content',
+                    ],
                     'defaultOrderBy' => 'created_at',
                     'defaultOrderDirection' => 'desc',
                     'defaultPerPage' => 50,
@@ -240,8 +242,8 @@ class ListSettingsSeeder extends Seeder
                         [
                             'key' => 'title',
                             'type' => 'title',
-                            'label' => 'columnLabel.name',
-                            'source' => 'name',
+                            'label' => 'columnLabel.title',
+                            'source' => 'title',
                             'sortable' => true,
                             'defaultOrderDirection' => 'asc',
                             'allowTrashed' => true,
