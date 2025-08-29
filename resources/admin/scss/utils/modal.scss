@@ -55,7 +55,7 @@
   width: 600px;
   margin: auto;
   padding: 24px;
-  max-width: calc(100vw - 32px - 23px);
+  max-width: calc(100vw - 32px - 32px);
 
   @media (max-width: 600px) {
     max-width: calc(100vw - 24px - 24px);
