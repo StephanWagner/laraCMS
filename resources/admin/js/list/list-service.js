@@ -61,6 +61,7 @@ export class ListService {
       name: 'list-search',
       size: 'small',
       icon: 'search',
+      hasClear: true,
     });
     searchContainerEl.appendChild(searchInputContainerEl);
     this.searchInputEl = searchInputContainerEl._inputEl;

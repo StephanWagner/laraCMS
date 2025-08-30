@@ -102,8 +102,12 @@ textarea.textfield {
     padding-right: 12px;
   }
 
-  .input__container.-has-icon & {
+  .input__container.-has-icon-left & {
     padding-left: calc(1px + 6px + 24px + 4px);
+  }
+
+  .input__container.-has-icon-right & {
+    padding-right: calc(1px + 6px + 24px + 4px);
   }
 
   &.-h {
@@ -130,6 +134,12 @@ select.textfield {
   padding-right: calc(1px + 6px + 24px + 4px) !important;
 }
 
+.select__pointer-icon {
+  .input__container:not(.-disabled):hover & {
+    color: $default-text-color;
+  }
+}
+
 // Textareas
 
 textarea.textfield {
@@ -138,7 +148,8 @@ textarea.textfield {
   line-height: inherit;
 }
 
-.select__pointer-icon,
+// Textfield icons
+
 .textfield__icon {
   width: 24px;
   height: 24px;
@@ -150,19 +161,25 @@ textarea.textfield {
   transition: transition('color');
   pointer-events: none;
 
+  &.-left {
+    left: 6px;
+  }
+
+  &.-right {
+    right: 6px;
+  }
+
   .input__container.-has-focus & {
     color: $default-text-color;
   }
-}
 
-.textfield__icon {
-  left: 6px;
-}
+  &.textfield__clear-button {
+    cursor: pointer;
+    pointer-events: all;
+    color: $color-surface-6 !important;
 
-.select__pointer-icon {
-  right: 6px;
-
-  .input__container:not(.-disabled):hover & {
-    color: $default-text-color;
+    &:hover {
+      color: $default-text-color !important;
+    }
   }
 }

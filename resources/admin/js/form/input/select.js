@@ -29,7 +29,7 @@ export function select({
 
   // Pointer icon
   const painterIconEl = document.createElement('div');
-  painterIconEl.className = 'select__pointer-icon icon';
+  painterIconEl.className = 'textfield__icon -right icon select__pointer-icon';
   painterIconEl.textContent = 'keyboard_arrow_down';
   wrapper.appendChild(painterIconEl);
 
@@ -38,7 +38,7 @@ export function select({
   if (icon) {
     wrapper.classList.add('-has-icon');
     iconEl = document.createElement('div');
-    iconEl.className = 'textfield__icon icon';
+    iconEl.className = 'textfield__icon -left icon';
     iconEl.textContent = icon;
     wrapper.appendChild(iconEl);
   }
