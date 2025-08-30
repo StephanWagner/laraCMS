@@ -48,8 +48,7 @@ class MediaHelper
 
                 return [
                     'success' => false,
-                    // TODO from lang files
-                    'error'   => 'File exceeds maximum allowed size of ' . round($limit / 1024 / 1024, 2) . ' MB',
+                    'error'   => __('admin::media.upload.error.errorFileExceedsMaxSize', ['size' => round($limit / 1024 / 1024, 2) . ' MB']),
                 ];
             }
 
@@ -66,8 +65,8 @@ class MediaHelper
             if (!$media) {
                 return [
                     'success' => false,
-                    // TODO from lang files
-                    'error'   => 'Media not found',
+                    // TODO TEST
+                    'error'   => __('admin::media.upload.error.errorReplaceFileNotFound'),
                 ];
             }
 
