@@ -5,8 +5,13 @@
         <div class="error-page__container">
             <div class="error-page__content -404">
                 <div class="error-page__code">404</div>
-                <h1 class="error-page__title">{!! __('theme::app.errors.error404Title') !!}</h1>
-                <h2 class="error-page__subtitle">{!! __('theme::app.errors.error404Subtitle') !!}</h2>
+                @if(request()->is('media/*'))
+                    <h1 class="error-page__title">{!! __('theme::app.errors.error404TitleFile') !!}</h1>
+                    <h2 class="error-page__subtitle">{!! __('theme::app.errors.error404SubtitleFile') !!}</h2>
+                @else
+                    <h1 class="error-page__title">{!! __('theme::app.errors.error404Title') !!}</h1>
+                    <h2 class="error-page__subtitle">{!! __('theme::app.errors.error404Subtitle') !!}</h2>
+                @endif
             </div>
         </div>
     </main>
