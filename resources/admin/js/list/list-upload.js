@@ -1,6 +1,8 @@
 import { apiFetch } from '../services/api-fetch';
 import { attachDragDrop } from '../utils/drag-drop';
 import { getFilePreviewFromFileInput } from '../utils/file-icon';
+import { removeContainer } from '../utils/animate-remove';
+import { config } from '../config/config';
 
 export function initListUpload() {
   const buttonsEl = document.querySelectorAll('[data-list-upload]');
@@ -53,10 +55,16 @@ export function initListUpload() {
 function uploadFiles(files, listWrapperEl) {
   // Ensure main container exists
   let wrapperEl = listWrapperEl.querySelector('.upload-progress__wrapper');
+  let containerEl = wrapperEl?.querySelector('.upload-progress__container');
+
   if (!wrapperEl) {
     wrapperEl = document.createElement('div');
     wrapperEl.className = 'upload-progress__wrapper';
     listWrapperEl.prepend(wrapperEl);
+
+    containerEl = document.createElement('div');
+    containerEl.className = 'upload-progress__container';
+    wrapperEl.appendChild(containerEl);
   }
 
   // Get list service
@@ -64,9 +72,18 @@ function uploadFiles(files, listWrapperEl) {
 
   // Upload files
   files.forEach(file => {
+    const itemWrapperEl = document.createElement('div');
+    itemWrapperEl.className = 'upload-progress__item-wrapper';
+    itemWrapperEl.addEventListener('click', () => {
+      if (itemWrapperEl.classList.contains('-complete')) {
+        removeUploadProgressItem(itemWrapperEl, wrapperEl);
+      }
+    });
+    containerEl.prepend(itemWrapperEl);
+
     const itemContainerEl = document.createElement('div');
     itemContainerEl.className = 'upload-progress__item-container';
-    wrapperEl.prepend(itemContainerEl);
+    itemWrapperEl.appendChild(itemContainerEl);
 
     const itemEl = document.createElement('div');
     itemEl.className = 'upload-progress__item';
@@ -118,15 +135,21 @@ function uploadFiles(files, listWrapperEl) {
         itemProgressBarEl.style.width = Math.floor(percent) + '%';
         itemStatusEl.innerHTML = Math.floor(percent) + '%';
       },
+      complete: () => {
+        itemWrapperEl.classList.add('-complete');
+      },
       success: response => {
         if (response.success) {
-          itemContainerEl.classList.add('-success');
+          itemWrapperEl.classList.add('-success');
           if (response.listData) {
             listService.listData = response.listData;
             listService.render();
           }
+          setTimeout(() => {
+            removeUploadProgressItem(itemWrapperEl, wrapperEl);
+          }, config.removeUploadPreviewAfter);
         } else {
-          itemContainerEl.classList.add('-error');
+          itemWrapperEl.classList.add('-error');
           if (response.error) {
             const errorEl = document.createElement('div');
             errorEl.className = 'upload-progress__error';
@@ -139,5 +162,20 @@ function uploadFiles(files, listWrapperEl) {
         networkError(xhr);
       },
     });
+  });
+}
+
+/**
+ * Remove upload progress item
+ */
+function removeUploadProgressItem(itemWrapperEl, wrapperEl) {
+  removeContainer(itemWrapperEl, {
+    fadeDuration: config.slowTransitionSpeed,
+    collapseDuration: config.defaultTransitionSpeed,
+    onComplete: () => {
+      if (!wrapperEl.querySelector('.upload-progress__item-wrapper')) {
+        wrapperEl.remove();
+      }
+    },
   });
 }

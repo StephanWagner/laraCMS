@@ -10,6 +10,9 @@ const config = {
 
   // Locale
   fallbackLocale: 'en',
+
+  // File uploads
+  removeUploadPreviewAfter: 3000,
 };
 
 export { config }

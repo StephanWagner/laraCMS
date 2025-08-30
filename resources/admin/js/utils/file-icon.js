@@ -186,7 +186,7 @@ export function getFilePreview({
     filePreviewEl.target = linkTarget;
   }
 
-  if (fileType == 'image') {
+  if (fileType == 'image' && filename) {
     filePreviewEl.style.backgroundImage = `url('${filename}')`;
   } else {
     filePreviewEl.appendChild(getFileIcon(extension));
