@@ -1,0 +1,17 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// Buttons
+
+.list-view-option__container {
+  .icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 20px;
+  }
+}
+
+
+// Grid view

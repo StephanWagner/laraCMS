@@ -49,9 +49,20 @@ export class ListService {
     // Views
     if (this.listData.config.hasGridView) {
       const viewOptionsContainerEl = document.createElement('div');
-      viewOptionsContainerEl.className = 'list-view-options__container';
-      viewOptionsContainerEl.innerHTML = 'G|L';
+      viewOptionsContainerEl.className = 'list-view-options__container selectable-button-list';
       filtersContainerEl.appendChild(viewOptionsContainerEl);
+
+      const viewOptionGridViewContainerEl = document.createElement('div');
+      viewOptionGridViewContainerEl.className =
+        'list-view-option__container button -selectable no-select -single-icon -list-view';
+      viewOptionGridViewContainerEl.innerHTML = '<div class="icon">lists</div>';
+      viewOptionsContainerEl.appendChild(viewOptionGridViewContainerEl);
+
+      const viewOptionListViewContainerEl = document.createElement('div');
+      viewOptionListViewContainerEl.className =
+        'list-view-option__container button -selectable no-select -single-icon -grid-view';
+      viewOptionListViewContainerEl.innerHTML = '<div class="icon">grid_view</div>';
+      viewOptionsContainerEl.appendChild(viewOptionListViewContainerEl);
     }
 
     // Search

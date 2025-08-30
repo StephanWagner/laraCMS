@@ -81,6 +81,35 @@
       box-shadow: inset 0 0 0 1px $textfield-border-color-hover;
       color: $default-text-color;
     }
+
+    .selectable-button-list & {
+      z-index: 1;
+      flex-shrink: 0;
+
+      &:not(:first-child) {
+        margin-left: -1px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:hover {
+        z-index: 2;
+      }
+    }
+
+    &.-single-icon {
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &.-has-icon {
@@ -128,6 +157,10 @@
     color: $button-color-disabled !important;
     background: $button-background-color-disabled !important;
   }
+}
+
+.selectable-button-list {
+  display: flex;
 }
 
 .button[disabled].-loading {
