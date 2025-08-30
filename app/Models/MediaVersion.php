@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\MediaHelper;
+use Illuminate\Support\Facades\Log;
 
 class MediaVersion extends Model
 {
@@ -26,7 +27,11 @@ class MediaVersion extends Model
     protected static function booted()
     {
         static::deleting(function ($media) {
-            MediaHelper::deleteFile($media);
+            try {
+                MediaHelper::deleteFile($media);
+            } catch (\Throwable $e) {
+                Log::warning("File for media {$media->id} could not be deleted: " . $e->getMessage());
+            }
         });
     }
 }

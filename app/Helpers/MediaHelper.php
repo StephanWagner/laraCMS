@@ -11,6 +11,7 @@ use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class MediaHelper
 {
@@ -296,8 +297,15 @@ class MediaHelper
      */
     public static function deleteFile($media): void
     {
-        $filename = self::getStorageFolder() . '/' . $media->filename . '.' . $media->extension;
-        Storage::disk('public')->delete($filename);
+        $disk = Storage::disk('public');
+
+        $path = self::getStorageFolder() . '/' . $media->filename . '.' . $media->extension;
+
+        if ($disk->exists($path)) {
+            $disk->delete($path);
+        } else {
+            Log::info("Skipping missing file: {$path}");
+        }
     }
 
     /**
