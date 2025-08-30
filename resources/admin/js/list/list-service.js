@@ -11,6 +11,7 @@ import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
 import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
 import { getFilePreview } from '../utils/file-icon';
+import { initAttachSearchEvent } from '../form/events';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -62,9 +63,14 @@ export class ListService {
       size: 'small',
       icon: 'search',
       hasClear: true,
+      autocomplete: 'off',
+      attributes: {
+        'data-attach-search-event': true,
+      },
     });
     searchContainerEl.appendChild(searchInputContainerEl);
     this.searchInputEl = searchInputContainerEl._inputEl;
+    initAttachSearchEvent(searchInputContainerEl._inputEl);
     const handleSearch = debounce(() => {
       const searchTerm = this.searchInputEl.value.trim();
       this.listData.config.searchTerm = searchTerm;

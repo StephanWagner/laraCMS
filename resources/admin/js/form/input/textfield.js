@@ -6,13 +6,14 @@ export function textfield({
   name = '',
   value = '',
   placeholder = '',
-  autocomplete = '',
+  autocomplete = null,
   maxlength = null,
   disabled = false,
   required = false,
   readonly = false,
   size = 'default',
   className = '',
+  attributes = null,
   icon = '',
   iconClass = null,
   iconEvent = null,
@@ -61,6 +62,13 @@ export function textfield({
   inputEl.value = value;
   inputEl.disabled = disabled;
   inputEl.readOnly = readonly;
+
+  // Attributes
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, value]) => {
+      inputEl.setAttribute(key, value);
+    });
+  }
 
   // Optional icon
   let iconEl = null;
