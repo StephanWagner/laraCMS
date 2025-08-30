@@ -11,10 +11,10 @@ export function fileExtensionToFileType(extension) {
     svg: 'image',
     gif: 'image',
     avif: 'image',
-    bmp: 'image',
     ico: 'image',
 
     // Image but not valid for rendering
+    bmp: 'image-file',
     tiff: 'image-file',
     tif: 'image-file',
     heic: 'image-file',
