@@ -915,249 +915,147 @@ export class ListService {
       multiselectMenuLinksEl.className = 'menu-overlay__links';
       multiselectMenuEl.append(multiselectMenuLinksEl);
 
-      const multiselectActions = this.onTrashPage()
-        ? [
-            {
-              action: 'restore',
-              icon: 'restore_from_trash',
-              text: 'multiselect.actionRestore',
-              callback: () => {
+      const multiselectActions = [];
+
+      // Restore action
+      if (this.onTrashPage()) {
+        multiselectActions.push({
+          action: 'restore',
+          icon: 'restore_from_trash',
+          text: 'multiselect.actionRestore',
+          callback: () => {
+            multiSelectRequest(this, {
+              url: '/admin/api/restore',
+              success: response => {
                 closeMenu('multiselect-trash', 'multiselect');
-                if (this._bulkRestoreRequestRunning) return;
-
-                const ids = Array.from(
-                  document.querySelectorAll('.list-item__container[data-is-selected]')
-                ).map(el => el.dataset.id);
-
-                apiFetch({
-                  url: '/admin/api/restore',
-                  data: getListParams({}, listConfig, { ids }),
-                  before: () => {
-                    this._bulkRestoreRequestRunning = true;
-                  },
-                  complete: () => {
-                    this._bulkRestoreRequestRunning = false;
-                  },
-                  success: response => {
-                    if (response.success) {
-                      this.listData = response.listData;
-                      this.render();
-                      success(response.message);
-                    } else {
-                      networkError(response);
-                    }
-                  },
-                  error: xhr => {
-                    networkError(xhr);
-                  },
-                });
+                this.listData = response.listData;
+                this.render();
+                success(response.message);
               },
+            })();
+          },
+        });
+      }
+
+      // Not on trah page
+      if (!this.onTrashPage()) {
+        // Activate action
+        if (listConfig.hasMultiSelect?.includes('activate')) {
+          multiselectActions.push({
+            action: 'activate',
+            icon: 'toggle_on',
+            text: 'multiselect.actionActivate',
+            callback: () => {
+              multiSelectRequest(this, {
+                url: '/admin/api/toggle',
+                params: {
+                  action: 'activate',
+                },
+                success: (response, ids) => {
+                  closeMenu('multiselect');
+                  ids.forEach(id => {
+                    const itemContainerEl = document.querySelector(
+                      `.list-item__container[data-id="${id}"]`
+                    );
+                    const actionIconEl = itemContainerEl?.querySelector(
+                      '.list__action.-type-toggle .list__action-icon'
+                    );
+                    if (!itemContainerEl || !actionIconEl) return;
+                    actionIconEl.innerHTML = 'toggle_on';
+                    itemContainerEl.classList.remove('-inactive');
+                  });
+                  this.deselectAll();
+                  success(response.message);
+                },
+              })();
             },
-            {
-              action: 'force-delete',
-              icon: 'delete_forever',
-              text: 'multiselect.actionForceDelete',
-              callback: () => {
-                closeMenu('multiselect-trash', 'multiselect');
-                confirmModal({
-                  title: this.listData.texts.deleteModal.title,
-                  text: this.listData.texts.deleteModal.textForceDeleteBulk,
-                  cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
-                  submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                  submitCallback: (modalEl, submitBtn) => {
-                    if (this._bulkForceDeleteRequestRunning) return;
+          });
+        }
 
-                    const ids = Array.from(
-                      document.querySelectorAll('.list-item__container[data-is-selected]')
-                    ).map(el => el.dataset.id);
-
-                    apiFetch({
-                      url: '/admin/api/delete',
-                      data: getListParams({}, listConfig, { ids, force: true }),
-                      before: () => {
-                        this._bulkForceDeleteRequestRunning = true;
-                        submitBtn.classList.add('-loading');
-                        submitBtn.disabled = true;
-                      },
-                      complete: () => {
-                        this._bulkForceDeleteRequestRunning = false;
-                        submitBtn.classList.remove('-loading');
-                        submitBtn.disabled = false;
-                      },
-                      success: response => {
-                        if (response.success) {
-                          this.listData = response.listData;
-                          this.render();
-                          success(response.message);
-                          closeConfirmModal();
-                        } else {
-                          networkError(response);
-                        }
-                      },
-                      error: xhr => {
-                        networkError(xhr);
-                      },
-                    });
-                  },
-                });
-              },
+        // Deactivate action
+        if (listConfig.hasMultiSelect?.includes('deactivate')) {
+          multiselectActions.push({
+            action: 'deactivate',
+            icon: 'toggle_off',
+            text: 'multiselect.actionDeactivate',
+            callback: () => {
+              multiSelectRequest(this, {
+                url: '/admin/api/toggle',
+                params: {
+                  action: 'deactivate',
+                },
+                success: (response, ids) => {
+                  closeMenu('multiselect');
+                  ids.forEach(id => {
+                    const itemContainerEl = document.querySelector(
+                      `.list-item__container[data-id="${id}"]`
+                    );
+                    const actionIconEl = itemContainerEl?.querySelector(
+                      '.list__action.-type-toggle .list__action-icon'
+                    );
+                    if (!itemContainerEl || !actionIconEl) return;
+                    actionIconEl.innerHTML = 'toggle_off';
+                    itemContainerEl.classList.add('-inactive');
+                  });
+                  this.deselectAll();
+                  success(response.message);
+                },
+              })();
             },
-          ]
-        : [
-            {
-              action: 'activate',
-              icon: 'toggle_on',
-              text: 'multiselect.actionActivate',
-              callback: () => {
-                if (this._bulkActivateRequestRunning) return;
+          });
+        }
+      }
 
-                const ids = Array.from(
-                  document.querySelectorAll('.list-item__container[data-is-selected]')
-                ).map(el => el.dataset.id);
+      // Delete action
+      if (
+        this.onTrashPage() ||
+        listConfig.hasMultiSelect?.includes('delete') ||
+        listConfig.hasMultiSelect?.includes('force-delete')
+      ) {
+        const forceDelete =
+          this.onTrashPage() ||
+          listConfig.hasMultiSelect?.includes('force-delete') ||
+          !listConfig.hasSoftDelete;
 
-                apiFetch({
-                  url: '/admin/api/toggle',
-                  data: {
-                    key: listConfig.key,
-                    action: 'activate',
-                    ids,
-                  },
-                  before: () => {
-                    this._bulkActivateRequestRunning = true;
-                  },
-                  complete: () => {
-                    this._bulkActivateRequestRunning = false;
-                  },
-                  success: response => {
-                    if (response.success) {
-                      closeMenu('multiselect');
-
-                      ids.forEach(id => {
-                        const itemContainerEl = document.querySelector(
-                          `.list-item__container[data-id="${id}"]`
-                        );
-                        const actionIconEl = itemContainerEl?.querySelector(
-                          '.list__action.-type-toggle .list__action-icon'
-                        );
-                        if (!itemContainerEl || !actionIconEl) return;
-                        actionIconEl.innerHTML = 'toggle_on';
-                        itemContainerEl.classList.remove('-inactive');
-                      });
-
-                      this.deselectAll();
-                      success(response.message);
-                    } else {
-                      networkError(response);
-                    }
-                  },
-                  error: xhr => {
-                    networkError(xhr);
-                  },
-                });
-              },
-            },
-            {
-              action: 'deactivate',
-              icon: 'toggle_off',
-              text: 'multiselect.actionDeactivate',
-              callback: () => {
-                if (this._bulkDectivateRequestRunning) return;
-
-                const ids = Array.from(
-                  document.querySelectorAll('.list-item__container[data-is-selected]')
-                ).map(el => el.dataset.id);
-
-                apiFetch({
-                  url: '/admin/api/toggle',
-                  data: {
-                    key: listConfig.key,
-                    action: 'deactivate',
-                    ids,
+        multiselectActions.push({
+          action: forceDelete ? 'force-delete' : 'delete',
+          icon: forceDelete ? 'delete_forever' : 'delete',
+          text: 'multiselect.action' + (forceDelete ? 'ForceDelete' : 'Delete'),
+          callback: () => {
+            confirmModal({
+              title: this.listData.texts.deleteModal.title,
+              text: this.listData.texts.deleteModal[
+                forceDelete ? 'textForceDeleteBulk' : 'textSoftDeleteBulk'
+              ],
+              cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+              submitButtonText: this.listData.texts.deleteModal.submitButtonText,
+              submitCallback: (modalEl, submitBtn) => {
+                multiSelectRequest(this, {
+                  url: '/admin/api/delete',
+                  params: {
+                    force: forceDelete,
                   },
                   before: () => {
-                    this._bulkDectivateRequestRunning = true;
+                    submitBtn.classList.add('-loading');
+                    submitBtn.disabled = true;
                   },
                   complete: () => {
-                    this._bulkDectivateRequestRunning = false;
+                    submitBtn.classList.remove('-loading');
+                    submitBtn.disabled = false;
                   },
                   success: response => {
-                    if (response.success) {
-                      closeMenu('multiselect');
-
-                      ids.forEach(id => {
-                        const itemContainerEl = document.querySelector(
-                          `.list-item__container[data-id="${id}"]`
-                        );
-                        const actionIconEl = itemContainerEl?.querySelector(
-                          '.list__action.-type-toggle .list__action-icon'
-                        );
-                        if (!itemContainerEl || !actionIconEl) return;
-                        actionIconEl.innerHTML = 'toggle_off';
-                        itemContainerEl.classList.add('-inactive');
-                      });
-
-                      this.deselectAll();
-                      success(response.message);
-                    } else {
-                      networkError(response);
-                    }
+                    this.listData = response.listData;
+                    this.render();
+                    success(response.message);
+                    closeMenu('multiselect-trash', 'multiselect');
+                    closeConfirmModal();
                   },
-                  error: xhr => {
-                    networkError(xhr);
-                  },
-                });
+                })();
               },
-            },
-            {
-              action: 'delete',
-              icon: 'delete',
-              text: 'multiselect.actionDelete',
-              callback: () => {
-                closeMenu('multiselect');
-                confirmModal({
-                  title: this.listData.texts.deleteModal.title,
-                  text: this.listData.texts.deleteModal.textSoftDeleteBulk,
-                  cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
-                  submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                  submitCallback: (modalEl, submitBtn) => {
-                    if (this._bulkDeleteRequestRunning) return;
-
-                    const ids = Array.from(
-                      document.querySelectorAll('.list-item__container[data-is-selected]')
-                    ).map(el => el.dataset.id);
-
-                    apiFetch({
-                      url: '/admin/api/delete',
-                      data: getListParams({}, listConfig, { ids }),
-                      before: () => {
-                        this._bulkDeleteRequestRunning = true;
-                        submitBtn.classList.add('-loading');
-                        submitBtn.disabled = true;
-                      },
-                      complete: () => {
-                        this._bulkDeleteRequestRunning = false;
-                        submitBtn.classList.remove('-loading');
-                        submitBtn.disabled = false;
-                      },
-                      success: response => {
-                        if (response.success) {
-                          this.listData = response.listData;
-                          this.render();
-                          success(response.message);
-                          closeConfirmModal();
-                        } else {
-                          networkError(response);
-                        }
-                      },
-                      error: xhr => {
-                        networkError(xhr);
-                      },
-                    });
-                  },
-                });
-              },
-            },
-          ];
+            });
+          },
+        });
+      }
 
       multiselectActions.forEach(action => {
         const multiselectMenuLinkEl = document.createElement('div');
@@ -1187,6 +1085,9 @@ export class ListService {
   }
 }
 
+/**
+ * Get list params
+ */
 function getListParams(params = {}, listConfig = {}, obj = {}) {
   return {
     key: listConfig?.key,
@@ -1200,6 +1101,9 @@ function getListParams(params = {}, listConfig = {}, obj = {}) {
   };
 }
 
+/**
+ * Update item amount buttons
+ */
 function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
   itemsEl.classList[listData.config.trashed ? 'remove' : 'add']('-active');
 
@@ -1219,6 +1123,48 @@ function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
   }
 }
 
+/**
+ * Resolve text
+ */
 function resolveText(texts, textId) {
   return getNestedValue(texts, textId) ?? textId;
+}
+
+/**
+ * Multiselect actions
+ */
+function multiSelectRequest(list, { url, params = {}, before, complete, success, error }) {
+  return () => {
+    if (list._bulkRequestRunning) return;
+
+    const ids = Array.from(
+      document.querySelectorAll('.list-item__container[data-is-selected]')
+    ).map(el => el.dataset.id);
+
+    params.ids = ids;
+    params.key = list.listData.config.key;
+
+    apiFetch({
+      url: url,
+      data: getListParams({}, list.listData.config, params),
+      before: () => {
+        list._bulkRequestRunning = true;
+        before && before(ids);
+      },
+      complete: () => {
+        list._bulkRequestRunning = false;
+        complete && complete(ids);
+      },
+      success: response => {
+        if (response.success) {
+          success && success(response, ids);
+        } else {
+          error ? error(response, ids) : networkError(response);
+        }
+      },
+      error: xhr => {
+        networkError(xhr);
+      },
+    });
+  };
 }

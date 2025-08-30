@@ -115,7 +115,11 @@ class ListSettingsSeeder extends Seeder
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,
-                    'hasMultiSelect' => true,
+                    'hasMultiSelect' => [
+                        'activate',
+                        'deactivate',
+                        'delete',
+                    ],
                     'hasSoftDelete' => true,
                     'searchables' => [
                         ['column' => 'name'],
@@ -223,7 +227,9 @@ class ListSettingsSeeder extends Seeder
                     'defaultOrderBy' => 'created_at',
                     'defaultOrderDirection' => 'desc',
                     'defaultPerPage' => 50,
-                    'hasMultiSelect' => true,
+                    'hasMultiSelect' => [
+                        'delete',
+                    ],
                     'hasSoftDelete' => false,
                     'hasGridView' => true,
                     'searchables' => [

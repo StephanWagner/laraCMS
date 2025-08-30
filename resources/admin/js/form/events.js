@@ -82,8 +82,6 @@ export function initAttachSearchEvent(inputEl) {
     return;
   }
 
-  console.log(inputEl);
-  
   // Get input element
   if (!inputEl) {
     inputEl = document.querySelector('[' + attributeName + ']');

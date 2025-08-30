@@ -64,7 +64,11 @@ class ContentTypeSeeder extends Seeder
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,
-                        'hasMultiSelect' => true,
+                        'hasMultiSelect' => [
+                            'activate',
+                            'deactivate',
+                            'delete',
+                        ],
                         'hasSoftDelete' => true,
                         'searchables' => [
                             ['column' => 'title'],
@@ -179,7 +183,11 @@ class ContentTypeSeeder extends Seeder
                         'defaultOrderBy' => 'updated_at',
                         'defaultOrderDirection' => 'desc',
                         'defaultPerPage' => 25,
-                        'hasMultiSelect' => true,
+                        'hasMultiSelect' => [
+                            'activate',
+                            'deactivate',
+                            'delete',
+                        ],
                         'hasSoftDelete' => true,
                         'searchables' => [
                             ['column' => 'title'],
