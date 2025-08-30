@@ -3,6 +3,7 @@ import { attachDragDrop } from '../utils/drag-drop';
 import { getFilePreviewFromFileInput } from '../utils/file-icon';
 import { removeContainer } from '../utils/animate-remove';
 import { config } from '../config/config';
+import { networkErrorText } from '../ui/message';
 
 export function initListUpload() {
   const buttonsEl = document.querySelectorAll('[data-list-upload]');
@@ -159,7 +160,10 @@ function uploadFiles(files, listWrapperEl) {
         }
       },
       error: xhr => {
-        networkError(xhr);
+        const errorEl = document.createElement('div');
+        errorEl.className = 'upload-progress__error';
+        errorEl.innerHTML = networkErrorText(xhr);
+        itemTextEl.appendChild(errorEl);
       },
     });
   });

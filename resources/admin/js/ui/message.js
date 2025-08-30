@@ -134,17 +134,21 @@ export function success(txt) {
 /**
  * Network error helper
  */
-export function networkError(responseOrError) {
+export function networkErrorText(responseOrError) {
   const errorMessage = responseOrError && responseOrError.message ? responseOrError.message : null;
 
   if (responseOrError && typeof responseOrError.status === 'number') {
     const status = responseOrError.status;
 
-    if (status === 0) return error(__('networkError'));
-    if (status === 429) return error(__('tooManyRequests'));
-    if (status === 419) return error(__('csrfExpired'));
-    return error(errorMessage);
+    if (status === 0) return __('networkError');
+    if (status === 429) return __('tooManyRequests');
+    if (status === 419) return __('csrfExpired');
+    return errorMessage;
   }
 
-  return error(errorMessage);
+  return errorMessage;
+}
+
+export function networkError(responseOrError) {
+  return error(networkErrorText(responseOrError));
 }
