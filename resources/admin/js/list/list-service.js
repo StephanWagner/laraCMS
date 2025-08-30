@@ -63,6 +63,7 @@ export class ListService {
       size: 'small',
       icon: 'search',
       hasClear: true,
+      clearOnEsc: true,
       autocomplete: 'off',
       attributes: {
         'data-attach-search-event': true,

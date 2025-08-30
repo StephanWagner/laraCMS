@@ -1,4 +1,4 @@
-import { clearInputError } from "../input";
+import { clearInputError } from '../input';
 
 export function textfield({
   type = 'text',
@@ -21,6 +21,7 @@ export function textfield({
   iconRightClass = null,
   iconRightEvent = null,
   hasClear = false,
+  clearOnEsc = false,
   onInput = null,
   onChange = null,
   onFocus = null,
@@ -35,7 +36,7 @@ export function textfield({
   if (hasClear) {
     iconRight = 'close_small';
     iconRightClass = 'textfield__clear-button';
-    iconRightEvent = (inputEl) => {
+    iconRightEvent = inputEl => {
       inputEl.value = '';
       inputEl.dispatchEvent(new Event('change'));
       inputEl.dispatchEvent(new Event('input'));
@@ -49,7 +50,7 @@ export function textfield({
   if (icon) wrapper.classList.add('-has-icon-left');
   if (iconRight) wrapper.classList.add('-has-icon-right');
   if (icon || iconRight) wrapper.classList.add('-has-icon');
-  
+
   // Create input
   const inputEl = document.createElement('input');
   inputEl.className = 'textfield';
@@ -86,7 +87,8 @@ export function textfield({
     clearButtonEl.className = `textfield__icon -right icon ${iconRightClass}`;
     hasClear && clearButtonEl.classList.add('textfield__clear-button');
     clearButtonEl.textContent = iconRight;
-    iconRightEvent && clearButtonEl.addEventListener('click', () => iconRightEvent(inputEl, wrapper));
+    iconRightEvent &&
+      clearButtonEl.addEventListener('click', () => iconRightEvent(inputEl, wrapper));
     wrapper.appendChild(clearButtonEl);
   }
 
@@ -124,6 +126,12 @@ export function textfield({
   inputEl.addEventListener('keydown', e => {
     if (e.key === 'Enter' && onEnter) {
       onEnter();
+    }
+
+    if (clearOnEsc && e.key === 'Escape') {
+      inputEl.value = '';
+      inputEl.dispatchEvent(new Event('change'));
+      inputEl.dispatchEvent(new Event('input'));
     }
   });
 
