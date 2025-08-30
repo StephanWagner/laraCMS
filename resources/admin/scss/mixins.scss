@@ -1,17 +1,14 @@
-@use "variables" as *;
-@use "sass:string";
+@use 'variables' as *;
+@use 'sass:string';
 
 // Mixins
 @function transition($values...) {
-  $transition: "";
+  $transition: '';
 
   @each $name in $values {
-    @if ($transition !="") {
-      $transition: $transition,
-        string.unquote($name) $default-transition-speed;
-    }
-
-    @else {
+    @if ($transition != '') {
+      $transition: $transition, string.unquote($name) $default-transition-speed;
+    } @else {
       $transition: string.unquote($name) $default-transition-speed;
     }
   }
@@ -20,15 +17,12 @@
 }
 
 @function transitionSlow($values...) {
-  $transition: "";
+  $transition: '';
 
   @each $name in $values {
-    @if ($transition !="") {
-      $transition: $transition,
-        string.unquote($name) $slow-transition-speed;
-    }
-
-    @else {
+    @if ($transition != '') {
+      $transition: $transition, string.unquote($name) $slow-transition-speed;
+    } @else {
       $transition: string.unquote($name) $slow-transition-speed;
     }
   }

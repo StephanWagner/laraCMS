@@ -7,18 +7,19 @@ export function fileExtensionToFileType(extension) {
     jpg: 'image',
     jpeg: 'image',
     png: 'image',
-    gif: 'image',
-    svg: 'image',
     webp: 'image',
+    svg: 'image',
+    gif: 'image',
     avif: 'image',
-    heic: 'image',
-    heif: 'image',
-    tiff: 'image',
-    tif: 'image',
-    tga: 'image',
     bmp: 'image',
     ico: 'image',
-    cur: 'image',
+
+    // Image but not valid for rendering
+    tiff: 'image-file',
+    tif: 'image-file',
+    heic: 'image-file',
+    heif: 'image-file',
+    tga: 'image-file',
 
     // Video
     mp4: 'video',
@@ -49,7 +50,7 @@ export function fileExtensionToFileType(extension) {
     csv: 'document',
     ppt: 'document',
     pptx: 'document',
-    
+
     // Archive
     zip: 'archive',
     rar: 'archive',
@@ -115,43 +116,81 @@ export function fileExtensionToFileType(extension) {
 }
 
 /**
+ * Get file icon text
+ */
+export function getFileIconText(extension) {
+  const fileType = fileExtensionToFileType(extension);
+
+  const fileTypeMap = {
+    image: 'image',
+    'image-file': 'image',
+    video: 'smart_display',
+    audio: 'music_video',
+    document: 'draft',
+    archive: 'folder_zip',
+    code: 'code_blocks',
+    font: 'font_download',
+    file: 'file_present',
+  };
+
+  return fileTypeMap[fileType] || fileTypeMap.file;
+}
+
+/**
  * Get file icon
  */
-export function getFileIcon(extension) {
-    const fileType = fileExtensionToFileType(extension);
-  
-    const fileTypeMap = {
-      image: 'image',
-      video: 'smart_display',
-      audio: 'music_video',
-      document: 'draft',
-      archive: 'folder_zip',
-      code: 'code_blocks',
-      font: 'font_download',
-      file: 'file_present',
-    };
-  
-    return fileTypeMap[fileType] || fileTypeMap.file;
+export function getFileIcon(extension, className = null) {
+  const fileType = fileExtensionToFileType(extension);
+
+  const classNames = ['file-icon'];
+  classNames.push('-type-' + fileType);
+  classNames.push('-extension-' + extension);
+  if (className) {
+    classNames.push(className);
   }
+
+  const fileIconEl = document.createElement('div');
+  fileIconEl.className = classNames.join(' ');
+  fileIconEl.innerHTML = '<div class="icon">' + getFileIconText(extension) + '</div>';
+
+  return fileIconEl;
+}
 
 /**
  * Get file preview
  */
-export function getFilePreview(extension, className = null) {
-    const fileType = fileExtensionToFileType(extension);
+export function getFilePreview({
+  extension,
+  filename,
+  className = null,
+  linkUrl = null,
+  linkTarget = null,
+}) {
+  const fileType = fileExtensionToFileType(extension);
 
-    const classNames = ['file-icon'];
-    classNames.push('-type-' + fileType);
-    classNames.push('-extension-' + extension);
-    if (className) {
-        classNames.push(className);
-    }
-    
-    let html = '';
-    html += '<div class="' + classNames.join(' ') + '">';
-    html += '<div class="icon">' + getFileIcon(extension) + '</div>';
-    html += '</div>';
-  
-    return html;
+  const classNames = ['file-preview'];
+  classNames.push('-type-' + fileType);
+  classNames.push('-extension-' + extension);
+  if (className) {
+    classNames.push(className);
   }
-    
+
+  const filePreviewEl = document.createElement(linkUrl ? 'a' : 'div');
+  filePreviewEl.className = classNames.join(' ');
+
+  if (linkUrl) {
+    filePreviewEl.href = linkUrl;
+  }
+  
+  if (linkTarget) {
+    filePreviewEl.target = linkTarget;
+  }
+
+  if (fileType == 'image') {
+    filePreviewEl.style.backgroundImage = `url('/media/${filename}')`;
+  } else {
+    filePreviewEl.appendChild(getFileIcon(extension));
+  }
+
+  return filePreviewEl;
+}

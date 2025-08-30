@@ -1,43 +1,43 @@
-@use "variables" as *;
-@use "mixins" as *;
+@use 'variables' as *;
+@use 'mixins' as *;
 
 // TODO normalize
 
 // Fonts
-@use "fonts/material-symbols";
-@use "fonts/nunito-sans";
+@use 'fonts/material-symbols';
+@use 'fonts/nunito-sans';
 
 // Lib
-@use "lib/reset";
-@use "lib/common";
+@use 'lib/reset';
+@use 'lib/common';
 
 // App
-@use "app";
+@use 'app';
 
 // Form
-@use "form/form";
-@use "form/input";
-@use "form/textfields";
-@use "form/buttons";
-@use "form/file-upload";
+@use 'form/form';
+@use 'form/input';
+@use 'form/textfields';
+@use 'form/buttons';
 
 // Utils
-@use "utils/animate";
-@use "utils/message";
-@use "utils/modal";
+@use 'utils/animate';
+@use 'utils/message';
+@use 'utils/modal';
 
 // Layout
-@use "layout/scaffold";
-@use "layout/error-page";
-@use "layout/auth";
-@use "layout/header";
-@use "layout/panel";
+@use 'layout/scaffold';
+@use 'layout/error-page';
+@use 'layout/auth';
+@use 'layout/header';
+@use 'layout/panel';
 
 // Components
-@use "components/file-icon";
-@use "components/menu";
-@use "components/list";
-@use "components/pagination";
+@use 'components/file-icon';
+@use 'components/menu';
+@use 'components/list';
+@use 'components/pagination';
+@use 'components/upload-progress';
 
 // Pages
-@use "pages/profile";
+@use 'pages/profile';

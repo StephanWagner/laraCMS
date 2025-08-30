@@ -10,7 +10,7 @@ import { textfield } from '../form/input/textfield';
 import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
 import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
-import { getFilePreview } from '../utils/file-icon';
+import { getFilePreview, fileExtensionToFileType } from '../utils/file-icon';
 import { initAttachSearchEvent } from '../form/events';
 
 export class ListService {
@@ -479,22 +479,20 @@ export class ListService {
 
           case 'filepreview':
             let itemColumnFilepreviewEl;
-            if (column.isLink) {
-              itemColumnFilepreviewEl = document.createElement('a');
-              itemColumnFilepreviewEl.href = '/media/' + item.filename;
-              itemColumnFilepreviewEl.target = '_blank';
-            } else {
-              itemColumnFilepreviewEl = document.createElement('div');
-            }
+            itemColumnFilepreviewEl = document.createElement('div');
             itemColumnFilepreviewEl.classList.add('list__filepreview');
             itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
 
-            if (item.media_type == 'image') {
-              const imagePreviewFilename = getNestedValue(item, column.source + '.filename');
-              itemColumnFilepreviewEl.style.backgroundImage = `url('/media/${imagePreviewFilename}')`;
-            } else {
-              itemColumnFilepreviewEl.innerHTML = getFilePreview(item.extension);
+            let imagePreviewFilename = null;
+            if (column.source) {
+              imagePreviewFilename = getNestedValue(item, column.source + '.filename');
             }
+            itemColumnFilepreviewEl.appendChild(getFilePreview({
+              extension: item.extension,
+              filename: imagePreviewFilename,
+              linkUrl: column.isLink ? '/media/' + item.filename : null,
+              linkTarget: column.isLink ? '_blank' : null,
+            }));
             itemColumnEl.append(itemColumnFilepreviewEl);
             break;
 

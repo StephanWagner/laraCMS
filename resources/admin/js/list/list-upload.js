@@ -1,5 +1,6 @@
 import { apiFetch } from '../services/api-fetch';
 import { attachDragDrop } from '../utils/drag-drop';
+import { fileExtensionToFileType, getFilePreview } from '../utils/file-icon';
 
 export function initListUpload() {
   const buttonsEl = document.querySelectorAll('[data-list-upload]');
@@ -15,7 +16,7 @@ export function initListUpload() {
     const listContainerEl = listWrapperEl.querySelector('.list__container');
 
     if (!listWrapperEl) {
-      console.error('Target element not found.');
+      console.warn('Target element not found.');
       return;
     }
 
@@ -52,12 +53,11 @@ export function initListUpload() {
  */
 function uploadFiles(files, listWrapperEl) {
   // Ensure main container exists
-  let container = document.getElementById('upload-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'upload-container';
-    container.className = 'upload-container';
-    listWrapperEl.prepend(container);
+  let wrapperEl = listWrapperEl.querySelector('.upload-progress__wrapper');
+  if (!wrapperEl) {
+    wrapperEl = document.createElement('div');
+    wrapperEl.className = 'upload-progress__wrapper';
+    listWrapperEl.prepend(wrapperEl);
   }
 
   // Get list service
@@ -65,20 +65,78 @@ function uploadFiles(files, listWrapperEl) {
 
   // Upload files
   files.forEach(file => {
-    // Unique container ID per file
-    const containerId = `upload-${crypto.randomUUID()}`;
-    if (document.getElementById(containerId)) return;
+    const itemContainerEl = document.createElement('div');
+    itemContainerEl.className = 'upload-progress__item-container';
+    wrapperEl.prepend(itemContainerEl);
 
-    const item = document.createElement('div');
-    item.id = containerId;
-    item.className = 'upload-item';
-    item.innerHTML = `
-        <div class="upload-filename">${file.name}</div>
-        <div class="upload-progress">
-          <div class="upload-bar" style="width:0%"></div>
-        </div>
-      `;
-    container.prepend(item);
+    const itemEl = document.createElement('div');
+    itemEl.className = 'upload-progress__item';
+    itemContainerEl.appendChild(itemEl);
+
+    const itemPreviewEl = document.createElement('div');
+    itemPreviewEl.className = 'upload-progress__preview';
+
+    
+
+    const extension = file.name.split('.').pop();
+
+    console.log(extension);
+    console.log(fileExtensionToFileType(extension));
+
+    // if (fileExtensionToFileType(extension) == 'image') {
+    //   const mime = file.type;
+
+    //   console.log('aaa', mime);
+
+    //   if (mime === 'image/svg' || mime === 'image/svg+xml') {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       const base64 = btoa(reader.result);
+    //       const url = `data:image/svg+xml;base64,${base64}`;
+    //       itemPreviewEl.style.backgroundImage = `url(${url})`;
+    //     };
+    //     reader.readAsText(file);
+    //   } else if (['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/gif'].includes(mime)) {
+    //     // Web-safe rasters
+    //     const url = URL.createObjectURL(file);
+    //     itemPreviewEl.style.backgroundImage = `url(${url})`;
+    //     const img = new Image();
+    //     img.onload = () => URL.revokeObjectURL(url);
+    //     img.src = url;
+    //   } else {
+    //     itemPreviewEl.innerHTML = getFilePreview(extension);
+    //   }
+    // } else {
+    //   itemPreviewEl.innerHTML = getFilePreview(extension);
+    // }
+    itemEl.appendChild(itemPreviewEl);
+
+    const itemContentEl = document.createElement('div');
+    itemContentEl.className = 'upload-progress__content';
+    itemEl.appendChild(itemContentEl);
+
+    const itemFilenameContainerEl = document.createElement('div');
+    itemFilenameContainerEl.className = 'upload-progress__text-container';
+    itemContentEl.appendChild(itemFilenameContainerEl);
+
+    const itemFilenameEl = document.createElement('div');
+    itemFilenameEl.className = 'upload-progress__filename';
+    itemFilenameEl.innerHTML = file.name;
+    itemFilenameContainerEl.appendChild(itemFilenameEl);
+
+    const itemStatusEl = document.createElement('div');
+    itemStatusEl.className = 'upload-progress__status';
+    itemStatusEl.innerHTML = '0%';
+    itemFilenameContainerEl.appendChild(itemStatusEl);
+
+    const itemProgressBarContainerEl = document.createElement('div');
+    itemProgressBarContainerEl.className = 'upload-progress__bar-container';
+    itemContentEl.appendChild(itemProgressBarContainerEl);
+
+    const itemProgressBarEl = document.createElement('div');
+    itemProgressBarEl.className = 'upload-progress__bar';
+    itemProgressBarEl.style.width = '0%';
+    itemProgressBarContainerEl.appendChild(itemProgressBarEl);
 
     // Upload request
     const formData = new FormData();
@@ -90,17 +148,18 @@ function uploadFiles(files, listWrapperEl) {
       data: formData,
       isUpload: true,
       progress: percent => {
-        item.querySelector('.upload-bar').style.width = percent + '%';
+        itemProgressBarEl.style.width = Math.floor(percent) + '%';
+        itemStatusEl.innerHTML = Math.floor(percent) + '%';
       },
       success: response => {
         if (response.success) {
-          item.classList.add('upload-success');
+          itemContainerEl.classList.add('-success');
           if (response.listData) {
             listService.listData = response.listData;
             listService.render();
           }
         } else {
-          item.classList.add('upload-error');
+          itemContainerEl.classList.add('-error');
         }
       },
       error: xhr => {

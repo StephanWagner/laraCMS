@@ -14,6 +14,25 @@ use Illuminate\Support\Str;
 
 class MediaHelper
 {
+    private static $imageMimeTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/svg',
+        'image/svg+xml',
+        'image/gif',
+        'image/avif',
+        'image/tiff',
+        'image/bmp',
+        'image/heic',
+        'image/heif',
+        'image/x-tga',
+        'image/tga',
+        'image/x-icon',
+        'image/ico',
+        'image/vnd.microsoft.icon',
+    ];
+
     /**
      * Store file
      */
@@ -113,7 +132,7 @@ class MediaHelper
         $media->save();
 
         // Generate versions
-        if ($mediaType === 'image') {
+        if ($mediaType === 'image' && in_array($mimeType, self::$imageMimeTypes)) {
             if ($replaceId) {
                 self::deleteVersions($media);
             }
@@ -147,10 +166,11 @@ class MediaHelper
         $convertToWebp = true;
         $imageQuality = 85;
 
-        // Prefer imagick if available
-        $manager = extension_loaded('imagick')
-            ? new ImageManager(new ImagickDriver())
-            : new ImageManager(new GdDriver());
+        // Get the manager
+        $manager = self::getManager();
+
+        // Check if we can convert image
+        $convertImage = self::supportsMime($media->mime_type);
 
         // Storage folders
         $storageFolder = self::getStorageFolder();
@@ -167,31 +187,38 @@ class MediaHelper
                 continue;
             }
 
-            $image = $manager->read($originalPath)
-                ->scaleDown($maxWidth, $maxHeight);
+            $extension = $media->extension;
+            $versionFilename = ($storageSubfolder ? $storageSubfolder . '/' : '') . $media->uuid;
 
-            $extension = ($convertToWebp ? 'webp' : $media->extension);
-            $versionFilename = ($storageSubfolder ? $storageSubfolder . '/' : '') . $media->uuid . '-' . $key;
+            if ($convertImage) {
+                $image = $manager->read($originalPath)->scaleDown($maxWidth, $maxHeight);
+                if ($convertToWebp) $extension = 'webp';
+                $versionFilename .= '-' . $key;
+            }
 
             $storagePath = storage_path('app/public/' . $storageFolder . '/' . $versionFilename . '.' . $extension);
 
-            if ($convertToWebp) {
-                $image->encode(new WebpEncoder(quality: $imageQuality))
-                    ->save($storagePath);
-            } else {
-                $image->save($storagePath, quality: $imageQuality);
+            if ($convertImage) {
+                if ($convertToWebp) {
+                    $image->encode(new WebpEncoder(quality: $imageQuality))->save($storagePath);
+                } else {
+                    $image->save($storagePath, quality: $imageQuality);
+                }
             }
 
-            MediaVersion::create(
-                [
-                    'media_id' => $media->id,
-                    'size_key' => $key,
-                    'filename' => $versionFilename,
-                    'extension' => $extension,
-                    'width' => $image->width(),
-                    'height' => $image->height(),
-                ]
-            );
+            $fillMediaVersion = [
+                'media_id' => $media->id,
+                'size_key' => $key,
+                'filename' => $versionFilename,
+                'extension' => $extension,
+            ];
+
+            if ($convertImage) {
+                $fillMediaVersion['width'] = $image->width();
+                $fillMediaVersion['height'] = $image->height();
+            }
+
+            MediaVersion::create($fillMediaVersion);
         }
     }
 
@@ -272,5 +299,57 @@ class MediaHelper
     {
         $filename = self::getStorageFolder() . '/' . $media->filename . '.' . $media->extension;
         Storage::disk('public')->delete($filename);
+    }
+
+    /**
+     * Get the manager
+     */
+    private static function getManager(): ImageManager
+    {
+        return extension_loaded('imagick')
+            ? new ImageManager(new ImagickDriver())
+            : new ImageManager(new GdDriver());
+    }
+
+    /**
+     * Get supported MIME types for the current driver
+     */
+    private static function getSupportedMimes(): array
+    {
+        $manager = self::getManager();
+
+        if ($manager->driver() instanceof ImagickDriver) {
+            // Query formats from Imagick
+            $imagick = new \Imagick();
+            $formats = array_map('strtolower', $imagick->queryFormats());
+
+            print_r($formats);
+            die;
+
+            $map = self::$imageMimeTypes;
+
+            return array_values(array_intersect_key($map, array_flip($formats)));
+        }
+
+        if ($manager->driver() instanceof GdDriver) {
+            // GD is very limited
+            return [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/webp',
+                'image/bmp',
+            ];
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if a MIME type is supported by current setup
+     */
+    public static function supportsMime(string $mime): bool
+    {
+        return in_array($mime, self::getSupportedMimes(), true);
     }
 }

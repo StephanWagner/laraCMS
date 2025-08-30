@@ -1,14 +1,74 @@
 @use '../variables' as *;
 @use '../mixins' as *;
-@use "sass:map";
+@use 'sass:map';
+
+// Preview
+
+.file-preview {
+  display: block;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: $color-surface-3 no-repeat center center / cover;
+  border-radius: $tiny-border-radius;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.-extension-svg,
+  &.-extension-ico {
+    background-size: 24px;
+  }
+}
+
+a.file-preview {
+  text-decoration: none !important;
+
+  &::after {
+    content: '';
+    display: block;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    border-radius: calc($tiny-border-radius + 1px);
+    border: 2px solid rgba(#fff, 0.15);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    z-index: 2;
+    opacity: 0;
+    transition: transition('opacity');
+  }
+
+  &:hover {
+    text-decoration: none !important;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &.-type-image {
+    &::after {
+      border-color: rgba(#fff, 0.3);
+    }
+  }
+
+  &.-extension-svg,
+  &.-extension-ico {
+    &::after {
+      border-color: rgba(#fff, 0.15);
+    }
+  }
+}
+
+// Icon
 
 .file-icon,
 .file-icon .icon {
   width: 24px;
   height: 24px;
-}
-
-.file-icon .icon {
   position: relative;
   z-index: 1;
 }
@@ -41,7 +101,7 @@
       position: absolute;
       top: 7px;
       left: 0;
-      z-index: 1;
+      z-index: 2;
     }
   }
 
