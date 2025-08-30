@@ -1,6 +1,6 @@
 import { apiFetch } from '../services/api-fetch';
 import { attachDragDrop } from '../utils/drag-drop';
-import { fileExtensionToFileType, getFilePreview } from '../utils/file-icon';
+import { getFilePreviewFromFileInput } from '../utils/file-icon';
 
 export function initListUpload() {
   const buttonsEl = document.querySelectorAll('[data-list-upload]');
@@ -75,40 +75,8 @@ function uploadFiles(files, listWrapperEl) {
     const itemPreviewEl = document.createElement('div');
     itemPreviewEl.className = 'upload-progress__preview';
 
-    
-
-    const extension = file.name.split('.').pop();
-
-    console.log(extension);
-    console.log(fileExtensionToFileType(extension));
-
-    // if (fileExtensionToFileType(extension) == 'image') {
-    //   const mime = file.type;
-
-    //   console.log('aaa', mime);
-
-    //   if (mime === 'image/svg' || mime === 'image/svg+xml') {
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       const base64 = btoa(reader.result);
-    //       const url = `data:image/svg+xml;base64,${base64}`;
-    //       itemPreviewEl.style.backgroundImage = `url(${url})`;
-    //     };
-    //     reader.readAsText(file);
-    //   } else if (['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/gif'].includes(mime)) {
-    //     // Web-safe rasters
-    //     const url = URL.createObjectURL(file);
-    //     itemPreviewEl.style.backgroundImage = `url(${url})`;
-    //     const img = new Image();
-    //     img.onload = () => URL.revokeObjectURL(url);
-    //     img.src = url;
-    //   } else {
-    //     itemPreviewEl.innerHTML = getFilePreview(extension);
-    //   }
-    // } else {
-    //   itemPreviewEl.innerHTML = getFilePreview(extension);
-    // }
-    itemEl.appendChild(itemPreviewEl);
+    const itemPreviewIconEl = getFilePreviewFromFileInput(file);
+    itemEl.appendChild(itemPreviewIconEl);
 
     const itemContentEl = document.createElement('div');
     itemContentEl.className = 'upload-progress__content';

@@ -489,7 +489,7 @@ export class ListService {
             }
             itemColumnFilepreviewEl.appendChild(getFilePreview({
               extension: item.extension,
-              filename: imagePreviewFilename,
+              filename: '/media/' + imagePreviewFilename,
               linkUrl: column.isLink ? '/media/' + item.filename : null,
               linkTarget: column.isLink ? '_blank' : null,
             }));

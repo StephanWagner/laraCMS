@@ -181,16 +181,61 @@ export function getFilePreview({
   if (linkUrl) {
     filePreviewEl.href = linkUrl;
   }
-  
+
   if (linkTarget) {
     filePreviewEl.target = linkTarget;
   }
 
   if (fileType == 'image') {
-    filePreviewEl.style.backgroundImage = `url('/media/${filename}')`;
+    filePreviewEl.style.backgroundImage = `url('${filename}')`;
   } else {
     filePreviewEl.appendChild(getFileIcon(extension));
   }
 
   return filePreviewEl;
+}
+
+/**
+ * Get file preview from file input
+ */
+export function getFilePreviewFromFileInput(file) {
+  const extension = getFileExtensionFromFileInput(file);
+  const filename = getFilenameFromFileInput(file);
+  return getFilePreview({ extension, filename });
+}
+
+/**
+ * Get file extension from file input
+ */
+export function getFileExtensionFromFileInput(file) {
+  return file.name.split('.').pop();
+}
+
+/**
+ * Get filename from file input
+ */
+export function getFilenameFromFileInput(file) {
+  const extension = getFileExtensionFromFileInput(file);
+  let filename = null;
+
+  if (fileExtensionToFileType(extension) == 'image') {
+    const mime = file.type;
+    if (mime === 'image/svg' || mime === 'image/svg+xml') {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = btoa(reader.result);
+        filename = `data:image/svg+xml;base64,${base64}`;
+      };
+      reader.readAsText(file);
+    } else if (
+      ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'].includes(mime)
+    ) {
+      filename = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => URL.revokeObjectURL(filename);
+      img.src = filename;
+    }
+  }
+
+  return filename;
 }
