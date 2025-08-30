@@ -177,6 +177,11 @@ textarea.textfield {
     cursor: pointer;
     pointer-events: all;
     color: $color-surface-6 !important;
+    display: none;
+
+    .input__container.-has-value & {
+      display: block;
+    }
 
     &:hover {
       color: $default-text-color !important;
