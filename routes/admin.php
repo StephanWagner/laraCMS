@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\MenusController;
 use App\Http\Controllers\Admin\FormsController;
 use App\Http\Controllers\Admin\BlocksController;
 
-Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['web', 'isCmsInstalled'])->prefix('admin')->name('admin.')->group(function () {
 
     // Install
     Route::get('/install', [AuthController::class, 'install'])->name('install');
@@ -29,7 +29,7 @@ Route::middleware(['web', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name
     Route::post('/new-password', [AuthController::class, 'newPasswordRequest'])->name('new-password-request');
 });
 
-Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled', 'setLocale'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled'])->prefix('admin')->name('admin.')->group(function () {
     // Auth
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/delete-account', [AuthController::class, 'deleteAccount'])->name('delete-account');
