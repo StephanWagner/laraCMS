@@ -14,9 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // TODO Check how to differientiate between admin and frontend
-        $middleware->append(\App\Http\Middleware\SetLocale::class);
-
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
             'authGuard' => \App\Http\Middleware\AuthGuard::class,
@@ -26,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'accessDeveloper' => \App\Http\Middleware\AccessDeveloper::class,
             'accessDeveloper' => \App\Http\Middleware\AccessDeveloper::class,
             'injectContentType' => \App\Http\Middleware\InjectContentType::class,
+            
+            // TODO Check how to differientiate between admin and frontend
+            'setLocale' => \App\Http\Middleware\SetLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
