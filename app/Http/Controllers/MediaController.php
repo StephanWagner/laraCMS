@@ -32,6 +32,7 @@ class MediaController extends Controller
         return response()->file(Storage::disk('public')->path($path), [
             'Content-Type' => $mimeType,
             'Cache-Control' => 'public, max-age=31536000',
+            'Content-Disposition' => 'inline; filename="' . $media->slug . '.' . $media->extension . '"',
         ]);
     }
 }
