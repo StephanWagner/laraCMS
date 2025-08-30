@@ -48,7 +48,7 @@
   transition: transition('outline-color');
   outline-color: transparent;
 
-  .list__container.-is-dragover & {
+  .list__wrapper.-is-dragover & {
     outline: 1px dashed $color-surface-4;
     outline-offset: 4px;
   }

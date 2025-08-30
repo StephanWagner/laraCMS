@@ -30,11 +30,12 @@
   border: 1px solid $color-surface-3;
   border-radius: $small-border-radius;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 
   .upload-progress__item-container.-error & {
     border-color: $error-color;
+    cursor: pointer;
   }
   
   .upload-progress__item-container.-success & {
@@ -44,6 +45,9 @@
 
 .upload-progress__preview {
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: aqua;
 }
 
 .upload-progress__content {
@@ -56,27 +60,37 @@
   line-height: calc(32px - 4px - 3px);
   display: flex;
   justify-content: space-between;
-  gap: 16px;
 }
 
-.upload-progress__filename,
-.upload-progress__status {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.upload-progress__text {
+  width: calc(100% - 36px - 16px);
 }
 
 .upload-progress__filename {
-  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   min-width: 0;
+}
+
+.upload-progress__error {
+  color: $error-color;
+  line-height: 1.4;
+  margin: -2px 0 0;
 }
 
 .upload-progress__status {
   flex-shrink: 0;
   transition: transition('color');
+  width: calc(36px + 16px);
+  text-align: right;
 
   .upload-progress__item-container.-success & {
     color: $success-color;
+  }
+
+  .upload-progress__item-container.-error & {
+    color: $error-color;
   }
 }
 
@@ -93,10 +107,11 @@
 .upload-progress__bar {
   height: 3px;
   border-radius: 1.5px;
-  background: $info-color; // $primary-color;
+  background: $info-color;
   position: absolute;
   top: 0;
   left: 0;
   width: 0;
   transition: transition('width');
 }
+

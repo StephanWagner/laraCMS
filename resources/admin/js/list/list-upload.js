@@ -13,7 +13,6 @@ export function initListUpload() {
     // List wrapper
     const listId = buttonEl.getAttribute('data-list-upload');
     const listWrapperEl = document.querySelector(`[data-list="${listId}"]`);
-    const listContainerEl = listWrapperEl.querySelector('.list__container');
 
     if (!listWrapperEl) {
       console.warn('Target element not found.');
@@ -21,7 +20,7 @@ export function initListUpload() {
     }
 
     // Attach drag & drop
-    attachDragDrop(listContainerEl, {
+    attachDragDrop(listWrapperEl, {
       onDrop: files => {
         if (!files.length) return;
         uploadFiles(files, listWrapperEl);
@@ -115,19 +114,19 @@ function uploadFiles(files, listWrapperEl) {
     itemContentEl.className = 'upload-progress__content';
     itemEl.appendChild(itemContentEl);
 
-    const itemFilenameContainerEl = document.createElement('div');
-    itemFilenameContainerEl.className = 'upload-progress__text-container';
-    itemContentEl.appendChild(itemFilenameContainerEl);
+    const itemTextContainerEl = document.createElement('div');
+    itemTextContainerEl.className = 'upload-progress__text-container';
+    itemContentEl.appendChild(itemTextContainerEl);
 
-    const itemFilenameEl = document.createElement('div');
-    itemFilenameEl.className = 'upload-progress__filename';
-    itemFilenameEl.innerHTML = file.name;
-    itemFilenameContainerEl.appendChild(itemFilenameEl);
+    const itemTextEl = document.createElement('div');
+    itemTextEl.className = 'upload-progress__text';
+    itemTextEl.innerHTML = '<div class="upload-progress__filename">' + file.name + '</div>';
+    itemTextContainerEl.appendChild(itemTextEl);
 
     const itemStatusEl = document.createElement('div');
     itemStatusEl.className = 'upload-progress__status';
     itemStatusEl.innerHTML = '0%';
-    itemFilenameContainerEl.appendChild(itemStatusEl);
+    itemTextContainerEl.appendChild(itemStatusEl);
 
     const itemProgressBarContainerEl = document.createElement('div');
     itemProgressBarContainerEl.className = 'upload-progress__bar-container';
@@ -160,6 +159,12 @@ function uploadFiles(files, listWrapperEl) {
           }
         } else {
           itemContainerEl.classList.add('-error');
+          if (response.error) {
+            const errorEl = document.createElement('div');
+            errorEl.className = 'upload-progress__error';
+            errorEl.innerHTML = response.error;
+            itemTextEl.appendChild(errorEl);
+          }
         }
       },
       error: xhr => {
