@@ -28,6 +28,7 @@ export class ListService {
     // TODO
     // this.data
     // this.config
+    // this.texts
 
     // TODO if list data is missing, get list data then init
 
@@ -185,6 +186,7 @@ export class ListService {
     // Content
     const contentEl = document.createElement('div');
     contentEl.className = 'list-content__container';
+    contentEl.classList.add('-list-view-' + this.listData.config.view);
 
     this.contentHeader = document.createElement('div');
     this.contentHeader.className = 'list-content__header';
@@ -288,6 +290,11 @@ export class ListService {
     const listItems = this.listData?.items?.data || [];
     const listTexts = this.listData?.texts || {};
 
+    // Update view class
+    this.wrapper.querySelector('.list-content__container').classList.toggle('-list-view-grid', listConfig.view === 'grid');
+    this.wrapper.querySelector('.list-content__container').classList.toggle('-list-view-list', listConfig.view === 'list');
+
+    // Colummns for trash
     if (listConfig.trashed) {
       listColumns.unshift({
         key: 'multiselect',

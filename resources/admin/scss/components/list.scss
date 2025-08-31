@@ -88,6 +88,12 @@
   .list__wrapper.-empty & {
     border-radius: $small-border-radius;
   }
+
+  .list-content__container.-list-view-grid & {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
 }
 
 .list-items-amount__container {
@@ -106,6 +112,13 @@
   line-height: 24px;
   margin: 0 0 1px;
   transition: transitionSlow('opacity', 'color');
+
+  .list-content__container.-list-view-grid & {
+    overflow: hidden;
+    background: rgba(aqua, 0.1);
+    aspect-ratio: 1 / 1;
+    border-radius: $small-border-radius;
+  }
 
   .list__wrapper.-empty & {
     color: $secondary-text-color;
