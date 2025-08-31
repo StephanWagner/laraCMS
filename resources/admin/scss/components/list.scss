@@ -23,6 +23,10 @@
   margin: 12px 0 0;
   display: flex;
   justify-content: space-between;
+
+  .list__wrapper.-empty & {
+    display: none;
+  }
 }
 
 .list-filters__container {
