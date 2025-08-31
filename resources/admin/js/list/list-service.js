@@ -9,9 +9,10 @@ import { debounce } from '../utils/debounce';
 import { textfield } from '../form/input/textfield';
 import { select } from '../form/input/select';
 import { renderPagination } from './pagination';
-import { menuIsOpen, closeMenu, openMenu } from '../ui/menu';
-import { getFilePreview, fileExtensionToFileType } from '../utils/file-icon';
+import { getFilePreview } from '../utils/file-icon';
 import { initAttachSearchEvent } from '../form/events';
+import { getMultiselectTogglerEl, updateMultiselect } from './list-service/multiselect';
+import { resolveText } from '../utils/text';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -151,8 +152,6 @@ export class ListService {
       size: 'small',
       value: this.listData.config.perPage || this.listData.config.defaultPerPage || 25,
       options: [
-        { value: '1', label: '1' },
-        { value: '2', label: '2' },
         { value: '3', label: '3' },
         { value: '10', label: '10' },
         { value: '25', label: '25' },
@@ -185,9 +184,22 @@ export class ListService {
     footerEl.className = 'list-footer__container';
 
     // Multiselect container
-    this.multiselectContainerEl = document.createElement('div');
-    this.multiselectContainerEl.className = 'list-multiselect__container';
-    footerEl.appendChild(this.multiselectContainerEl);
+    const multiselectContainerEl = document.createElement('div');
+    multiselectContainerEl.className = 'list-multiselect__container';
+    footerEl.appendChild(multiselectContainerEl);
+
+    // Multiselect toggler
+    const multiselectTogglerEl = document.createElement('div');
+    multiselectTogglerEl.className = 'list-multiselect__toggler-contaienr';
+    multiselectContainerEl.appendChild(multiselectTogglerEl);
+
+    const multiSelectTogglerEl = getMultiselectTogglerEl(this);
+    multiselectContainerEl.appendChild(multiSelectTogglerEl);
+
+    // Multiselect button
+    const multiselectButtonContainerEl = document.createElement('div');
+    multiselectButtonContainerEl.className = 'list-multiselect__button-container';
+    multiselectContainerEl.appendChild(multiselectButtonContainerEl);
 
     // Pagination container
     this.paginationContainerEl = document.createElement('div');
@@ -204,6 +216,7 @@ export class ListService {
     });
   }
 
+  // Load data
   loadData(params = {}, cancelPrevious = false) {
     if (this.loading) {
       if (cancelPrevious && this.xhr) {
@@ -252,6 +265,7 @@ export class ListService {
     });
   }
 
+  // Render
   render(params = {}) {
     // Config
     const listConfig = this.listData?.config || {};
@@ -316,45 +330,12 @@ export class ListService {
         }
 
         if (column.type == 'multiselect') {
-          columnEl.classList.add('no-select');
-          const columnMultiselectIconEl = document.createElement('div');
-          columnMultiselectIconEl.classList.add('list__multiselect-icon', 'icon');
-          columnMultiselectIconEl.innerHTML = 'check_box_outline_blank';
+          const columnMultiselectIconEl = getMultiselectTogglerEl(this);
           columnEl.append(columnMultiselectIconEl);
-          columnEl.addEventListener('click', () => {
-            const multiselectAllEls = this.wrapper.querySelectorAll('.list-item__container');
-            const multiselectSelectedEls = this.wrapper.querySelectorAll(
-              '.list-item__container[data-is-selected]'
-            );
-            const multiselectNotSelectedEls = this.wrapper.querySelectorAll(
-              '.list-item__container:not([data-is-selected])'
-            );
-
-            let triggerEls;
-
-            if (
-              multiselectSelectedEls.length === 0 ||
-              multiselectAllEls.length === multiselectSelectedEls.length
-            ) {
-              triggerEls = multiselectAllEls;
-            } else {
-              triggerEls = multiselectNotSelectedEls;
-            }
-
-            triggerEls.forEach(container => {
-              const multiselectEl = container.querySelector(
-                '.list__column.-body.-type-multiselect'
-              );
-              if (multiselectEl) {
-                multiselectEl.click();
-              }
-            });
-
-            this.updateMultiselect();
-          });
         }
 
         if (column.sortable) {
+          // TODO move to list-service/sortable.js
           columnEl.classList.add('-sortable');
           columnEl.dataset.orderBy = column.source;
           columnEl.dataset.orderDirection =
@@ -455,7 +436,7 @@ export class ListService {
             itemColumnEl.classList.add('no-select');
             const itemColumnMultiselectIconEl = document.createElement('div');
             itemColumnMultiselectIconEl.classList.add('list__multiselect-icon', 'icon');
-            itemColumnMultiselectIconEl.innerHTML = 'check_box_outline_blank';
+            itemColumnMultiselectIconEl.innerText = 'check_box_outline_blank';
             itemColumnEl.append(itemColumnMultiselectIconEl);
             itemColumnEl.addEventListener('click', () => {
               let isSelected = itemContainerEl.hasAttribute('data-is-selected');
@@ -466,10 +447,10 @@ export class ListService {
                 itemContainerEl.setAttribute('data-is-selected', '');
                 isSelected = true;
               }
-              itemColumnMultiselectIconEl.innerHTML = isSelected
+              itemColumnMultiselectIconEl.innerText = isSelected
                 ? 'check_box'
                 : 'check_box_outline_blank';
-              this.updateMultiselect();
+              updateMultiselect(this);
             });
             break;
 
@@ -477,7 +458,7 @@ export class ListService {
             itemColumnEl.classList.add('no-select');
             const itemColumnSortableEl = document.createElement('div');
             itemColumnSortableEl.classList.add('list__sortable-handle', 'icon');
-            itemColumnSortableEl.innerHTML = 'drag_handle';
+            itemColumnSortableEl.innerText = 'drag_handle';
             itemColumnEl.append(itemColumnSortableEl);
             break;
 
@@ -498,12 +479,14 @@ export class ListService {
             if (column.source) {
               imagePreviewFilename = getNestedValue(item, column.source + '.filename');
             }
-            itemColumnFilepreviewEl.appendChild(getFilePreview({
-              extension: item.extension,
-              filename: '/media/' + imagePreviewFilename,
-              linkUrl: column.isLink ? '/media/' + item.filename : null,
-              linkTarget: column.isLink ? '_blank' : null,
-            }));
+            itemColumnFilepreviewEl.appendChild(
+              getFilePreview({
+                extension: item.extension,
+                filename: '/media/' + imagePreviewFilename,
+                linkUrl: column.isLink ? '/media/' + item.filename : null,
+                linkTarget: column.isLink ? '_blank' : null,
+              })
+            );
             itemColumnEl.append(itemColumnFilepreviewEl);
             break;
 
@@ -775,18 +758,11 @@ export class ListService {
         },
         onEnd: evt => {
           document.body.classList.remove('-is-dragging');
-
-          // TODO add pagination
-
           const oldIndex = evt.oldIndex;
           const newIndex = evt.newIndex;
-
-          if (oldIndex === newIndex) {
-            return;
-          }
+          if (oldIndex === newIndex) return;
 
           const rows = Array.from(this.contentItems.children);
-
           const [start, end] = [oldIndex, newIndex].sort((a, b) => a - b);
           const affectedRows = rows.slice(start, end + 1);
 
@@ -817,7 +793,7 @@ export class ListService {
     }
 
     // Update multiselect
-    this.updateMultiselect();
+    updateMultiselect(this);
 
     // Update item amount buttons
     updateItemAmountButtons(
@@ -845,252 +821,6 @@ export class ListService {
   onTrashPage() {
     const trashButton = document.querySelector('.list-items-amount__container.-trashed');
     return trashButton && trashButton.classList.contains('-active');
-  }
-
-  updateMultiselect() {
-    const wrapper = this.wrapper;
-    const listTexts = this.listData?.texts || {};
-
-    const multiselectIconEl = wrapper.querySelector(
-      '.list__column.-head.-type-multiselect .list__multiselect-icon'
-    );
-    if (multiselectIconEl) {
-      const multiselectAllEls = wrapper.querySelectorAll('.list-item__container');
-      const multiselectSelectedEls = wrapper.querySelectorAll(
-        '.list-item__container[data-is-selected]'
-      );
-
-      const multiselectAmount = multiselectSelectedEls.length;
-      const multiselectContainerEl = document.querySelector('.list-multiselect__container');
-      const multiselectCurrentButtonEl = document.querySelector('.list-multiselect__button');
-      multiselectCurrentButtonEl && multiselectCurrentButtonEl.remove();
-
-      if (multiselectAmount === 0) {
-        multiselectIconEl.innerHTML = 'check_box_outline_blank';
-      } else {
-        if (multiselectAllEls.length === multiselectAmount) {
-          multiselectIconEl.innerHTML = 'check_box';
-        } else {
-          multiselectIconEl.innerHTML = 'indeterminate_check_box';
-        }
-
-        const multiselectButtonEl = document.createElement('div');
-        multiselectButtonEl.className = 'list-multiselect__button button -selectable no-select';
-        multiselectButtonEl.dataset.toggleMenu = 'multiselect';
-        multiselectButtonEl.innerHTML = resolveText(
-          listTexts,
-          'multiselect.buttonText' + (multiselectAmount == 1 ? '1' : 'N')
-        ).replace('{n}', multiselectAmount);
-
-        multiselectButtonEl.addEventListener('click', () => {
-          this.openMultiselectMenu();
-        });
-
-        multiselectContainerEl.append(multiselectButtonEl);
-      }
-    }
-  }
-
-  /**
-   * Deselect all selected elements
-   */
-  deselectAll() {
-    document.querySelectorAll('.list-item__container[data-is-selected]').forEach(el => {
-      el.removeAttribute('data-is-selected');
-      el.querySelector('.list__multiselect-icon').innerHTML = 'check_box_outline_blank';
-    });
-    this.updateMultiselect();
-  }
-
-  /**
-   * Open the multiselect menu
-   */
-  openMultiselectMenu() {
-    const listConfig = this.listData?.config || {};
-    const listTexts = this.listData?.texts || {};
-    const multiselectContainerEl = document.querySelector('.list-multiselect__container');
-    const currentMultiselectMenuEl = document.querySelector(
-      '.list-multiselect__menu' + (this.onTrashPage() ? '.-trash' : ':not(.-trash)')
-    );
-
-    if (!currentMultiselectMenuEl) {
-      const multiselectMenuEl = document.createElement('div');
-      multiselectMenuEl.className =
-        'list-multiselect__menu menu-overlay__wrapper -secondary-links -multiselect' +
-        (this.onTrashPage() ? ' -trash' : '');
-      multiselectMenuEl.dataset.menu = 'multiselect' + (this.onTrashPage() ? '-trash' : '');
-
-      const multiselectMenuLinksEl = document.createElement('div');
-      multiselectMenuLinksEl.className = 'menu-overlay__links';
-      multiselectMenuEl.append(multiselectMenuLinksEl);
-
-      const multiselectActions = [];
-
-      // Restore action
-      if (this.onTrashPage()) {
-        multiselectActions.push({
-          action: 'restore',
-          icon: 'restore_from_trash',
-          text: 'multiselect.actionRestore',
-          callback: () => {
-            multiSelectRequest(this, {
-              url: '/admin/api/restore',
-              success: response => {
-                closeMenu('multiselect-trash', 'multiselect');
-                this.listData = response.listData;
-                this.render();
-                success(response.message);
-              },
-            })();
-          },
-        });
-      }
-
-      // Not on trah page
-      if (!this.onTrashPage()) {
-        // Activate action
-        if (listConfig.hasMultiSelect?.includes('activate')) {
-          multiselectActions.push({
-            action: 'activate',
-            icon: 'toggle_on',
-            text: 'multiselect.actionActivate',
-            callback: () => {
-              multiSelectRequest(this, {
-                url: '/admin/api/toggle',
-                params: {
-                  action: 'activate',
-                },
-                success: (response, ids) => {
-                  closeMenu('multiselect');
-                  ids.forEach(id => {
-                    const itemContainerEl = document.querySelector(
-                      `.list-item__container[data-id="${id}"]`
-                    );
-                    const actionIconEl = itemContainerEl?.querySelector(
-                      '.list__action.-type-toggle .list__action-icon'
-                    );
-                    if (!itemContainerEl || !actionIconEl) return;
-                    actionIconEl.innerHTML = 'toggle_on';
-                    itemContainerEl.classList.remove('-inactive');
-                  });
-                  this.deselectAll();
-                  success(response.message);
-                },
-              })();
-            },
-          });
-        }
-
-        // Deactivate action
-        if (listConfig.hasMultiSelect?.includes('deactivate')) {
-          multiselectActions.push({
-            action: 'deactivate',
-            icon: 'toggle_off',
-            text: 'multiselect.actionDeactivate',
-            callback: () => {
-              multiSelectRequest(this, {
-                url: '/admin/api/toggle',
-                params: {
-                  action: 'deactivate',
-                },
-                success: (response, ids) => {
-                  closeMenu('multiselect');
-                  ids.forEach(id => {
-                    const itemContainerEl = document.querySelector(
-                      `.list-item__container[data-id="${id}"]`
-                    );
-                    const actionIconEl = itemContainerEl?.querySelector(
-                      '.list__action.-type-toggle .list__action-icon'
-                    );
-                    if (!itemContainerEl || !actionIconEl) return;
-                    actionIconEl.innerHTML = 'toggle_off';
-                    itemContainerEl.classList.add('-inactive');
-                  });
-                  this.deselectAll();
-                  success(response.message);
-                },
-              })();
-            },
-          });
-        }
-      }
-
-      // Delete action
-      if (
-        this.onTrashPage() ||
-        listConfig.hasMultiSelect?.includes('delete') ||
-        listConfig.hasMultiSelect?.includes('force-delete')
-      ) {
-        const forceDelete =
-          this.onTrashPage() ||
-          listConfig.hasMultiSelect?.includes('force-delete') ||
-          !listConfig.hasSoftDelete;
-
-        multiselectActions.push({
-          action: forceDelete ? 'force-delete' : 'delete',
-          icon: forceDelete ? 'delete_forever' : 'delete',
-          text: 'multiselect.action' + (forceDelete ? 'ForceDelete' : 'Delete'),
-          callback: () => {
-            confirmModal({
-              title: this.listData.texts.deleteModal.title,
-              text: this.listData.texts.deleteModal[
-                forceDelete ? 'textForceDeleteBulk' : 'textSoftDeleteBulk'
-              ],
-              cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
-              submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-              submitCallback: (modalEl, submitBtn) => {
-                multiSelectRequest(this, {
-                  url: '/admin/api/delete',
-                  params: {
-                    force: forceDelete,
-                  },
-                  before: () => {
-                    submitBtn.classList.add('-loading');
-                    submitBtn.disabled = true;
-                  },
-                  complete: () => {
-                    submitBtn.classList.remove('-loading');
-                    submitBtn.disabled = false;
-                  },
-                  success: response => {
-                    this.listData = response.listData;
-                    this.render();
-                    success(response.message);
-                    closeMenu('multiselect-trash', 'multiselect');
-                    closeConfirmModal();
-                  },
-                })();
-              },
-            });
-          },
-        });
-      }
-
-      multiselectActions.forEach(action => {
-        const multiselectMenuLinkEl = document.createElement('div');
-        multiselectMenuLinkEl.className = 'menu-overlay__link';
-        multiselectMenuLinkEl.addEventListener('click', () => {
-          action.callback && action.callback();
-        });
-        multiselectMenuLinksEl.append(multiselectMenuLinkEl);
-
-        const multiselectMenuLinkIconEl = document.createElement('div');
-        multiselectMenuLinkIconEl.className = 'menu-overlay__icon icon';
-        multiselectMenuLinkIconEl.innerHTML = action.icon;
-        multiselectMenuLinkEl.append(multiselectMenuLinkIconEl);
-
-        const multiselectMenuLinkTextEl = document.createElement('div');
-        multiselectMenuLinkTextEl.className = 'menu-overlay__link-text';
-        multiselectMenuLinkTextEl.innerHTML = resolveText(listTexts, action.text);
-        multiselectMenuLinkEl.append(multiselectMenuLinkTextEl);
-      });
-
-      multiselectContainerEl.append(multiselectMenuEl);
-    }
-
-    const triggerId = 'multiselect';
-    const menuId = 'multiselect' + (this.onTrashPage() ? '-trash' : '');
-    menuIsOpen(menuId) ? closeMenu(menuId, triggerId) : openMenu(menuId, triggerId);
   }
 }
 
@@ -1130,50 +860,4 @@ function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
     const textTrash = listData.texts.itemCount['trash' + textTrashKey];
     trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);
   }
-}
-
-/**
- * Resolve text
- */
-function resolveText(texts, textId) {
-  return getNestedValue(texts, textId) ?? textId;
-}
-
-/**
- * Multiselect actions
- */
-function multiSelectRequest(list, { url, params = {}, before, complete, success, error }) {
-  return () => {
-    if (list._bulkRequestRunning) return;
-
-    const ids = Array.from(
-      document.querySelectorAll('.list-item__container[data-is-selected]')
-    ).map(el => el.dataset.id);
-
-    params.ids = ids;
-    params.key = list.listData.config.key;
-
-    apiFetch({
-      url: url,
-      data: getListParams({}, list.listData.config, params),
-      before: () => {
-        list._bulkRequestRunning = true;
-        before && before(ids);
-      },
-      complete: () => {
-        list._bulkRequestRunning = false;
-        complete && complete(ids);
-      },
-      success: response => {
-        if (response.success) {
-          success && success(response, ids);
-        } else {
-          error ? error(response, ids) : networkError(response);
-        }
-      },
-      error: xhr => {
-        networkError(xhr);
-      },
-    });
-  };
 }

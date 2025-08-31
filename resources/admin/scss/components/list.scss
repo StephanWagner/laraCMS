@@ -237,12 +237,6 @@
   &.-type-multiselect {
     flex-shrink: 0;
     width: 24px;
-    cursor: pointer;
-    color: $secondary-text-color;
-
-    &:hover {
-      color: $light-text-color;
-    }
   }
 
   &.-type-filepreview {
@@ -372,15 +366,6 @@
   margin: auto;
 }
 
-.list__multiselect-icon {
-  display: block;
-  height: 24px;
-  width: 20px;
-  font-size: 20px;
-  line-height: 24px;
-  margin: auto;
-}
-
 .list__order-icon {
   transition: transition('opacity', 'transform');
   opacity: 0;
@@ -411,10 +396,35 @@
 
 .list-multiselect__container {
   position: relative;
-  display: block;
+  display: flex;
   text-decoration: none;
 
   &:hover {
     text-decoration: none;
+  }
+}
+
+.list__multiselect-icon {
+  display: block;
+  height: 24px;
+  width: 24px;
+  font-size: 20px;
+  line-height: 24px;
+  margin: auto;
+  text-align: center;
+  color: $secondary-text-color;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: $light-text-color;
+  }
+
+  .list-multiselect__container & {
+    width: calc(24px + 8px);
+    height: 32px;
+    line-height: 32px;
+    padding: 0 0 0 8px;
+    margin: 0 8px 0 0;
   }
 }

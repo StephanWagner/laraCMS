@@ -160,6 +160,7 @@ function uploadFiles(files, listWrapperEl) {
         }
       },
       error: xhr => {
+        // TODO test if we also should show red border
         const errorEl = document.createElement('div');
         errorEl.className = 'upload-progress__error';
         errorEl.innerHTML = networkErrorText(xhr);
