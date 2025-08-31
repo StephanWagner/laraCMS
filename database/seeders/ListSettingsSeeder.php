@@ -232,6 +232,7 @@ class ListSettingsSeeder extends Seeder
                     ],
                     'hasSoftDelete' => false,
                     'hasGridView' => true,
+                    'defaultView' => 'grid',
                     'searchables' => [
                         ['column' => 'title'],
                         ['column' => 'mime_type'],

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ListService;
 use App\Services\FormService;
 use App\Helpers\MediaHelper;
+use App\Helpers\ArrayHelper;
 
 class ApiController extends Controller
 {
@@ -315,8 +316,6 @@ class ApiController extends Controller
      */
     public function mediaUpload()
     {
-        sleep(1);
-
         $file = request()->file('file');
 
         $response = MediaHelper::store($file);
@@ -334,5 +333,38 @@ class ApiController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * Update user config for a list
+     */
+    public function updateUserConfig()
+    {
+        $data = request()->input('data');
+
+        if (empty($data)) {
+            return [
+                'success' => false,
+                'message' => 'Data is empty.',
+            ];
+        }
+        
+        $user = Auth::user();
+
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => 'User not found.',
+            ];
+        }
+
+        $userSettings = $user->settings ?? [];
+        $userSettings = ArrayHelper::mergeRecursiveDistinct($userSettings, $data);
+        $user->settings = $userSettings;
+        $user->save();
+
+        return [
+            'success' => true,
+        ];
     }
 }

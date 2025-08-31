@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Models\ContentType;
@@ -84,7 +85,7 @@ class ListService
         }
 
         // Get user settings
-        $user = auth()->user();
+        $user = Auth::user();
         $userSettings = $user->settings ?? [];
         $userSettings['list-settings'] = $userSettings['list-settings'] ?? [];
         $userListSettings = $userSettings['list-settings'][$key] ?? [];
@@ -177,9 +178,11 @@ class ListService
         }
 
         $config['page'] = $items->currentPage();
+        $config['view'] = $params['view'] ?? $userListSettings['view'] ?? $config['defaultView'] ?? 'grid';
 
         // Update users config
         $userListSettings['perPage'] = $config['perPage'];
+        $userListSettings['view'] = $config['view'];
 
         if (!$trashed) {
             $userListSettings['orderBy'] = $config['orderBy'];

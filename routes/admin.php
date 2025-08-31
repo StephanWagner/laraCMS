@@ -111,6 +111,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
         ->name('api.')
         ->controller(\App\Http\Controllers\Admin\ApiController::class)
         ->group(function () {
+            Route::post('update-user-config', 'updateUserConfig')->name('update-user-config');
             Route::post('list', 'list')->name('list');
             Route::post('save-form', 'saveForm')->name('save-form');
             Route::post('reorder-list', 'reorderList')->name('reorder-list');

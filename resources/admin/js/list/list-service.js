@@ -13,6 +13,7 @@ import { getFilePreview } from '../utils/file-icon';
 import { initAttachSearchEvent } from '../form/events';
 import { getMultiselectTogglerEl, updateMultiselect } from './list-service/multiselect';
 import { resolveText } from '../utils/text';
+import { updateUserConfig } from '../services/user-config';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -49,6 +50,8 @@ export class ListService {
 
     // Views
     if (this.listData.config.hasGridView) {
+      const activeView = this.listData.config.view || this.listData.config.defaultView;
+
       const viewOptionsContainerEl = document.createElement('div');
       viewOptionsContainerEl.className = 'list-view-options__container selectable-button-list';
       filtersContainerEl.appendChild(viewOptionsContainerEl);
@@ -56,13 +59,25 @@ export class ListService {
       const viewOptionGridViewContainerEl = document.createElement('div');
       viewOptionGridViewContainerEl.className =
         'list-view-option__container button -selectable no-select -single-icon -list-view';
-      viewOptionGridViewContainerEl.innerHTML = '<div class="icon">lists</div>';
+      viewOptionGridViewContainerEl.innerHTML = '<div class="icon">grid_view</div>';
+      viewOptionGridViewContainerEl.dataset.listView = 'grid';
+      activeView === 'grid' && viewOptionGridViewContainerEl.classList.add('-active');
+      viewOptionGridViewContainerEl.addEventListener('click', () => {
+        this.listData.config.view = 'grid';
+        this.setView('grid');
+      });
       viewOptionsContainerEl.appendChild(viewOptionGridViewContainerEl);
 
       const viewOptionListViewContainerEl = document.createElement('div');
       viewOptionListViewContainerEl.className =
         'list-view-option__container button -selectable no-select -single-icon -grid-view';
-      viewOptionListViewContainerEl.innerHTML = '<div class="icon">grid_view</div>';
+      viewOptionListViewContainerEl.innerHTML = '<div class="icon">lists</div>';
+      viewOptionListViewContainerEl.dataset.listView = 'list';
+      activeView === 'list' && viewOptionListViewContainerEl.classList.add('-active');
+      viewOptionListViewContainerEl.addEventListener('click', () => {
+        this.listData.config.view = 'list';
+        this.setView('list');
+      });
       viewOptionsContainerEl.appendChild(viewOptionListViewContainerEl);
     }
 
@@ -818,9 +833,33 @@ export class ListService {
     this.paginationContainerEl.append(paginationContainerEl);
   }
 
+  // Check if trash page
   onTrashPage() {
     const trashButton = document.querySelector('.list-items-amount__container.-trashed');
     return trashButton && trashButton.classList.contains('-active');
+  }
+
+  // Get view
+  getView() {
+    return this.listData.config.view;
+  }
+
+  // Set view
+  setView(view) {
+    this.listData.config.view = view;
+    this.render();
+
+    document.querySelectorAll('.list-view-option__container').forEach(el => {
+      el.classList.toggle('-active', el.dataset.listView === view);
+    });
+
+    updateUserConfig({
+      'list-settings': {
+        [this.listData.config.key]: {
+          view: view,
+        },
+      },
+    });
   }
 }
 
@@ -836,6 +875,7 @@ function getListParams(params = {}, listConfig = {}, obj = {}) {
     perPage: params?.perPage || listConfig?.perPage,
     trashed: params?.trashed || listConfig?.trashed,
     page: params?.page || listConfig?.page,
+    view: params?.view || listConfig?.view,
     ...obj,
   };
 }
