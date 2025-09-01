@@ -178,7 +178,7 @@ class ListService
         }
 
         $config['page'] = $items->currentPage();
-        $config['view'] = $params['view'] ?? $userListSettings['view'] ?? $config['defaultView'] ?? 'grid';
+        $config['view'] = $params['view'] ?? $userListSettings['view'] ?? $config['defaultView'] ?? 'list';
 
         // Update users config
         $userListSettings['perPage'] = $config['perPage'];
