@@ -291,8 +291,12 @@ export class ListService {
     const listTexts = this.listData?.texts || {};
 
     // Update view class
-    this.wrapper.querySelector('.list-content__container').classList.toggle('-list-view-grid', listConfig.view === 'grid');
-    this.wrapper.querySelector('.list-content__container').classList.toggle('-list-view-list', listConfig.view === 'list');
+    this.wrapper
+      .querySelector('.list-content__container')
+      .classList.toggle('-list-view-grid', listConfig.view === 'grid');
+    this.wrapper
+      .querySelector('.list-content__container')
+      .classList.toggle('-list-view-list', listConfig.view === 'list');
 
     // Colummns for trash
     if (listConfig.trashed) {
@@ -485,6 +489,10 @@ export class ListService {
             break;
 
           case 'icon':
+            if (listConfig.view === 'grid') {
+              break;
+            }
+
             const itemColumnIconEl = document.createElement('div');
             itemColumnIconEl.classList.add('icon');
             itemColumnIconEl.innerHTML = getNestedValue(item, column.source);
@@ -514,13 +522,20 @@ export class ListService {
 
           case 'title':
             const title = getNestedValue(item, column.source);
-            const itemColumnTitleLinkEl = document.createElement('a');
-            itemColumnTitleLinkEl.href = editLink;
+            const itemColumnTitleLinkEl = document.createElement(
+              listConfig.view === 'grid' ? 'div' : 'a'
+            );
+            if (listConfig.view !== 'grid') {
+              itemColumnTitleLinkEl.href = editLink;
+            }
             itemColumnTitleLinkEl.innerHTML = title;
             itemColumnEl.append(itemColumnTitleLinkEl);
             break;
 
           case 'email':
+            if (listConfig.view === 'grid') {
+              break;
+            }
             const email = getNestedValue(item, column.source);
             const itemColumnEmailLinkEl = document.createElement('a');
             itemColumnEmailLinkEl.href = 'mailto:' + email;
@@ -529,6 +544,9 @@ export class ListService {
             break;
 
           case 'badge':
+            if (listConfig.view === 'grid') {
+              break;
+            }
             const badgeKey = getNestedValue(item, column.source);
             const badgeText = column.config?.map[badgeKey]?.text || badgeKey;
             const itemColumnBadgeEl = document.createElement('div');
@@ -538,12 +556,18 @@ export class ListService {
             break;
 
           case 'datetime':
+            if (listConfig.view === 'grid') {
+              break;
+            }
             let datetime = getNestedValue(item, column.source);
             datetime = formatDatetime(datetime, { relative: column.relativeDatetime });
             itemColumnEl.innerHTML = datetime;
             break;
 
           case 'username':
+            if (listConfig.view === 'grid') {
+              break;
+            }
             itemColumnEl.innerHTML = getNestedValue(item, column.source);
             break;
 

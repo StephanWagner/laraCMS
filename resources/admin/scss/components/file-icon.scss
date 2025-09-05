@@ -87,8 +87,7 @@ a.file-preview {
   &.-extension-doc,
   &.-extension-docx,
   &.-extension-ppt,
-  &.-extension-pptx,
-  &.-extension-pdf {
+  &.-extension-pptx {
     &::after {
       font-family: Verdana, sans-serif;
       width: 11px;
@@ -132,8 +131,20 @@ a.file-preview {
 
   &.-extension-pdf {
     &::after {
-      content: 'P';
-      background: map.get($file-extension-colors, pdf);
+      content: 'PDF';
+      font-family: Verdana, sans-serif;
+      height: 11px;
+      font-size: 6px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 11px;
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-indent: -0.5px;
+      color: map.get($file-extension-colors, pdf);
     }
   }
 }
