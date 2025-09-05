@@ -505,14 +505,20 @@ export class ListService {
             itemColumnFilepreviewEl.classList.add('list__filepreview');
             itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
 
-            let imagePreviewFilename = null;
-            if (column.source) {
-              imagePreviewFilename = getNestedValue(item, column.source + '.filename');
+            let previewUrl = null;
+            if (item.extension == 'ico' || item.extension == 'svg') { 
+              previewUrl = '/media/' + item.filename;
+            } else if (column.source) {
+              const previewFilename = getNestedValue(item, column.source + '.filename');
+              if (previewFilename) {
+                previewUrl = '/media/' + previewFilename;
+              }
             }
+
             itemColumnFilepreviewEl.appendChild(
               getFilePreview({
                 extension: item.extension,
-                filename: '/media/' + imagePreviewFilename,
+                previewUrl: previewUrl,
                 linkUrl: column.isLink ? '/media/' + item.filename : null,
                 linkTarget: column.isLink ? '_blank' : null,
               })
@@ -897,7 +903,7 @@ export class ListService {
 /**
  * Get list params
  */
-function getListParams(params = {}, listConfig = {}, obj = {}) {
+export function getListParams(params = {}, listConfig = {}, obj = {}) {
   return {
     key: listConfig?.key,
     orderBy: params?.orderBy || listConfig?.orderBy,

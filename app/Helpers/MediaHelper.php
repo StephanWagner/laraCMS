@@ -15,25 +15,6 @@ use Illuminate\Support\Facades\Log;
 
 class MediaHelper
 {
-    private static $imageMimeTypes = [
-        'image/jpeg',
-        'image/png',
-        'image/webp',
-        'image/svg',
-        'image/svg+xml',
-        'image/gif',
-        'image/avif',
-        'image/tiff',
-        'image/bmp',
-        'image/heic',
-        'image/heif',
-        'image/x-tga',
-        'image/tga',
-        'image/x-icon',
-        'image/ico',
-        'image/vnd.microsoft.icon',
-    ];
-
     /**
      * Store file
      */
@@ -132,10 +113,10 @@ class MediaHelper
         $media->save();
 
         // Generate versions
-        if ($mediaType === 'image' && in_array($mimeType, self::$imageMimeTypes)) {
-            if ($replaceId) {
-                self::deleteVersions($media);
-            }
+        if (
+            $mimeType === 'application/pdf' ||
+            $mediaType === 'image' && self::supportsMime($mimeType)
+        ) {
             self::generateVersions($media);
         }
 
@@ -153,74 +134,86 @@ class MediaHelper
     public static function generateVersions(Media $media): void
     {
         // Versions
-        // TODO get from settings
         $versions = [
-            'large'  => [2400, 2400],
-            'medium' => [1200, 1200],
-            'small'  => [600, 600],
+            'large'      => [2400, 2400],
+            'medium'     => [1200, 1200],
+            'small'      => [600, 600],
             'thumbnail'  => [300, 300],
         ];
 
-        // Convert to webp
-        // TODO get from settings
         $convertToWebp = true;
-        $imageQuality = 85;
+        $imageQuality  = 85;
 
-        // Get the manager
-        $manager = self::getManager();
-
-        // Check if we can convert image
-        $convertImage = self::supportsMime($media->mime_type);
-
-        // Storage folders
-        $storageFolder = self::getStorageFolder();
+        $manager          = self::getManager();
+        $convertImage     = self::supportsMime($media->mime_type);
+        $storageFolder    = self::getStorageFolder();
         $storageSubfolder = self::getStorageSubfolder($media);
 
-        // Original path
         $originalPath = storage_path('app/public/' . $storageFolder . '/' . $media->filename . '.' . $media->extension);
 
-        // Save versions
         foreach ($versions as $key => [$maxWidth, $maxHeight]) {
             $existing = $media->versions()->where('size_key', $key)->first();
-
             if ($existing) {
-                continue;
+                self::deleteVersion($existing);
             }
 
-            $extension = $media->extension;
-            $versionFilename = ($storageSubfolder ? $storageSubfolder . '/' : '') . $media->uuid;
+            $extension       = $media->extension;
+            $versionFilename = ($storageSubfolder ? $storageSubfolder . '/' : '') . $media->uuid . '-' . $key;
+            $storagePath     = storage_path('app/public/' . $storageFolder . '/' . $versionFilename . '.' . ($convertToWebp ? 'webp' : $extension));
 
-            if ($convertImage) {
-                $image = $manager->read($originalPath)->scaleDown($maxWidth, $maxHeight);
-                if ($convertToWebp) $extension = 'webp';
-                $versionFilename .= '-' . $key;
-            }
+            try {
+                if ($media->mime_type === 'application/pdf') {
+                    if (class_exists(\Imagick::class)) {
+                        // Special case for PDF first page
+                        $imagick = new \Imagick();
+                        $imagick->setResolution(150, 150);
+                        $imagick->readImage($originalPath . '[0]');
+                        $imagick->setImageFormat('webp');
+                        $imagick->setImageCompressionQuality($imageQuality);
+                        $imagick->setImageBackgroundColor('white');
+                        $imagick = $imagick->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
+                        $imagick->thumbnailImage($maxWidth, $maxHeight, true);
+                        $imagick->writeImage($storagePath);
 
-            $storagePath = storage_path('app/public/' . $storageFolder . '/' . $versionFilename . '.' . $extension);
+                        $width  = $imagick->getImageWidth();
+                        $height = $imagick->getImageHeight();
 
-            if ($convertImage) {
-                if ($convertToWebp) {
-                    $image->encode(new WebpEncoder(quality: $imageQuality))->save($storagePath);
+                        $imagick->clear();
+                        $imagick->destroy();
+                    } else {
+                        \Log::warning("Skipping PDF preview for media {$media->id}: Imagick not installed");
+                        continue;
+                    }
+                } elseif ($convertImage) {
+                    // Regular image flow
+                    $image = $manager->read($originalPath)->scaleDown($maxWidth, $maxHeight);
+                    if ($convertToWebp) {
+                        $image->encode(new WebpEncoder(quality: $imageQuality))->save($storagePath);
+                        $extension = 'webp';
+                    } else {
+                        $image->save($storagePath, quality: $imageQuality);
+                    }
+                    $width  = $image->width();
+                    $height = $image->height();
                 } else {
-                    $image->save($storagePath, quality: $imageQuality);
+                    continue;
                 }
+
+                // Save DB record
+                MediaVersion::create([
+                    'media_id'  => $media->id,
+                    'size_key'  => $key,
+                    'filename'  => $versionFilename,
+                    'extension' => $convertToWebp ? 'webp' : $extension,
+                    'width'     => $width ?? null,
+                    'height'    => $height ?? null,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error("Failed generating version {$key} for media {$media->id}: " . $e->getMessage());
             }
-
-            $fillMediaVersion = [
-                'media_id' => $media->id,
-                'size_key' => $key,
-                'filename' => $versionFilename,
-                'extension' => $extension,
-            ];
-
-            if ($convertImage) {
-                $fillMediaVersion['width'] = $image->width();
-                $fillMediaVersion['height'] = $image->height();
-            }
-
-            MediaVersion::create($fillMediaVersion);
         }
     }
+
 
     /**
      * Convert to bytes
@@ -326,16 +319,26 @@ class MediaHelper
         $manager = self::getManager();
 
         if ($manager->driver() instanceof ImagickDriver) {
-            // Query formats from Imagick
             $imagick = new \Imagick();
             $formats = array_map('strtolower', $imagick->queryFormats());
 
-            print_r($formats);
-            die;
+            $extToMime = [
+                'jpeg' => 'image/jpeg',
+                'jpg'  => 'image/jpeg',
+                'png'  => 'image/png',
+                'gif'  => 'image/gif',
+                'webp' => 'image/webp',
+                'tiff' => 'image/tiff',
+                'bmp'  => 'image/bmp',
+                'heic' => 'image/heic',
+                'heif' => 'image/heif',
+                'avif' => 'image/avif',
+                'tga'  => 'image/x-tga',
+                // 'svg'  => 'image/svg+xml',
+                // 'ico'  => 'image/vnd.microsoft.icon',
+            ];
 
-            $map = self::$imageMimeTypes;
-
-            return array_values(array_intersect_key($map, array_flip($formats)));
+            return array_values(array_intersect_key($extToMime, array_flip($formats)));
         }
 
         if ($manager->driver() instanceof GdDriver) {

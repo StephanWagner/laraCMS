@@ -4,6 +4,7 @@ import { getFilePreviewFromFileInput } from '../utils/file-icon';
 import { removeContainer } from '../utils/animate-remove';
 import { config } from '../config/config';
 import { networkErrorText } from '../ui/message';
+import { __ } from '../utils/locale';
 
 export function initListUpload() {
   const buttonsEl = document.querySelectorAll('[data-list-upload]');
@@ -140,7 +141,7 @@ function uploadFiles(files, listWrapperEl) {
         itemWrapperEl.classList.add('-complete');
       },
       success: response => {
-        if (response.success) {
+        if (response && response.success) {
           itemWrapperEl.classList.add('-success');
           if (response.listData) {
             listService.listData = response.listData;
@@ -150,24 +151,32 @@ function uploadFiles(files, listWrapperEl) {
             removeUploadProgressItem(itemWrapperEl, wrapperEl);
           }, config.removeUploadPreviewAfter);
         } else {
-          itemWrapperEl.classList.add('-error');
-          if (response.error) {
-            const errorEl = document.createElement('div');
-            errorEl.className = 'upload-progress__error';
-            errorEl.innerHTML = response.error;
-            itemTextEl.appendChild(errorEl);
-          }
+          showUploadErrorMessage(itemWrapperEl, response);
         }
       },
       error: xhr => {
-        // TODO test if we also should show red border
-        const errorEl = document.createElement('div');
-        errorEl.className = 'upload-progress__error';
-        errorEl.innerHTML = networkErrorText(xhr);
-        itemTextEl.appendChild(errorEl);
+        showUploadErrorMessage(itemWrapperEl, xhr);
       },
     });
   });
+}
+
+/**
+ * Show upload error message
+ */
+function showUploadErrorMessage(itemWrapperEl, responseOrError) {
+  itemWrapperEl.classList.add('-error');
+  const errorEl = document.createElement('div');
+  errorEl.className = 'upload-progress__error';
+  errorEl.innerHTML = getUploadErrorMessage(responseOrError);
+  itemWrapperEl.querySelector('.upload-progress__text').appendChild(errorEl);
+}
+
+/**
+ * Get upload error message
+ */
+function getUploadErrorMessage(responseOrError) {
+  return responseOrError.error || networkErrorText(responseOrError) || __('error');
 }
 
 /**

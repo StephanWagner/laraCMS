@@ -49,17 +49,16 @@ a.file-preview {
     }
   }
 
-  &.-type-image {
-    &::after {
-      border-color: rgba(#fff, 0.3);
+  &.-type-image.-has-preview {
+    &:not(.-extension-svg):not(.-extension-ico) {
+      &::after {
+        border-color: rgba(#fff, 0.3);
+      }
     }
   }
 
-  &.-extension-svg,
-  &.-extension-ico {
-    &::after {
-      border-color: rgba(#fff, 0.15);
-    }
+  &.-extension-pdf {
+    background-size: contain;
   }
 }
 
