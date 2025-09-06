@@ -441,6 +441,17 @@ export class ListService {
         if (listConfig.trashed && !column.allowTrashed && column.type !== 'title') {
           return;
         }
+
+        if (
+          listConfig.view === 'grid' &&
+          column.type !== 'title' &&
+          column.type !== 'actions' &&
+          column.type !== 'multiselect' &&
+          column.type !== 'filepreview'
+        ) {
+          return;
+        }
+
         const itemColumnEl = document.createElement('div');
         itemColumnEl.classList.add('list__column', '-body', '-type-' + column.type);
 
@@ -489,10 +500,6 @@ export class ListService {
             break;
 
           case 'icon':
-            if (listConfig.view === 'grid') {
-              break;
-            }
-
             const itemColumnIconEl = document.createElement('div');
             itemColumnIconEl.classList.add('icon');
             itemColumnIconEl.innerHTML = getNestedValue(item, column.source);
@@ -506,7 +513,7 @@ export class ListService {
             itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
 
             let previewUri = null;
-            if (item.extension == 'ico' || item.extension == 'svg') { 
+            if (item.extension == 'ico' || item.extension == 'svg') {
               previewUri = item.uri;
             } else if (column.source) {
               previewUri = getNestedValue(item, column.source + '.uri');
@@ -516,8 +523,8 @@ export class ListService {
               getFilePreview({
                 extension: item.extension,
                 previewUri: previewUri,
-                linkUrl: column.isLink ? item.uri : null,
-                linkTarget: column.isLink ? '_blank' : null,
+                linkUrl: listConfig.view !== 'grid' && column.isLink ? item.uri : null,
+                linkTarget: listConfig.view !== 'grid' && column.isLink ? '_blank' : null,
               })
             );
             itemColumnEl.append(itemColumnFilepreviewEl);
@@ -525,20 +532,14 @@ export class ListService {
 
           case 'title':
             const title = getNestedValue(item, column.source);
-            const itemColumnTitleLinkEl = document.createElement(
-              listConfig.view === 'grid' ? 'div' : 'a'
-            );
-            if (listConfig.view !== 'grid') {
-              itemColumnTitleLinkEl.href = editLink;
-            }
-            itemColumnTitleLinkEl.innerHTML = title;
+            const itemColumnTitleLinkEl = document.createElement('a');
+            itemColumnTitleLinkEl.href = editLink;
+            itemColumnTitleLinkEl.innerHTML =
+              listConfig.view === 'grid' ? '<div><div>' + title + '</div></div>' : title;
             itemColumnEl.append(itemColumnTitleLinkEl);
             break;
 
           case 'email':
-            if (listConfig.view === 'grid') {
-              break;
-            }
             const email = getNestedValue(item, column.source);
             const itemColumnEmailLinkEl = document.createElement('a');
             itemColumnEmailLinkEl.href = 'mailto:' + email;
@@ -547,9 +548,6 @@ export class ListService {
             break;
 
           case 'badge':
-            if (listConfig.view === 'grid') {
-              break;
-            }
             const badgeKey = getNestedValue(item, column.source);
             const badgeText = column.config?.map[badgeKey]?.text || badgeKey;
             const itemColumnBadgeEl = document.createElement('div');
@@ -559,18 +557,12 @@ export class ListService {
             break;
 
           case 'datetime':
-            if (listConfig.view === 'grid') {
-              break;
-            }
             let datetime = getNestedValue(item, column.source);
             datetime = formatDatetime(datetime, { relative: column.relativeDatetime });
             itemColumnEl.innerHTML = datetime;
             break;
 
           case 'username':
-            if (listConfig.view === 'grid') {
-              break;
-            }
             itemColumnEl.innerHTML = getNestedValue(item, column.source);
             break;
 
@@ -673,7 +665,7 @@ export class ListService {
                 case 'media-download':
                   actionIconEl.innerHTML = 'download';
                   const actionDownloadLinkEl = document.createElement('a');
-                  actionDownloadLinkEl.href = '/media/' + item.filename;
+                  actionDownloadLinkEl.href = item.uri;
                   actionDownloadLinkEl.setAttribute('download', item.slug + '.' + item.extension);
                   actionDownloadLinkEl.append(actionIconEl);
                   actionEl.append(actionDownloadLinkEl);

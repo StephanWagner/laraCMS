@@ -17,6 +17,7 @@ class ListSettingsSeeder extends Seeder
                     'title' => 'admin::contentTypes.list.title',
                     'listRoute' => 'admin.content-types.list',
                     'editRoute' => 'admin.content-types.edit',
+                    'editView' => 'page',
                     'defaultOrderBy' => 'order',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,
@@ -112,6 +113,10 @@ class ListSettingsSeeder extends Seeder
                     'title' => 'admin::users.list.title',
                     'listRoute' => 'admin.users.list',
                     'editRoute' => 'admin.users.edit',
+                    
+                    // TODO
+                    'editView' => 'modal',
+
                     'defaultOrderBy' => 'name',
                     'defaultOrderDirection' => 'asc',
                     'defaultPerPage' => 25,
@@ -121,6 +126,11 @@ class ListSettingsSeeder extends Seeder
                         'delete',
                     ],
                     'hasSoftDelete' => true,
+
+                    // TODO
+                    'hasGridView' => true,
+                    'defaultView' => 'grid',
+
                     'searchables' => [
                         ['column' => 'name'],
                         ['column' => 'email'],
@@ -221,6 +231,11 @@ class ListSettingsSeeder extends Seeder
                     'model' => 'Media',
                     'title' => 'admin::media.list.title',
                     'listRoute' => 'admin.media.list',
+                    'editRoute' => 'admin.media.edit',
+                    
+                    // TODO
+                    'editView' => 'sidebar',
+
                     'addButtonAttributes' => [
                         'data-list-upload' => 'media',
                     ],

@@ -14,19 +14,14 @@
             </div>
             <div class="header__form-buttons">
                 @if (!empty($listData))
-                    @if (!empty($listData['config']['editUriNew']))
-                        <a
-                            href="{{ $listData['config']['editUriNew'] }}"
-                            class="header__form-button button -medium -has-icon"
-                        ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</a>
-                    @elseif (!empty($listData['config']['addButtonAttributes']))
-                        <button
-                            class="header__form-button button -medium -has-icon"
+                    <{!! !empty($listData['config']['editUriNew']) ? 'a href="' . $listData['config']['editUriNew'] . '"' : 'button' !!}
+                        class="header__form-button button -medium -has-icon"
+                        @if (!empty($listData['config']['addButtonAttributes']))
                             {!! join(' ', array_map(function($key, $value) {
                                 return $key . '="' . $value . '"';
                             }, array_keys($listData['config']['addButtonAttributes']), $listData['config']['addButtonAttributes'])) !!}
-                        ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</button>
-                    @endif
+                        @endif
+                    ><span class="icon">add</span>{{ __('admin::list.buttons.add') }}</{{ !empty($listData['config']['editUriNew']) ? 'a' : 'button' }}>
                 @elseif (!empty($formData))
                     @if (!empty($formData['config']['listRoute']))
                         <a href="{{ $formData['config']['listUri'] }}" class="header__form-button -icon"><div class="icon">arrow_back_ios_new</div></a>
