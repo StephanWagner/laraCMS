@@ -14,10 +14,15 @@ fi
 filename=$(basename "$file")
 migration_name="${filename%.php}"
 
+cp .env .env.backup
+cp .env.artisan .env
+
 # Remove entry from the migrations table
 php artisan tinker --execute="DB::table('migrations')->where('migration', '$migration_name')->delete();"
 
 # Run just that one migration
 php artisan migrate --path="database/migrations/$filename" && \
-php artisan db:seed && \
+php artisan db:seed
+cp .env.backup .env
+rm .env.backup
 echo -e "${GREEN}✔ Re-ran migration $filename and seeded database.${RESET}"
