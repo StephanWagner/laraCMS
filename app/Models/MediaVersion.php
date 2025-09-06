@@ -13,7 +13,8 @@ class MediaVersion extends Model
     protected $fillable = [
         'media_id',
         'size_key',
-        'filename',
+        'uri',
+        'path',
         'extension',
         'width',
         'height'

@@ -161,7 +161,7 @@ export function getFileIcon(extension, className = null) {
  */
 export function getFilePreview({
   extension,
-  previewUrl,
+  previewUri,
   className = null,
   linkUrl = null,
   linkTarget = null,
@@ -186,9 +186,9 @@ export function getFilePreview({
     filePreviewEl.target = linkTarget;
   }
 
-  if (previewUrl) {
+  if (previewUri) {
     filePreviewEl.classList.add('-has-preview');
-    filePreviewEl.style.backgroundImage = `url('${previewUrl}')`;
+    filePreviewEl.style.backgroundImage = `url('${previewUri}')`;
   } else {
     filePreviewEl.appendChild(getFileIcon(extension));
   }

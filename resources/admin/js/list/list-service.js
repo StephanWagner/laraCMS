@@ -505,21 +505,18 @@ export class ListService {
             itemColumnFilepreviewEl.classList.add('list__filepreview');
             itemColumnFilepreviewEl.classList.add('-media-type-' + item.media_type);
 
-            let previewUrl = null;
+            let previewUri = null;
             if (item.extension == 'ico' || item.extension == 'svg') { 
-              previewUrl = '/media/' + item.filename;
+              previewUri = item.uri;
             } else if (column.source) {
-              const previewFilename = getNestedValue(item, column.source + '.filename');
-              if (previewFilename) {
-                previewUrl = '/media/' + previewFilename;
-              }
+              previewUri = getNestedValue(item, column.source + '.uri');
             }
 
             itemColumnFilepreviewEl.appendChild(
               getFilePreview({
                 extension: item.extension,
-                previewUrl: previewUrl,
-                linkUrl: column.isLink ? '/media/' + item.filename : null,
+                previewUri: previewUri,
+                linkUrl: column.isLink ? item.uri : null,
                 linkTarget: column.isLink ? '_blank' : null,
               })
             );

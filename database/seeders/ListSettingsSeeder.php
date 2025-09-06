@@ -254,7 +254,7 @@ class ListSettingsSeeder extends Seeder
                             'relation' => [
                                 'key' => 'versions',
                                 'where' => [
-                                    'size_key' => 'thumbnail',
+                                    'size_key' => 'preview',
                                 ],
                             ],
                             'sortable' => false,

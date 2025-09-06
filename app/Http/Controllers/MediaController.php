@@ -38,9 +38,9 @@ class MediaController extends Controller
             if (!$version) {
                 return self::fileNotFound($media);
             }
-            $path = MediaHelper::getStorageFolder() . '/' . $version->filename . '.' . $version->extension;
+            $path = $version->path;
         } else {
-            $path = MediaHelper::getStorageFolder() . '/' . $media->filename . '.' . $media->extension;
+            $path = $media->path;
         }
 
         if (!Storage::disk('public')->exists($path)) {
