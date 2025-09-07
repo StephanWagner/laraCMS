@@ -91,9 +91,17 @@
 
   .list-content__container.-list-view-grid & {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 8px;
     padding: 8px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
   }
 }
 
@@ -285,7 +293,7 @@
         z-index: 5;
         transition: transition('opacity', 'color');
         opacity: 0;
-        background: $color-surface-3;
+        background: $color-surface-2;
         border-radius: calc($small-border-radius - 3px);
         position: absolute;
         top: 3px;
@@ -621,6 +629,7 @@
   color: $secondary-text-color;
   flex-shrink: 0;
   cursor: pointer;
+  transition: transition('opacity', 'color');
 
   &:hover {
     color: $light-text-color;
