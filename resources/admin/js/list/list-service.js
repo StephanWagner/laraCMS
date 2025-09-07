@@ -14,6 +14,7 @@ import { initAttachSearchEvent } from '../form/events';
 import { getMultiselectTogglerEl, updateMultiselect } from './list-service/multiselect';
 import { resolveText } from '../utils/text';
 import { updateUserConfig } from '../services/user-config';
+import { applyFormLink } from './list-service/form';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -463,11 +464,6 @@ export class ListService {
           });
         }
 
-        const basePath = listConfig.key || '';
-        const editLink = listConfig.editUri
-          ? listConfig.editUri.replace('__ID__', item.id)
-          : `/admin/${basePath}/edit/${item.id}`;
-
         switch (column.type) {
           case 'multiselect':
             itemColumnEl.classList.add('no-select');
@@ -533,7 +529,7 @@ export class ListService {
           case 'title':
             const title = getNestedValue(item, column.source);
             const itemColumnTitleLinkEl = document.createElement('a');
-            itemColumnTitleLinkEl.href = editLink;
+            applyFormLink(listConfig, item, itemColumnTitleLinkEl);
             itemColumnTitleLinkEl.innerHTML =
               listConfig.view === 'grid' ? '<div><div>' + title + '</div></div>' : title;
             itemColumnEl.append(itemColumnTitleLinkEl);
@@ -657,7 +653,7 @@ export class ListService {
                 case 'edit':
                   actionIconEl.innerHTML = 'edit';
                   const actionEditLinkEl = document.createElement('a');
-                  actionEditLinkEl.href = editLink;
+                  applyFormLink(listConfig, item, actionEditLinkEl);
                   actionEditLinkEl.append(actionIconEl);
                   actionEl.append(actionEditLinkEl);
                   break;
