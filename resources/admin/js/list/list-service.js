@@ -15,6 +15,7 @@ import { getMultiselectTogglerEl, updateMultiselect } from './list-service/multi
 import { resolveText } from '../utils/text';
 import { updateUserConfig } from '../services/user-config';
 import { applyFormLink } from './list-service/form';
+import { adjustTooltipPosition } from '../ui/tooltip';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -581,6 +582,7 @@ export class ListService {
               switch (actionType) {
                 case 'toggle':
                   actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
+                  labelActionType = item.active ? 'deactivate' : 'activate';
                   actionEl.append(actionIconEl);
 
                   actionEl.addEventListener('click', () => {
@@ -603,6 +605,7 @@ export class ListService {
                           item.active = response.value;
                           actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
                           itemContainerEl.classList[item.active ? 'remove' : 'add']('-inactive');
+                          updateListActionToggleLabel(this, item.id);
                           success(response.message);
                         } else {
                           networkError(response);
@@ -941,4 +944,15 @@ function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
     const textTrash = listData.texts.itemCount['trash' + textTrashKey];
     trashItemsEl.innerHTML = textTrash.replace('{n}', countTrash);
   }
+}
+
+/**
+ * Update list action toggle label
+ */
+function updateListActionToggleLabel(list, id) {
+  const itemRowEl = list.wrapper.querySelector(`.list-item__container[data-id="${id}"]`);
+  const actionLabelEl = itemRowEl.querySelector('[data-tooltip="list-action-toggle"]');
+  const labelActionType = itemRowEl.classList.contains('-inactive') ? 'activate' : 'deactivate';
+  actionLabelEl.innerHTML = list.listData.texts.actionLabel[labelActionType];
+  adjustTooltipPosition(actionLabelEl);
 }
