@@ -572,6 +572,7 @@ export class ListService {
 
               const actionEl = document.createElement('div');
               actionEl.classList.add('list__action', '-type-' + actionType);
+              actionEl.dataset.tooltipTrigger = 'list-action-' + actionType;
 
               const actionIconEl = document.createElement('div');
               actionIconEl.classList.add('icon', 'list__action-icon');
@@ -769,7 +770,8 @@ export class ListService {
 
               const actionLabelEl = document.createElement('div');
               actionLabelEl.classList.add('list__action-label');
-              actionLabelEl.innerHTML = actionType;
+              actionLabelEl.dataset.tooltip = 'list-action-' + actionType;
+              actionLabelEl.innerHTML = this.listData.texts.actionLabel[actionType];
               actionEl.append(actionLabelEl);
 
               itemColumnEl.append(actionEl);

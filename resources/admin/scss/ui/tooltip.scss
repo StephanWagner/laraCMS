@@ -1,0 +1,26 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+[data-tooltip] {
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 600;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: $color-surface-1;
+  padding: 2px 8px;
+  border-radius: $small-border-radius;
+  color: $secondary-text-color;
+  border: 1px solid $color-surface-2;
+  pointer-events: none;
+  opacity: 0;
+  transition: transition('opacity', 'transform');
+
+  [data-tooltip-trigger]:hover & {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+}

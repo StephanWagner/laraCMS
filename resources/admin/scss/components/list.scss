@@ -519,6 +519,7 @@
     flex-shrink: 0;
     margin-right: -2px;
     margin-left: 8px;
+    overflow: visible;
 
     &.-head {
       .list-content__container.-list-view-grid & {
@@ -535,6 +536,7 @@
   }
 
   .list__action {
+    position: relative;
     width: 28px;
     height: 24px;
     transition: transition('color');
@@ -578,6 +580,10 @@
   height: 24px;
   width: 24px;
   margin: auto;
+}
+
+.list__action-label {
+  // TODO
 }
 
 .list__order-icon {

@@ -8,6 +8,7 @@ import { initForm } from './form/bootstrap';
 import { initFormEvents } from './form/events';
 import { initListUpload } from './list/list-upload';
 import { initModals } from './ui/modal';
+import { initTooltips } from './ui/tooltip';
 import { initProfilePage } from './pages/profile';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Modals
   initModals();
+
+  // Tooltips
+  initTooltips();
 
   // Pages
   initProfilePage();

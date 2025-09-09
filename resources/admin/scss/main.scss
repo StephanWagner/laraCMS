@@ -21,10 +21,13 @@
 @use 'form/textfields';
 @use 'form/buttons';
 
+// UI
+@use 'ui/modal';
+@use 'ui/tooltip';
+
 // Utils
 @use 'utils/animate';
 @use 'utils/message';
-@use 'utils/modal';
 
 // Layout
 @use 'layout/scaffold';
