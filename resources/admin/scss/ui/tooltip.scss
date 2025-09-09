@@ -19,7 +19,7 @@
   opacity: 0;
   transition: transition('opacity', 'transform');
 
-  [data-tooltip-trigger]:hover & {
+  &.-is-visible  {
     opacity: 1;
     transform: translateX(-50%) translateY(-4px);
   }

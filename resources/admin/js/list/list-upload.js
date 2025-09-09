@@ -149,7 +149,7 @@ function uploadFiles(files, listWrapperEl) {
           }
           setTimeout(() => {
             removeUploadProgressItem(itemWrapperEl, wrapperEl);
-          }, config.removeUploadPreviewAfter);
+          }, config.removeUploadPreviewDelay);
         } else {
           showUploadErrorMessage(itemWrapperEl, response);
         }

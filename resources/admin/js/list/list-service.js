@@ -565,6 +565,7 @@ export class ListService {
           case 'actions':
             column.actions.forEach(action => {
               let actionType = action;
+              let labelActionType = actionType;
 
               if (typeof action === 'object' && action !== null && 'type' in action) {
                 actionType = action.type;
@@ -681,6 +682,8 @@ export class ListService {
                 case 'force-delete':
                   const forceDeleting = actionType === 'force-delete' || !listConfig.hasSoftDelete;
 
+                  labelActionType = forceDeleting ? 'force-delete' : 'delete';
+
                   actionIconEl.innerHTML = forceDeleting ? 'delete_forever' : 'delete';
                   actionEl.append(actionIconEl);
 
@@ -771,7 +774,7 @@ export class ListService {
               const actionLabelEl = document.createElement('div');
               actionLabelEl.classList.add('list__action-label');
               actionLabelEl.dataset.tooltip = 'list-action-' + actionType;
-              actionLabelEl.innerHTML = this.listData.texts.actionLabel[actionType];
+              actionLabelEl.innerHTML = this.listData.texts.actionLabel[labelActionType];
               actionEl.append(actionLabelEl);
 
               itemColumnEl.append(actionEl);

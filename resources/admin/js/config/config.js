@@ -11,8 +11,13 @@ const config = {
   // Locale
   fallbackLocale: 'en',
 
+  // Tooltips
+  tooltipPadding: 4,
+  tooltipDelay: 600,
+  tooltipCloseDelay: 120,
+
   // File uploads
-  removeUploadPreviewAfter: 3000,
+  removeUploadPreviewDelay: 3000,
 };
 
 export { config }

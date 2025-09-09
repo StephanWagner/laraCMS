@@ -36,7 +36,7 @@ return [
         'delete' => 'Löschen',
         'force-delete' => 'Dauerhaft löschen',
         'restore' => 'Wiederherstellen',
-        'media-download' => 'Download Download Download',
+        'media-download' => 'Download',
         'toggle-activate' => 'Aktivieren',
         'toggle-deactivate' => 'Deaktivieren',
         'duplicate' => 'Duplizieren',
