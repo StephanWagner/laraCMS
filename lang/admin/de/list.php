@@ -30,6 +30,20 @@ return [
         'last-seen' => 'Zuletzt aktiv',
     ],
 
+    // Action labels
+    'actionLabel' => [
+        'edit' => 'Bearbeiten',
+        'delete' => 'Löschen',
+        'force-delete' => 'Dauerhaft löschen',
+        'restore' => 'Wiederherstellen',
+        'media-download' => 'Download',
+        'toggle-activate' => 'Aktivieren',
+        'toggle-deactivate' => 'Deaktivieren',
+        'duplicate' => 'Duplizieren',
+        'copy-url' => 'URL kopieren',
+        'copy-url-success' => 'URL wurde in die Zwischenablage kopiert.',
+    ],
+
     // Item count
     'itemCount' => [
         'items0' => 'Keine Einträge',

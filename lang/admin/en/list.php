@@ -30,6 +30,20 @@ return [
         'last-seen' => 'Latest activity',
     ],
 
+    // Action labels
+    'actionLabel' => [
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+        'force-delete' => 'Delete permanently',
+        'restore' => 'Restore',
+        'media-download' => 'Download',
+        'toggle-activate' => 'Activate',
+        'toggle-deactivate' => 'Deactivate',
+        'duplicate' => 'Duplicate',
+        'copy-url' => 'Copy URL',
+        'copy-url-success' => 'URL copied to clipboard.',
+    ],
+
     // Item count
     'itemCount' => [
         'items0' => 'No items',

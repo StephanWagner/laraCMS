@@ -667,6 +667,15 @@ export class ListService {
                   actionEl.append(actionDownloadLinkEl);
                   break;
 
+                case 'copy-url':
+                    actionIconEl.innerHTML = 'link';
+                    actionIconEl.addEventListener('click', () => {
+                      navigator.clipboard.writeText(window.location.origin + item.uri);
+                      success(this.listData.texts.actionLabel['copy-url-success']);  
+                    });
+                    actionEl.append(actionIconEl);
+                    break;
+
                 case 'delete':
                 case 'force-delete':
                   const forceDeleting = actionType === 'force-delete' || !listConfig.hasSoftDelete;
@@ -757,6 +766,11 @@ export class ListService {
                   actionEl.append(actionIconEl);
                   break;
               }
+
+              const actionLabelEl = document.createElement('div');
+              actionLabelEl.classList.add('list__action-label');
+              actionLabelEl.innerHTML = actionType;
+              actionEl.append(actionLabelEl);
 
               itemColumnEl.append(actionEl);
             });

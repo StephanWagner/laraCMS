@@ -326,6 +326,7 @@ class ListSettingsSeeder extends Seeder
                             'label' => null,
                             'actions' => [
                                 'media-download',
+                                'copy-url',
                                 'edit',
                                 'delete',
                             ],
