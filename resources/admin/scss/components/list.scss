@@ -220,6 +220,10 @@
     &.-sortable {
       cursor: pointer;
 
+      &:not(:first-child) {
+        margin-left: 4px;
+      }
+
       &:hover {
         color: $light-text-color;
       }
@@ -232,7 +236,7 @@
     }
 
     .list-content__container.-list-view-grid & {
-      margin: 0 0 0 8px;
+      margin-right: 0;
     }
   }
 
@@ -290,8 +294,31 @@
     }
   }
 
+
+  &.-type-actions,
   &.-type-multiselect {
-    position: relative;
+    &.-body {
+      .list-content__container.-list-view-grid & {
+        transition: transition('opacity', 'color');
+        background: $color-surface-2;
+        border-radius: calc($small-border-radius - 3px);
+        position: absolute;
+        top: 3px;
+        width: 28px;
+        height: 28px;
+        margin: 0;
+
+        .icon {
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+
+  &.-type-multiselect {
+    z-index: 4;
     flex-shrink: 0;
     width: 24px;
 
@@ -303,23 +330,8 @@
 
     &.-body {
       .list-content__container.-list-view-grid & {
-        z-index: 5;
-        transition: transition('opacity', 'color');
         opacity: 0;
-        background: $color-surface-2;
-        border-radius: calc($small-border-radius - 3px);
-        position: absolute;
-        top: 3px;
         left: 3px;
-        width: 28px;
-        height: 28px;
-        margin: 0;
-
-        .list__multiselect-icon {
-          width: 28px;
-          height: 28px;
-          line-height: 28px;
-        }
       }
 
       .list-content__container.-list-view-grid .list-item__container[data-is-selected] &,
@@ -532,6 +544,7 @@
 
   &.-type-actions {
     display: flex;
+    z-index: 5;
     flex-shrink: 0;
     margin-right: -2px;
     margin-left: 8px;
@@ -548,12 +561,11 @@
         }
       }
     }
-
-    .list-content__container.-list-view-grid & {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      z-index: 3;
+    
+    &.-body {
+      .list-content__container.-list-view-grid & {
+        right: 3px;
+      }
     }
   }
 }
@@ -630,6 +642,8 @@
 
   .list-content__container.-list-view-grid & {
     display: block;
+    width: 100%;
+    height: 100%;
   }
 }
 
