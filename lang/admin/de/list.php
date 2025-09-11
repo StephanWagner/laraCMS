@@ -37,7 +37,7 @@ return [
         'force-delete' => 'Dauerhaft löschen',
         'restore' => 'Wiederherstellen',
         'reorder' => 'Neu einsortieren',
-        'media-preview' => 'In neuem Tab öffnen In neuem Tab öffnen',
+        'media-preview' => 'In neuem Tab öffnen',
         'media-download' => 'Download',
         'activate' => 'Aktivieren',
         'deactivate' => 'Deaktivieren',
