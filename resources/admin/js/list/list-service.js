@@ -17,6 +17,7 @@ import { updateUserConfig } from '../services/user-config';
 import { applyFormLink } from './list-service/form';
 import { adjustTooltipPosition, initTooltips } from '../ui/tooltip';
 import { closeMenu, initMenus } from '../ui/menu';
+import { keepInBounds } from '../utils/keep-in-bounds';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -586,6 +587,16 @@ export class ListService {
             };
             actionsMenuEl.onMenuCloseComplete = () => {
               itemContainerEl.classList.remove('-menu-open', '-menu-closing');
+            };
+            actionsMenuEl.keepInBounds = menuEl => {
+              // TODO in modal use different container
+              const boundsContainerSelector = '.content__container, .TODO__MODAL__CONTENT__CONTAINER';
+              const boundsContainerEl = this.wrapper.closest(boundsContainerSelector);
+              keepInBounds(menuEl, {
+                padding: config.menuPadding,
+                container: boundsContainerEl,
+                attribute: 'marginRight',
+              });
             };
             actionsMenuContainerEl.append(actionsMenuEl);
 

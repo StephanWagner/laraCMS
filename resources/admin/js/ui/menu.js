@@ -1,4 +1,5 @@
 import { config } from '../config/config';
+import { keepInBounds } from '../utils/keep-in-bounds';
 
 // Variables
 const menuTimeouts = {};
@@ -48,22 +49,33 @@ export function openMenu(id, triggerId = null) {
   if (menuEl.onMenuOpen) {
     menuEl.onMenuOpen(id, triggerId);
   }
-  
+
+  if (menuEl.keepInBounds) {
+    menuEl.keepInBounds(menuEl);
+  } else {
+    keepInBounds(menuEl, { padding: config.menuPadding });
+  }
+
   if (menuTimeouts['closeMenuTimeout-' + id]) clearTimeout(menuTimeouts['closeMenuTimeout-' + id]);
 
   requestAnimationFrame(() => {
-    menuEl.classList.add('-animate');
+    menuEl.classList.add('-animate-start');
 
-    removeMenuHandler(id);
+    requestAnimationFrame(() => {
+      menuEl.classList.add('-animate');
+      menuEl.classList.remove('-animate-start');
 
-    const handler = ev => {
-      if (!menuEl.contains(ev.target) && !triggerEl.contains(ev.target)) {
-        closeMenu(id);
-      }
-    };
+      removeMenuHandler(id);
 
-    document.addEventListener('click', handler);
-    menuHandlers[id] = handler;
+      const handler = ev => {
+        if (!menuEl.contains(ev.target) && !triggerEl.contains(ev.target)) {
+          closeMenu(id);
+        }
+      };
+
+      document.addEventListener('click', handler);
+      menuHandlers[id] = handler;
+    });
   });
 }
 
@@ -85,9 +97,10 @@ export function closeMenu(id, triggerId = null) {
 
   triggerEl?.classList.remove('-active');
   menuEl.classList.remove('-open', '-animate');
+  menuEl.classList.add('-closing');
 
   menuTimeouts['closeMenuTimeout-' + id] = setTimeout(() => {
-    menuEl.classList.remove('-show');
+    menuEl.classList.remove('-show', '-animate-start', '-closing');
     if (menuEl.onMenuCloseComplete) {
       menuEl.onMenuCloseComplete(id, triggerId);
     }

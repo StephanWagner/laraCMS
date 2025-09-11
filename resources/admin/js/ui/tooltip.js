@@ -1,4 +1,5 @@
 import { config } from '../config/config';
+import { keepInBounds } from '../utils/keep-in-bounds';
 
 /**
  * Variables
@@ -54,7 +55,7 @@ function openTooltipEl(tooltipEl) {
   tooltipEl.classList.add('-show');
 
   requestAnimationFrame(() => {
-    adjustTooltipPosition(tooltipEl);
+    keepInBounds(tooltipEl, { padding: config.tooltipPadding });
     tooltipEl.classList.add('-animate');
   });
 
@@ -84,17 +85,5 @@ function closeTooltip(tooltipEl) {
  * @param {HTMLElement} tooltipEl
  */
 export function adjustTooltipPosition(tooltipEl) {
-  tooltipEl.style.marginLeft = 0;
-
-  const rect = tooltipEl.getBoundingClientRect();
-  const viewportWidth = window.innerWidth;
-  let shiftX = 0;
-
-  if (rect.left < config.tooltipPadding) {
-    shiftX = -rect.left + config.tooltipPadding;
-  } else if (rect.right > viewportWidth - config.tooltipPadding) {
-    shiftX = viewportWidth - rect.right - config.tooltipPadding;
-  }
-
-  tooltipEl.style.marginLeft = `${shiftX}px`;
+  keepInBounds(tooltipEl, { padding: config.tooltipPadding });
 }

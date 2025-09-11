@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="header__user-menu-container">
-            <div class="header__user-menu-toggler{{ request()->routeIs('admin.profile.edit') ? ' -active' : '' }}" data-toggle-menu="user">
+            <div class="header__user-menu-toggler no-select{{ request()->routeIs('admin.profile.edit') ? ' -active' : '' }}" data-toggle-menu="user">
                 <div class="header__user-menu-icon icon">account_circle</div>
             </div>
 

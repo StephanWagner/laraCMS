@@ -16,6 +16,9 @@ const config = {
   tooltipDelay: 600,
   tooltipCloseDelay: 120,
 
+  // Menus
+  menuPadding: 8,
+
   // File uploads
   removeUploadPreviewDelay: 3000,
 };
