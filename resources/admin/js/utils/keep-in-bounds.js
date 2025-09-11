@@ -18,8 +18,6 @@ export function keepInBounds(el, { padding = 4, container = null, attribute = 'm
 
   let shiftX = 0;
 
-  console.log(rect, containerRect);
-
   if (rect.left < containerRect.left + padding) {
     shiftX = containerRect.left + padding - rect.left;
   } else if (rect.right > containerRect.right - padding) {
