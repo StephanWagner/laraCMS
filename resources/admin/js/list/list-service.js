@@ -578,6 +578,15 @@ export class ListService {
             const actionsMenuEl = document.createElement('div');
             actionsMenuEl.classList.add('list__actions-menu', 'menu-overlay__wrapper');
             actionsMenuEl.dataset.menu = menuId;
+            actionsMenuEl.onMenuOpen = () => {
+              itemContainerEl.classList.add('-menu-open');
+            };
+            actionsMenuEl.onMenuClose = () => {
+              itemContainerEl.classList.add('-menu-closing');
+            };
+            actionsMenuEl.onMenuCloseComplete = () => {
+              itemContainerEl.classList.remove('-menu-open', '-menu-closing');
+            };
             actionsMenuContainerEl.append(actionsMenuEl);
 
             const actionsMenuLinksEl = document.createElement('div');

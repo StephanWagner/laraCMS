@@ -115,12 +115,21 @@
 
 .list-item__container {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   padding: 8px;
   line-height: 28px;
   margin: 0 0 1px;
   transition: transitionSlow('opacity', 'color');
+
+  &.-menu-open {
+    z-index: 3;
+
+    &.-menu-closing {
+      z-index: 2;
+    }
+  }
 
   .list-content__container.-list-view-grid & {
     display: block;
@@ -626,9 +635,6 @@
 
 .list__actions-menu {
   margin-top: -4px;
-}
-
-.list__actions-menu-toggler {
 }
 
 // List order

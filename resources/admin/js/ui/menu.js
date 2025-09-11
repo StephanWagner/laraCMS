@@ -45,6 +45,10 @@ export function openMenu(id, triggerId = null) {
   triggerEl.classList.add('-active');
   menuEl.classList.add('-open', '-show');
 
+  if (menuEl.onMenuOpen) {
+    menuEl.onMenuOpen(id, triggerId);
+  }
+  
   if (menuTimeouts['closeMenuTimeout-' + id]) clearTimeout(menuTimeouts['closeMenuTimeout-' + id]);
 
   requestAnimationFrame(() => {
@@ -75,11 +79,18 @@ export function closeMenu(id, triggerId = null) {
   const menuEl = document.querySelector(`[data-menu="${id}"]`);
   if (!menuEl || !menuEl.classList.contains('-open')) return;
 
+  if (menuEl.onMenuClose) {
+    menuEl.onMenuClose(id, triggerId);
+  }
+
   triggerEl?.classList.remove('-active');
   menuEl.classList.remove('-open', '-animate');
 
   menuTimeouts['closeMenuTimeout-' + id] = setTimeout(() => {
     menuEl.classList.remove('-show');
+    if (menuEl.onMenuCloseComplete) {
+      menuEl.onMenuCloseComplete(id, triggerId);
+    }
   }, config.defaultTransitionSpeed);
 
   removeMenuHandler(id);
