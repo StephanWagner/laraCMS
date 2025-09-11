@@ -25,7 +25,7 @@ return [
             ],
             'password' => [
                 'label' => 'Passwort',
-                'description' => 'Für ein sicheres Passwort verwende eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+                'description' => 'Für ein sicheres Passwort verwende eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon -small-text-icon">open_in_new</span> passwordcopy.app</a>',
             ],
         ],
     ],
@@ -39,7 +39,7 @@ return [
         'delete' => [
             'linkText' => 'Konto löschen',
             'modalTitle' => 'Konto löschen',
-            'modalText' => '<b class="-error-text"><span class="icon -error-text-icon">warning</span>Achtung:</b> Dieser Vorgang löscht dein Konto und alle zugehörigen Daten dauerhaft. Bitte gib dein Passwort ein, um fortzufahren.',
+            'modalText' => '<b class="-error-text"><span class="icon -error-warning-icon">warning</span>Achtung:</b> Dieser Vorgang löscht dein Konto und alle zugehörigen Daten dauerhaft. Bitte gib dein Passwort ein, um fortzufahren.',
             'modalSubmitButtonText' => 'Konto löschen',
             'modalCancelButtonText' => 'Abbrechen',
             'modalTextfieldPlaceholder' => 'Dein Passwort',

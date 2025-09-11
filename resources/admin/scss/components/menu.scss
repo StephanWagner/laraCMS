@@ -75,10 +75,16 @@
   }
 }
 
-.menu-overlay__link-text {
+.menu-overlay__label {
   flex: 1;
 }
 
 .menu-overlay__icon {
   margin: 0 6px 0 0;
+  font-size: 24px;
+  line-height: 24px;
+
+  .menu-overlay__link[data-menu-action='media-preview'] & {
+    font-size: 20px;
+  }
 }

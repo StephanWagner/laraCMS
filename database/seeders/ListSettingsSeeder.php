@@ -96,11 +96,21 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'actions',
                             'label' => null,
                             'actions' => [
-                                'toggle',
-                                'edit',
-                                'duplicate',
-                                'reorder',
-                                'delete'
+                                [
+                                    'type' => 'toggle',
+                                ],
+                                [
+                                    'type' => 'edit',
+                                ],
+                                [
+                                    'type' => 'duplicate',
+                                ],
+                                [
+                                    'type' => 'reorder',
+                                ],
+                                [
+                                    'type' => 'delete',
+                                ],
                             ]
                         ],
                     ],
@@ -217,9 +227,15 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'actions',
                             'label' => null,
                             'actions' => [
-                                'toggle',
-                                'edit',
-                                'delete',
+                                [
+                                    'type' => 'toggle',
+                                ],
+                                [
+                                    'type' => 'edit',
+                                ],
+                                [
+                                    'type' => 'delete',
+                                ],
                             ],
                         ],
                     ],
@@ -325,10 +341,22 @@ class ListSettingsSeeder extends Seeder
                             'type' => 'actions',
                             'label' => null,
                             'actions' => [
-                                'media-download',
-                                'copy-url',
-                                'edit',
-                                'delete',
+                                [
+                                    'type' => 'media-preview',
+                                    'onlyMenu' => true,
+                                ],
+                                [
+                                    'type' => 'media-download',
+                                ],
+                                [
+                                    'type' => 'copy-url',
+                                ],
+                                [
+                                    'type' => 'edit',
+                                ],
+                                [
+                                    'type' => 'delete',
+                                ],
                             ],
                         ],
                     ],

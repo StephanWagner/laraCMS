@@ -17,9 +17,14 @@
   border: 1px solid $color-surface-2;
   pointer-events: none;
   opacity: 0;
-  transition: transition('opacity', 'transform');
+  transition: transition('opacity', 'transform', 'color');
+  display: none;
 
-  &.-is-visible  {
+  &.-show {
+    display: block;
+  }
+
+  &.-animate  {
     opacity: 1;
     transform: translateX(-50%) translateY(-4px);
   }

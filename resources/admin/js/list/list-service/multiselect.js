@@ -221,7 +221,7 @@ export const getMultiselectMenuEl = listService => {
     multiselectMenuLinkEl.append(multiselectMenuLinkIconEl);
 
     const multiselectMenuLinkTextEl = document.createElement('div');
-    multiselectMenuLinkTextEl.className = 'menu-overlay__link-text';
+    multiselectMenuLinkTextEl.className = 'menu-overlay__label';
     multiselectMenuLinkTextEl.innerHTML = resolveText(listTexts, action.text);
     multiselectMenuLinkEl.append(multiselectMenuLinkTextEl);
   });

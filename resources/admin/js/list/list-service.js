@@ -15,7 +15,8 @@ import { getMultiselectTogglerEl, updateMultiselect } from './list-service/multi
 import { resolveText } from '../utils/text';
 import { updateUserConfig } from '../services/user-config';
 import { applyFormLink } from './list-service/form';
-import { adjustTooltipPosition } from '../ui/tooltip';
+import { adjustTooltipPosition, initTooltips } from '../ui/tooltip';
+import { closeMenu, initMenus } from '../ui/menu';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -203,22 +204,9 @@ export class ListService {
     footerEl.className = 'list-footer__container';
 
     // Multiselect container
-    const multiselectContainerEl = document.createElement('div');
-    multiselectContainerEl.className = 'list-multiselect__container';
-    footerEl.appendChild(multiselectContainerEl);
-
-    // Multiselect toggler
-    const multiselectTogglerEl = document.createElement('div');
-    multiselectTogglerEl.className = 'list-multiselect__toggler-contaienr';
-    multiselectContainerEl.appendChild(multiselectTogglerEl);
-
-    const multiSelectTogglerEl = getMultiselectTogglerEl(this);
-    multiselectContainerEl.appendChild(multiSelectTogglerEl);
-
-    // Multiselect button
-    const multiselectButtonContainerEl = document.createElement('div');
-    multiselectButtonContainerEl.className = 'list-multiselect__button-container';
-    multiselectContainerEl.appendChild(multiselectButtonContainerEl);
+    this.multiselectContainerEl = document.createElement('div');
+    this.multiselectContainerEl.className = 'list-multiselect__container';
+    footerEl.appendChild(this.multiselectContainerEl);
 
     // Pagination container
     this.paginationContainerEl = document.createElement('div');
@@ -323,7 +311,14 @@ export class ListService {
         type: 'actions',
         label: null,
         allowTrashed: true,
-        actions: ['restore', 'force-delete'],
+        actions: [
+          {
+            type: 'restore',
+          },
+          {
+            type: 'force-delete',
+          },
+        ],
       });
     }
 
@@ -394,9 +389,11 @@ export class ListService {
 
         if (column.type == 'actions') {
           column.actions.forEach(action => {
-            const actionHeaderEl = document.createElement('div');
-            actionHeaderEl.classList.add('list__action');
-            columnEl.append(actionHeaderEl);
+            if (!action.onlyMenu) {
+              const actionHeaderEl = document.createElement('div');
+              actionHeaderEl.classList.add('list__action');
+              columnEl.append(actionHeaderEl);
+            }
           });
         }
 
@@ -563,123 +560,224 @@ export class ListService {
             itemColumnEl.innerHTML = getNestedValue(item, column.source);
             break;
 
+          // Type actions
           case 'actions':
+            const isTrashed = listConfig.trashed;
+            const menuId = 'list-action-menu-' + (isTrashed ? '' : '') + item.id;
+
+            // List container
+            const actionsListContainerEl = document.createElement('div');
+            actionsListContainerEl.classList.add('list__actions-container');
+            itemColumnEl.append(actionsListContainerEl);
+
+            // Menu containers
+            const actionsMenuContainerEl = document.createElement('div');
+            actionsMenuContainerEl.classList.add('list__actions-menu-container');
+            itemColumnEl.append(actionsMenuContainerEl);
+
+            const actionsMenuEl = document.createElement('div');
+            actionsMenuEl.classList.add('list__actions-menu', 'menu-overlay__wrapper');
+            actionsMenuEl.dataset.menu = menuId;
+            actionsMenuContainerEl.append(actionsMenuEl);
+
+            const actionsMenuLinksEl = document.createElement('div');
+            actionsMenuLinksEl.classList.add('menu-overlay__links');
+            actionsMenuEl.append(actionsMenuLinksEl);
+
+            const actionMenuTogglerEl = document.createElement('div');
+            actionMenuTogglerEl.classList.add(
+              'list__actions-menu-toggler',
+              'list__action',
+              '-type-menu',
+              'no-select'
+            );
+            actionMenuTogglerEl.innerHTML = '<div class="list__action-icon icon">more_horiz</div>';
+            actionMenuTogglerEl.dataset.toggleMenu = menuId;
+            actionsMenuContainerEl.append(actionMenuTogglerEl);
+
             column.actions.forEach(action => {
-              let actionType = action;
+              let actionType = action.type;
               let labelActionType = actionType;
+              let actionLabel = action.label;
 
-              if (typeof action === 'object' && action !== null && 'type' in action) {
-                actionType = action.type;
-              }
+              // Action container
+              const actionListElDiv = document.createElement('div');
+              const actionListElA = document.createElement('a');
 
-              const actionEl = document.createElement('div');
-              actionEl.classList.add('list__action', '-type-' + actionType);
-              actionEl.dataset.tooltipTrigger = 'list-action-' + actionType;
+              [actionListElDiv, actionListElA].forEach(el => {
+                el.classList.add('list__action', 'no-select', '-type-' + actionType);
+                el.dataset.listAction = actionType;
+                el.dataset.tooltipTrigger = 'list-action-' + actionType;
+              });
 
-              const actionIconEl = document.createElement('div');
-              actionIconEl.classList.add('icon', 'list__action-icon');
+              const actionMenuElDiv = document.createElement('div');
+              const actionMenuElA = document.createElement('a');
+
+              [actionMenuElDiv, actionMenuElA].forEach(el => {
+                el.classList.add('menu-overlay__link', 'no-select');
+                el.dataset.menuAction = actionType;
+              });
+
+              let actionListEl = actionListElDiv;
+              let actionMenuEl = actionMenuElDiv;
+
+              // Icon
+              const actionListIconEl = document.createElement('div');
+              actionListIconEl.classList.add('icon', 'list__action-icon');
+
+              const actionMenuIconEl = document.createElement('div');
+              actionMenuIconEl.classList.add('icon', 'menu-overlay__icon');
+
+              // Label
+              const actionListLabelEl = document.createElement('div');
+              actionListLabelEl.dataset.tooltip = 'list-action-' + actionType;
+              actionListLabelEl.classList.add('list__action-label');
+
+              const actionMenuLabelEl = document.createElement('div');
+              actionMenuLabelEl.classList.add('menu-overlay__label');
 
               switch (actionType) {
+                // Action toggle
                 case 'toggle':
-                  actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
+                  });
+
                   labelActionType = item.active ? 'deactivate' : 'activate';
-                  actionEl.append(actionIconEl);
 
-                  actionEl.addEventListener('click', () => {
-                    if (item._toggleRequestRunning) return;
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.addEventListener('click', () => {
+                      if (item._toggleRequestRunning) return;
 
-                    apiFetch({
-                      url: '/admin/api/toggle',
-                      data: {
-                        key: listConfig.key,
-                        id: item.id,
-                      },
-                      before: () => {
-                        item._toggleRequestRunning = true;
-                      },
-                      complete: () => {
-                        item._toggleRequestRunning = false;
-                      },
-                      success: response => {
-                        if (response.success) {
-                          item.active = response.value;
-                          actionIconEl.innerHTML = item.active ? 'toggle_on' : 'toggle_off';
-                          itemContainerEl.classList[item.active ? 'remove' : 'add']('-inactive');
-                          updateListActionToggleLabel(this, item.id);
-                          success(response.message);
-                        } else {
-                          networkError(response);
-                        }
-                      },
-                      error: xhr => {
-                        networkError(xhr);
-                      },
+                      apiFetch({
+                        url: '/admin/api/toggle',
+                        data: {
+                          key: listConfig.key,
+                          id: item.id,
+                        },
+                        before: () => {
+                          item._toggleRequestRunning = true;
+                        },
+                        complete: () => {
+                          item._toggleRequestRunning = false;
+                        },
+                        success: response => {
+                          if (response.success) {
+                            item.active = response.value;
+                            actionListIconEl.innerHTML = actionMenuIconEl.innerHTML = item.active
+                              ? 'toggle_on'
+                              : 'toggle_off';
+                            itemContainerEl.classList[item.active ? 'remove' : 'add']('-inactive');
+                            updateListActionToggleLabel(this, item.id);
+                            success(response.message);
+                            closeMenu(menuId);
+                          } else {
+                            networkError(response);
+                          }
+                        },
+                        error: xhr => {
+                          networkError(xhr);
+                        },
+                      });
                     });
                   });
                   break;
 
                 case 'duplicate':
-                  actionIconEl.innerHTML = 'content_copy';
-                  actionEl.append(actionIconEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'content_copy';
+                  });
 
-                  actionEl.addEventListener('click', () => {
-                    if (item._duplicateRequestRunning) return;
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.addEventListener('click', () => {
+                      if (item._duplicateRequestRunning) return;
 
-                    apiFetch({
-                      url: '/admin/api/duplicate',
-                      data: getListParams({}, listConfig, { id: item.id }),
-                      before: () => {
-                        item._duplicateRequestRunning = true;
-                      },
-                      complete: () => {
-                        item._duplicateRequestRunning = false;
-                      },
-                      success: response => {
-                        if (response.success) {
-                          this.listData = response.listData;
-                          this.render();
-                          success(response.message);
-                        } else {
-                          networkError(response);
-                        }
-                      },
-                      error: xhr => {
-                        networkError(xhr);
-                      },
+                      apiFetch({
+                        url: '/admin/api/duplicate',
+                        data: getListParams({}, listConfig, { id: item.id }),
+                        before: () => {
+                          item._duplicateRequestRunning = true;
+                        },
+                        complete: () => {
+                          item._duplicateRequestRunning = false;
+                        },
+                        success: response => {
+                          if (response.success) {
+                            this.listData = response.listData;
+                            this.render();
+                            success(response.message);
+                            closeMenu('list-action-menu-' + item.id);
+                          } else {
+                            networkError(response);
+                          }
+                        },
+                        error: xhr => {
+                          networkError(xhr);
+                        },
+                      });
                     });
                   });
                   break;
 
                 case 'reorder':
-                  actionIconEl.innerHTML = 'format_line_spacing';
-                  actionEl.append(actionIconEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'format_line_spacing';
+                  });
                   break;
 
                 case 'edit':
-                  actionIconEl.innerHTML = 'edit';
-                  const actionEditLinkEl = document.createElement('a');
-                  applyFormLink(listConfig, item, actionEditLinkEl);
-                  actionEditLinkEl.append(actionIconEl);
-                  actionEl.append(actionEditLinkEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'edit';
+                  });
+
+                  actionListEl = actionListElA;
+                  actionMenuEl = actionMenuElA;
+
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    applyFormLink(listConfig, item, actionEl);
+                  });
+                  break;
+
+                case 'media-preview':
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'open_in_new';
+                  });
+
+                  actionListEl = actionListElA;
+                  actionMenuEl = actionMenuElA;
+
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.href = item.uri;
+                    actionEl.target = '_blank';
+                  });
                   break;
 
                 case 'media-download':
-                  actionIconEl.innerHTML = 'download';
-                  const actionDownloadLinkEl = document.createElement('a');
-                  actionDownloadLinkEl.href = item.uri;
-                  actionDownloadLinkEl.setAttribute('download', item.slug + '.' + item.extension);
-                  actionDownloadLinkEl.append(actionIconEl);
-                  actionEl.append(actionDownloadLinkEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'download';
+                  });
+
+                  actionListEl = actionListElA;
+                  actionMenuEl = actionMenuElA;
+
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.href = item.uri;
+                    actionEl.setAttribute('download', item.slug + '.' + item.extension);
+                  });
                   break;
 
                 case 'copy-url':
-                    actionIconEl.innerHTML = 'link';
-                    actionIconEl.addEventListener('click', () => {
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'link';
+                  });
+
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.addEventListener('click', () => {
                       navigator.clipboard.writeText(window.location.origin + item.uri);
-                      success(this.listData.texts.actionLabel['copy-url-success']);  
+                      success(this.listData.texts.actionLabel['copy-url-success']);
                     });
-                    actionEl.append(actionIconEl);
-                    break;
+                  });
+                  break;
 
                 case 'delete':
                 case 'force-delete':
@@ -687,100 +785,123 @@ export class ListService {
 
                   labelActionType = forceDeleting ? 'force-delete' : 'delete';
 
-                  actionIconEl.innerHTML = forceDeleting ? 'delete_forever' : 'delete';
-                  actionEl.append(actionIconEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = forceDeleting ? 'delete_forever' : 'delete';
+                  });
 
-                  actionEl.addEventListener('click', () => {
-                    confirmModal({
-                      title: this.listData.texts.deleteModal.title,
-                      text: this.listData.texts.deleteModal[
-                        forceDeleting ? 'textForceDelete' : 'textSoftDelete'
-                      ],
-                      cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
-                      submitButtonText: this.listData.texts.deleteModal.submitButtonText,
-                      submitCallback: (modalEl, submitBtn) => {
-                        if (item._deleteRequestRunning) return;
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.addEventListener('click', () => {
+                      confirmModal({
+                        title: this.listData.texts.deleteModal.title,
+                        text: this.listData.texts.deleteModal[
+                          forceDeleting ? 'textForceDelete' : 'textSoftDelete'
+                        ],
+                        cancelButtonText: this.listData.texts.deleteModal.cancelButtonText,
+                        submitButtonText: this.listData.texts.deleteModal.submitButtonText,
+                        submitCallback: (modalEl, submitBtn) => {
+                          if (item._deleteRequestRunning) return;
 
-                        apiFetch({
-                          url: '/admin/api/delete',
-                          data: getListParams({}, listConfig, {
-                            id: item.id,
-                            force: forceDeleting,
-                          }),
-                          before: () => {
-                            item._deleteRequestRunning = true;
-                            submitBtn.classList.add('-loading');
-                            submitBtn.disabled = true;
-                          },
-                          complete: () => {
-                            item._deleteRequestRunning = false;
-                            submitBtn.classList.remove('-loading');
-                            submitBtn.disabled = false;
-                          },
-                          success: response => {
-                            if (response.success) {
-                              this.listData = response.listData;
-                              this.render();
-                              success(response.message);
-                              closeConfirmModal();
-                            } else {
-                              networkError(response);
-                            }
-                          },
-                          error: xhr => {
-                            networkError(xhr);
-                          },
-                        });
-                      },
+                          apiFetch({
+                            url: '/admin/api/delete',
+                            data: getListParams({}, listConfig, {
+                              id: item.id,
+                              force: forceDeleting,
+                            }),
+                            before: () => {
+                              item._deleteRequestRunning = true;
+                              submitBtn.classList.add('-loading');
+                              submitBtn.disabled = true;
+                            },
+                            complete: () => {
+                              item._deleteRequestRunning = false;
+                              submitBtn.classList.remove('-loading');
+                              submitBtn.disabled = false;
+                            },
+                            success: response => {
+                              if (response.success) {
+                                this.listData = response.listData;
+                                this.render();
+                                success(response.message);
+                                closeConfirmModal();
+                              } else {
+                                networkError(response);
+                              }
+                            },
+                            error: xhr => {
+                              networkError(xhr);
+                            },
+                          });
+                        },
+                      });
                     });
                   });
                   break;
 
                 case 'restore':
-                  actionIconEl.innerHTML = 'restore_from_trash';
-                  actionEl.append(actionIconEl);
+                  [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
+                    iconEl.innerHTML = 'restore_from_trash';
+                  });
 
-                  actionEl.addEventListener('click', () => {
-                    if (item._restoreRequestRunning) return;
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    actionEl.addEventListener('click', () => {
+                      if (item._restoreRequestRunning) return;
 
-                    apiFetch({
-                      url: '/admin/api/restore',
-                      data: getListParams({}, listConfig, { id: item.id }),
-                      before: () => {
-                        item._restoreRequestRunning = true;
-                      },
-                      complete: () => {
-                        item._restoreRequestRunning = false;
-                      },
-                      success: response => {
-                        if (response.success) {
-                          this.listData = response.listData;
-                          this.render();
-                          success(response.message);
-                        } else {
-                          networkError(response);
-                        }
-                      },
-                      error: xhr => {
-                        networkError(xhr);
-                      },
+                      apiFetch({
+                        url: '/admin/api/restore',
+                        data: getListParams({}, listConfig, { id: item.id }),
+                        before: () => {
+                          item._restoreRequestRunning = true;
+                        },
+                        complete: () => {
+                          item._restoreRequestRunning = false;
+                        },
+                        success: response => {
+                          if (response.success) {
+                            this.listData = response.listData;
+                            this.render();
+                            success(response.message);
+                          } else {
+                            networkError(response);
+                          }
+                        },
+                        error: xhr => {
+                          networkError(xhr);
+                        },
+                      });
                     });
                   });
                   break;
-
-                case 'more':
-                  actionIconEl.innerHTML = 'more_horiz';
-                  actionEl.append(actionIconEl);
-                  break;
               }
 
-              const actionLabelEl = document.createElement('div');
-              actionLabelEl.classList.add('list__action-label');
-              actionLabelEl.dataset.tooltip = 'list-action-' + actionType;
-              actionLabelEl.innerHTML = this.listData.texts.actionLabel[labelActionType];
-              actionEl.append(actionLabelEl);
+              // Icon
+              actionListEl.append(actionListIconEl);
+              actionMenuEl.append(actionMenuIconEl);
 
-              itemColumnEl.append(actionEl);
+              // Label
+              if (!actionLabel) {
+                actionLabel = this.listData.texts.actionLabel[labelActionType];
+              }
+
+              if (actionLabel) {
+                [actionListLabelEl, actionMenuLabelEl].forEach(labelEl => {
+                  labelEl.innerHTML = actionLabel;
+                });
+
+                actionListEl.append(actionListLabelEl);
+                actionMenuEl.append(actionMenuLabelEl);
+              }
+
+              // Append
+              let appendToList = !action.onlyMenu;
+              let appendToMenu = !action.onlyList;
+
+              if (appendToList) {
+                actionsListContainerEl.append(actionListEl);
+              }
+
+              if (appendToMenu) {
+                actionsMenuLinksEl.append(actionMenuEl);
+              }
             });
             break;
         }
@@ -788,6 +909,9 @@ export class ListService {
         itemContainerEl.append(itemColumnEl);
       });
     });
+
+    initMenus();
+    initTooltips();
 
     // Sortable lists
     this.wrapper.classList.remove('-sortable');
@@ -849,6 +973,21 @@ export class ListService {
           });
         },
       });
+    }
+
+    // Multiselect
+    this.multiselectContainerEl.innerHTML = '';
+
+    if (
+      this.listData.config.trashed ||
+      this.listData.config.columns.some(column => column.type === 'multiselect')
+    ) {
+      const multiSelectTogglerEl = getMultiselectTogglerEl(this);
+      this.multiselectContainerEl.appendChild(multiSelectTogglerEl);
+
+      const multiselectButtonContainerEl = document.createElement('div');
+      multiselectButtonContainerEl.className = 'list-multiselect__button-container';
+      this.multiselectContainerEl.appendChild(multiselectButtonContainerEl);
     }
 
     // Update multiselect
@@ -951,8 +1090,14 @@ function updateItemAmountButtons(itemsEl, trashItemsEl, listData) {
  */
 function updateListActionToggleLabel(list, id) {
   const itemRowEl = list.wrapper.querySelector(`.list-item__container[data-id="${id}"]`);
-  const actionLabelEl = itemRowEl.querySelector('[data-tooltip="list-action-toggle"]');
+  const actionListLabelEl = itemRowEl.querySelector(
+    '[data-list-action="toggle"] .list__action-label'
+  );
+  const actionMenuLabelEl = itemRowEl.querySelector(
+    '[data-menu-action="toggle"] .menu-overlay__label'
+  );
   const labelActionType = itemRowEl.classList.contains('-inactive') ? 'activate' : 'deactivate';
-  actionLabelEl.innerHTML = list.listData.texts.actionLabel[labelActionType];
-  adjustTooltipPosition(actionLabelEl);
+  actionListLabelEl.innerHTML = actionMenuLabelEl.innerHTML =
+    list.listData.texts.actionLabel[labelActionType];
+  adjustTooltipPosition(actionListLabelEl);
 }

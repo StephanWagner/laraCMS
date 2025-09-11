@@ -23,6 +23,6 @@ return [
         'email.unique' => 'Diese E-Mail-Adresse wird bereits verwendet, einschließlich Nutzer im Papierkorb.',
 
         // Custom
-        'securePassword' => 'Dieses Passwort ist unsicher. Bitte wähle ein anderes. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+        'securePassword' => 'Dieses Passwort ist unsicher. Bitte wähle ein anderes. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon -small-text-icon">open_in_new</span> passwordcopy.app</a>',
     ],
 ];

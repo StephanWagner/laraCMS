@@ -21,7 +21,7 @@
     ])</script>
 </head>
 
-<body class="{{ Auth::check() ? '-logged-in' : ''}}">
+<body class="{{ Auth::check() ? '-logged-in -role-' . Auth::user()->role : ''}}">
 
     <div class="admin__scaffold">
 

@@ -4,7 +4,6 @@ import { config } from '../config/config';
  * Variables
  */
 let tooltipTimer = null;
-let closeTimer = null;
 let openTooltip = null;
 
 /**
@@ -21,37 +20,62 @@ export function initTooltips() {
     if (!tooltipEl) return;
 
     tooltipTriggerEl.addEventListener('mouseenter', () => {
-      clearTimeout(closeTimer);
+      clearTimeout(tooltipTimer);
 
+      // Close currently open tooltip if it's different
       if (openTooltip && openTooltip !== tooltipEl) {
-        clearTimeout(tooltipTimer);
-        openTooltip.classList.remove('-is-visible');
-        tooltipEl.classList.add('-is-visible');
-        adjustTooltipPosition(tooltipEl);
-        openTooltip = tooltipEl;
-        return;
+        closeTooltip(openTooltip);
       }
 
-      if (!openTooltip) {
+      // If another tooltip is already open → open immediately
+      if (openTooltip && openTooltip !== tooltipEl) {
+        openTooltipEl(tooltipEl);
+      } else if (!openTooltip) {
+        // Otherwise use the delay
         tooltipTimer = setTimeout(() => {
-          tooltipEl.classList.add('-is-visible');
-          adjustTooltipPosition(tooltipEl);
-          openTooltip = tooltipEl;
+          openTooltipEl(tooltipEl);
         }, config.tooltipDelay);
       }
     });
 
     tooltipTriggerEl.addEventListener('mouseleave', () => {
       clearTimeout(tooltipTimer);
-
-      closeTimer = setTimeout(() => {
-        tooltipEl.classList.remove('-is-visible');
-        if (openTooltip === tooltipEl) {
-          openTooltip = null;
-        }
-      }, config.tooltipCloseDelay);
+      closeTooltip(tooltipEl);
     });
   });
+}
+
+/**
+ * Open a tooltip
+ */
+function openTooltipEl(tooltipEl) {
+  if (openTooltip === tooltipEl) return;
+
+  tooltipEl.classList.add('-show');
+
+  requestAnimationFrame(() => {
+    adjustTooltipPosition(tooltipEl);
+    tooltipEl.classList.add('-animate');
+  });
+
+  openTooltip = tooltipEl;
+}
+
+/**
+ * Close a tooltip
+ */
+function closeTooltip(tooltipEl) {
+  clearTimeout(tooltipEl._tooltipCloseTimer);
+
+  tooltipEl.classList.remove('-animate');
+
+  // Remove -show after transition ends
+  tooltipEl._tooltipCloseTimer = setTimeout(() => {
+    tooltipEl.classList.remove('-show');
+    if (openTooltip === tooltipEl) {
+      openTooltip = null;
+    }
+  }, config.defaultTransitionSpeed);
 }
 
 /**

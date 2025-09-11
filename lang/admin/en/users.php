@@ -25,7 +25,7 @@ return [
             ],
             'password' => [
                 'label' => 'Password',
-                'description' => 'To create a strong password, use a mix of uppercase and lowercase letters, numbers, and special characters. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+                'description' => 'To create a strong password, use a mix of uppercase and lowercase letters, numbers, and special characters. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon -small-text-icon">open_in_new</span> passwordcopy.app</a>',
             ],
         ],
     ],
@@ -39,7 +39,7 @@ return [
         'delete' => [
             'linkText' => 'Delete Account',
             'modalTitle' => 'Delete Account',
-            'modalText' => '<b class="-error-text"><span class="icon -error-text-icon">warning</span>Caution:</b> This action will permanently delete your account and all associated data. Please enter your password to confirm.',
+            'modalText' => '<b class="-error-text"><span class="icon -error-warning-icon">warning</span>Caution:</b> This action will permanently delete your account and all associated data. Please enter your password to confirm.',
             'modalSubmitButtonText' => 'Delete account',
             'modalCancelButtonText' => 'Cancel',
             'modalTextfieldPlaceholder' => 'Your password',

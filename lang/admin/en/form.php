@@ -23,6 +23,6 @@ return [
         'email.unique' => 'This email address is already in use, including users in the trash.',
 
         // Custom
-        'securePassword' => 'This password is insecure. Please choose a different one. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon">open_in_new</span> passwordcopy.app</a>',
+        'securePassword' => 'This password is insecure. Please choose a different one. <a href="https://passwordcopy.app" target="_blank" style="white-space: nowrap"><span class="icon -small-text-icon">open_in_new</span> passwordcopy.app</a>',
     ],
 ];

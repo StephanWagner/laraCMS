@@ -14,12 +14,21 @@
   color: $error-text-color;
 }
 
-.icon.-error-text-icon {
+.icon.-error-warning-icon {
   vertical-align: text-top;
   font-size: 16px;
   width: 14px;
   height: 14px;
   margin: 1px 6px 0 0;
+}
+
+.icon.-small-text-icon {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  line-height: 1;
+  vertical-align: middle;
+  transform: translateY(-1px);
 }
 
 // Icons
@@ -95,6 +104,30 @@ body.-is-dragging * {
 .-hide-xl {
   @media (max-width: 1400px) {
     display: none !important;
+  }
+}
+
+.-is-dev {
+  display: none;
+
+  body.-role-developer & {
+    display: block;
+  }
+}
+
+.-is-admin {
+  display: none;
+
+  body.-role-admin & {
+    display: block;
+  }
+}
+
+.-is-editor {
+  display: none;
+
+  body.-role-editor & {
+    display: block;
   }
 }
 
