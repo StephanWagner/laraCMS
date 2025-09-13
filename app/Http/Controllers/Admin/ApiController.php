@@ -109,8 +109,7 @@ class ApiController extends Controller
         if (!$item) {
             return [
                 'success' => false,
-                // TODO translate
-                'message' => 'Item not found.',
+                'message' => __('admin::api.listReorder.errorItemNotFound'),
             ];
         }
 

@@ -33,7 +33,7 @@ class MediaHelper
 
                 return [
                     'success' => false,
-                    'error'   => __('admin::media.upload.error.errorFileExceedsMaxSize', [
+                    'message' => __('admin::media.upload.error.errorFileExceedsMaxSize', [
                         'size' => round($limit / 1024 / 1024, 2) . ' MB',
                     ]),
                 ];
@@ -41,7 +41,7 @@ class MediaHelper
 
             return [
                 'success' => false,
-                'error'   => $file->getErrorMessage(),
+                'message' => $file->getErrorMessage(),
             ];
         }
 
@@ -53,7 +53,7 @@ class MediaHelper
                 return [
                     'success' => false,
                     // TODO test
-                    'error'   => __('admin::media.upload.error.errorReplaceFileNotFound'),
+                    'message' => __('admin::media.upload.error.errorReplaceFileNotFound'),
                 ];
             }
 
@@ -81,7 +81,7 @@ class MediaHelper
 
                 return [
                     'success' => false,
-                    'error'   => __('admin::media.upload.error.' . (extension_loaded('imagick') ? 'errorFileDecode' : 'errorFileDecodeImagickNotInstalled')),
+                    'message' => __('admin::media.upload.error.' . (extension_loaded('imagick') ? 'errorFileDecode' : 'errorFileDecodeImagickNotInstalled')),
                 ];
             }
 

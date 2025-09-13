@@ -171,15 +171,8 @@ function showUploadErrorMessage(itemWrapperEl, responseOrError) {
   itemWrapperEl.classList.add('-error');
   const errorEl = document.createElement('div');
   errorEl.className = 'upload-progress__error';
-  errorEl.innerHTML = getUploadErrorMessage(responseOrError);
+  errorEl.innerHTML = networkErrorText(responseOrError);
   itemWrapperEl.querySelector('.upload-progress__text').appendChild(errorEl);
-}
-
-/**
- * Get upload error message
- */
-function getUploadErrorMessage(responseOrError) {
-  return responseOrError.error || networkErrorText(responseOrError) || __('error');
 }
 
 /**

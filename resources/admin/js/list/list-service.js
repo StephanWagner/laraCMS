@@ -873,7 +873,6 @@ export class ListService {
                               closeMenu('list-action-menu-' + item.id);
                               response.message && success(response.message);
                             } else {
-                              // TODO always have success true|false and message, not error
                               networkError(response);
                             }
                           },

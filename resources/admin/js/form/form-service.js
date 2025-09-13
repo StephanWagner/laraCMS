@@ -151,14 +151,14 @@ export class FormService {
       success: response => {
         if (response.success) {
           animate(saveButton, 'pulseUpSmall');
-          response.successText && showFlashInfo(response.successText);
+          response.message && showFlashInfo(response.message);
           document.querySelector(
             '[data-form-value="' + key + '"][data-input-source="id"] input'
           ).value = response.item.id;
           history.pushState(null, '', response.editRoute);
-        } else if (response.error) {
+        } else if (response.success === false) {
           animate(saveButton, 'shake');
-          response.errorTitle ? showFlashInfo(response.errorTitle, response.errorText) : error();
+          response.message ? showFlashInfo(response.message, response.description) : error();
           response.inputErrors && showFormErrors(key, response.inputErrors);
         } else {
           networkError(response);

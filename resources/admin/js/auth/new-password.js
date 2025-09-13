@@ -1,6 +1,7 @@
 import { apiFetch } from '../services/api-fetch';
 import { animate } from '../utils/animate';
 import { showAuthFormError, showAuthFormSuccess } from './form';
+import { networkErrorText } from '../ui/message';
 
 function initNewPassword() {
   const submitButton = document.querySelector('[data-new-password-form-submit-button]');
@@ -41,19 +42,24 @@ function initNewPassword() {
     apiFetch({
       url: '/admin/new-password',
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
       data: { csrf, userId, resetPasswordHash, password, passwordRepeat },
       success: response => {
         if (response.success) {
-          showAuthFormSuccess(submitButton, response.message);
+          response.message && showAuthFormSuccess(submitButton, response.message);
         } else {
-          showAuthFormError(submitButton, response.message);
+          const errorText = networkErrorText(response);
+          response.message && showAuthFormError(submitButton, errorText);
           submitButton.disabled = false;
           passwordInput.disabled = false;
           passwordRepeatInput.disabled = false;
         }
       },
-      error: response => {
-        showAuthFormError(submitButton, response.message);
+      error: xhr => {
+        const errorText = networkErrorText(xhr);
+        showAuthFormError(submitButton, errorText);
         submitButton.disabled = false;
         passwordInput.disabled = false;
         passwordRepeatInput.disabled = false;

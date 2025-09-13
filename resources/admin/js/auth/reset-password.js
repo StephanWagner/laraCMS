@@ -1,6 +1,7 @@
 import { apiFetch } from '../services/api-fetch';
 import { animate } from '../utils/animate';
 import { showAuthFormError, showAuthFormSuccess } from './form';
+import { networkErrorText } from '../ui/message';
 
 function initResetPassword() {
   const submitButton = document.querySelector('[data-reset-password-form-submit-button]');
@@ -29,18 +30,24 @@ function initResetPassword() {
     apiFetch({
       url: '/admin/reset-password',
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
       data: { csrf, email },
       success: response => {
         if (response.success) {
-          showAuthFormSuccess(submitButton, response.message);
+          const errorText = networkErrorText(response);
+          response.message && showAuthFormSuccess(submitButton, errorText);
         } else {
-          showAuthFormError(submitButton, response.message);
+          const errorText = networkErrorText(response);
+          showAuthFormError(submitButton, errorText);
           submitButton.disabled = false;
           emailInput.disabled = false;
         }
       },
-      error: response => {
-        showAuthFormError(submitButton, response.message);
+      error: xhr => {
+        const errorText = networkErrorText(xhr);
+        showAuthFormError(submitButton, errorText);
         submitButton.disabled = false;
         emailInput.disabled = false;
       },

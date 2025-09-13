@@ -1,6 +1,6 @@
 import { confirmModal } from '../ui/modal';
 import { apiFetch } from '../services/api-fetch';
-import { networkError } from '../ui/message';
+import { networkError, networkErrorText } from '../ui/message';
 import { password } from '../form/input/password';
 import { animate } from '../utils/animate';
 import { __ } from '../utils/locale';
@@ -46,6 +46,9 @@ export function initProfilePage() {
             data: {
               password
             },
+            headers: {
+              'Accept': 'application/json',
+            },
             before: () => {
               deleteAccountRequestRunning = true;
               submitBtn.classList.add('-loading');
@@ -59,9 +62,9 @@ export function initProfilePage() {
             success: response => {
               if (response.success) {
                 window.location.href = response.redirect || '/admin';
-              } else if (response.error) {
+              } else if (response.success === false) {
                 const errorEl = modalEl.querySelector('.delete-account__modal-error');
-                errorEl.innerHTML = response.errorText || __('error');
+                errorEl.innerHTML = networkErrorText(response);
                 errorEl.classList.add('-active');
                 animate(submitBtn, 'shake');
               } else {

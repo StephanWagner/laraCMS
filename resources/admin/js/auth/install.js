@@ -1,6 +1,7 @@
 import { apiFetch } from '../services/api-fetch';
 import { animate } from '../utils/animate';
 import { showAuthFormError } from './form';
+import { networkErrorText } from '../ui/message';
 
 function initInstall() {
   const submitButton = document.querySelector('[data-install-form-submit-button]');
@@ -34,16 +35,21 @@ function initInstall() {
     apiFetch({
       url: '/admin/install',
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
       data: { csrf, name, email, password },
       success: response => {
         if (response.success) {
           window.location.href = response.redirect || '/admin/login';
         } else {
-          showAuthFormError(submitButton, response.message);
+          const errorText = networkErrorText(response);
+          showAuthFormError(submitButton, errorText);
         }
       },
-      error: response => {
-        showAuthFormError(submitButton, response.message);
+      error: xhr => {
+        const errorText = networkErrorText(xhr);
+        showAuthFormError(submitButton, errorText);
       },
       complete: () => {
         submitButton.classList.remove('-loading');

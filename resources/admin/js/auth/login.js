@@ -1,6 +1,7 @@
 import { apiFetch } from '../services/api-fetch';
 import { animate } from '../utils/animate';
 import { showAuthFormError } from './form';
+import { networkErrorText } from '../ui/message';
 
 function initLogin() {
   const submitButton = document.querySelector('[data-login-form-submit-button]');
@@ -31,16 +32,21 @@ function initLogin() {
     apiFetch({
       url: '/admin/login',
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
       data: { csrf, email, password },
       success: response => {
         if (response.success) {
           window.location.href = response.redirect || '/admin';
         } else {
-          showAuthFormError(submitButton, response.message);
+          const errorText = networkErrorText(response);
+          showAuthFormError(submitButton, errorText);
         }
       },
-      error: response => {
-        showAuthFormError(submitButton, response.message);
+      error: xhr => {
+        const errorText = networkErrorText(xhr);
+        showAuthFormError(submitButton, errorText);
       },
       complete: () => {
         submitButton.classList.remove('-loading');

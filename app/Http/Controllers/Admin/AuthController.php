@@ -43,7 +43,7 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::app.errors.default')
             ]);
         }
@@ -51,7 +51,7 @@ class AuthController extends Controller
         $validate = ValidateHelper::userName($name);
         if ($validate !== true) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
@@ -59,7 +59,7 @@ class AuthController extends Controller
         $validate = ValidateHelper::userEmail($email);
         if ($validate !== true) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
@@ -67,7 +67,7 @@ class AuthController extends Controller
         $validate = ValidateHelper::userPassword($password);
         if ($validate !== true) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.install.validate.' . $validate)
             ]);
         }
@@ -118,7 +118,7 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::app.errors.default')
             ]);
         }
@@ -153,7 +153,7 @@ class AuthController extends Controller
         }
 
         return [
-            'error' => true,
+            'success' => false,
             'message' => __('admin::auth.login.form.error'),
         ];
     }
@@ -166,7 +166,7 @@ class AuthController extends Controller
         // Abort if not logged in
         if (!Auth::check()) {
             return response()->json([
-                'error' => true,
+                'success' => false,
             ]);
         }
 
@@ -175,8 +175,8 @@ class AuthController extends Controller
         // Abort if password is wrong
         if (!Hash::check($password, Auth::user()->password)) {
             return response()->json([
-                'error' => true,
-                'errorText' => __('admin::auth.delete.errorWrongPassword')
+                'success' => false,
+                'message' => __('admin::auth.delete.errorWrongPassword')
             ]);
         }
 
@@ -186,7 +186,7 @@ class AuthController extends Controller
         // Abort if not deleted
         if (!$accountDeleted) {
             return response()->json([
-                'error' => true,
+                'success' => false,
             ]);
         }
 
@@ -218,7 +218,7 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::app.errors.default')
             ]);
         }
@@ -230,7 +230,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.resetPassword.form.errorEmailText')
             ]);
         }
@@ -259,7 +259,7 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::app.errors.default')
             ]);
         }
@@ -305,7 +305,7 @@ class AuthController extends Controller
         // CSRF block
         if ($csrf) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::app.errors.default')
             ]);
         }
@@ -318,7 +318,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.newPassword.validate.errorExpired')
             ]);
         }
@@ -329,19 +329,19 @@ class AuthController extends Controller
         // Validate password
         if (strlen($password) < 8) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.newPassword.validate.errorPasswordMin')
             ]);
         }
         if (strlen($password) > 50) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.newPassword.validate.errorPasswordMax')
             ]);
         }
         if ($password != $passwordRepeat) {
             return response()->json([
-                'error' => true,
+                'success' => false,
                 'message' => __('admin::auth.newPassword.validate.errorPasswordMatch')
             ]);
         }
