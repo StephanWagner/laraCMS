@@ -131,6 +131,9 @@ function uploadFiles(files, listWrapperEl) {
     apiFetch({
       url: '/admin/api/media-upload',
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
       data: formData,
       isUpload: true,
       progress: percent => {

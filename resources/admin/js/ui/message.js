@@ -5,7 +5,12 @@ import { __ } from '../utils/locale';
 /**
  * Show flash message
  */
-export function showFlashMessage(title, text = null, type = 'info', prependTo = '.content__content') {
+export function showFlashMessage(
+  title,
+  text = null,
+  type = 'info',
+  prependTo = '.content__content'
+) {
   const formWrapperEl = document.querySelector(prependTo);
   if (!formWrapperEl) return;
 
@@ -146,9 +151,19 @@ export function networkErrorText(responseOrError) {
     return errorMessage;
   }
 
-  return errorMessage;
+  return getTranslatedErrorText(errorMessage);
 }
 
 export function networkError(responseOrError) {
   return error(networkErrorText(responseOrError));
+}
+
+export function getTranslatedErrorText(errorMessage) {
+  if (errorMessage) {
+    if (errorMessage === 'CSRF token mismatch.') {
+      errorMessage = __('csrfExpired');
+    }
+  }
+
+  return errorMessage || __('error');
 }
