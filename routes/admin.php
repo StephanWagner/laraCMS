@@ -107,7 +107,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     });
 
     // Api
-    Route::prefix('api')
+    Route::middleware('api')->prefix('api')
         ->name('api.')
         ->controller(\App\Http\Controllers\Admin\ApiController::class)
         ->group(function () {
