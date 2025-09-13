@@ -91,6 +91,84 @@ class ApiController extends Controller
     }
 
     /**
+     * Reorder item
+     */
+    public function reorderItem()
+    {
+        $key = request()->input('key');
+        $id = request()->input('id');
+        $action = request()->input('action');
+
+        $listConfig = ListService::getConfig($key);
+
+        $modelClassName = $listConfig['model'] ?? null;
+        $modelClass = 'App\\Models\\' . $modelClassName;
+
+        $item = $modelClass::find($id);
+
+        if (!$item) {
+            return [
+                'success' => false,
+                // TODO translate
+                'message' => 'Item not found.',
+            ];
+        }
+
+        switch ($action) {
+            case 'move-up':
+                $swap = $modelClass::where('order', '<', $item->order)
+                    ->orderBy('order', 'desc')
+                    ->first();
+                break;
+
+            case 'move-down':
+                $swap = $modelClass::where('order', '>', $item->order)
+                    ->orderBy('order', 'asc')
+                    ->first();
+                break;
+
+            case 'move-to-top':
+                $swap = $modelClass::orderBy('order', 'asc')->first();
+                break;
+
+            case 'move-to-bottom':
+                $swap = $modelClass::orderBy('order', 'desc')->first();
+                break;
+        }
+
+        if (isset($swap)) {
+            if (in_array($action, ['move-up', 'move-down'])) {
+                $temp = $item->order;
+                $item->order = $swap->order;
+                $swap->order = $temp;
+                $item->save();
+                $swap->save();
+            } elseif ($action === 'move-to-top') {
+                $item->order = ($swap->order ?? 0) - 1;
+                $item->save();
+                if ($item->order < 1) {
+                    $all = $modelClass::orderBy('order')->get();
+                    foreach ($all as $i => $m) {
+                        $m->order = $i + 1;
+                        $m->save();
+                    }
+                }
+            } elseif ($action === 'move-to-bottom') {
+                $item->order = ($swap->order ?? 0) + 1;
+                $item->save();
+            }
+        }
+
+        $listData = ListService::getData($key, $this->getListParams());
+
+        return [
+            'success' => true,
+            'message' => __('admin::api.listReorder.successMessage'),
+            'listData' => $listData
+        ];
+    }
+
+    /**
      * Toggle active state
      */
     public function toggle()
@@ -250,13 +328,13 @@ class ApiController extends Controller
         if ($idList->isEmpty()) {
             return ['success' => false];
         }
-        
+
         $usesSoftDeletes = in_array(SoftDeletes::class, class_uses_recursive($modelClass));
 
         $query = $usesSoftDeletes
             ? $modelClass::withTrashed()
             : $modelClass::query();
-        
+
         $models = $query->whereIn('id', $idList)->get();
 
         foreach ($models as $model) {
@@ -348,7 +426,7 @@ class ApiController extends Controller
                 'message' => 'Data is empty.',
             ];
         }
-        
+
         $user = Auth::user();
 
         if (!$user) {

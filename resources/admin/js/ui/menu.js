@@ -69,14 +69,16 @@ export function openMenu(id, triggerId = null) {
 
       removeMenuHandler(id);
 
-      const handler = ev => {
-        if (!menuEl.contains(ev.target) && !triggerEl.contains(ev.target)) {
-          closeMenu(id);
-        }
-      };
+      if (!menuEl.ignoreClickOutside) {
+        const handler = ev => {
+          if (!menuEl.contains(ev.target) && !triggerEl.contains(ev.target)) {
+            closeMenu(id);
+          }
+        };
 
-      document.addEventListener('click', handler);
-      menuHandlers[id] = handler;
+        document.addEventListener('click', handler);
+        menuHandlers[id] = handler;
+      }
     });
   });
 }

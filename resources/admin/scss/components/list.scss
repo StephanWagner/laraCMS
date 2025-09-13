@@ -635,6 +635,20 @@
   margin: auto;
 }
 
+.list__reorder-menu {
+  &.-menu {
+    left: 8px !important;
+  }
+}
+
+.list__reorder-menu-link {
+  &.-type-move-to-top {
+    .icon {
+      transform: scaleY(-1);
+    }
+  }
+}
+
 // Actions menu
 
 .list__actions-menu-container {
@@ -651,10 +665,6 @@
     width: 100%;
     height: 100%;
   }
-}
-
-.list__actions-menu {
-  margin-top: -4px;
 }
 
 // List order

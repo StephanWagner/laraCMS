@@ -115,6 +115,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
             Route::post('list', 'list')->name('list');
             Route::post('save-form', 'saveForm')->name('save-form');
             Route::post('reorder-list', 'reorderList')->name('reorder-list');
+            Route::post('reorder-item', 'reorderItem')->name('reorder-item');
             Route::post('toggle', 'toggle')->name('toggle');
             Route::post('delete', 'delete')->name('delete');
             Route::post('restore', 'restore')->name('restore');

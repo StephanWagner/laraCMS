@@ -243,6 +243,9 @@ export class ListService {
     this.xhr = apiFetch({
       url: '/admin/api/list',
       data: getListParams(params, listConfig),
+      headers: {
+        'Accept': 'application/json',
+      },
       before: () => {
         this.loading = true;
         this.wrapper.classList.add('-loading');
@@ -577,7 +580,7 @@ export class ListService {
             itemColumnEl.append(actionsMenuContainerEl);
 
             const actionsMenuEl = document.createElement('div');
-            actionsMenuEl.classList.add('list__actions-menu', 'menu-overlay__wrapper');
+            actionsMenuEl.classList.add('list__actions-menu', 'menu-overlay__wrapper', '-compact');
             actionsMenuEl.dataset.menu = menuId;
             actionsMenuEl.dataset.flip = 4;
             actionsMenuEl.onMenuOpen = () => {
@@ -585,13 +588,18 @@ export class ListService {
             };
             actionsMenuEl.onMenuClose = () => {
               itemContainerEl.classList.add('-menu-closing');
+              const insideMenus = actionsMenuEl.querySelectorAll('[data-menu]');
+              insideMenus.forEach(menuEl => {
+                closeMenu(menuEl.dataset.menu);
+              });
             };
             actionsMenuEl.onMenuCloseComplete = () => {
               itemContainerEl.classList.remove('-menu-open', '-menu-closing');
             };
             actionsMenuEl.keepInBounds = menuEl => {
               // TODO in modal use different container
-              const boundsContainerSelector = '.content__container, .TODO__MODAL__CONTENT__CONTAINER';
+              const boundsContainerSelector =
+                '.content__container, .TODO__MODAL__CONTENT__CONTAINER';
               const boundsContainerEl = this.wrapper.closest(boundsContainerSelector);
               keepInBounds(menuEl, {
                 padding: config.menuPadding,
@@ -676,6 +684,9 @@ export class ListService {
                           key: listConfig.key,
                           id: item.id,
                         },
+                        headers: {
+                          'Accept': 'application/json',
+                        },
                         before: () => {
                           item._toggleRequestRunning = true;
                         },
@@ -690,7 +701,7 @@ export class ListService {
                               : 'toggle_off';
                             itemContainerEl.classList[item.active ? 'remove' : 'add']('-inactive');
                             updateListActionToggleLabel(this, item.id);
-                            success(response.message);
+                            response.message && success(response.message);
                             closeMenu(menuId);
                           } else {
                             networkError(response);
@@ -716,6 +727,9 @@ export class ListService {
                       apiFetch({
                         url: '/admin/api/duplicate',
                         data: getListParams({}, listConfig, { id: item.id }),
+                        headers: {
+                          'Accept': 'application/json',
+                        },
                         before: () => {
                           item._duplicateRequestRunning = true;
                         },
@@ -726,7 +740,7 @@ export class ListService {
                           if (response.success) {
                             this.listData = response.listData;
                             this.render();
-                            success(response.message);
+                            response.message && success(response.message);
                             closeMenu('list-action-menu-' + item.id);
                           } else {
                             networkError(response);
@@ -743,6 +757,132 @@ export class ListService {
                 case 'reorder':
                   [actionListIconEl, actionMenuIconEl].forEach(iconEl => {
                     iconEl.innerHTML = 'format_line_spacing';
+                  });
+
+                  [actionListEl, actionMenuEl].forEach(actionEl => {
+                    const menuPosition = actionEl.hasAttribute('data-menu-action')
+                      ? 'menu'
+                      : 'list';
+                    const menuId = 'list-reorder-menu-' + menuPosition + '-' + item.id;
+                    actionEl.dataset.toggleMenu = menuId;
+
+                    const listReorderMenuEl = document.createElement('div');
+                    listReorderMenuEl.classList.add(
+                      'list__reorder-menu',
+                      'menu-overlay__wrapper',
+                      '-compact'
+                    );
+                    listReorderMenuEl.dataset.menu = menuId;
+                    listReorderMenuEl.dataset.flip = 4;
+                    listReorderMenuEl.addEventListener('click', ev => {
+                      ev.stopPropagation();
+                    });
+                    if (menuPosition === 'list') {
+                      listReorderMenuEl.classList.add('-list');
+                      listReorderMenuEl.onMenuOpen = () => {
+                        itemContainerEl.classList.add('-menu-open');
+                      };
+                      listReorderMenuEl.onMenuClose = () => {
+                        itemContainerEl.classList.add('-menu-closing');
+                      };
+                      listReorderMenuEl.onMenuCloseComplete = () => {
+                        itemContainerEl.classList.remove('-menu-open', '-menu-closing');
+                      };
+                    } else {
+                      listReorderMenuEl.ignoreClickOutside = true;
+                      listReorderMenuEl.classList.add('-menu', '-left');
+                    }
+                    listReorderMenuEl.keepInBounds = menuEl => {
+                      // TODO in modal use different container
+                      const boundsContainerSelector =
+                        '.content__container, .TODO__MODAL__CONTENT__CONTAINER';
+                      const boundsContainerEl = this.wrapper.closest(boundsContainerSelector);
+                      keepInBounds(menuEl, {
+                        padding: config.menuPadding,
+                        container: boundsContainerEl,
+                      });
+                    };
+                    actionEl.append(listReorderMenuEl);
+
+                    const listReorderMenuLinksEl = document.createElement('div');
+                    listReorderMenuLinksEl.classList.add('menu-overlay__links');
+                    listReorderMenuEl.append(listReorderMenuLinksEl);
+
+                    [
+                      {
+                        type: 'move-up',
+                        icon: 'move_up',
+                        label: listData.texts.actionLabel['reorder-up'],
+                      },
+                      {
+                        type: 'move-down',
+                        icon: 'move_down',
+                        label: listData.texts.actionLabel['reorder-down'],
+                      },
+                      {
+                        type: 'move-to-top',
+                        icon: 'low_priority',
+                        label: listData.texts.actionLabel['reorder-to-top'],
+                      },
+                      {
+                        type: 'move-to-bottom',
+                        icon: 'low_priority',
+                        label: listData.texts.actionLabel['reorder-to-bottom'],
+                      },
+                    ].forEach(action => {
+                      const listReorderMenuLinkEl = document.createElement('div');
+                      listReorderMenuLinkEl.classList.add('menu-overlay__link', 'no-select');
+                      listReorderMenuLinkEl.classList.add(
+                        'list__reorder-menu-link',
+                        '-type-' + action.type
+                      );
+                      listReorderMenuLinksEl.append(listReorderMenuLinkEl);
+
+                      const listReorderMenuIconEl = document.createElement('div');
+                      listReorderMenuIconEl.classList.add('icon', 'menu-overlay__icon');
+                      listReorderMenuIconEl.innerHTML = action.icon;
+                      listReorderMenuLinkEl.append(listReorderMenuIconEl);
+
+                      const listReorderMenuLabelEl = document.createElement('div');
+                      listReorderMenuLabelEl.classList.add('menu-overlay__label');
+                      listReorderMenuLabelEl.innerHTML = action.label;
+                      listReorderMenuLinkEl.append(listReorderMenuLabelEl);
+
+                      listReorderMenuLinkEl.addEventListener('click', ev => {
+                        if (item._reorderRequestRunning) return;
+
+                        apiFetch({
+                          url: '/admin/api/reorder-item',
+                          data: getListParams({}, listConfig, {
+                            id: item.id,
+                            action: action.type,
+                          }),
+                          headers: {
+                            'Accept': 'application/json',
+                          },
+                          before: () => {
+                            item._reorderRequestRunning = true;
+                          },
+                          complete: () => {
+                            item._reorderRequestRunning = false;
+                          },
+                          success: response => {
+                            if (response.success) {
+                              this.listData = response.listData;
+                              this.render();
+                              closeMenu('list-action-menu-' + item.id);
+                              response.message && success(response.message);
+                            } else {
+                              // TODO always have success true|false and message, not error
+                              networkError(response);
+                            }
+                          },
+                          error: xhr => {
+                            networkError(xhr);
+                          },
+                        });
+                      });
+                    });
                   });
                   break;
 
@@ -828,6 +968,9 @@ export class ListService {
                               id: item.id,
                               force: forceDeleting,
                             }),
+                            headers: {
+                              'Accept': 'application/json',
+                            },
                             before: () => {
                               item._deleteRequestRunning = true;
                               submitBtn.classList.add('-loading');
@@ -842,7 +985,7 @@ export class ListService {
                               if (response.success) {
                                 this.listData = response.listData;
                                 this.render();
-                                success(response.message);
+                                response.message && success(response.message);
                                 closeConfirmModal();
                               } else {
                                 networkError(response);
@@ -870,6 +1013,9 @@ export class ListService {
                       apiFetch({
                         url: '/admin/api/restore',
                         data: getListParams({}, listConfig, { id: item.id }),
+                        headers: {
+                          'Accept': 'application/json',
+                        },
                         before: () => {
                           item._restoreRequestRunning = true;
                         },
@@ -880,7 +1026,7 @@ export class ListService {
                           if (response.success) {
                             this.listData = response.listData;
                             this.render();
-                            success(response.message);
+                            response.message && success(response.message);
                           } else {
                             networkError(response);
                           }
@@ -981,9 +1127,12 @@ export class ListService {
               key: listConfig.key,
               items: reorderPayload,
             },
+            headers: {
+              'Accept': 'application/json',
+            },
             success: response => {
               if (response.success) {
-                success(response.message);
+                response.message && success(response.message);
               } else {
                 networkError(response);
               }

@@ -38,7 +38,7 @@
                 <div class="header__user-menu-icon icon">account_circle</div>
             </div>
 
-            <div data-menu="user" class="header__user-menu menu-overlay__wrapper -user">
+            <div data-menu="user" class="header__user-menu menu-overlay__wrapper">
                 <div class="menu-overlay__links">
                     <a href="{{ route('admin.profile.edit') }}" class="menu-overlay__link{{ request()->routeIs('admin.profile.edit') ? ' -active' : '' }}">
                         <div class="menu-overlay__icon icon">account_circle</div>

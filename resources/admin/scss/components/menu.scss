@@ -12,19 +12,33 @@
   background: $color-surface-2;
   border-radius: $medium-border-radius;
   transition: transition('transform', 'opacity');
+  cursor: default;
   opacity: 0;
   display: none;
 
-  &.-user {
-    right: 8px;
-    top: calc(100% - 4px);
-    z-index: 20;
+  &.-left {
+    right: auto;
+    left: 0;
+    transform-origin: top left;
+  }
+
+  &.-compact {
+    top: calc(100% + 4px);
   }
 
   &.-flipped {
     transform-origin: bottom right;
     top: auto;
     bottom: calc(100% + 8px);
+
+    &.-left {
+      transform-origin: bottom left;
+    }
+
+    &.-compact {
+      top: auto;
+      bottom: calc(100% + 4px);
+    }
   }
 
   &.-multiselect {
@@ -61,6 +75,7 @@
 }
 
 .menu-overlay__link {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 3px 12px;

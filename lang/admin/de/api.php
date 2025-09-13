@@ -3,6 +3,7 @@ return [
     // List reorder
     'listReorder' => [
         'successMessage' => 'Reihenfolge gespeichert.',
+        'errorItemNotFound' => 'Eintrag nicht gefunden.',
     ],
 
     // Toggle
