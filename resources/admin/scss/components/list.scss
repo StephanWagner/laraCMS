@@ -129,6 +129,10 @@
     &.-menu-closing {
       z-index: 2;
     }
+
+    .list__actions-container [data-tooltip] {
+      opacity: 0 !important;
+    }
   }
 
   .list__wrapper:not(.-empty) .list-content__container.-list-view-grid & {
