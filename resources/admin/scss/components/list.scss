@@ -89,7 +89,7 @@
     border-radius: $small-border-radius;
   }
 
-  .list-content__container.-list-view-grid & {
+  .list__wrapper:not(.-empty) .list-content__container.-list-view-grid & {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 8px;
@@ -131,7 +131,7 @@
     }
   }
 
-  .list-content__container.-list-view-grid & {
+  .list__wrapper:not(.-empty) .list-content__container.-list-view-grid & {
     display: block;
     aspect-ratio: 1 / 1;
     border-radius: $small-border-radius;
