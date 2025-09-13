@@ -579,6 +579,7 @@ export class ListService {
             const actionsMenuEl = document.createElement('div');
             actionsMenuEl.classList.add('list__actions-menu', 'menu-overlay__wrapper');
             actionsMenuEl.dataset.menu = menuId;
+            actionsMenuEl.dataset.flip = 4;
             actionsMenuEl.onMenuOpen = () => {
               itemContainerEl.classList.add('-menu-open');
             };

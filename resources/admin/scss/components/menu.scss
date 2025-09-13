@@ -21,6 +21,12 @@
     z-index: 20;
   }
 
+  &.-flipped {
+    transform-origin: bottom right;
+    top: auto;
+    bottom: calc(100% + 8px);
+  }
+
   &.-multiselect {
     left: calc(8px + 24px + 8px);
     bottom: calc(100% + 6px);

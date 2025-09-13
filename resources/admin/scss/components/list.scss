@@ -294,7 +294,6 @@
     }
   }
 
-
   &.-type-actions,
   &.-type-multiselect {
     &.-body {
@@ -561,7 +560,7 @@
         }
       }
     }
-    
+
     &.-body {
       .list-content__container.-list-view-grid & {
         right: 4px;
@@ -619,6 +618,13 @@
 
   .list__column.-body & {
     cursor: pointer;
+  }
+
+  &.-type-menu {
+    .list-content__container.-list-view-grid & {
+      width: 28px;
+      height: 28px;
+    }
   }
 }
 

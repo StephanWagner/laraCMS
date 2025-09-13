@@ -56,6 +56,8 @@ export function openMenu(id, triggerId = null) {
     keepInBounds(menuEl, { padding: config.menuPadding });
   }
 
+  adjustPosition(menuEl, triggerEl);
+
   if (menuTimeouts['closeMenuTimeout-' + id]) clearTimeout(menuTimeouts['closeMenuTimeout-' + id]);
 
   requestAnimationFrame(() => {
@@ -118,5 +120,29 @@ function removeMenuHandler(id) {
   if (menuHandlers[id]) {
     document.removeEventListener('click', menuHandlers[id]);
     delete menuHandlers[id];
+  }
+}
+
+/**
+ * Ensure the menu fits in the viewport
+ *
+ * @param {HTMLElement} menuEl
+ * @param {HTMLElement} triggerEl
+ */
+function adjustPosition(menuEl, triggerEl) {
+  if (!menuEl.dataset.flip) return;
+
+  const menuSpacing = parseInt(menuEl.dataset.flip) || 8;
+  menuEl.classList.remove('-flipped');
+
+  const menuRect = menuEl.getBoundingClientRect();
+  const triggerRect = triggerEl.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+
+  const spaceBelow = viewportHeight - triggerRect.bottom - menuSpacing - config.menuPadding;
+  const spaceAbove = triggerRect.top - menuSpacing - config.menuPadding;
+
+  if (menuRect.height > spaceBelow && spaceAbove > spaceBelow) {
+    menuEl.classList.add('-flipped');
   }
 }
