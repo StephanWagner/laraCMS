@@ -80,6 +80,16 @@ function closeTooltip(tooltipEl) {
 }
 
 /**
+ * Close all tooltips
+ */
+export function closeAllTooltips() {
+  const tooltipEls = document.querySelectorAll('[data-tooltip].-show');
+  tooltipEls.forEach(tooltipEl => {
+    closeTooltip(tooltipEl);
+  });
+}
+
+/**
  * Adjust tooltip position
  *
  * @param {HTMLElement} tooltipEl
