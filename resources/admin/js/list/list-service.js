@@ -18,7 +18,7 @@ import { applyFormLink } from './list-service/form';
 import { adjustTooltipPosition, initTooltips } from '../ui/tooltip';
 import { closeMenu, initMenus } from '../ui/menu';
 import { keepInBounds } from '../utils/keep-in-bounds';
-import { getListFilters } from './list-service/filters';
+import { getListFilterUi } from './list-service/filters';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -114,8 +114,10 @@ export class ListService {
     this.searchInputEl.addEventListener('input', handleSearch);
 
     // Filters
-    const filtersEl = getListFilters(this);
-    filtersWrapperEl.appendChild(filtersEl);
+    if (this.listData.config.filters) {
+      const filtersEl = getListFilterUi(this);
+      filtersWrapperEl.appendChild(filtersEl);
+    }
 
     // Options container
     const optionsContainerEl = document.createElement('div');
@@ -247,7 +249,7 @@ export class ListService {
 
     this.xhr = apiFetch({
       url: '/admin/api/list',
-      data: getListParams(params, listConfig),
+      data: getListParams(this, params),
       headers: {
         Accept: 'application/json',
       },
@@ -727,7 +729,7 @@ export class ListService {
 
                       apiFetch({
                         url: '/admin/api/duplicate',
-                        data: getListParams({}, listConfig, { id: item.id }),
+                        data: getListParams(this, {}, { id: item.id }),
                         headers: {
                           Accept: 'application/json',
                         },
@@ -854,10 +856,14 @@ export class ListService {
 
                         apiFetch({
                           url: '/admin/api/reorder-item',
-                          data: getListParams({}, listConfig, {
-                            id: item.id,
-                            action: action.type,
-                          }),
+                          data: getListParams(
+                            this,
+                            {},
+                            {
+                              id: item.id,
+                              action: action.type,
+                            }
+                          ),
                           headers: {
                             Accept: 'application/json',
                           },
@@ -964,10 +970,14 @@ export class ListService {
 
                           apiFetch({
                             url: '/admin/api/delete',
-                            data: getListParams({}, listConfig, {
-                              id: item.id,
-                              force: forceDeleting,
-                            }),
+                            data: getListParams(
+                              this,
+                              {},
+                              {
+                                id: item.id,
+                                force: forceDeleting,
+                              }
+                            ),
                             headers: {
                               Accept: 'application/json',
                             },
@@ -1012,7 +1022,7 @@ export class ListService {
 
                       apiFetch({
                         url: '/admin/api/restore',
-                        data: getListParams({}, listConfig, { id: item.id }),
+                        data: getListParams(this, {}, { id: item.id }),
                         headers: {
                           Accept: 'application/json',
                         },
@@ -1219,7 +1229,9 @@ export class ListService {
 /**
  * Get list params
  */
-export function getListParams(params = {}, listConfig = {}, obj = {}) {
+export function getListParams(listService, params = {}, obj = {}) {
+  const listConfig = listService.listData.config;
+
   return {
     key: listConfig?.key,
     orderBy: params?.orderBy || listConfig?.orderBy,
@@ -1229,8 +1241,43 @@ export function getListParams(params = {}, listConfig = {}, obj = {}) {
     trashed: params?.trashed || listConfig?.trashed,
     page: params?.page || listConfig?.page,
     view: params?.view || listConfig?.view,
+    filters: getListFilters(listService),
     ...obj,
   };
+}
+
+/**
+ * Get list filters
+ */
+function getListFilters(listService) {
+  const filters = [];
+
+  listService.wrapper.querySelectorAll('[data-list-filter]').forEach(optionEl => {
+    const filterKey = optionEl.dataset.listFilter;
+    const filterType = optionEl.dataset.listFilterType;
+    const filterColumn = optionEl.dataset.listFilterColumn;
+
+    const filter = {
+      key: filterKey,
+      type: filterType,
+      column: filterColumn,
+    };
+
+    switch (filterType) {
+      case 'radio':
+        const selectedOptionEl = optionEl.querySelector(
+          '[data-list-filter-value][data-is-selected]'
+        );
+
+        if (selectedOptionEl) {
+          filter.value = selectedOptionEl.dataset.listFilterValue;
+          filters.push(filter);
+        }
+        break;
+    }
+  });
+
+  return filters;
 }
 
 /**

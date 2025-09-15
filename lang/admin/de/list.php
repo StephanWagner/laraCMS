@@ -58,9 +58,10 @@ return [
         'status' => 'Status',
     ],
     'filterOption' => [
-        'created-by-self' => 'Selbst erstellt',
-        'status-active' => 'Aktiv',
-        'status-inactive' => 'Inaktiv',
+        'status' => [
+            'active' => 'Aktive Einträge',
+            'inactive' => 'Inaktive Einträge',
+        ],
     ],
 
     // Item count

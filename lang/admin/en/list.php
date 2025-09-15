@@ -50,6 +50,20 @@ return [
         'copy-url-success' => 'URL copied to clipboard.',
     ],
 
+    // Filter labels
+    'filtersTitle' => 'Filters',
+    'filtersClearAll' => 'Clear all',
+    'filterLabel' => [
+        'created-by' => 'Created by',
+        'status' => 'Status',
+    ],
+    'filterOption' => [
+        'status' => [
+            'active' => 'Active entries',
+            'inactive' => 'Inactive entries',
+        ],
+    ],
+
     // Item count
     'itemCount' => [
         'items0' => 'No items',

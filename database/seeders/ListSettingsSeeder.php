@@ -143,12 +143,29 @@ class ListSettingsSeeder extends Seeder
                     ],
                     'filters' => [
                         [
-                            'type' => 'created-by',
+                            'key' => 'created-by',
+                            'type' => 'checkbox',
                             'label' => 'filterLabel.created-by',
+                            'column' => 'creator.id',
+                            'getOptions' => [
+                                // TODO
+                            ],
                         ],
                         [
-                            'type' => 'status',
+                            'key' => 'status',
+                            'type' => 'radio',
                             'label' => 'filterLabel.status',
+                            'column' => 'active',
+                            'options' => [
+                                [
+                                    'label' => 'filterOption.status.active',
+                                    'value' => 1,
+                                ],
+                                [
+                                    'label' => 'filterOption.status.inactive',
+                                    'value' => 0,
+                                ],
+                            ],
                         ],
                     ],
                     'columns' => [

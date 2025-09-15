@@ -161,6 +161,19 @@ class ListService
             $config['searchTerm'] = null;
         }
 
+        // Apply filters
+        $filters = $params['filters'] ?? [];
+
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                switch ($filter['type']) {
+                    case 'radio':
+                        $query->where($filter['column'], $filter['value']);
+                        break;
+                }
+            }
+        }
+
         // Get paginated result
         $perPage = $params['perPage']
             ?? $userListSettings['perPage']
@@ -168,7 +181,7 @@ class ListService
             ?? 25;
         $config['perPage'] = $perPage;
 
-        $page = request()->input('page') ?? 1;
+        $page = $params['page'] ?? 1;
 
         $items = $query->paginate($perPage, ['*'], 'page', $page);
 

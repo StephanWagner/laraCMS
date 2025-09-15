@@ -19,11 +19,14 @@ class ApiController extends Controller
     protected function getListParams()
     {
         return [
+            'filters' => request()->input('filters'),
             'orderBy' => request()->input('orderBy'),
             'orderDirection' => request()->input('orderDirection'),
             'searchTerm' => request()->input('searchTerm'),
             'perPage' => request()->input('perPage'),
+            'page' => request()->input('page'),
             'trashed' => request()->input('trashed'),
+            'view' => request()->input('view'),
         ];
     }
 
