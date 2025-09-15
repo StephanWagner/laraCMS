@@ -2,6 +2,7 @@ import { config } from '../../config/config';
 import { getBoundsContainer } from '../list-service';
 import { keepInBounds } from '../../utils/keep-in-bounds';
 import { resolveText } from '../../utils/text';
+import { closeMenu } from '../../ui/menu';
 
 export const getListFilterUi = listService => {
   const filtersContainerEl = document.createElement('div');
@@ -47,6 +48,23 @@ export const getListFilterUi = listService => {
 
   const filtersMenuHeaderClearButtonEl = document.createElement('div');
   filtersMenuHeaderClearButtonEl.classList.add('list-filters__options-clear-button');
+  filtersMenuHeaderClearButtonEl.addEventListener('click', () => {
+    filtersOptionsContainerEl.querySelectorAll('.list-filters__option-items').forEach(optionItemsEl => {
+      const filterType = optionItemsEl.dataset.listFilterType;
+
+      switch (filterType) {
+        case 'radio':
+          optionItemsEl.querySelectorAll('.list-filters__option-item[data-is-selected]').forEach(optionItemEl => {
+            optionItemEl.removeAttribute('data-is-selected');
+            optionItemEl.querySelector('.list-filters__option-item-icon').innerHTML =
+              'radio_button_unchecked';
+          });
+          break;
+      }
+    });
+    listService.loadData({}, true);
+    closeMenu('list-filters-menu-' + listService.key);
+  });
   filtersMenuHeaderEl.appendChild(filtersMenuHeaderClearButtonEl);
 
   const filtersMenuHeaderClearButtonIconEl = document.createElement('div');
