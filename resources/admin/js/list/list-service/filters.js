@@ -19,8 +19,8 @@ export const getListFilterUi = listService => {
   filtersButtonEl.appendChild(filtersButtonIconEl);
 
   const filtersButtonAmountEl = document.createElement('div');
-  filtersButtonAmountEl.className = 'list-filters__button-amount';
-  filtersButtonAmountEl.innerHTML = '0';
+  filtersButtonAmountEl.className = 'list-filters__button-amount icon';
+  filtersButtonAmountEl.innerHTML = 'check';
   filtersButtonEl.appendChild(filtersButtonAmountEl);
 
   const filtersOptionsContainerEl = document.createElement('div');
@@ -49,19 +49,23 @@ export const getListFilterUi = listService => {
   const filtersMenuHeaderClearButtonEl = document.createElement('div');
   filtersMenuHeaderClearButtonEl.classList.add('list-filters__options-clear-button');
   filtersMenuHeaderClearButtonEl.addEventListener('click', () => {
-    filtersOptionsContainerEl.querySelectorAll('.list-filters__option-items').forEach(optionItemsEl => {
-      const filterType = optionItemsEl.dataset.listFilterType;
-
-      switch (filterType) {
-        case 'radio':
-          optionItemsEl.querySelectorAll('.list-filters__option-item[data-is-selected]').forEach(optionItemEl => {
-            optionItemEl.removeAttribute('data-is-selected');
-            optionItemEl.querySelector('.list-filters__option-item-icon').innerHTML =
-              'radio_button_unchecked';
-          });
-          break;
-      }
-    });
+    filtersOptionsContainerEl
+      .querySelectorAll('.list-filters__option-items')
+      .forEach(optionItemsEl => {
+        const filterType = optionItemsEl.dataset.listFilterType;
+        switch (filterType) {
+          case 'radio':
+            optionItemsEl
+              .querySelectorAll('.list-filters__option-item[data-is-selected]')
+              .forEach(optionItemEl => {
+                optionItemEl.removeAttribute('data-is-selected');
+                optionItemEl.querySelector('.list-filters__option-item-icon').innerHTML =
+                  'radio_button_unchecked';
+              });
+            break;
+        }
+      });
+    updateFilterAmount(listService);
     listService.loadData({}, true);
     closeMenu('list-filters-menu-' + listService.key);
   });
@@ -133,10 +137,7 @@ function getListFilterOptions(listService) {
 
           const filterOptionItemLabelEl = document.createElement('div');
           filterOptionItemLabelEl.classList.add('list-filters__option-item-label');
-          filterOptionItemLabelEl.innerHTML = resolveText(
-            listService.listData.texts,
-            option.label
-          );
+          filterOptionItemLabelEl.innerHTML = resolveText(listService.listData.texts, option.label);
           filterOptionItemEl.appendChild(filterOptionItemLabelEl);
 
           filterOptionItemEl.addEventListener('click', () => {
@@ -153,7 +154,7 @@ function getListFilterOptions(listService) {
               filterOptionItemEl.setAttribute('data-is-selected', '');
               filterOptionItemIconEl.innerHTML = 'radio_button_checked';
             }
-
+            updateFilterAmount(listService);
             listService.loadData({}, true);
           });
         });
@@ -162,4 +163,30 @@ function getListFilterOptions(listService) {
   });
 
   return filterOptionsEl;
+}
+
+function getFilterAmount(listService) {
+  let amount = 0;
+  listService.wrapper
+    .querySelectorAll(
+      '[data-menu="list-filters-menu-' + listService.key + '"] .list-filters__option-items'
+    )
+    .forEach(optionItemsEl => {
+      const filterType = optionItemsEl.dataset.listFilterType;
+      switch (filterType) {
+        case 'radio':
+          amount += optionItemsEl.querySelectorAll(
+            '.list-filters__option-item[data-is-selected]'
+          ).length;
+          break;
+      }
+    });
+  return amount;
+}
+
+function updateFilterAmount(listService) {
+  const amount = getFilterAmount(listService);
+  listService.wrapper
+    .querySelector('.list-filters__button-amount')
+    .classList.toggle('-active', amount > 0);
 }
