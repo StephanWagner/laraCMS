@@ -18,6 +18,7 @@ import { applyFormLink } from './list-service/form';
 import { adjustTooltipPosition, initTooltips } from '../ui/tooltip';
 import { closeMenu, initMenus } from '../ui/menu';
 import { keepInBounds } from '../utils/keep-in-bounds';
+import { getListFilters } from './list-service/filters';
 
 export class ListService {
   constructor({ key, wrapper }) {
@@ -49,9 +50,9 @@ export class ListService {
     headerEl.className = 'list-header__container';
 
     // Filters container
-    const filtersContainerEl = document.createElement('div');
-    filtersContainerEl.className = 'list-filters__container';
-    headerEl.appendChild(filtersContainerEl);
+    const filtersWrapperEl = document.createElement('div');
+    filtersWrapperEl.className = 'list-filters__wrapper';
+    headerEl.appendChild(filtersWrapperEl);
 
     // Views
     if (this.listData.config.hasGridView) {
@@ -59,7 +60,7 @@ export class ListService {
 
       const viewOptionsContainerEl = document.createElement('div');
       viewOptionsContainerEl.className = 'list-view-options__container selectable-button-list';
-      filtersContainerEl.appendChild(viewOptionsContainerEl);
+      filtersWrapperEl.appendChild(viewOptionsContainerEl);
 
       const viewOptionGridViewContainerEl = document.createElement('div');
       viewOptionGridViewContainerEl.className =
@@ -89,7 +90,7 @@ export class ListService {
     // Search
     const searchContainerEl = document.createElement('div');
     searchContainerEl.className = 'list-search__container';
-    filtersContainerEl.appendChild(searchContainerEl);
+    filtersWrapperEl.appendChild(searchContainerEl);
     const searchInputContainerEl = textfield({
       name: 'list-search',
       size: 'small',
@@ -111,6 +112,10 @@ export class ListService {
       this.loadData({}, true);
     }, 300);
     this.searchInputEl.addEventListener('input', handleSearch);
+
+    // Filters
+    const filtersEl = getListFilters(this);
+    filtersWrapperEl.appendChild(filtersEl);
 
     // Options container
     const optionsContainerEl = document.createElement('div');
@@ -244,7 +249,7 @@ export class ListService {
       url: '/admin/api/list',
       data: getListParams(params, listConfig),
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       before: () => {
         this.loading = true;
@@ -597,13 +602,9 @@ export class ListService {
               itemContainerEl.classList.remove('-menu-open', '-menu-closing');
             };
             actionsMenuEl.keepInBounds = menuEl => {
-              // TODO in modal use different container
-              const boundsContainerSelector =
-                '.content__container, .TODO__MODAL__CONTENT__CONTAINER';
-              const boundsContainerEl = this.wrapper.closest(boundsContainerSelector);
               keepInBounds(menuEl, {
                 padding: config.menuPadding,
-                container: boundsContainerEl,
+                container: getBoundsContainer(this),
                 attribute: 'marginRight',
               });
             };
@@ -685,7 +686,7 @@ export class ListService {
                           id: item.id,
                         },
                         headers: {
-                          'Accept': 'application/json',
+                          Accept: 'application/json',
                         },
                         before: () => {
                           item._toggleRequestRunning = true;
@@ -728,7 +729,7 @@ export class ListService {
                         url: '/admin/api/duplicate',
                         data: getListParams({}, listConfig, { id: item.id }),
                         headers: {
-                          'Accept': 'application/json',
+                          Accept: 'application/json',
                         },
                         before: () => {
                           item._duplicateRequestRunning = true;
@@ -858,7 +859,7 @@ export class ListService {
                             action: action.type,
                           }),
                           headers: {
-                            'Accept': 'application/json',
+                            Accept: 'application/json',
                           },
                           before: () => {
                             item._reorderRequestRunning = true;
@@ -968,7 +969,7 @@ export class ListService {
                               force: forceDeleting,
                             }),
                             headers: {
-                              'Accept': 'application/json',
+                              Accept: 'application/json',
                             },
                             before: () => {
                               item._deleteRequestRunning = true;
@@ -1013,7 +1014,7 @@ export class ListService {
                         url: '/admin/api/restore',
                         data: getListParams({}, listConfig, { id: item.id }),
                         headers: {
-                          'Accept': 'application/json',
+                          Accept: 'application/json',
                         },
                         before: () => {
                           item._restoreRequestRunning = true;
@@ -1127,7 +1128,7 @@ export class ListService {
               items: reorderPayload,
             },
             headers: {
-              'Accept': 'application/json',
+              Accept: 'application/json',
             },
             success: response => {
               if (response.success) {
@@ -1269,4 +1270,12 @@ function updateListActionToggleLabel(list, id) {
   actionListLabelEl.innerHTML = actionMenuLabelEl.innerHTML =
     list.listData.texts.actionLabel[labelActionType];
   adjustTooltipPosition(actionListLabelEl);
+}
+
+/**
+ * Get the bounds container
+ */
+export function getBoundsContainer(listService) {
+  const boundsContainerSelectors = ['.content__container', '.TODO__MODAL__CONTENT__CONTAINER'];
+  return listService.wrapper.closest(boundsContainerSelectors.join(', '));
 }

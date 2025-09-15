@@ -124,7 +124,7 @@ class ListSettingsSeeder extends Seeder
                     'listRoute' => 'admin.users.list',
                     'editRoute' => 'admin.users.edit',
                     
-                    // TODO
+                    // TODO TMP
                     'editView' => 'modal',
 
                     'defaultOrderBy' => 'name',
@@ -136,15 +136,20 @@ class ListSettingsSeeder extends Seeder
                         'delete',
                     ],
                     'hasSoftDelete' => true,
-
-                    // TODO
-                    'hasGridView' => true,
-                    'defaultView' => 'grid',
-
                     'searchables' => [
                         ['column' => 'name'],
                         ['column' => 'email'],
                         ['column' => 'role'],
+                    ],
+                    'filters' => [
+                        [
+                            'type' => 'created-by',
+                            'label' => 'filterLabel.created-by',
+                        ],
+                        [
+                            'type' => 'status',
+                            'label' => 'filterLabel.status',
+                        ],
                     ],
                     'columns' => [
                         [

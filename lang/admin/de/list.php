@@ -50,6 +50,19 @@ return [
         'copy-url-success' => 'URL wurde in die Zwischenablage kopiert.',
     ],
 
+    // Filter labels
+    'filtersTitle' => 'Filter',
+    'filtersClearAll' => 'Alle löschen',
+    'filterLabel' => [
+        'created-by' => 'Erstellt von',
+        'status' => 'Status',
+    ],
+    'filterOption' => [
+        'created-by-self' => 'Selbst erstellt',
+        'status-active' => 'Aktiv',
+        'status-inactive' => 'Inaktiv',
+    ],
+
     // Item count
     'itemCount' => [
         'items0' => 'Keine Einträge',
