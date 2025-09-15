@@ -64,7 +64,7 @@ return new class extends Migration {
         // Blocks
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('block_group_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('block_group_id')->nullable()->constrained()->nullOnDelete();
             $table->string('key')->unique();
             $table->string('name');
             $table->unsignedInteger('order')->default(1);
