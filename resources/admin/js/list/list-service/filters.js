@@ -187,6 +187,8 @@ function getFilterAmount(listService) {
 function updateFilterAmount(listService) {
   const amount = getFilterAmount(listService);
   listService.wrapper
-    .querySelector('.list-filters__button-amount')
-    .classList.toggle('-active', amount > 0);
+    .querySelectorAll('.list-filters__button-amount, .list-filters__options-clear-button')
+    .forEach(el => {
+      el.classList.toggle('-active', amount > 0);
+    });
 }
