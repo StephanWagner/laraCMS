@@ -315,26 +315,26 @@ export const openMultiselectMenu = listService => {
 /**
  * Multiselect request
  */
-function multiSelectRequest(list, { url, params = {}, before, complete, success, error }) {
+function multiSelectRequest(listService, { url, params = {}, before, complete, success, error }) {
   return () => {
-    if (list._bulkRequestRunning) return;
+    if (listService._bulkRequestRunning) return;
 
     const ids = Array.from(
       document.querySelectorAll('.list-item__container[data-is-selected]')
     ).map(el => el.dataset.id);
 
     params.ids = ids;
-    params.key = list.listData.config.key;
+    params.key = listService.listData.config.key;
 
     apiFetch({
       url: url,
-      data: getListParams({}, list.listData.config, params),
+      data: getListParams(listService, {}, params),
       before: () => {
-        list._bulkRequestRunning = true;
+        listService._bulkRequestRunning = true;
         before && before(ids);
       },
       complete: () => {
-        list._bulkRequestRunning = false;
+        listService._bulkRequestRunning = false;
         complete && complete(ids);
       },
       success: response => {

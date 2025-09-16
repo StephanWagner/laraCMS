@@ -56,6 +56,7 @@ return [
     'filterLabel' => [
         'created-by' => 'Created by',
         'status' => 'Status',
+        'media-type' => 'Media type',
     ],
     'filterLabelSelectButton' => [
         'created-by' => 'Select users...',
@@ -65,6 +66,12 @@ return [
         'status' => [
             'active' => 'Active entries',
             'inactive' => 'Inactive entries',
+        ],
+        'media-type' => [
+            'image' => 'Image',
+            'video' => 'Video',
+            'document' => 'Document',
+            'file' => 'Other files',
         ],
     ],
 

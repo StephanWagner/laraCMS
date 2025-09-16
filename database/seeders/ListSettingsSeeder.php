@@ -316,6 +316,32 @@ class ListSettingsSeeder extends Seeder
                     ],
                     'filters' => [
                         $this->userFilter,
+                        [
+                            'key' => 'media-type',
+                            'type' => 'radio',
+                            'render' => 'default',
+                            'label' => 'filterLabel.media-type',
+                            'valueColumn' => 'media_type',
+                            'whereColumn' => 'media_type',
+                            'options' => [
+                                [
+                                    'label' => 'filterOption.media-type.image',
+                                    'value' => 'image',
+                                ],
+                                [
+                                    'label' => 'filterOption.media-type.video',
+                                    'value' => 'video',
+                                ],
+                                [
+                                    'label' => 'filterOption.media-type.document',
+                                    'value' => 'document',
+                                ],
+                                [
+                                    'label' => 'filterOption.media-type.file',
+                                    'value' => 'file',
+                                ],
+                            ],
+                        ],
                     ],
                     'columns' => [
                         [

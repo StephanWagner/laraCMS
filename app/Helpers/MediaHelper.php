@@ -62,12 +62,65 @@ class MediaHelper
             $media = new Media();
         }
 
+        $documentMimes = [
+            // PDF
+            'pdf'  => 'application/pdf',
+
+            // Microsoft Word
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+            'docm' => 'application/vnd.ms-word.document.macroEnabled.12',
+
+            // Microsoft Excel
+            'xls'  => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+            'xlsm' => 'application/vnd.ms-excel.sheet.macroEnabled.12',
+            'xltm' => 'application/vnd.ms-excel.template.macroEnabled.12',
+
+            // Microsoft PowerPoint
+            'ppt'  => 'application/vnd.ms-powerpoint',
+            'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+            'pptm' => 'application/vnd.ms-powerpoint.presentation.macroEnabled.12',
+            'potm' => 'application/vnd.ms-powerpoint.template.macroEnabled.12',
+
+            // Microsoft Access
+            'mdb'  => 'application/vnd.ms-access',
+
+            // OpenDocument
+            'odt'  => 'application/vnd.oasis.opendocument.text',
+            'ods'  => 'application/vnd.oasis.opendocument.spreadsheet',
+            'odp'  => 'application/vnd.oasis.opendocument.presentation',
+            'odg'  => 'application/vnd.oasis.opendocument.graphics',
+            'odc'  => 'application/vnd.oasis.opendocument.chart',
+            'odf'  => 'application/vnd.oasis.opendocument.formula',
+            'odb'  => 'application/vnd.oasis.opendocument.database',
+            'odi'  => 'application/vnd.oasis.opendocument.image',
+            'odm'  => 'application/vnd.oasis.opendocument.text-master',
+            'ott'  => 'application/vnd.oasis.opendocument.text-template',
+
+            // Apple iWork
+            'pages'   => 'application/vnd.apple.pages',
+            'numbers' => 'application/vnd.apple.numbers',
+            'key'     => 'application/vnd.apple.keynote',
+
+            // Generic text
+            'txt' => 'text/plain',
+            'csv' => 'text/csv', 'application/csv',
+        ];
+
         // Decide media type from mime
         $mimeType = $file->getMimeType();
+        $extension = strtolower($file->getClientOriginalExtension());
+
         if (str_starts_with($mimeType, 'image/')) {
             $mediaType = 'image';
-        } elseif (str_starts_with($mimeType, 'video/')) {
+        } else if (str_starts_with($mimeType, 'video/')) {
             $mediaType = 'video';
+        } else if (isset($documentMimes[$extension]) && in_array($mimeType, $documentMimes, true)) {
+            $mediaType = 'document';
         } else {
             $mediaType = 'file';
         }

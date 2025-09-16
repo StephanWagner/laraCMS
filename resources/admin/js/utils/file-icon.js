@@ -20,6 +20,8 @@ export function fileExtensionToFileType(extension) {
     heic: 'image-file',
     heif: 'image-file',
     tga: 'image-file',
+    cur: 'image-file',
+    psd: 'image-file',
 
     // Video
     mp4: 'video',
