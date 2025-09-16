@@ -1274,6 +1274,17 @@ function getListFilters(listService) {
           filters.push(filter);
         }
         break;
+
+      case 'checkbox':
+        const selectedOptionsEl = optionEl.querySelectorAll(
+          '[data-list-filter-value][data-is-selected]'
+        );
+
+        if (selectedOptionsEl.length > 0) {
+          filter.value = Array.from(selectedOptionsEl).map(el => el.dataset.listFilterValue);
+          filters.push(filter);
+        }
+        break;
     }
   });
 

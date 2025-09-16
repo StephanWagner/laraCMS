@@ -57,6 +57,9 @@ return [
         'created-by' => 'Created by',
         'status' => 'Status',
     ],
+    'filterLabelSelectButton' => [
+        'created-by' => 'Select users...',
+    ],
     'filterOption' => [
         'status' => [
             'active' => 'Active entries',

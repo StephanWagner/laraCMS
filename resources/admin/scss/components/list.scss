@@ -150,6 +150,7 @@
 
   &.-has-icon {
     display: flex;
+    align-items: center;
     gap: 4px;
   }
 
@@ -160,6 +161,7 @@
 
 .list-filters__option-item-icon {
   flex-shrink: 0;
+  transition: transition('transform');
 
   .list-filters__option-item.-has-icon & {
     line-height: 24px;
@@ -173,15 +175,39 @@
   .list-filters__option-item.-checkbox & {
     font-size: 20px;
   }
+
+  .list-filters__option-item.-down & {
+    text-indent: -2px;
+  }
+
+  .list-filters__option-item.-down.-active & {
+    transform: scaleY(-1);
+  }
 }
 
 .list-filters__option-item-label {
   font-size: 14px;
   line-height: 1.4;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-top: 2px;
+}
 
-  .list-filters__option-item.-has-icon & {
-    padding-top: 3px;
-  }
+.list-filters__option-menu-container {
+  position: relative;
+}
+
+.list-filters__option-menu-items {
+  padding: 4px 8px;
+  min-width: 200px;
+  max-height: calc(24px * 10 + 4px + 4px);
+  overflow: auto;
+}
+
+.list-filters__option-menu-toggler {
+  cursor: pointer;
 }
 
 // Item header

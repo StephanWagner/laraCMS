@@ -34,7 +34,7 @@ export function textfield({
   wrapper.className = `input__container -textfield -size-${size} ${className}`.trim();
 
   if (hasClear) {
-    iconRight = 'close_small';
+    iconRight = 'close';
     iconRightClass = 'textfield__clear-button';
     iconRightEvent = inputEl => {
       inputEl.value = '';
@@ -75,7 +75,8 @@ export function textfield({
   let iconEl = null;
   if (icon) {
     iconEl = document.createElement('div');
-    iconEl.className = `textfield__icon -left icon ${iconClass}`;
+    iconEl.className =
+      'textfield__icon -left icon' + (iconClass ? ' ' + iconClass : '') + ' -icon-' + icon;
     iconEl.textContent = icon;
     iconEvent && iconEl.addEventListener('click', () => iconEvent(inputEl, wrapper));
     wrapper.appendChild(iconEl);

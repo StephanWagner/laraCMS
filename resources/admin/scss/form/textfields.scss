@@ -103,11 +103,11 @@ textarea.textfield {
   }
 
   .input__container.-has-icon-left & {
-    padding-left: calc(1px + 6px + 24px + 4px);
+    padding-left: calc(1px + 4px + 24px + 2px);
   }
 
   .input__container.-has-icon-right & {
-    padding-right: calc(1px + 6px + 24px + 4px);
+    padding-right: calc(1px + 4px + 24px + 2px);
   }
 
   &.-h {
@@ -156,17 +156,23 @@ textarea.textfield {
   position: absolute;
   z-index: 2;
   top: 50%;
+  text-align: center;
   transform: translateY(-50%);
   color: $color-surface-6;
   transition: transition('color');
   pointer-events: none;
 
   &.-left {
-    left: 6px;
+    left: 4px;
   }
 
   &.-right {
-    right: 6px;
+    right: 4px;
+  }
+
+  &.-icon-search {
+    font-size: 20px;
+    line-height: 24px;
   }
 
   .input__container.-has-focus & {
@@ -177,6 +183,8 @@ textarea.textfield {
     cursor: pointer;
     pointer-events: all;
     color: $color-surface-6 !important;
+    font-size: 16px;
+    line-height: 24px;
     display: none;
 
     .input__container.-has-value & {

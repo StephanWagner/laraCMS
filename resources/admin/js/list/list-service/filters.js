@@ -27,7 +27,6 @@ export const getListFilterUi = listService => {
   filtersOptionsContainerEl.className =
     'list-filters__options-container menu-overlay__wrapper -compact -left';
   filtersOptionsContainerEl.dataset.menu = 'list-filters-menu-' + listService.key;
-
   filtersOptionsContainerEl.keepInBounds = menuEl => {
     keepInBounds(menuEl, {
       padding: config.menuPadding,
@@ -53,17 +52,14 @@ export const getListFilterUi = listService => {
       .querySelectorAll('.list-filters__option-items')
       .forEach(optionItemsEl => {
         const filterType = optionItemsEl.dataset.listFilterType;
-        switch (filterType) {
-          case 'radio':
-            optionItemsEl
-              .querySelectorAll('.list-filters__option-item[data-is-selected]')
-              .forEach(optionItemEl => {
-                optionItemEl.removeAttribute('data-is-selected');
-                optionItemEl.querySelector('.list-filters__option-item-icon').innerHTML =
-                  'radio_button_unchecked';
-              });
-            break;
-        }
+
+        optionItemsEl
+          .querySelectorAll('.list-filters__option-item[data-is-selected]')
+          .forEach(optionItemEl => {
+            optionItemEl.removeAttribute('data-is-selected');
+            optionItemEl.querySelector('.list-filters__option-item-icon').innerHTML =
+              filterType == 'radio' ? 'radio_button_unchecked' : 'check_box_outline_blank';
+          });
       });
     updateFilterAmount(listService);
     listService.loadData({}, true);
@@ -76,7 +72,7 @@ export const getListFilterUi = listService => {
     'list-filters__options-clear-button-icon',
     'icon'
   );
-  filtersMenuHeaderClearButtonIconEl.innerHTML = 'clear';
+  filtersMenuHeaderClearButtonIconEl.innerHTML = 'close';
   filtersMenuHeaderClearButtonEl.appendChild(filtersMenuHeaderClearButtonIconEl);
 
   const filtersMenuHeaderClearButtonTextEl = document.createElement('div');
@@ -115,51 +111,79 @@ function getListFilterOptions(listService) {
     const filterOptionItemsEl = document.createElement('div');
     filterOptionItemsEl.classList.add('list-filters__option-items');
     filterOptionItemsEl.dataset.listFilter = filter.key;
-    filterOptionItemsEl.dataset.listFilterColumn = filter.column;
-    filterOptionItemsEl.dataset.listFilterType = 'radio';
+    filterOptionItemsEl.dataset.listFilterColumn = filter.valueColumn;
+    filterOptionItemsEl.dataset.listFilterType = filter.type;
     filterOptionEl.appendChild(filterOptionItemsEl);
 
-    switch (filter.type) {
-      case 'checkbox':
-        break;
+    let filterOptionsContainerEl = filterOptionItemsEl;
 
-      case 'radio':
-        filter.options.forEach(option => {
-          const filterOptionItemEl = document.createElement('div');
-          filterOptionItemEl.classList.add('list-filters__option-item', '-has-icon', '-radio');
-          filterOptionItemEl.dataset.listFilterValue = option.value;
-          filterOptionItemsEl.appendChild(filterOptionItemEl);
+    if (filter.render == 'menu') {
+      const menuId = 'list-filters-menu-' + listService.key + '-' + filter.key;
 
-          const filterOptionItemIconEl = document.createElement('div');
-          filterOptionItemIconEl.classList.add('list-filters__option-item-icon', 'icon');
-          filterOptionItemIconEl.innerHTML = 'radio_button_unchecked';
-          filterOptionItemEl.appendChild(filterOptionItemIconEl);
+      const filterOptionMenuContainerEl = document.createElement('div');
+      filterOptionMenuContainerEl.classList.add('list-filters__option-menu-container');
+      filterOptionItemsEl.appendChild(filterOptionMenuContainerEl);
 
-          const filterOptionItemLabelEl = document.createElement('div');
-          filterOptionItemLabelEl.classList.add('list-filters__option-item-label');
-          filterOptionItemLabelEl.innerHTML = resolveText(listService.listData.texts, option.label);
-          filterOptionItemEl.appendChild(filterOptionItemLabelEl);
+      const filterOptionMenuTogglerEl = document.createElement('div');
+      filterOptionMenuTogglerEl.classList.add(
+        'list-filters__option-menu-toggler',
+        'list-filters__option-item',
+        'no-select',
+        '-has-icon',
+        '-down'
+      );
+      filterOptionMenuTogglerEl.dataset.toggleMenu = menuId;
+      filterOptionMenuContainerEl.appendChild(filterOptionMenuTogglerEl);
 
-          filterOptionItemEl.addEventListener('click', () => {
-            const isSelected = filterOptionItemEl.hasAttribute('data-is-selected');
-            if (isSelected) {
-              filterOptionItemEl.removeAttribute('data-is-selected');
-              filterOptionItemIconEl.innerHTML = 'radio_button_unchecked';
-            } else {
-              filterOptionItemsEl.querySelectorAll('.list-filters__option-item').forEach(itemEl => {
-                itemEl.removeAttribute('data-is-selected');
-                itemEl.querySelector('.list-filters__option-item-icon').innerHTML =
-                  'radio_button_unchecked';
-              });
-              filterOptionItemEl.setAttribute('data-is-selected', '');
-              filterOptionItemIconEl.innerHTML = 'radio_button_checked';
-            }
-            updateFilterAmount(listService);
-            listService.loadData({}, true);
-          });
+      const filterOptionMenuTogglerIconEl = document.createElement('div');
+      filterOptionMenuTogglerIconEl.classList.add(
+        'list-filters__option-menu-toggler-icon',
+        'list-filters__option-item-icon',
+        'icon'
+      );
+      filterOptionMenuTogglerIconEl.innerHTML = 'keyboard_arrow_down';
+      filterOptionMenuTogglerEl.appendChild(filterOptionMenuTogglerIconEl);
+
+      const filterOptionMenuTogglerLabelEl = document.createElement('div');
+      filterOptionMenuTogglerLabelEl.classList.add(
+        'list-filters__option-menu-toggler-label',
+        'list-filters__option-item-label'
+      );
+
+      filterOptionMenuTogglerLabelEl.innerHTML = resolveText(
+        listService.listData.texts,
+        filter.labelSelectButton
+      );
+      filterOptionMenuTogglerEl.appendChild(filterOptionMenuTogglerLabelEl);
+
+      const filterOptionMenuEl = document.createElement('div');
+      filterOptionMenuEl.classList.add(
+        'list-filters__option-menu',
+        'menu-overlay__wrapper',
+        '-compact',
+        '-left'
+      );
+      filterOptionMenuEl.dataset.menu = menuId;
+      filterOptionMenuContainerEl.appendChild(filterOptionMenuEl);
+
+      const filterOptionMenuItemsEl = document.createElement('div');
+      filterOptionMenuItemsEl.classList.add('list-filters__option-menu-items');
+      filterOptionMenuItemsEl.dataset.menu = menuId;
+      filterOptionMenuItemsEl.keepInBounds = menuEl => {
+        keepInBounds(menuEl, {
+          padding: config.menuPadding,
+          container: getBoundsContainer(listService),
         });
-        break;
+      };
+      filterOptionMenuEl.appendChild(filterOptionMenuItemsEl);
+
+      filterOptionsContainerEl = filterOptionMenuItemsEl;
     }
+
+    filter.options.forEach(option => {
+      const filterOptionItemEl = getFilterOption(listService, option, filter.type);
+      filterOptionsContainerEl.appendChild(filterOptionItemEl);
+    });
   });
 
   return filterOptionsEl;
@@ -172,14 +196,9 @@ function getFilterAmount(listService) {
       '[data-menu="list-filters-menu-' + listService.key + '"] .list-filters__option-items'
     )
     .forEach(optionItemsEl => {
-      const filterType = optionItemsEl.dataset.listFilterType;
-      switch (filterType) {
-        case 'radio':
-          amount += optionItemsEl.querySelectorAll(
-            '.list-filters__option-item[data-is-selected]'
-          ).length;
-          break;
-      }
+      amount += optionItemsEl.querySelectorAll(
+        '.list-filters__option-item[data-is-selected]'
+      ).length;
     });
   return amount;
 }
@@ -191,4 +210,51 @@ function updateFilterAmount(listService) {
     .forEach(el => {
       el.classList.toggle('-active', amount > 0);
     });
+}
+
+function getFilterOption(listService, option, type) {
+  const icon = type == 'radio' ? 'radio_button_unchecked' : 'check_box_outline_blank';
+  const iconChecked = type == 'radio' ? 'radio_button_checked' : 'check_box';
+
+  const filterOptionItemEl = document.createElement('div');
+  filterOptionItemEl.classList.add(
+    'list-filters__option-item',
+    'no-select',
+    '-has-icon',
+    '-' + type
+  );
+  filterOptionItemEl.dataset.listFilterValue = option.value;
+
+  const filterOptionItemIconEl = document.createElement('div');
+  filterOptionItemIconEl.classList.add('list-filters__option-item-icon', 'icon');
+  filterOptionItemIconEl.innerHTML = icon;
+  filterOptionItemEl.appendChild(filterOptionItemIconEl);
+
+  const filterOptionItemLabelEl = document.createElement('div');
+  filterOptionItemLabelEl.classList.add('list-filters__option-item-label');
+  filterOptionItemLabelEl.innerHTML = resolveText(listService.listData.texts, option.label);
+  filterOptionItemEl.appendChild(filterOptionItemLabelEl);
+
+  filterOptionItemEl.addEventListener('click', () => {
+    const isSelected = filterOptionItemEl.hasAttribute('data-is-selected');
+    if (isSelected) {
+      filterOptionItemEl.removeAttribute('data-is-selected');
+      filterOptionItemIconEl.innerHTML = icon;
+    } else {
+      if (type == 'radio') {
+        filterOptionItemEl
+          .closest('.list-filters__option-items')
+          .querySelectorAll('.list-filters__option-item')
+          .forEach(itemEl => {
+            itemEl.removeAttribute('data-is-selected');
+            itemEl.querySelector('.list-filters__option-item-icon').innerHTML = icon;
+          });
+      }
+      filterOptionItemEl.setAttribute('data-is-selected', '');
+      filterOptionItemIconEl.innerHTML = iconChecked;
+    }
+    updateFilterAmount(listService);
+    listService.loadData({}, true);
+  });
+  return filterOptionItemEl;
 }

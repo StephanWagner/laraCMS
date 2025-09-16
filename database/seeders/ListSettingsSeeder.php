@@ -123,7 +123,7 @@ class ListSettingsSeeder extends Seeder
                     'title' => 'admin::users.list.title',
                     'listRoute' => 'admin.users.list',
                     'editRoute' => 'admin.users.edit',
-                    
+
                     // TODO TMP
                     'editView' => 'modal',
 
@@ -145,17 +145,28 @@ class ListSettingsSeeder extends Seeder
                         [
                             'key' => 'created-by',
                             'type' => 'checkbox',
+                            'render' => 'menu',
                             'label' => 'filterLabel.created-by',
-                            'column' => 'creator.id',
+                            'labelSelectButton' => 'filterLabelSelectButton.created-by',
+                            'valueColumn' => 'id',
+                            'labelColumn' => 'name',
                             'getOptions' => [
-                                // TODO
+                                'model' => 'User',
+                                'where' => [],
+                                'select' => [
+                                    'name',
+                                ],
+                                'prioritizeBy' => ['id', 'auth-id'],
+                                'orderBy' => 'name',
+                                'orderDirection' => 'asc',
                             ],
                         ],
                         [
                             'key' => 'status',
                             'type' => 'radio',
+                            'render' => 'default',
                             'label' => 'filterLabel.status',
-                            'column' => 'active',
+                            'valueColumn' => 'active',
                             'options' => [
                                 [
                                     'label' => 'filterOption.status.active',
@@ -270,7 +281,7 @@ class ListSettingsSeeder extends Seeder
                     'title' => 'admin::media.list.title',
                     'listRoute' => 'admin.media.list',
                     'editRoute' => 'admin.media.edit',
-                    
+
                     // TODO
                     'editView' => 'sidebar',
 
