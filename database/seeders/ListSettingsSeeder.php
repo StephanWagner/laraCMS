@@ -7,6 +7,47 @@ use Illuminate\Support\Facades\DB;
 
 class ListSettingsSeeder extends Seeder
 {
+    protected $userFilter = [
+        'key' => 'created-by',
+        'type' => 'checkbox',
+        'render' => 'menu',
+        'label' => 'filterLabel.created-by',
+        'labelSelectButton' => 'filterLabelSelectButton.created-by',
+        'labelSelectButtonN' => 'filterLabelSelectButton.created-by-active',
+        'valueColumn' => 'id',
+        'whereColumn' => 'created_by',
+        'labelColumn' => 'name',
+        'getOptions' => [
+            'model' => 'User',
+            'where' => [],
+            'select' => [
+                'name',
+            ],
+            'prioritizeBy' => ['id', 'auth-id'],
+            'orderBy' => 'name',
+            'orderDirection' => 'asc',
+        ],
+    ];
+    
+    protected $statusFilter = [
+        'key' => 'status',
+        'type' => 'radio',
+        'render' => 'default',
+        'label' => 'filterLabel.status',
+        'valueColumn' => 'active',
+        'whereColumn' => 'active',
+        'options' => [
+            [
+                'label' => 'filterOption.status.active',
+                'value' => 1,
+            ],
+            [
+                'label' => 'filterOption.status.inactive',
+                'value' => 0,
+            ],
+        ],
+    ];
+
     public function run()
     {
         DB::table('settings')->insertOrIgnore([
@@ -25,6 +66,10 @@ class ListSettingsSeeder extends Seeder
                     'hasSoftDelete' => true,
                     'searchables' => [
                         ['column' => 'name'],
+                    ],
+                    'filters' => [
+                        $this->userFilter,
+                        $this->statusFilter,
                     ],
                     'duplicate' => [
                         'uniqueColumns' => [
@@ -142,43 +187,8 @@ class ListSettingsSeeder extends Seeder
                         ['column' => 'role'],
                     ],
                     'filters' => [
-                        [
-                            'key' => 'created-by',
-                            'type' => 'checkbox',
-                            'render' => 'menu',
-                            'label' => 'filterLabel.created-by',
-                            'labelSelectButton' => 'filterLabelSelectButton.created-by',
-                            'labelSelectButtonN' => 'filterLabelSelectButton.created-by-active',
-                            'valueColumn' => 'id',
-                            'labelColumn' => 'name',
-                            'getOptions' => [
-                                'model' => 'User',
-                                'where' => [],
-                                'select' => [
-                                    'name',
-                                ],
-                                'prioritizeBy' => ['id', 'auth-id'],
-                                'orderBy' => 'name',
-                                'orderDirection' => 'asc',
-                            ],
-                        ],
-                        [
-                            'key' => 'status',
-                            'type' => 'radio',
-                            'render' => 'default',
-                            'label' => 'filterLabel.status',
-                            'valueColumn' => 'active',
-                            'options' => [
-                                [
-                                    'label' => 'filterOption.status.active',
-                                    'value' => 1,
-                                ],
-                                [
-                                    'label' => 'filterOption.status.inactive',
-                                    'value' => 0,
-                                ],
-                            ],
-                        ],
+                        $this->userFilter,
+                        $this->statusFilter,
                     ],
                     'columns' => [
                         [
@@ -303,6 +313,9 @@ class ListSettingsSeeder extends Seeder
                         ['column' => 'mime_type'],
                         ['column' => 'meta.alt_text', 'type' => 'jsonColumn'],
                         ['column' => 'meta.copyright', 'type' => 'jsonColumn'],
+                    ],
+                    'filters' => [
+                        $this->userFilter,
                     ],
                     'columns' => [
                         [

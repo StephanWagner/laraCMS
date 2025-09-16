@@ -162,44 +162,46 @@ class ListService
         }
 
         // Add filters
-        foreach ($config['filters'] as $key => $filter) {
-            if (!empty($filter['getOptions'])) {
-                $filterModelClassName = $filter['getOptions']['model'];
-                $filterModelClass = 'App\\Models\\' . $filterModelClassName;
+        if (!empty($config['filters'])) {
+            foreach ($config['filters'] as $key => $filter) {
+                if (!empty($filter['getOptions'])) {
+                    $filterModelClassName = $filter['getOptions']['model'];
+                    $filterModelClass = 'App\\Models\\' . $filterModelClassName;
 
-                $options = $filterModelClass::query();
+                    $options = $filterModelClass::query();
 
-                if (!empty($filter['getOptions']['where'])) {
-                    $options->where($filter['getOptions']['where']);
-                }
-
-                if (!empty($filter['getOptions']['prioritizeBy'])) {
-                    $prioritizeByKey = $filter['getOptions']['prioritizeBy'][0];
-                    $prioritizeByValue = $filter['getOptions']['prioritizeBy'][1];
-                    if ($prioritizeByValue == 'auth-id') {
-                        $prioritizeByValue = Auth::user()->id;
+                    if (!empty($filter['getOptions']['where'])) {
+                        $options->where($filter['getOptions']['where']);
                     }
-                    $options->orderByRaw('CASE WHEN ' . $prioritizeByKey . ' = ? THEN 0 ELSE 1 END', [$prioritizeByValue]);
+
+                    if (!empty($filter['getOptions']['prioritizeBy'])) {
+                        $prioritizeByKey = $filter['getOptions']['prioritizeBy'][0];
+                        $prioritizeByValue = $filter['getOptions']['prioritizeBy'][1];
+                        if ($prioritizeByValue == 'auth-id') {
+                            $prioritizeByValue = Auth::user()->id;
+                        }
+                        $options->orderByRaw('CASE WHEN ' . $prioritizeByKey . ' = ? THEN 0 ELSE 1 END', [$prioritizeByValue]);
+                    }
+
+                    if (!empty($filter['getOptions']['orderBy'])) {
+                        $options->orderBy($filter['getOptions']['orderBy'], $filter['getOptions']['orderDirection'] ?? 'asc');
+                    }
+
+                    if (!empty($filter['getOptions']['select'])) {
+                        $options->select(array_merge(['id'], $filter['getOptions']['select']));
+                    }
+
+                    $options = $options->get();
+
+                    $options = $options->map(function ($option) use ($filter) {
+                        return [
+                            'value' => $option->{$filter['valueColumn'] ?? 'id'},
+                            'label' => $option->{$filter['labelColumn'] ?? 'title'},
+                        ];
+                    });
+
+                    $config['filters'][$key]['options'] = $options;
                 }
-
-                if (!empty($filter['getOptions']['orderBy'])) {
-                    $options->orderBy($filter['getOptions']['orderBy'], $filter['getOptions']['orderDirection'] ?? 'asc');
-                }
-
-                if (!empty($filter['getOptions']['select'])) {
-                    $options->select(array_merge(['id'], $filter['getOptions']['select']));
-                }
-
-                $options = $options->get();
-
-                $options = $options->map(function ($option) use ($filter) {
-                    return [
-                        'value' => $option->{$filter['valueColumn'] ?? 'id'},
-                        'label' => $option->{$filter['labelColumn'] ?? 'title'},
-                    ];
-                });
-
-                $config['filters'][$key]['options'] = $options;
             }
         }
 

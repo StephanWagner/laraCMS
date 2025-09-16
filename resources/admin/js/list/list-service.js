@@ -1255,12 +1255,12 @@ function getListFilters(listService) {
   listService.wrapper.querySelectorAll('[data-list-filter]').forEach(optionEl => {
     const filterKey = optionEl.dataset.listFilter;
     const filterType = optionEl.dataset.listFilterType;
-    const filterColumn = optionEl.dataset.listFilterColumn;
+    const filterWhereColumn = optionEl.dataset.listFilterWhereColumn;
 
     const filter = {
       key: filterKey,
       type: filterType,
-      column: filterColumn,
+      column: filterWhereColumn,
     };
 
     switch (filterType) {

@@ -112,7 +112,8 @@ function getListFilterOptions(listService) {
     const filterOptionItemsEl = document.createElement('div');
     filterOptionItemsEl.classList.add('list-filters__option-items');
     filterOptionItemsEl.dataset.listFilter = filter.key;
-    filterOptionItemsEl.dataset.listFilterColumn = filter.valueColumn;
+    filterOptionItemsEl.dataset.listFilterValueColumn = filter.valueColumn;
+    filterOptionItemsEl.dataset.listFilterWhereColumn = filter.whereColumn;
     filterOptionItemsEl.dataset.listFilterType = filter.type;
     filterOptionEl.appendChild(filterOptionItemsEl);
 

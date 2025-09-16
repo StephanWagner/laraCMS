@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\TracksUserActivity;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
+    use TracksUserActivity;
     use SoftDeletes;
     use HasFactory, Notifiable;
 
@@ -23,6 +25,8 @@ class User extends Authenticatable
         'password',
         'role',
         'language',
+        'created_by',
+        'updated_by',
     ];
 
     /**
