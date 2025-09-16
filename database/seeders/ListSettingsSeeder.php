@@ -148,6 +148,7 @@ class ListSettingsSeeder extends Seeder
                             'render' => 'menu',
                             'label' => 'filterLabel.created-by',
                             'labelSelectButton' => 'filterLabelSelectButton.created-by',
+                            'labelSelectButtonN' => 'filterLabelSelectButton.created-by-active',
                             'valueColumn' => 'id',
                             'labelColumn' => 'name',
                             'getOptions' => [

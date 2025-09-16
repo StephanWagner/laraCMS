@@ -62,6 +62,7 @@ export const getListFilterUi = listService => {
           });
       });
     updateFilterAmount(listService);
+    updateFilterTogglerLabels(listService);
     listService.loadData({}, true);
     closeMenu('list-filters-menu-' + listService.key);
   });
@@ -144,16 +145,16 @@ function getListFilterOptions(listService) {
       filterOptionMenuTogglerIconEl.innerHTML = 'keyboard_arrow_down';
       filterOptionMenuTogglerEl.appendChild(filterOptionMenuTogglerIconEl);
 
+      const togglerLabel = resolveText(listService.listData.texts, filter.labelSelectButton);
+      const togglerLabelN = resolveText(listService.listData.texts, filter.labelSelectButtonN);
       const filterOptionMenuTogglerLabelEl = document.createElement('div');
       filterOptionMenuTogglerLabelEl.classList.add(
         'list-filters__option-menu-toggler-label',
         'list-filters__option-item-label'
       );
-
-      filterOptionMenuTogglerLabelEl.innerHTML = resolveText(
-        listService.listData.texts,
-        filter.labelSelectButton
-      );
+      filterOptionMenuTogglerLabelEl.dataset.listFilterLabel = togglerLabel;
+      filterOptionMenuTogglerLabelEl.dataset.listFilterLabelN = togglerLabelN;
+      filterOptionMenuTogglerLabelEl.innerHTML = togglerLabel;
       filterOptionMenuTogglerEl.appendChild(filterOptionMenuTogglerLabelEl);
 
       const filterOptionMenuEl = document.createElement('div');
@@ -189,17 +190,14 @@ function getListFilterOptions(listService) {
   return filterOptionsEl;
 }
 
-function getFilterAmount(listService) {
+function getFilterAmount(listService, selector) {
+  selector =
+    selector ||
+    '[data-menu="list-filters-menu-' + listService.key + '"] .list-filters__option-items';
   let amount = 0;
-  listService.wrapper
-    .querySelectorAll(
-      '[data-menu="list-filters-menu-' + listService.key + '"] .list-filters__option-items'
-    )
-    .forEach(optionItemsEl => {
-      amount += optionItemsEl.querySelectorAll(
-        '.list-filters__option-item[data-is-selected]'
-      ).length;
-    });
+  listService.wrapper.querySelectorAll(selector).forEach(optionItemsEl => {
+    amount += optionItemsEl.querySelectorAll('.list-filters__option-item[data-is-selected]').length;
+  });
   return amount;
 }
 
@@ -254,7 +252,34 @@ function getFilterOption(listService, option, type) {
       filterOptionItemIconEl.innerHTML = iconChecked;
     }
     updateFilterAmount(listService);
+    updateFilterTogglerLabels(listService);
     listService.loadData({}, true);
   });
   return filterOptionItemEl;
+}
+
+function updateFilterTogglerLabels(listService) {
+  listService.wrapper.querySelectorAll('[data-list-filter]').forEach(listFilterEl => {
+    const togglerLabelEl = listFilterEl.querySelector('.list-filters__option-menu-toggler-label');
+    if (togglerLabelEl) {
+      const label = togglerLabelEl.dataset.listFilterLabel;
+      const labelN = togglerLabelEl.dataset.listFilterLabelN;
+      const amount = getFilterAmount(
+        listService,
+        '[data-list-filter="' + listFilterEl.dataset.listFilter + '"]'
+      );
+
+      if (amount == 1) {
+        togglerLabelEl.innerHTML = listFilterEl
+          .querySelector(
+            '.list-filters__option-item[data-is-selected] .list-filters__option-item-label'
+          )
+          .innerHTML.trim();
+      } else if (amount > 1) {
+        togglerLabelEl.innerHTML = labelN.replace('{n}', amount);
+      } else {
+        togglerLabelEl.innerHTML = label;
+      }
+    }
+  });
 }
