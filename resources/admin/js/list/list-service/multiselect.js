@@ -149,7 +149,7 @@ export const getMultiselectMenuEl = listService => {
                 actionIconEl.innerHTML = 'toggle_off';
                 itemContainerEl.classList.add('-inactive');
               });
-              listService.deselectAll();
+              deselectAll(listService);
               success(response.message);
             },
           })();
