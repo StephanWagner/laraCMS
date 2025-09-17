@@ -204,6 +204,7 @@
   min-width: 200px;
   max-height: calc(24px * 10 + 4px + 4px);
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .list-filters__option-menu-toggler {
