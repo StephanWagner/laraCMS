@@ -26,6 +26,12 @@
     }
   }
 
+  &.-extension-ico {
+    .list-content__container.-list-view-grid & {
+      background-size: 32px;
+    }
+  }
+
   &.-extension-pdf {
     background-size: contain;
   }
