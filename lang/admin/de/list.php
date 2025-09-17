@@ -69,7 +69,8 @@ return [
         ],
         'media-type' => [
             'image' => 'Bild',
-            'video' => 'Video',
+            'video' => 'Video', 
+            'audio' => 'Audio',
             'document' => 'Dokument',
             'file' => 'Andere Dateien',
         ],

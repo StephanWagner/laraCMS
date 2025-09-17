@@ -70,6 +70,7 @@ return [
         'media-type' => [
             'image' => 'Image',
             'video' => 'Video',
+            'audio' => 'Audio',
             'document' => 'Document',
             'file' => 'Other files',
         ],

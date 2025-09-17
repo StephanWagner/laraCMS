@@ -333,6 +333,10 @@ class ListSettingsSeeder extends Seeder
                                     'value' => 'video',
                                 ],
                                 [
+                                    'label' => 'filterOption.media-type.audio',
+                                    'value' => 'audio',
+                                ],
+                                [
                                     'label' => 'filterOption.media-type.document',
                                     'value' => 'document',
                                 ],

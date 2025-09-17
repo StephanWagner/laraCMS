@@ -119,6 +119,8 @@ class MediaHelper
             $mediaType = 'image';
         } else if (str_starts_with($mimeType, 'video/')) {
             $mediaType = 'video';
+        } else if (str_starts_with($mimeType, 'audio/')) {
+            $mediaType = 'audio';
         } else if (isset($documentMimes[$extension]) && in_array($mimeType, $documentMimes, true)) {
             $mediaType = 'document';
         } else {
