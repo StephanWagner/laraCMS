@@ -8,7 +8,7 @@ export function removeContainer(outerEl, {
   fadeDuration = 400,
   collapseDuration = 400,
   onComplete = null,
-}) {
+} = {}) {
   if (!outerEl) return;
 
   const innerEl = outerEl.firstElementChild;

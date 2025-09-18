@@ -447,4 +447,37 @@ class ApiController extends Controller
             'success' => true,
         ];
     }
+
+    /**
+     * Save user settings
+     */
+    public function saveUserSettings()
+    {
+        $data = request()->input('data');
+        
+        if (empty($data)) {
+            return [
+                'success' => false,
+                'message' => 'Data is empty.',
+            ];
+        }
+        
+        $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => 'User not found.',
+            ];
+        }
+        
+        $userSettings = $user->settings ?? [];
+        $userSettings = ArrayHelper::mergeRecursiveDistinct($userSettings, $data);
+        $user->settings = $userSettings;
+        $user->save();
+
+        return [
+            'success' => true,
+        ];
+    }
 }
