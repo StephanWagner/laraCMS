@@ -41,7 +41,7 @@ return [
                     ],
                 ],
                 'disk' => [
-                    'title' => 'Disk',
+                    'title' => 'Speicher',
                     'items' => [
                         'disk_free' => 'Frei',
                         'disk_total' => 'Gesamt',
