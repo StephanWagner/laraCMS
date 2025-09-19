@@ -1,10 +1,7 @@
 <?php
 return [
+    'ignore-warning' => 'Ignore warning',
     'developer' => [
-        'ignore-warning' => 'Ignore warning',
-        'yes' => 'Yes',
-        'no' => 'No',
-        'not-available' => 'Not available',
         'system' => [
             'title' => 'System',
             'sections' => [
@@ -58,21 +55,15 @@ return [
         ],
         'media' => [
             'title' => 'Media',
-            'items' => [
-                
-            ],
+            'items' => [],
         ],
         'mail' => [
             'title' => 'Mail',
-            'items' => [
-                
-            ],
+            'items' => [],
         ],
         'localization' => [
             'title' => 'Localization',
-            'items' => [
-                
-            ],
+            'items' => [],
         ],
     ],
 ];

@@ -1,5 +1,10 @@
 <?php
 return [
+    // Yes, No, Not available
+    'yes' => 'Yes',
+    'no' => 'No',
+    'not-available' => 'Not available',
+
     // Errors
     'errors' => [
         'default' => 'Oops! Something went wrong.',
