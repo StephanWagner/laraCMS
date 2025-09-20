@@ -16,7 +16,7 @@ class SettingsController extends Controller
         return view('admin::pages.settings.site-variables');
     }
 
-    public function developer()
+    public function developer(?string $query = null)
     {
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
         $requiredPHP = $composer['require']['php'] ?? null;
@@ -24,6 +24,11 @@ class SettingsController extends Controller
         $path = storage_path();
         $free = disk_free_space($path);
         $total = disk_total_space($path);
+
+        if ($query === 'phpinfo') {
+            phpinfo();
+            return;
+        }
 
         $serverInfo = [
             // Laravel

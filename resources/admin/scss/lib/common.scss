@@ -3,6 +3,11 @@
 
 // Text
 
+.-small-text {
+  font-size: $small-font-size;
+  line-height: $small-line-height;
+}
+
 .-gradient-text {
   background: $primary-gradient;
   -webkit-text-fill-color: transparent;
@@ -14,25 +19,27 @@
   color: $error-text-color;
 }
 
-.icon.-error-warning-icon {
+.icon.-text-icon,
+.icon.-small-text-icon {
+  vertical-align: middle;
+
+  &.-has-margin {
+    margin-right: 4px;
+  }
+}
+
+.icon.-text-icon {
   font-size: 16px;
   width: 16px;
   height: 16px;
-  vertical-align: middle;
-  transform: translateY(-1px);
-  margin-right: 4px;
+  transform: translateY(-2px);
 }
 
 .icon.-small-text-icon {
   font-size: 14px;
   width: 14px;
   height: 14px;
-  vertical-align: middle;
   transform: translateY(-1px);
-
-  &.-has-margin {
-    margin-right: 4px;
-  }
 }
 
 .monospace {

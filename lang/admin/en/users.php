@@ -39,7 +39,7 @@ return [
         'delete' => [
             'linkText' => 'Delete Account',
             'modalTitle' => 'Delete Account',
-            'modalText' => '<b class="-error-text"><span class="icon -error-warning-icon">warning</span>Caution:</b> This action will permanently delete your account and all associated data. Please enter your password to confirm.',
+            'modalText' => '<b class="-error-text"><span class="icon -text-icon">warning</span>Caution:</b> This action will permanently delete your account and all associated data. Please enter your password to confirm.',
             'modalSubmitButtonText' => 'Delete account',
             'modalCancelButtonText' => 'Cancel',
             'modalTextfieldPlaceholder' => 'Your password',

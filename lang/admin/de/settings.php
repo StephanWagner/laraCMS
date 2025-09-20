@@ -19,12 +19,13 @@ return [
                 ],
                 'php' => [
                     'title' => 'PHP',
+                    'phpinfo' => 'PHP-Info',
                     'items' => [
                         'php_version' => 'Version',
-                        'memory_limit' => 'Speicherlimit<br><span class="monospace">memory_limit</span>',
-                        'upload_max_filesize' => 'Maximale Upload-Dateigröße<br><span class="monospace">upload_max_filesize</span>',
-                        'post_max_size' => 'Maximale POST-Größe<br><span class="monospace">post_max_size</span>',
-                        'max_execution_time' => 'Maximale Ausführungszeit<br><span class="monospace">max_execution_time</span>',
+                        'memory_limit' => 'Speicherlimit',
+                        'upload_max_filesize' => 'Maximale Upload-Dateigröße',
+                        'post_max_size' => 'Maximale POST-Größe',
+                        'max_execution_time' => 'Maximale Ausführungszeit',
                         'gd' => 'GD-Erweiterung',
                         'imagick' => 'Imagick-Erweiterung',
                     ],
