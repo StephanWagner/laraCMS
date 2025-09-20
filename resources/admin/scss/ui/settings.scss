@@ -65,3 +65,12 @@
     color: $warning-color;
   }
 }
+
+.settings__links-container {
+  margin: 12px 0 0;
+  padding: 0 calc(1px + 12px);
+}
+
+.settings__link {
+  font-size: 13px;
+}

@@ -122,5 +122,6 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
             Route::post('duplicate', 'duplicate')->name('duplicate');
             Route::post('media-upload', 'mediaUpload')->name('media-upload');
             Route::post('save-user-settings', 'saveUserSettings')->name('save-user-settings');
+            Route::post('remove-user-settings', 'removeUserSettings')->name('remove-user-settings');
         });
 });

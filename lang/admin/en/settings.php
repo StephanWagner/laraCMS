@@ -1,6 +1,7 @@
 <?php
 return [
-    'ignore-warning' => 'Ignore warning',
+    'ignoreWarning' => 'Ignore warning',
+    'resetIgnoreWarnings' => 'Reset ignored warnings',
     'developer' => [
         'system' => [
             'title' => 'System',

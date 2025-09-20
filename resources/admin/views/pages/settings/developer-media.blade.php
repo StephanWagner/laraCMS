@@ -1,4 +1,4 @@
-<div class="tab-content__container -active" data-tab-content="media">
+<div class="tab-content__container" data-tab-content="media">
     <div class="settings__wrapper">
         <div class="settings__container">
             <div class="settings__title">File storage</div>

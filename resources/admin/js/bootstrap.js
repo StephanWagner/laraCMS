@@ -9,9 +9,9 @@ import { initFormEvents } from './form/events';
 import { initListUpload } from './list/list-upload';
 import { initModals } from './ui/modal';
 import { initTooltips } from './ui/tooltip';
-import { initProfilePage } from './pages/profile';
 import { initTabs } from './ui/tabs';
-import { initRemoveSystemWarning } from './utils/user-settings';
+import { initProfilePage } from './pages/profile';
+import { initDeveloperSettingsPage } from './pages/settings-developer';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Forms
@@ -37,10 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Pages
   initProfilePage();
+  initDeveloperSettingsPage();
 
   // Tabs
   initTabs();
-
-  // User settings
-  initRemoveSystemWarning();
 });

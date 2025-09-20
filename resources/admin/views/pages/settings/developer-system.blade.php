@@ -18,7 +18,7 @@
                         @if ($serverInfo['laravel_debug'] && $serverInfo['laravel_env'] === 'production')
                             <div class="settings__description-container" data-warning="laravel_debug">
                                 <div class="settings__description -error">
-                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.laravel.warnings.laravel_debug') !!} <span class="link" data-remove-warning="laravel_debug">{{ __('admin::settings.ignore-warning') }}</span>
+                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.laravel.warnings.laravel_debug') !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="laravel_debug">{{ __('admin::settings.ignoreWarning') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -40,7 +40,7 @@
                         ))
                             <div class="settings__description-container" data-warning="php_version">
                                 <div class="settings__description -error">
-                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.php_version', ['value' => $serverInfo['php_version_suggested']]) !!} <span class="link" data-remove-warning="php_version">{{ __('admin::settings.ignore-warning') }}</span>
+                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.php_version', ['value' => $serverInfo['php_version_suggested']]) !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="php_version">{{ __('admin::settings.ignoreWarning') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -55,7 +55,7 @@
                         )
                             <div class="settings__description-container" data-warning="memory_limit">
                                 <div class="settings__description -warning">
-                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.memory_limit', ['value' => $serverInfo['memory_limit_suggested']]) !!} <span class="link" data-remove-warning="memory_limit">{{ __('admin::settings.ignore-warning') }}</span>
+                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.memory_limit', ['value' => $serverInfo['memory_limit_suggested']]) !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="memory_limit">{{ __('admin::settings.ignoreWarning') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -70,7 +70,7 @@
                         )
                             <div class="settings__description-container" data-warning="upload_max_filesize">
                                 <div class="settings__description -warning">
-                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.upload_max_filesize', ['value' => $serverInfo['upload_max_filesize_suggested']]) !!} <span class="link" data-remove-warning="upload_max_filesize">{{ __('admin::settings.ignore-warning') }}</span>
+                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.upload_max_filesize', ['value' => $serverInfo['upload_max_filesize_suggested']]) !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="upload_max_filesize">{{ __('admin::settings.ignoreWarning') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -85,7 +85,7 @@
                         )
                             <div class="settings__description-container" data-warning="post_max_size">
                                 <div class="settings__description -warning">
-                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.post_max_size', ['value' => $serverInfo['post_max_size_suggested']]) !!} <span class="link" data-remove-warning="post_max_size">{{ __('admin::settings.ignore-warning') }}</span>
+                                    <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.post_max_size', ['value' => $serverInfo['post_max_size_suggested']]) !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="post_max_size">{{ __('admin::settings.ignoreWarning') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -100,7 +100,7 @@
                         )
                         <div class="settings__description-container" data-warning="max_execution_time">
                             <div class="settings__description -warning">
-                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.max_execution_time', ['value' => $serverInfo['max_execution_time_suggested']]) !!} <span class="link" data-remove-warning="max_execution_time">{{ __('admin::settings.ignore-warning') }}</span>
+                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.max_execution_time', ['value' => $serverInfo['max_execution_time_suggested']]) !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="max_execution_time">{{ __('admin::settings.ignoreWarning') }}</span>
                             </div>
                         </div>
                         @endif
@@ -116,7 +116,7 @@
                         )
                         <div class="settings__description-container" data-warning="gd">
                             <div class="settings__description -error">
-                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.gd') !!} <span class="link" data-remove-warning="gd">{{ __('admin::settings.ignore-warning') }}</span>
+                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.gd') !!} <span class="link" data-remove-warning="gd">{{ __('admin::settings.ignoreWarning') }}</span>
                             </div>
                         </div>
                         @endif
@@ -131,7 +131,7 @@
                         )
                         <div class="settings__description-container" data-warning="imagick">
                             <div class="settings__description -warning">
-                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.imagick') !!} <span class="link" data-remove-warning="imagick">{{ __('admin::settings.ignore-warning') }}</span>
+                                <span class="icon -small-text-icon -has-margin">warning</span>{!! __('admin::settings.developer.system.sections.php.warnings.imagick') !!} <span class="link" data-warning-id="ignore-system-warnings" data-remove-warning="imagick">{{ __('admin::settings.ignoreWarning') }}</span>
                             </div>
                         </div>
                         @endif
@@ -162,4 +162,12 @@
             </div>
         </div>
     </div>
+
+    @if (!empty(Auth::user()->settings['ignore-system-warnings']))
+    <div class="settings__links-container">
+        <div class="settings__links">
+            <span class="settings__link link" data-reset-warnings="ignore-system-warnings">{{ __('admin::settings.resetIgnoreWarnings') }}</span>
+        </div>
+    </div>
+    @endif
 </div>

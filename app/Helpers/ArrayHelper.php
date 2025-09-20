@@ -32,4 +32,35 @@ class ArrayHelper
 
         return $merged;
     }
+
+    /**
+     * Recursively remove values from an array by path.
+     *
+     * @param array|null $array  Input array
+     * @param array|null $path   Path of keys to remove (can be nested)
+     * @return array
+     */
+    public static function removeRecursive(?array $array, ?array $path): array
+    {
+        $array = $array ?? [];
+        $path  = $path ?? [];
+
+        foreach ($path as $key => $value) {
+            if (is_array($value)) {
+                // Go deeper if $value is an array
+                if (isset($array[$key]) && is_array($array[$key])) {
+                    $array[$key] = self::removeRecursive($array[$key], $value);
+                }
+            } else {
+                // If $key is numeric, we’re just given a key name in $value
+                $targetKey = is_int($key) ? $value : $key;
+
+                if (isset($array[$targetKey])) {
+                    unset($array[$targetKey]);
+                }
+            }
+        }
+
+        return $array;
+    }
 }

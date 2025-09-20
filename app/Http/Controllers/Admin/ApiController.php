@@ -480,4 +480,37 @@ class ApiController extends Controller
             'success' => true,
         ];
     }
+
+    /**
+     * Remove user settings
+     */
+    public function removeUserSettings()
+    {
+        $data = request()->input('data');
+
+        if (empty($data)) {
+            return [
+                'success' => false,
+                'message' => 'Data is empty.',
+            ];
+        }
+        
+        $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => 'User not found.',
+            ];
+        }
+        
+        $userSettings = $user->settings ?? [];
+        $userSettings = ArrayHelper::removeRecursive($userSettings, $data);
+        $user->settings = $userSettings;
+        $user->save();
+
+        return [
+            'success' => true,
+        ];
+    }
 }
