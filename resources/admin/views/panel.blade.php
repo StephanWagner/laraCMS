@@ -73,7 +73,7 @@
                             </div>
                         </a>
                         @if (auth()->user()?->hasRole('developer'))
-                            <a href="{{ route('admin.settings.developer') }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
+                            <a href="{{ route('admin.settings.developer', ['tab' => 'system']) }}" class="panel__link -sub{{ request()->routeIs('admin.settings.developer') ? ' -active' : '' }}">
                                 <div class="panel__link-text">
                                     {{ __('admin::panel.nav.settings.developer') }}
                                 </div>

@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CmsSettingsSeeder::class,
+            MediaSettingsSeeder::class,
             ListSettingsSeeder::class,
             FormSettingsSeeder::class,
             ContentTypeSeeder::class,

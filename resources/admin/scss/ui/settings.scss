@@ -17,6 +17,7 @@
 .settings__title {
   margin: 0 0 4px;
   padding: 0 calc(1px + 12px);
+  font-weight: 600;
 
   &.-has-link {
     display: flex;
@@ -25,6 +26,7 @@
 
     > a,
     > .link {
+      font-weight: normal;
       padding-bottom: 3px;
     }
   }
@@ -74,7 +76,7 @@
   margin: 2px 0 0;
 }
 
-.settings__description {
+.settings__warning {
   font-size: $small-font-size;
   line-height: $small-line-height;
   margin: 4px 0 0;

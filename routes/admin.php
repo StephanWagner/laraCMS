@@ -43,7 +43,7 @@ Route::middleware(['web', 'auth', 'authGuard', 'updateLastSeen', 'isCmsInstalled
     Route::middleware('accessAdmin')->prefix('settings')->name('settings.')->group(function () {
         Route::get('site-info', [SettingsController::class, 'siteInfo'])->name('site-info');
         Route::get('site-variables', [SettingsController::class, 'siteVariables'])->name('site-variables');
-        Route::get('developer/{query?}', [SettingsController::class, 'developer'])->middleware('accessDeveloper')->name('developer');
+        Route::get('developer/{tab}', [SettingsController::class, 'developer'])->middleware('accessDeveloper')->name('developer');
     });
 
     // Lists and form

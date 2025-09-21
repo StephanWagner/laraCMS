@@ -9,32 +9,32 @@ return [
                 'laravel' => [
                     'title' => 'Laravel',
                     'items' => [
-                        'laravel_version' => 'Version',
-                        'laravel_env' => 'Umgebung',
-                        'laravel_debug' => 'Debug-Modus',
+                        'laravelVersion' => 'Version',
+                        'laravelEnv' => 'Umgebung',
+                        'laravelDebug' => 'Debug-Modus',
                     ],
                     'warnings' => [
-                        'laravel_debug' => 'Debug-Modus ist in der Produktionsumgebung aktiviert. Dies kann sensible Informationen offenlegen.',
+                        'laravelDebug' => 'Debug-Modus ist in der Produktionsumgebung aktiviert. Dies kann sensible Informationen offenlegen.',
                     ],
                 ],
                 'php' => [
                     'title' => 'PHP',
                     'phpinfo' => 'PHP-Info',
                     'items' => [
-                        'php_version' => 'Version',
-                        'memory_limit' => 'Speicherlimit',
-                        'upload_max_filesize' => 'Maximale Upload-Dateigröße',
-                        'post_max_size' => 'Maximale POST-Größe',
-                        'max_execution_time' => 'Maximale Ausführungszeit',
+                        'phpVersion' => 'Version',
+                        'memoryLimit' => 'Speicherlimit',
+                        'uploadMaxFilesize' => 'Maximale Upload-Dateigröße',
+                        'postMaxSize' => 'Maximale POST-Größe',
+                        'maxExecutionTime' => 'Maximale Ausführungszeit',
                         'gd' => 'GD-Erweiterung',
                         'imagick' => 'Imagick-Erweiterung',
                     ],
                     'warnings' => [
-                        'php_version' => 'Diese Laravel-Installation benötigt PHP :value oder höher.',
-                        'memory_limit' => 'Empfohlener Mindestwert: :value',
-                        'upload_max_filesize' => 'Empfohlener Mindestwert: :value',
-                        'post_max_size' => 'Empfohlener Mindestwert: :value',
-                        'max_execution_time' => 'Empfohlener Mindestwert: :value',
+                        'phpVersion' => 'Diese Laravel-Installation benötigt PHP :value oder höher.',
+                        'memoryLimit' => 'Empfohlener Mindestwert: :value',
+                        'uploadMaxFilesize' => 'Empfohlener Mindestwert: :value',
+                        'postMaxSize' => 'Empfohlener Mindestwert: :value',
+                        'maxExecutionTime' => 'Empfohlener Mindestwert: :value',
                         'gd' => 'Weder GD noch <a href="https://www.php.net/manual/de/book.imagick.php" target="_blank"><span class="icon -small-text-icon">open_in_new</span> Imagick</a> sind installiert. Die Bildverarbeitung funktioniert nicht. Bitte mindestens eine dieser Erweiterungen aktivieren – Imagick wird sehr empfohlen.',
                         'imagick' => 'Die PHP-Erweiterung <a href="https://www.php.net/manual/de/book.imagick.php" target="_blank"><span class="icon -small-text-icon">open_in_new</span> Imagick</a> ist erforderlich, um volle Medienunterstützung zu aktivieren.',
                     ],
@@ -42,8 +42,8 @@ return [
                 'disk' => [
                     'title' => 'Speicher',
                     'items' => [
-                        'disk_free' => 'Frei',
-                        'disk_total' => 'Gesamt',
+                        'diskFree' => 'Frei',
+                        'diskTotal' => 'Gesamt',
                     ],
                 ],
                 'time' => [

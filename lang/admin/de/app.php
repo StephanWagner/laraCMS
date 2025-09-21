@@ -3,7 +3,7 @@ return [
     // Yes, No, Not available
     'yes' => 'Ja',
     'no' => 'Nein',
-    'not-available' => 'Nicht verfügbar',
+    'notAvailable' => 'Nicht verfügbar',
 
     // Errors
     'errors' => [

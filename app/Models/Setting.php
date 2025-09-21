@@ -10,6 +10,6 @@ class Setting extends Model
 
     protected $fillable = [
         'key',
-        'value'
+        'value',
     ];
 }

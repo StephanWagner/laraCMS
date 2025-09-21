@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\SettingsHelper;
 
 class SettingsController extends Controller
 {
@@ -16,7 +17,7 @@ class SettingsController extends Controller
         return view('admin::pages.settings.site-variables');
     }
 
-    public function developer(?string $query = null)
+    public function developer(?string $tab = null)
     {
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
         $requiredPHP = $composer['require']['php'] ?? null;
@@ -25,39 +26,46 @@ class SettingsController extends Controller
         $free = disk_free_space($path);
         $total = disk_total_space($path);
 
-        if ($query === 'phpinfo') {
+        if ($tab === 'phpinfo') {
             phpinfo();
             return;
         }
 
         $serverInfo = [
             // Laravel
-            'laravel_version' => app()->version(),
-            'laravel_env' => config('app.env'),
-            'laravel_debug' => config('app.debug') ? 1 : 0,
+            'laravelVersion' => app()->version(),
+            'laravelEnv' => 'production', //config('app.env'),
+            'laravelDebug' => config('app.debug') ? 1 : 0,
             // PHP
-            'php_version' => PHP_VERSION,
-            'php_version_suggested' => $this->normalizePhpRequirement($requiredPHP),
-            'memory_limit' => ini_get('memory_limit'),
-            'memory_limit_suggested' => '512M',
-            'upload_max_filesize' => ini_get('upload_max_filesize'),
-            'upload_max_filesize_suggested' => '32M',
-            'post_max_size' => ini_get('post_max_size'),
-            'post_max_size_suggested' => '64M',
-            'max_execution_time' => ini_get('max_execution_time'),
-            'max_execution_time_suggested' => '30',
+            'phpVersion' => '7.4.12', //PHP_VERSION,
+            'phpVersionSuggested' => $this->normalizePhpRequirement($requiredPHP),
+            'memoryLimit' => ini_get('memory_limit'),
+            'memoryLimitSuggested' => '512M',
+            'uploadMaxFilesize' => ini_get('upload_max_filesize'),
+            'uploadMaxFilesizeSuggested' => '32M',
+            'postMaxSize' => ini_get('post_max_size'),
+            'postMaxSizeSuggested' => '64M',
+            'maxExecutionTime' => 20, //ini_get('max_execution_time'),
+            'maxExecutionTimeSuggested' => '30',
             // Extensions
             'gd' => extension_loaded('gd') ? 1 : 0,
             'imagick' => extension_loaded('imagick') ? 1 : 0,
             // Disk
-            'disk_free' => $free  !== false ? round($free / 1024 / 1024 / 1024, 2) . ' GB' : __('admin::settings.developer.not-available'),
-            'disk_total' => $total !== false ? round($total / 1024 / 1024 / 1024, 2) . ' GB' : __('admin::settings.developer.not-available'),
+            'diskFree' => $free  !== false ? round($free / 1024 / 1024 / 1024, 2) . ' GB' : __('admin::settings.developer.notAvailable'),
+            'diskTotal' => $total !== false ? round($total / 1024 / 1024 / 1024, 2) . ' GB' : __('admin::settings.developer.notAvailable'),
             // Timezone
             // TODO add ip2location timezones
             'timezone' => config('app.timezone'),
         ];
 
-        return view('admin::pages.settings.developer', compact('serverInfo'));
+        $mediaSettings = [
+            'folderStructure' => SettingsHelper::get('media.folder-structure'),
+            'imageVersions' => SettingsHelper::get('media.image-versions'),
+            'convertToWebp' => SettingsHelper::get('media.convert-to-webp'),
+            'webpQuality' => SettingsHelper::get('media.webp-quality'),
+        ];
+
+        return view('admin::pages.settings.developer', compact('serverInfo', 'mediaSettings', 'tab'));
     }
 
     /**

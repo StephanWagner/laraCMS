@@ -108,7 +108,8 @@ class MediaHelper
 
             // Generic text
             'txt' => 'text/plain',
-            'csv' => 'text/csv', 'application/csv',
+            'csv' => 'text/csv',
+            'application/csv',
         ];
 
         // Decide media type from mime
@@ -277,7 +278,7 @@ class MediaHelper
                         folder: $baseFolder,
                         maxWidth: $maxWidth,
                         maxHeight: $maxHeight,
-                        quality: ($sizeKey === 'preview' ? 80 : 85),
+                        quality: ($sizeKey === 'preview' ? 80 : 85), // TODO config
                         convertToWebp: true,
                         stripAnimation: ($sizeKey === 'preview'),
                         uuid: $media->uuid,
@@ -359,7 +360,7 @@ class MediaHelper
      * @param bool     $stripAnimation Take only first frame if animated
      * @param int|null $maxWidth       Optional max width
      * @param int|null $maxHeight      Optional max height
-     * @param int      $quality        Quality (default 80)
+     * @param int      $quality        Quality
      *
      * @return array [path, extension, width, height]
      */
@@ -368,7 +369,7 @@ class MediaHelper
         ?string $folder = null,
         ?int $maxWidth = null,
         ?int $maxHeight = null,
-        int $quality = 80,
+        int $quality = 85, // TODO config
         bool $convertToWebp = true,
         bool $stripAnimation = false,
         ?string $uuid = null,
@@ -391,8 +392,20 @@ class MediaHelper
         }
 
         if ($convertToWebp) {
-            $encoded   = $image->encode(new WebpEncoder(quality: $quality));
-            $mime      = 'image/webp';
+            if ($image->encode()->mediaType() === 'image/png' && extension_loaded('imagick')) {
+                $core = $image->core()->native();
+                if ($core instanceof \Imagick) {
+                    $core->setImageFormat('webp');
+                    $core->setOption('webp:lossless', 'true');
+                    $encoded = $core->getImageBlob();
+                }
+            }
+
+            if (!$encoded) {
+                $encoded = $image->encode(new WebpEncoder(quality: $quality));
+            }
+
+            $mime = 'image/webp';
             $extension = 'webp';
         } else {
             $encoded   = $image->encode();
