@@ -13,7 +13,7 @@ class MediaSettingsSeeder extends Seeder
             // Folder structure (none, date, hash)
             [
                 'key'   => 'media.folder-structure',
-                'value' => 'hash',
+                'value' => 'date',
             ],
 
             // Image versions
@@ -24,19 +24,21 @@ class MediaSettingsSeeder extends Seeder
                         'id'     => 'large',
                         'width'  => 2400,
                         'height' => 2400,
-                        'system' => true,
                     ],
                     [
                         'id'     => 'medium',
                         'width'  => 1200,
                         'height' => 1200,
-                        'system' => true,
                     ],
                     [
                         'id'     => 'small',
                         'width'  => 600,
                         'height' => 600,
-                        'system' => true,
+                    ],
+                    [
+                        'id'     => 'thumb',
+                        'width'  => 300,
+                        'height' => 300,
                     ],
                 ])->toJson(),
             ],
@@ -49,7 +51,7 @@ class MediaSettingsSeeder extends Seeder
 
             // WebP quality
             [
-                'key'   => 'media.webp-quality',
+                'key'   => 'media.image-quality',
                 'value' => '85',
             ],
         ]);

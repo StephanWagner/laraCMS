@@ -9,12 +9,15 @@ use Illuminate\Http\UploadedFile;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\Exceptions\DecoderException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\SettingsHelper;
 
 class MediaHelper
 {
@@ -141,16 +144,15 @@ class MediaHelper
                 ];
             }
 
-            $saved = MediaHelper::saveImage(
-                $image,
-                folder: self::getMediaFolder(),
-                convertToWebp: false,
-                stripAnimation: false,
+            $saved = MediaHelper::saveFile(
+                $file
             );
+
+            $saved['width'] = $image->width();
+            $saved['height'] = $image->height();
         } else {
             $saved = MediaHelper::saveFile(
-                $file,
-                folder: self::getMediaFolder(),
+                $file
             );
         }
 
@@ -170,7 +172,7 @@ class MediaHelper
         $fillData = [
             'uuid'              => $saved['uuid'],
             'path'              => $saved['path'],
-            'uri'               => self::getMediaUri($saved),
+            'uri'               => self::getMediaUri($saved['uuid']),
             'extension'         => $saved['extension'],
             'media_type'        => $mediaType,
             'filename_original' => $file->getClientOriginalName(),
@@ -218,19 +220,16 @@ class MediaHelper
             return;
         }
 
-        // Version definitions
-        // TODO: config-driven later
-        $versions = [
-            'large'       => [2400, 2400],
-            'medium'      => [1200, 1200],
-            'small'       => [600, 600],
-            'extra-small' => [300, 300],
-            'preview'     => [400, 400],
-        ];
+        $versions = self::getImageVersions();
+        $folder = self::getMediaFolder($media->uuid);
+        $convertToWebp = self::getConvertToWebp();
+        $imageQuality = self::getImageQuality();
 
-        $baseFolder = self::getMediaFolder();
+        foreach ($versions as $version) {
+            $sizeKey = $version['id'];
+            $maxWidth = $version['width'];
+            $maxHeight = $version['height'];
 
-        foreach ($versions as $sizeKey => [$maxWidth, $maxHeight]) {
             try {
                 // Delete old version if exists
                 if ($existing = $media->versions()->where('size_key', $sizeKey)->first()) {
@@ -256,10 +255,10 @@ class MediaHelper
                     $image = MediaHelper::read($tmpPath);
                     $saved = MediaHelper::saveImage(
                         $image,
-                        folder: $baseFolder,
+                        folder: $folder,
                         maxWidth: $maxWidth,
                         maxHeight: $maxHeight,
-                        quality: 80,
+                        imageQuality: 80,
                         convertToWebp: true,
                         stripAnimation: false,
                         uuid: $media->uuid,
@@ -275,14 +274,15 @@ class MediaHelper
 
                     $saved = MediaHelper::saveImage(
                         $image,
-                        folder: $baseFolder,
+                        folder: $folder,
                         maxWidth: $maxWidth,
                         maxHeight: $maxHeight,
-                        quality: ($sizeKey === 'preview' ? 80 : 85), // TODO config
-                        convertToWebp: true,
+                        imageQuality: ($sizeKey === 'preview' ? min(80, $imageQuality) : $imageQuality),
+                        convertToWebp: $convertToWebp,
                         stripAnimation: ($sizeKey === 'preview'),
                         uuid: $media->uuid,
                         sizeKey: $sizeKey,
+                        crop: ($sizeKey === 'preview'),
                     );
                 }
 
@@ -290,11 +290,11 @@ class MediaHelper
                     MediaVersion::create([
                         'media_id'  => $media->id,
                         'size_key'  => $sizeKey,
-                        'uri'       => self::getMediaUri($saved, $sizeKey),
+                        'uri'       => self::getMediaUri($media->uuid, $sizeKey),
                         'path'      => $saved['path'],
                         'extension' => $saved['extension'],
-                        'width'     => $saved['width'] ?? null,
-                        'height'    => $saved['height'] ?? null,
+                        'width'     => $saved['width'],
+                        'height'    => $saved['height'],
                     ]);
                 }
             } catch (\Exception $e) {
@@ -315,11 +315,8 @@ class MediaHelper
      * Save a file to storage
      */
     public static function saveFile(
-        UploadedFile|string $file,
-        ?string $folder = null,
+        UploadedFile|string $file
     ): array {
-        $folder ??= self::getMediaFolder();
-
         if ($file instanceof UploadedFile) {
             $extension = strtolower($file->getClientOriginalExtension());
             $mime      = $file->getMimeType();
@@ -331,8 +328,8 @@ class MediaHelper
         }
 
         $uuid   = Str::uuid()->toString();
-        $folder = trim($folder, '/');
-        $path   = $folder . '/' . $uuid . '.' . $extension;
+        $folder = trim(self::getMediaFolder($uuid), '/');
+        $path   = $folder . '/original.' . $extension;
 
         if ($file instanceof UploadedFile) {
             Storage::disk('public')->putFileAs(dirname($path), $file, basename($path));
@@ -343,7 +340,7 @@ class MediaHelper
         return [
             'uuid'      => $uuid,
             'folder'    => $folder,
-            'uri'       => self::getMediaUri(['folder' => $folder, 'uuid' => $uuid]),
+            'uri'       => self::getMediaUri($uuid),
             'path'      => $path,
             'extension' => $extension,
             'mime'      => $mime,
@@ -369,14 +366,13 @@ class MediaHelper
         ?string $folder = null,
         ?int $maxWidth = null,
         ?int $maxHeight = null,
-        int $quality = 85, // TODO config
+        ?int $imageQuality = null,
         bool $convertToWebp = true,
         bool $stripAnimation = false,
         ?string $uuid = null,
         ?string $sizeKey = null,
+        bool $crop = false,
     ): array {
-        $folder ??= self::getMediaFolder();
-
         if ($stripAnimation && extension_loaded('imagick')) {
             $core = $image->core()->native();
             if ($core instanceof \Imagick && $core->getNumberImages() > 1) {
@@ -388,41 +384,68 @@ class MediaHelper
         }
 
         if ($maxWidth || $maxHeight) {
-            $image->scaleDown($maxWidth ?? null, $maxHeight ?? null);
+            if ($crop) {
+                $image->cover($maxWidth ?? $maxHeight, $maxHeight ?? $maxWidth, 'center');
+            } else {
+                $image->scaleDown($maxWidth ?? null, $maxHeight ?? null);
+            }
         }
 
+        $mime = $image->encode()->mediaType();
+
         if ($convertToWebp) {
-            if ($image->encode()->mediaType() === 'image/png' && extension_loaded('imagick')) {
+            if (($mime === 'image/png' || $mime === 'image/gif') && extension_loaded('imagick')) {
                 $core = $image->core()->native();
                 if ($core instanceof \Imagick) {
-                    $core->setImageFormat('webp');
-                    $core->setOption('webp:lossless', 'true');
-                    $encoded = $core->getImageBlob();
+                    if ($core->getNumberImages() > 1) {
+                        // Skip animated PNGs of GIFs
+                    } else {
+                        $core->setImageFormat('webp');
+                        $core->setOption('webp:lossless', 'true');
+                        $encoded = $core->getImageBlob();
+                    }
                 }
             }
 
-            if (!$encoded) {
-                $encoded = $image->encode(new WebpEncoder(quality: $quality));
+            if (empty($encoded)) {
+                $encoded = $image->encode(new WebpEncoder(quality: $imageQuality));
             }
 
             $mime = 'image/webp';
             $extension = 'webp';
         } else {
-            $encoded   = $image->encode();
-            $mime      = $encoded->mediaType();
-            $extension = self::mimeToExtension($mime) ?? 'jpg';
+            switch ($mime) {
+                case 'image/jpeg':
+                    $encoded = $image->encode(new JpegEncoder(quality: $imageQuality));
+                    $extension = 'jpg';
+                    break;
+                case 'image/png':
+                    $encoded = $image->encode(new PngEncoder());
+                    $extension = 'png';
+                    break;
+                case 'image/webp':
+                    $encoded = $image->encode(new WebpEncoder(quality: $imageQuality));
+                    $extension = 'webp';
+                    break;
+                default:
+                    $encoded = $image->encode();
+                    $extension = self::mimeToExtension($mime) ?? 'jpg';
+            }
         }
 
-        $uuid   = $uuid ?? Str::uuid()->toString();
+        $uuid = $uuid ?? Str::uuid()->toString();
+        if (!$folder) {
+            $folder = self::getMediaFolder($uuid);
+        }
         $folder = trim($folder, '/');
-        $path   = $folder . '/' . $uuid . ($sizeKey ? '-' . $sizeKey : '') . '.' . $extension;
+        $path   = $folder . '/' . ($sizeKey ? $sizeKey : 'original') . '.' . $extension;
 
         Storage::disk('public')->put($path, (string) $encoded);
 
         return [
             'uuid'      => $uuid,
             'folder'    => $folder,
-            'uri'       => self::getMediaUri(['folder' => $folder, 'uuid' => $uuid, 'sizeKey' => $sizeKey]),
+            'uri'       => self::getMediaUri($uuid, $sizeKey),
             'path'      => $path,
             'extension' => $extension,
             'mime'      => $mime,
@@ -435,20 +458,26 @@ class MediaHelper
     /**
      * Get the media folder
      */
-    private static function getMediaFolder(): string
+    private static function getMediaFolder($uuid): string
     {
+        $folderStructure = self::getFolderStructure();
+
         $parts = [];
 
         // Media folder
         $parts[] = 'media';
 
-        // Date folder
-        // TODO: replace with config('media.organize_by_date')
-        // if (config('media.organize_by_date')) {
-        if (true) {
+        if ($folderStructure === 'date') {
             $parts[] = date('Y');
             $parts[] = date('m');
         }
+
+        if ($folderStructure === 'hash') {
+            $parts[] = substr($uuid, 0, 2);
+            $parts[] = substr($uuid, 2, 2);
+        }
+
+        $parts[] = $uuid;
 
         return implode('/', $parts);
     }
@@ -466,9 +495,9 @@ class MediaHelper
     /**
      * Get media uri
      */
-    public static function getMediaUri($saved, ?string $sizeKey = null): string
+    public static function getMediaUri($uuid, ?string $sizeKey = null): string
     {
-        return '/' . $saved['folder'] . '/' . $saved['uuid'] . ($sizeKey ? '-' . $sizeKey : '');
+        return '/media/' . $uuid . ($sizeKey ? '/' . $sizeKey : '');
     }
 
     /**
@@ -497,11 +526,15 @@ class MediaHelper
      */
     public static function deleteFile($media): void
     {
-        // TODO store in library
         $disk = Storage::disk('public');
 
         if ($disk->exists($media->path)) {
             $disk->delete($media->path);
+            $folder = dirname($media->path);
+            $files = $disk->allFiles($folder);
+            if (empty($files)) {
+                $disk->deleteDirectory($folder);
+            }
         } else {
             Log::info("Skipping deleting missing file: {$media->path}");
         }
@@ -604,5 +637,54 @@ class MediaHelper
         ];
 
         return $mimeToExt[$mime] ?? null;
+    }
+
+    /**
+     * Get folder structure
+     */
+    private static function getFolderStructure(): string
+    {
+        switch (SettingsHelper::get('media.folder-structure')) {
+            case 'none':
+                return 'none';
+            case 'date':
+                return 'date';
+            case 'hash':
+                return 'hash';
+        }
+
+        return 'date';
+    }
+
+    /**
+     * Get image versions
+     */
+    private static function getImageVersions(): array
+    {
+        $versions = json_decode(SettingsHelper::get('media.image-versions'), true);
+
+        $versions[] = [
+            'id' => 'preview',
+            'width' => 400,
+            'height' => 400,
+        ];
+
+        return $versions;
+    }
+
+    /**
+     * Get convert to WebP
+     */
+    private static function getConvertToWebp(): bool
+    {
+        return SettingsHelper::get('media.convert-to-webp') === '1';
+    }
+
+    /**
+     * Get WebP quality
+     */
+    private static function getImageQuality(): int
+    {
+        return (int) SettingsHelper::get('media.image-quality');
     }
 }

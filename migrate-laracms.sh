@@ -23,6 +23,12 @@ php artisan tinker --execute="DB::table('migrations')->where('migration', '$migr
 # Run just that one migration
 php artisan migrate --path="database/migrations/$filename" && \
 php artisan db:seed
+
+# Clear all caches
+php artisan optimize:clear
+php artisan cache:clear
+
+# Handle env files
 cp .env.backup .env
 rm .env.backup
 echo -e "${GREEN}✔ Re-ran migration $filename and seeded database.${RESET}"

@@ -12,9 +12,8 @@ Route::middleware(['web', 'isCmsInstalled'])->group(function () {
 
 // Media
 Route::middleware(['web'])->name('media.')->group(function () {
-    Route::get('/media/{prefix?}/{uuid}{size?}/{slug?}', [MediaController::class, 'show'])
-        ->where('prefix', '[0-9]{4}/[0-9]{2}')
+    Route::get('/media/{uuid}/{size?}/{slug?}', [MediaController::class, 'show'])
         ->where('uuid', '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}')
-        ->where('size', '(-[a-z0-9_-]+)?')
-        ->name('show.version');
+        ->where('size', '^(large|medium|small|thumb|preview)?$')
+        ->name('show');
 });

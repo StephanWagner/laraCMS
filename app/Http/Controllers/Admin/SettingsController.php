@@ -34,10 +34,10 @@ class SettingsController extends Controller
         $serverInfo = [
             // Laravel
             'laravelVersion' => app()->version(),
-            'laravelEnv' => 'production', //config('app.env'),
+            'laravelEnv' => config('app.env'),
             'laravelDebug' => config('app.debug') ? 1 : 0,
             // PHP
-            'phpVersion' => '7.4.12', //PHP_VERSION,
+            'phpVersion' => PHP_VERSION,
             'phpVersionSuggested' => $this->normalizePhpRequirement($requiredPHP),
             'memoryLimit' => ini_get('memory_limit'),
             'memoryLimitSuggested' => '512M',
@@ -45,7 +45,7 @@ class SettingsController extends Controller
             'uploadMaxFilesizeSuggested' => '32M',
             'postMaxSize' => ini_get('post_max_size'),
             'postMaxSizeSuggested' => '64M',
-            'maxExecutionTime' => 20, //ini_get('max_execution_time'),
+            'maxExecutionTime' => ini_get('max_execution_time'),
             'maxExecutionTimeSuggested' => '30',
             // Extensions
             'gd' => extension_loaded('gd') ? 1 : 0,
@@ -62,7 +62,7 @@ class SettingsController extends Controller
             'folderStructure' => SettingsHelper::get('media.folder-structure'),
             'imageVersions' => SettingsHelper::get('media.image-versions'),
             'convertToWebp' => SettingsHelper::get('media.convert-to-webp'),
-            'webpQuality' => SettingsHelper::get('media.webp-quality'),
+            'imageQuality' => SettingsHelper::get('media.image-quality'),
         ];
 
         return view('admin::pages.settings.developer', compact('serverInfo', 'mediaSettings', 'tab'));

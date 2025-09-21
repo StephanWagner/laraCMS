@@ -24,7 +24,7 @@ class MediaController extends Controller
     /**
      * Show original media file
      */
-    public function show(?string $prefix, string $uuid, ?string $size = null)
+    public function show(string $uuid, ?string $size = null)
     {
         $media = Media::where('uuid', $uuid)->first();
 
