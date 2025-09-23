@@ -21,7 +21,7 @@
                     'warning' => [
                         'id' => 'ignore-system-warnings',
                         'key' => 'laravel-debug',
-                        'type' => 'error',
+                        'type' => 'warning',
                         'message' => __('admin::settings.developer.system.sections.laravel.warnings.laravelDebug'),
                         'show' => $serverInfo['laravelDebug'] && $serverInfo['laravelEnv'] === 'production',
                     ],
@@ -52,7 +52,7 @@
                     'warning' => [
                         'id' => 'ignore-system-warnings',
                         'key' => 'memory-limit',
-                        'type' => 'error',
+                        'type' => 'warning',
                         'message' => __('admin::settings.developer.system.sections.php.warnings.memoryLimit', ['value' => $serverInfo['memoryLimitSuggested']]),
                         'show' => $serverInfo['memoryLimit'] !== '-1' && (int) rtrim($serverInfo['memoryLimit'], 'KMGT') < (int) rtrim($serverInfo['memoryLimitSuggested'], 'KMGT'),
                     ],
@@ -102,7 +102,7 @@
                     'warning' => [
                         'id' => 'ignore-system-warnings',
                         'key' => 'gd',
-                        'type' => 'warning',
+                        'type' => 'error',
                         'message' => __('admin::settings.developer.system.sections.php.warnings.gd'),
                         'show' => $serverInfo['gd'] === 0 && $serverInfo['imagick'] === 0,
                     ],
